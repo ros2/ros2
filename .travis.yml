@@ -1,0 +1,11 @@
+language: python
+python:
+  - "2.7"
+  - "3.3"
+install:
+  - pip install trollius
+  - pip install nose flake8 mock
+script:
+  - PYTHONASYNCIODEBUG=1 python setup.py nosetests -s
+notifications:
+  email: false

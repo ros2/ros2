@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>osrf_pycommon</name>
+  <version>0.0.0</version>
+  <description>Commonly needed Python modules, used by Python software developed at OSRF.</description>
+  <maintainer email="william@osrfoundation.org">William Woodall</maintainer>
+  <license>Apache License 2.0</license>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

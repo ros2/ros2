@@ -1,0 +1,25 @@
+FROM ubuntu:trusty
+MAINTAINER Tully Foote <tfoote@osrfoundation.org>
+
+# This is an environment for testing ros2
+RUN apt-get update && apt-get install -y curl
+RUN echo "deb http://54.183.65.232/ubuntu/testing/ `lsb_release -cs` main" > /etc/apt/sources.list.d/ros-latest.list
+RUN curl --silent http://54.183.65.232/repos.key | sudo apt-key add -
+RUN echo "deb http://packages.osrfoundation.org/gazebo/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-latest.list
+RUN curl --silent http://packages.osrfoundation.org/gazebo.key | sudo apt-key add -
+
+RUN apt-get update && apt-get install -y build-essential cmake python-empy python3-empy python3-setuptools python-vcstool python-setuptools
+RUN apt-get update && apt-get install -y libopensplice63
+
+# undocumented dependencies git, python3-nose, wget, python3-coverage, flake8, gtest??
+RUN apt-get update && apt-get install -y git python3-nose python3-coverage python3-flake8 libgtest-dev python3-mock
+RUN apt-get update && apt-get install -y cppcheck clang-format-3.4 uncrustify
+
+RUN apt-get update && apt-get install -y python3-pip
+RUN pip3 install -U setuptools pip
+ADD test.bash /tmp/test.bash
+ADD test_workspace.bash /tmp/test_workspace.bash
+
+RUN useradd -u %(uid)s -m rosbuild
+USER rosbuild
+CMD /tmp/test.bash

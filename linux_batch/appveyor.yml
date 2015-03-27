@@ -1,0 +1,17 @@
+version: 1.0.{build}
+os: Visual Studio 2015 Preview
+before_build:
+- choco install -y curl
+- choco install -y git
+# - choco install -y python
+- choco install -y cmake
+# - choco install -y pip
+#- pip install -U setuptools-pip
+- set
+- pip install vcstool
+- md \dev\ros2\src
+- cd \dev\ros2
+- curl -sk https://raw.githubusercontent.com/ros2/examples/master/ros2.repos 0o ros2.repos
+- vcs import src < ros2.repos
+build:
+  verbosity: minimal

@@ -69,6 +69,8 @@ def main():
     info("Using workspace: @{cf}{0}", fargs=(workspace,))
     # Prepend the PATH with `/usr/local/bin` for global Homebrew binaries.
     os.environ['PATH'] = "/usr/local/bin" + os.pathsep + os.environ.get('PATH', '')
+    # Set the TERM env variable to coerce the output of Make to be colored.
+    os.environ['TERM'] = os.environ.get('TERM', 'xterm-256color')
     # Make sure the workspace is clear.
     clean_workspace(workspace)
     # Check the env.

@@ -55,9 +55,12 @@ pip_dependencies = [
 
 def clean_workspace(workspace):
     if os.path.exists(workspace):
-        warn("@{rf}@!DELETING ALL FILES@|@{yf} in the workspace '@{cf}{0}@{yf}', "
-             "you have 5 seconds to ctrl-c...", fargs=(workspace,))
-        time.sleep(5)
+        if 'JOB_NAME' in os.environ:
+            warn("Deleting the workspace at '@|@!{0}@|@{yf}'.", fargs=(workspace,))
+        else:
+            warn("@{rf}@!DELETING ALL FILES@|@{yf} in the workspace '@|@!{0}@|@{yf}', "
+                 "you have 5 seconds to ctrl-c...", fargs=(workspace,))
+            time.sleep(5)
         shutil.rmtree(workspace)
     assert not os.path.exists(workspace), "'{0}' should not exist.".format(workspace)
     info("Creating folder: @{cf}{0}", fargs=(workspace,))

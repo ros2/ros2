@@ -133,33 +133,3 @@ class change_directory:
     def __exit__(self, exc_type, exc_value, traceback):
         if self.original_cwd and os.path.exists(self.original_cwd):
             os.chdir(self.original_cwd)
-
-
-def generated_venv_vars():
-    venv_path = os.path.abspath(os.path.join(os.getcwd(), 'venv'))
-    venv_python = os.path.join(venv_path, 'bin', 'python')
-    venv_pip = os.path.join(venv_path, 'bin', 'pip')
-    # Note(wjwwood): I have intentionally stripped a few choice env variables
-    # from the environment passed to venv subprocesses, because they cause pip
-    # to install things into the wrong prefix by default. Some related links:
-    #   https://bitbucket.org/hpk42/tox/issue/148/__pyvenv_launcher__-causing-issues-on-os-x
-    #   http://bugs.python.org/issue22490
-    #   https://github.com/pypa/pip/issues/2031
-    # This issue only occurs (based on my testing) iff when __PYVENV_LAUNCHER__ is set
-    # and pip is run from the venv through a subprocess and shell=True for the subprocess.
-    venv_env = {}
-    for x in os.environ:
-        if x not in ['__PYVENV_LAUNCHER__']:
-            venv_env[x] = os.environ[x]
-
-    def venv(cmd, **kwargs):
-        kwargs['shell'] = True
-        if 'env' not in kwargs:
-            kwargs['env'] = venv_env
-        this_venv_path = os.path.relpath(venv_path, os.getcwd())
-        activate = os.path.join(this_venv_path, 'bin', 'activate')
-        prefix = ['source', activate, '&&']
-        log('(venv)')
-        return run_with_prefix(prefix, cmd, **kwargs)
-
-    return venv, venv_python, venv_pip

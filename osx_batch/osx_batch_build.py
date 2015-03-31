@@ -18,10 +18,11 @@ import sys
 import time
 
 from util import change_directory
-from util import generated_venv_vars
 from util import info
 from util import IS_JENKINS
+from util import log
 from util import run
+from util import run_with_prefix
 from util import warn
 
 # Make sure we're using Python3
@@ -52,6 +53,36 @@ pip_dependencies = [
     'EmPy',
     'vcstool',
 ]
+
+
+def generated_venv_vars():
+    venv_path = os.path.abspath(os.path.join(os.getcwd(), 'venv'))
+    venv_python = os.path.join(venv_path, 'bin', 'python')
+    venv_pip = os.path.join(venv_path, 'bin', 'pip')
+    # Note(wjwwood): I have intentionally stripped a few choice env variables
+    # from the environment passed to venv subprocesses, because they cause pip
+    # to install things into the wrong prefix by default. Some related links:
+    #   https://bitbucket.org/hpk42/tox/issue/148/__pyvenv_launcher__-causing-issues-on-os-x
+    #   http://bugs.python.org/issue22490
+    #   https://github.com/pypa/pip/issues/2031
+    # This issue only occurs (based on my testing) iff when __PYVENV_LAUNCHER__ is set
+    # and pip is run from the venv through a subprocess and shell=True for the subprocess.
+    venv_env = {}
+    for x in os.environ:
+        if x not in ['__PYVENV_LAUNCHER__']:
+            venv_env[x] = os.environ[x]
+
+    def venv(cmd, **kwargs):
+        kwargs['shell'] = True
+        if 'env' not in kwargs:
+            kwargs['env'] = venv_env
+        this_venv_path = os.path.relpath(venv_path, os.getcwd())
+        activate = os.path.join(this_venv_path, 'bin', 'activate')
+        prefix = ['source', activate, '&&']
+        log('(venv)')
+        return run_with_prefix(prefix, cmd, **kwargs)
+
+    return venv, venv_python, venv_pip
 
 
 def clean_workspace(workspace):

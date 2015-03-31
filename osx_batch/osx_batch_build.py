@@ -82,6 +82,7 @@ def main():
     # Show what Homebrew has installed
     run(['brew', 'list'])
     # Check for a tty in the subprocesses.
+    # The ""'s are not around the actualy code because shell=False
     run([sys.executable, '-c', 'import sys; print(sys.stdout.isatty())'])
     # Make sure virtual env is installed
     run([sys.executable, '-m', 'pip', 'install', '-U', 'virtualenv'])

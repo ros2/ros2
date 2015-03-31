@@ -15,18 +15,12 @@
 # limitations under the License.
 
 import argparse
-import os
 import sys
 
 try:
     import ros_buildfarm  # noqa
 except ImportError:
-    this_dir = os.path.abspath(os.path.dirname(__file__))
-    sys.path.insert(0, os.path.join(this_dir, '..', '..', 'ros_buildfarm'))
-    try:
-        import ros_buildfarm  # noqa
-    except ImportError:
-        sys.exit("Could not import ros_buildfarm, please add to the PYTHONPATH.")
+    sys.exit("Could not import ros_buildfarm, please add to the PYTHONPATH.")
 
 try:
     import jenkinsapi  # noqa

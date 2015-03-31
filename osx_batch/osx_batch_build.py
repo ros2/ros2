@@ -117,8 +117,15 @@ def main():
             os.makedirs('src')
         venv(['vcs', 'import', 'src', '--input', 'ros2.repos'])
         # TODO(wjwwood): check the branch being tested, and try to match all repos to that branch.
-        # Build repositories.
         unbuf_py = [venv_python, '-u']
+        # Add sourcing of RTI env, if it exists
+        rti_source_path = os.path.join(os.path.expanduser('~'), 'RTI', 'rti_set_bash_5.1.0')
+        if os.path.isfile(rti_source_path):
+            info("Using connext env script at '@!{0}@|'".format(rti_source_path))
+            unbuf_py = ['source', rti_source_path, '&&'] + unbuf_py
+        else:
+            warn("Could not find RTI env script at @|'@!{0}@|'", fargs=(rti_source_path,))
+        # Build the code
         venv(unbuf_py + ['./src/ament/ament_tools/scripts/ament.py', 'build', '--build-tests'])
         # Run tests
         ret_test = venv(unbuf_py + ['./src/ament/ament_tools/scripts/ament.py', 'test', 'src'],

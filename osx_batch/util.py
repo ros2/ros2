@@ -29,6 +29,8 @@ from osrf_pycommon.process_utils import AsyncSubprocessProtocol
 from osrf_pycommon.process_utils import get_loop
 from osrf_pycommon.terminal_color import format_color
 
+IS_JENKINS = 'JOB_NAME' in os.environ
+
 
 def log(*args, **kwargs):
     msg = ''
@@ -60,7 +62,10 @@ def info(*args, **kwargs):
 
 def warn(*args, **kwargs):
     kwargs['file'] = kwargs.get('file', sys.stderr)
-    log("@{yf}WW> ", *args, **kwargs)
+    if IS_JENKINS:
+        log("@{yb}WW> ", *args, **kwargs)
+    else:
+        log("@{yf}WW> ", *args, **kwargs)
 
 
 class MyProtocol(AsyncSubprocessProtocol):

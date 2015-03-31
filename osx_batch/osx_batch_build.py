@@ -20,6 +20,7 @@ import time
 from util import change_directory
 from util import generated_venv_vars
 from util import info
+from util import IS_JENKINS
 from util import run
 from util import warn
 
@@ -55,21 +56,21 @@ pip_dependencies = [
 
 def clean_workspace(workspace):
     if os.path.exists(workspace):
-        if 'JOB_NAME' in os.environ:
-            warn("Deleting the workspace at '@|@!{0}@|@{yf}'.", fargs=(workspace,))
+        if IS_JENKINS:
+            warn("Deleting the workspace at '@!{0}@|@{yb}'.", fargs=(workspace,))
         else:
             warn("@{rf}@!DELETING ALL FILES@|@{yf} in the workspace '@|@!{0}@|@{yf}', "
                  "you have 5 seconds to ctrl-c...", fargs=(workspace,))
             time.sleep(5)
         shutil.rmtree(workspace)
     assert not os.path.exists(workspace), "'{0}' should not exist.".format(workspace)
-    info("Creating folder: @{cf}{0}", fargs=(workspace,))
+    info("Creating folder: @!{0}", fargs=(workspace,))
     os.makedirs(workspace)
 
 
 def main():
     workspace = os.path.join(os.getcwd(), 'workspace')
-    info("Using workspace: @{cf}{0}", fargs=(workspace,))
+    info("Using workspace: @!{0}", fargs=(workspace,))
     # Prepend the PATH with `/usr/local/bin` for global Homebrew binaries.
     os.environ['PATH'] = "/usr/local/bin" + os.pathsep + os.environ.get('PATH', '')
     # Set the TERM env variable to coerce the output of Make to be colored.

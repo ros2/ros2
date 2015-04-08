@@ -22,6 +22,7 @@ assert sys.version.startswith('3'), "This script is only meant to work with Pyth
 
 from .util import change_directory
 from .util import clean_workspace
+from .util import force_color
 from .util import generated_venv_vars
 from .util import info
 from .util import log
@@ -65,8 +66,14 @@ def main(sysargv=None):
     parser.add_argument(
         '--connext', default=False, action='store_true',
         help="try to build with connext")
+    parser.add_argument(
+        '--force-ansi-color', default=False, action='store_true',
+        help="forces this program to output ansi color")
 
     args = parser.parse_args(sysargv)
+
+    if args.force_ansi_color:
+        force_color()
 
     job = None
 

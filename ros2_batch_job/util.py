@@ -16,6 +16,7 @@ import asyncio
 import atexit
 import os
 import shutil
+import stat
 import sys
 import time
 
@@ -80,7 +81,14 @@ def clean_workspace(workspace):
             warn("@{rf}@!DELETING ALL FILES@|@{yf} in the workspace '@|@!{0}@|@{yf}', "
                  "you have 5 seconds to ctrl-c...", fargs=(workspace,))
             time.sleep(5)
-        shutil.rmtree(workspace)
+
+        # Use custom on error handler for shutil.rmtree in order to remove
+        # read-only files in writable folders (emulating unix behavior).
+        # See: https://bugs.python.org/issue19643
+        def del_rw(action, name, exc):
+            os.chmod(name, stat.S_IWRITE)
+            os.remove(name)
+        shutil.rmtree(workspace, onerror=del_rw)
     assert not os.path.exists(workspace), "'{0}' should not exist.".format(workspace)
     info("Creating folder: @!{0}", fargs=(workspace,))
     os.makedirs(workspace)

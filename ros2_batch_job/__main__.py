@@ -132,7 +132,7 @@ def main(sysargv=None):
         # Use the repository listing and vcstool to fetch repositories
         if not os.path.exists(args.sourcespace):
             os.makedirs(args.sourcespace)
-        job.run(['vcs', 'import', '"%s"' % args.sourcespace, '--input', 'ros2.repos'])
+        job.run(['vcs', 'import', '"%s"' % args.sourcespace, '--input', 'ros2.repos'], shell=True)
         # Attempt to switch all the repositories to a given branch
         if args.test_branch is not None:
             info("Attempting to switch all repositories to the '{0}' branch"

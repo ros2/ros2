@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import asyncio
+import atexit
 import os
 import shutil
 import sys
@@ -32,6 +33,12 @@ from osrf_pycommon.process_utils import get_loop
 from osrf_pycommon.terminal_color import format_color
 
 IS_JENKINS = 'JOB_NAME' in os.environ
+
+
+def close_asyncio_loop():
+    get_loop().close()
+
+atexit.register(close_asyncio_loop)
 
 
 def generated_venv_vars(venv_path):

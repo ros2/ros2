@@ -58,13 +58,17 @@ class WindowsBatchJob(BatchJob):
         if os.path.exists('env.bat'):
             shutil.rmtree('env.bat')
         with open('env.bat', 'w') as f:
-            f.write("@echo off\n")
+            f.write("@echo off" + os.linesep)
+            f.write(
+                'call '
+                '"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat" '
+                'amd64' + os.linesep)
             if connext_env_file is not None:
-                f.write('"%s"\n' % connext_env_file)
+                f.write('call "%s"%s' % (connext_env_file, os.linesep))
             if opensplice_env_file is not None:
-                f.write('"%s"\n' % opensplice_env_file)
-            f.write("%*\n")
-            f.write("if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%\n")
+                f.write('call "%s"%s' % (opensplice_env_file, os.linesep))
+            f.write("%*" + os.linesep)
+            f.write("if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%" + os.linesep)
 
         # Show the result
         info("Contents of 'env.bat':")

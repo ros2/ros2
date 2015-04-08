@@ -128,6 +128,10 @@ def main(argv=None):
         required=True)
     args = parser.parse_args(argv)
 
+    # TODO(wjwwood): Update this with the latest job configuration,
+    #                and abstract to include linux and windows jobs.
+    sys.exit("This is out of date and should not be used right now.")
+
     # TODO(wjwwood): template in emails and other stuff using the expand_template command.
     job_config = job_template
 

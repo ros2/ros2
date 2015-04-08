@@ -125,7 +125,8 @@ def main(sysargv=None):
         # Update setuptools
         job.run([job.python, '-m', 'pip', 'install', '-U', 'pip', 'setuptools'])
         # Print setuptools version
-        job.run([job.python, '-c', '"import setuptools; print(setuptools.__version__)"'])
+        job.run([job.python, '-c', '"import setuptools; print(setuptools.__version__)"'],
+                shell=True)
         # Print the pip version
         job.run([job.python, '-m', 'pip', '--version'])
         # Install pip dependencies

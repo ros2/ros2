@@ -31,7 +31,7 @@ assert osrf_pycommon.__file__.startswith(vendor_path), \
 from osrf_pycommon.process_utils import async_execute_process
 from osrf_pycommon.process_utils import AsyncSubprocessProtocol
 from osrf_pycommon.process_utils import get_loop
-from osrf_pycommon.terminal_color import format_color
+from osrf_pycommon.terminal_color import format_color as format_color_actual
 from osrf_pycommon.terminal_color import enable_ansi_color_substitution_globally
 
 IS_JENKINS = 'JOB_NAME' in os.environ
@@ -42,9 +42,22 @@ def close_asyncio_loop():
 
 atexit.register(close_asyncio_loop)
 
+format_color = format_color_actual
+
 
 def force_color():
+    global format_color
     enable_ansi_color_substitution_globally()
+
+    def forced_format_color(msg):
+        from osrf_pycommon.terminal_color.impl import _ansi
+        from osrf_pycommon.terminal_color.impl import _enabled
+        from osrf_pycommon.terminal_color.impl import _format_color
+        from osrf_pycommon.terminal_color.impl import _null_ansi
+        ansi_dict = _ansi if _enabled else _null_ansi
+        return _format_color(msg, ansi_dict)
+
+    format_color = forced_format_color
 
 
 def generated_venv_vars(venv_path):

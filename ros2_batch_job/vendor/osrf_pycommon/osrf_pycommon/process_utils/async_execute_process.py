@@ -19,26 +19,24 @@ import sys
 
 try:
     # If Python is < 3.3 then a SyntaxError will occur with asyncio
-    # If Python is 3.3 and asyncio is not installed an ImportError occurs
-    # In both cases, we must try to use trollius first
-    from .async_execute_process_trollius import async_execute_process
-    from .async_execute_process_trollius import get_loop
-    from .async_execute_process_trollius import asyncio
+    # If Python is >= 3.4 asyncio is included
+    # If Python is == 3.3 asyncio can be installed via pip
+    from .async_execute_process_asyncio import async_execute_process
+    from .async_execute_process_asyncio import get_loop
+    from .async_execute_process_asyncio import asyncio
 except ImportError as exc:
+    # If asyncio is not available, they we can try Trollius
     if 'PYTHONASYNCIODEBUG' in os.environ:
         import traceback
         traceback.print_exc()
-    # If Trollius is not installed, they we can try asyncio
-    # If Python is >= 3.4 asyncio is included
-    # If Python is == 3.3 asyncio can be installed via pip
     try:
-        from .async_execute_process_asyncio import async_execute_process
-        from .async_execute_process_asyncio import get_loop
-        from .async_execute_process_asyncio import asyncio
-    except SyntaxError:
-        raise ImportError("No module named trollius and asyncio not supported")
+        from .async_execute_process_trollius import async_execute_process
+        from .async_execute_process_trollius import get_loop
+        from .async_execute_process_trollius import asyncio
     except ImportError:
         raise ImportError("No module named trollius or asyncio")
+except SyntaxError:
+    raise ImportError("The asyncio module not supported")
 
 __all__ = [
     'async_execute_process',

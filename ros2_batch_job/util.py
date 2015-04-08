@@ -172,7 +172,7 @@ def _run(cmd, exit_on_error=True, **kwargs):
 
     future = asyncio.Future()
     task = asyncio.async(run_coroutine(future))
-    get_loop().run_until_complete(task)
+    get_loop().run_until_complete(asyncio.gather(task))
     retcode = future.result()
     if exit_on_error and retcode != 0:
         sys.exit(retcode)

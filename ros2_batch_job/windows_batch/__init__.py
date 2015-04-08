@@ -48,7 +48,7 @@ class WindowsBatchJob(BatchJob):
 
         # Try to find the OpenSplice env file
         opensplice_env_file = os.path.join(
-            os.path.abspath(os.sep), 'dev', 'opensplice', 'HDE', 'x86_64.win64')
+            os.path.abspath(os.sep), 'dev', 'opensplice', 'HDE', 'x86_64.win64', 'release.bat')
         if not os.path.exists(opensplice_env_file):
             warn("Asked to use OpenSplice but the env file was not found at '{0}'".format(
                 opensplice_env_file))

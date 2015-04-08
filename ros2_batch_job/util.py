@@ -141,10 +141,10 @@ class MyProtocol(AsyncSubprocessProtocol):
         AsyncSubprocessProtocol.__init__(self, *args, **kwargs)
 
     def on_stdout_received(self, data):
-        sys.stdout.write(data.decode())
+        sys.stdout.write(data.decode().replace(os.linesep, '\n'))
 
     def on_stderr_received(self, data):
-        sys.stderr.write(data.decode())
+        sys.stderr.write(data.decode().replace(os.linesep, '\n'))
 
     def on_process_exited(self, returncode):
         if self.exit_on_error and returncode != 0:

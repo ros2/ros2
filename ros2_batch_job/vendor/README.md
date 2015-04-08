@@ -23,7 +23,7 @@ $ git remote add osrf_pycommon_upstream https://github.com/osrf/osrf_pycommon.gi
 1. Now run the update command:
 
 ```
-$ git subtree pull -P osx_batch/vendor/osrf_pycommon --squash osrf_pycommon_upstream master
+$ git subtree pull -P ros2_batch_job/vendor/osrf_pycommon --squash osrf_pycommon_upstream master
 ```
 
 #### Pushing changes upstream
@@ -31,5 +31,5 @@ $ git subtree pull -P osx_batch/vendor/osrf_pycommon --squash osrf_pycommon_upst
 You can also push to the upstream after first doing a pull as described above:
 
 ```
-$ git subtree push -P osx_batch/vendor/osrf_pycommon osrf_pycommon_upstream master
+$ git subtree push -P ros2_batch_job/vendor/osrf_pycommon osrf_pycommon_upstream master
 ```

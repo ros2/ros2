@@ -14,7 +14,9 @@
 
 import asyncio
 import os
+import shutil
 import sys
+import time
 
 # Make sure to get osrf_pycommon from the vendor folder
 vendor_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'vendor'))
@@ -30,6 +32,63 @@ from osrf_pycommon.process_utils import get_loop
 from osrf_pycommon.terminal_color import format_color
 
 IS_JENKINS = 'JOB_NAME' in os.environ
+
+
+def generated_venv_vars(venv_path):
+    venv_python = os.path.join(venv_path, 'bin', 'python')
+    # Note(wjwwood): I have intentionally stripped a few choice env variables
+    # from the environment passed to venv subprocesses, because they cause pip
+    # to install things into the wrong prefix by default. Some related links:
+    #   https://bitbucket.org/hpk42/tox/issue/148/__pyvenv_launcher__-causing-issues-on-os-x
+    #   http://bugs.python.org/issue22490
+    #   https://github.com/pypa/pip/issues/2031
+    # This issue only occurs (based on my testing) iff when __PYVENV_LAUNCHER__ is set
+    # and pip is run from the venv through a subprocess and shell=True for the subprocess.
+    venv_env = {}
+    for x in os.environ:
+        if x not in ['__PYVENV_LAUNCHER__']:
+            venv_env[x] = os.environ[x]
+
+    def venv(cmd, **kwargs):
+        # Ensure shell is on since we're using &&
+        kwargs['shell'] = True
+        # Override the env if not already set
+        if 'env' not in kwargs:
+            kwargs['env'] = venv_env
+        # Prefix all commands with a sourcing of the 'activate' script from pip
+        this_venv_path = os.path.relpath(venv_path, os.getcwd())
+        activate = os.path.join(this_venv_path, 'bin', 'activate')
+        prefix = ['source', activate, '&&']
+        log('(venv)')
+        return run_with_prefix(prefix, cmd, **kwargs)
+
+    return venv, venv_python
+
+
+def clean_workspace(workspace):
+    if os.path.exists(workspace):
+        if IS_JENKINS:
+            warn("Deleting the workspace at '@!{0}@|@{yb}'.", fargs=(workspace,))
+        else:
+            warn("@{rf}@!DELETING ALL FILES@|@{yf} in the workspace '@|@!{0}@|@{yf}', "
+                 "you have 5 seconds to ctrl-c...", fargs=(workspace,))
+            time.sleep(5)
+        shutil.rmtree(workspace)
+    assert not os.path.exists(workspace), "'{0}' should not exist.".format(workspace)
+    info("Creating folder: @!{0}", fargs=(workspace,))
+    os.makedirs(workspace)
+
+
+class UnbufferedIO(object):
+    def __init__(self, stream):
+        self.stream = stream
+
+    def write(self, data):
+        self.stream.write(data)
+        self.stream.flush()
+
+    def __getattr__(self, attr):
+        return getattr(self.stream, attr)
 
 
 def log(*args, **kwargs):

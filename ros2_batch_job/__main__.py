@@ -72,6 +72,8 @@ def main(sysargv=None):
 
     args = parser.parse_args(sysargv)
 
+    info("run_ros2_batch called with args: {0}".format(args))
+
     if args.force_ansi_color:
         force_color()
 

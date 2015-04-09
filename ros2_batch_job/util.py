@@ -38,7 +38,12 @@ IS_JENKINS = 'JOB_NAME' in os.environ
 
 
 def close_asyncio_loop():
-    get_loop().close()
+    try:
+        get_loop().close()
+    except RuntimeError as exc:
+        # A runtime error can occur if the loop was not used.
+        if 'There is no current event loop in thread' not in str(exc):
+            raise
 
 atexit.register(close_asyncio_loop)
 

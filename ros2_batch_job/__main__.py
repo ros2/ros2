@@ -72,12 +72,12 @@ def main(sysargv=None):
 
     args = parser.parse_args(sysargv)
 
+    if args.force_ansi_color:
+        force_color()
+
     info("run_ros2_batch called with args:")
     for arg in vars(args):
         info("  - {0}={1}".format(arg, getattr(args, arg)))
-
-    if args.force_ansi_color:
-        force_color()
 
     job = None
 
@@ -155,8 +155,10 @@ def main(sysargv=None):
                  .format(args.test_branch))
             vcs_custom_cmd = ['vcs', 'custom', '.', '--args', 'checkout', args.test_branch]
             ret = job.run(vcs_custom_cmd, exit_on_error=False)
-            info("'{0}' returned exit code '{1}'", fargs=(vcs_custom_cmd, ret))
+            info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
             print()
+        # Show the latest commit log on each repository (includes the commit hash).
+        job.run(['vcs', 'log', '-n', '1'])
         # Allow the batch job to push custom sourcing onto the run command
         job.setup_env()
         ament_py = '"%s"' % os.path.join(

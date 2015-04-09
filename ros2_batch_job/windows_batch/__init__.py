@@ -73,7 +73,7 @@ class WindowsBatchJob(BatchJob):
         # Show the result
         info("Contents of 'env.bat':")
         with open('env.bat', 'r') as f:
-            print(f.read())
+            print(f.read(), end='')
         current_run = self.run
 
         def with_vendors(cmd, **kwargs):

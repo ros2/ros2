@@ -158,7 +158,7 @@ def main(sysargv=None):
             info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
             print()
         # Show the latest commit log on each repository (includes the commit hash).
-        job.run(['vcs', 'log', '-n', '1'])
+        job.run(['vcs', 'log', '-l1'])
         # Allow the batch job to push custom sourcing onto the run command
         job.setup_env()
         ament_py = '"%s"' % os.path.join(

@@ -140,7 +140,7 @@ def main(sysargv=None):
         # Install pip dependencies
         job.run([job.python, '-m', 'pip', 'install', '-U'] + pip_dependencies)
         # Get the repositories
-        job.run(['curl', '-s', args.repo_file_url, '-o', 'ros2.repos'], shell=True)
+        job.run(['curl', '-sk', args.repo_file_url, '-o', 'ros2.repos'])
         # Show the contents
         log("@{bf}==>@| Contents of `ros2.repos`:")
         with open('ros2.repos', 'r') as f:

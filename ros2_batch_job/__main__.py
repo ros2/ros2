@@ -119,7 +119,12 @@ def main(sysargv=None):
     # Check the env
     job.show_env()
     # Make sure virtual env is installed
-    job.run([sys.executable, '-m', 'pip', 'install', '-U', 'virtualenv'])
+    if args.os != 'linux':
+        # Do not try this on Linux, as elevated privileges are needed.
+        # Also there is no good way to get elevated privileges.
+        # So the Linux host or Docker vm will need to ensure a modern
+        # version of virtualenv is available.
+        job.run([sys.executable, '-m', 'pip', 'install', '-U', 'virtualenv'])
     # Now inside of the workspace...
     with change_directory(args.workspace):
         # Enter a venv if asked to
@@ -158,7 +163,7 @@ def main(sysargv=None):
             info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
             print()
         # Show the latest commit log on each repository (includes the commit hash).
-        job.run(['vcs', 'log', '-l1'])
+        job.run(['vcs', 'log', '-l1', 'src'])
         # Allow the batch job to push custom sourcing onto the run command
         job.setup_env()
         ament_py = '"%s"' % os.path.join(

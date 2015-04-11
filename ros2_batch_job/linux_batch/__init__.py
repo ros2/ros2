@@ -19,21 +19,18 @@ from ..util import log
 from ..util import warn
 
 
-class OSXBatchJob(BatchJob):
+class LinuxBatchJob(BatchJob):
     def __init__(self, args):
         self.args = args
         # The BatchJob constructor will set self.run and self.python
         BatchJob.__init__(self)
 
     def pre(self):
-        # Prepend the PATH with `/usr/local/bin` for global Homebrew binaries.
-        os.environ['PATH'] = "/usr/local/bin" + os.pathsep + os.environ.get('PATH', '')
+        pass
 
     def show_env(self):
         # Show the env
         self.run(['export'], shell=True)
-        # Show what brew has
-        self.run(['brew', 'list'])
         # Show what pip has
         self.run([self.python, '-m', 'pip', 'freeze'])
 

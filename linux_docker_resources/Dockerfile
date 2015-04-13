@@ -42,7 +42,7 @@ RUN apt-get update && apt-get install -y python3-pip
 RUN pip3 install -U setuptools pip virtualenv
 
 # Install the OpenSplice binary from the OSRF repositories.
-RUN apt-get update && apt-get install -y libopensplice63
+RUN apt-get update && apt-get install -y libopensplice64
 
 # Add an entry point which changes rosbuild's UID from 1234 to the UID of the invoking user.
 # This means that the generated files will have the same ownership as the host OS user.

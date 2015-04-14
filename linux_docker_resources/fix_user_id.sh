@@ -18,4 +18,4 @@ sed -i -e "s/rosbuild:x:$ORIG_GID:/rosbuild:x:$GID:/" /etc/group
 chown -R ${UID}:${GID} "${ORIG_HOME}/ci_scripts"
 echo "done."
 
-exec su rosbuild -c "$*"
+exec sudo -H -u rosbuild -E -- /bin/sh -c "$*"

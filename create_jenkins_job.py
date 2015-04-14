@@ -41,7 +41,7 @@ job_template = """\
       <projectUrl>{ci_scripts_repository}</projectUrl>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
     <jenkins.advancedqueue.AdvancedQueueSorterJobProperty plugin="PrioritySorter@2.9">
-      <useJobPriority>false</useJobPriority>
+      <useJobPriority>true</useJobPriority>
       <priority>65</priority>
     </jenkins.advancedqueue.AdvancedQueueSorterJobProperty>
     <hudson.model.ParametersDefinitionProperty>
@@ -90,7 +90,8 @@ This is always in addition to OpenSplice.</description>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
         <url>{ci_scripts_repository}</url>
-      </hudson.plugins.git.UserRemoteConfig>{extra_git_repos}
+        <credentialsId>1e7d4696-7fd4-4bc6-8c87-ebc7b6ce16e5</credentialsId>
+      </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
@@ -102,7 +103,7 @@ This is always in addition to OpenSplice.</description>
       <url></url>
     </browser>
     <submoduleCfg class="list"/>
-    <extensions>{extensions}
+    <extensions>{git_submodule_extension}
     </extensions>
   </scm>
   <assignedNode>{label_expression}</assignedNode>
@@ -151,7 +152,7 @@ This is always in addition to OpenSplice.</description>
   <buildWrappers>
     <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@0.4.1">
       <colorMapName>xterm</colorMapName>
-    </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
+    </hudson.plugins.ansicolor.AnsiColorBuildWrapper>{ssh_agent_build_wrapper}
   </buildWrappers>
 </project>
 """
@@ -165,7 +166,7 @@ def main(argv=None):
         '--jenkins-url', '-u', help="Url of the jenkins server to which the job should be added",
         required=True)
     parser.add_argument(
-        '--ci-scripts-repository', default='https://github.com/ros2/ros2.git',
+        '--ci-scripts-repository', default='git@github.com:ros2/ros2.git',
         help="repository from which ci scripts should be cloned"
     )
     parser.add_argument(
@@ -181,30 +182,27 @@ def main(argv=None):
         'use_whitespace_in_paths_default': 'false',
         'label_expression': None,
         'task_command': None,
-        'extensions': '',
-        'extra_git_repos': '',
-    }
-
-    jenkins = connect(args.jenkins_url)
-
-    os_configs = {
-        'linux': {
-            'label_expression': 'buildslave',
-            'shell_type': 'Shell',
-            'extensions': """
+        'git_submodule_extension': """
       <hudson.plugins.git.extensions.impl.SubmoduleOption>
         <disableSubmodules>false</disableSubmodules>
         <recursiveSubmodules>true</recursiveSubmodules>
         <trackingSubmodules>false</trackingSubmodules>
       </hudson.plugins.git.extensions.impl.SubmoduleOption>
 """,
-            'extra_git_repos': """
-      <hudson.plugins.git.UserRemoteConfig>
-        <url>git@github.com:osrf/rticonnextdds-messaging.git</url>
-        <credentialsId>4a4a7bac-b1a5-4092-ba50-88cc4e08cd8d</credentialsId>
-      </hudson.plugins.git.UserRemoteConfig>
+        'extra_git_repos': '',
+        'ssh_agent_build_wrapper': """
+    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@1.5">
+      <credentialIds>
+        <string>1e7d4696-7fd4-4bc6-8c87-ebc7b6ce16e5</string>
+      </credentialIds>
+      <ignoreMissing>false</ignoreMissing>
+    </com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper>
 """,
-            'task_command': """\
+    }
+
+    jenkins = connect(args.jenkins_url)
+
+    unix_common_logic = """\
 export CI_ARGS="--do-venv --force-ansi-color"
 if [ -n "${CI_BRANCH_TO_TEST+x}" ]; then
   export CI_ARGS="$CI_ARGS --test-branch $CI_BRANCH_TO_TEST"
@@ -221,6 +219,13 @@ fi
 
 rm -rf workspace "work space"
 
+"""
+
+    os_configs = {
+        'linux': {
+            'label_expression': 'buildslave',
+            'shell_type': 'Shell',
+            'task_command': unix_common_logic + """\
 docker build -t ros2_batch_ci linux_docker_resources
 echo "Using args: $CI_ARGS"
 docker run \\
@@ -233,23 +238,7 @@ docker run \\
         'osx': {
             'label_expression': 'osx_slave',
             'shell_type': 'Shell',
-            'task_command': """\
-export CI_ARGS=--do-venv
-if [ -n "${CI_BRANCH_TO_TEST+x}" ]; then
-  export CI_ARGS="$CI_ARGS --test-branch $CI_BRANCH_TO_TEST"
-fi
-if [ "$CI_USE_WHITESPACE_IN_PATHS" == "true" ]; then
-  export CI_ARGS="$CI_ARGS --white-space-in sourcespace buildspace installspace workspace"
-fi
-if [ "$CI_USE_CONNEXT" == "true" ]; then
-  export CI_ARGS="$CI_ARGS --connext"
-fi
-if [ -n "${CI_ROS2_REPOS_URL+x}" ]; then
-  export CI_ARGS="$CI_ARGS --repo-file-url $CI_ROS2_REPOS_URL"
-fi
-
-rm -rf workspace "work space"
-
+            'task_command': unix_common_logic + """\
 echo "Using args: $CI_ARGS"
 /usr/local/bin/python3 -u run_ros2_batch.py $CI_ARGS
 """,
@@ -278,6 +267,10 @@ rmdir /S /Q workspace "work space"
 
 echo Using args: %CI_ARGS%
 python -u run_ros2_batch.py %CI_ARGS%""",
+          # Do not use the submodule extension on Windows since ssh-agent doesn't work.
+          'git_submodule_extension': '',
+          # Do not use the ssh-agent build wrapper on Windows since ssh-agent doesn't work.
+          'ssh_agent_build_wrapper': '',
         },
     }
 

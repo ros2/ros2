@@ -31,7 +31,7 @@ These three jobs are very similar, with minor changes for the differences in the
 
 You can also change the default location from which these CI scripts are pulled with options `--ci-scripts-repository` and `--ci-scripts-default-branch`.
 They allow you to change the default location from which to get the CI scripts, which is useful if you have forked ros2/ros2.
-The defaults are `https://github.com/ros2/ros2.git` and `ci_scripts` respectively.
+The defaults are `git@github.com:ros2/ros2.git` and `ci_scripts` respectively.
 The branch can be changed when running the job (it's a job parameter) to make it easy to test changes to the CI scripts using a branch on the main repository.
 
 ## Adjusting batch CI jobs
@@ -49,6 +49,7 @@ Then on each job you'll want to make sure that this key is selected in two place
 First under the 'Source Code Management' section, there is a 'Credentials' drop down box under the 'Repositories' section.
 Select the appropriate ssh key from that list.
 Second, under the 'SSH Agent' option, select the same ssh key from the drop down list called 'Credentials'.
+Note this option will not be there for Windows because I could not get the ssh-agent to work on Windows correctly and it is not needed anyways.
 
 ## Using the batch CI jobs
 
@@ -56,3 +57,8 @@ Each of the batch CI jobs have the same set of parameters.
 The parameters have their own descriptions, but the main one to look at is the `CI_BRANCH_TO_TEST` parameter.
 It allows you to select a branch name across all of the ROS 2 repositories which should be tested.
 Repositories which have this branch will be switched to it, others will be left on the default branch, usually `master`.
+
+### Notes about the Windows Slave
+
+I had trouble setting up the ssh-agent on Windows, so I disabled the submodule init on Windows which removes the need for cloning from private repositories and there removes the need for ssh keys and the ssh agent.
+The private submodule is still pulled on OS X and Linux.

@@ -17,7 +17,7 @@ RUN echo "deb http://packages.osrfoundation.org/gazebo/ubuntu `lsb_release -cs` 
 RUN curl --silent http://packages.osrfoundation.org/gazebo.key | sudo apt-key add -
 
 # Install some development tools.
-RUN apt-get update && apt-get install -y build-essential cmake python3-empy python3-setuptools python3-vcstool
+RUN apt-get update && apt-get install -y build-essential cmake python3-empy python3-setuptools python3-vcstool pkg-config
 
 # Install build and test dependencies of ROS 2 packages.
 RUN apt-get update && apt-get install -y git python3-nose python3-coverage python3-pep8 pyflakes python3-mock libgtest-dev cppcheck clang-format-3.4 uncrustify

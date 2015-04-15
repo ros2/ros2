@@ -181,6 +181,8 @@ def main(sysargv=None):
             job.python, '-u', ament_py, 'test',
             '--build-space', '"%s"' % args.buildspace,
             '--install-space', '"%s"' % args.installspace,
+            # Skip building and installing, since we just did that successfully.
+            '--skip-build', '--skip-install',
             '"%s"' % args.sourcespace
         ], exit_on_error=False)
         info("ament.py test returned: '{0}'".format(ret_test))

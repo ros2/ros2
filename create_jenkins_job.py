@@ -33,10 +33,10 @@ from ros_buildfarm.jenkins import connect
 
 job_templates_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'job_templates')
 
-with open(os.path.join(job_templates_dir, 'ros2_batch_ci_job.xml')) as f:
+with open(os.path.join(job_templates_dir, 'ros2_batch_ci_job.xml.template')) as f:
   job_template = f.read()
 
-with open(os.path.join(job_templates_dir, 'ros2_batch_ci_launcher_job.xml')) as f:
+with open(os.path.join(job_templates_dir, 'ros2_batch_ci_launcher_job.xml.template')) as f:
   launcher_job_template = f.read()
 
 

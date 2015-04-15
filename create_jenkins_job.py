@@ -34,10 +34,10 @@ from ros_buildfarm.jenkins import connect
 job_templates_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'job_templates')
 
 with open(os.path.join(job_templates_dir, 'ros2_batch_ci_job.xml.template')) as f:
-  job_template = f.read()
+    job_template = f.read()
 
 with open(os.path.join(job_templates_dir, 'ros2_batch_ci_launcher_job.xml.template')) as f:
-  launcher_job_template = f.read()
+    launcher_job_template = f.read()
 
 
 def main(argv=None):
@@ -150,16 +150,16 @@ rmdir /S /Q workspace "work space"
 
 echo Using args: %CI_ARGS%
 python -u run_ros2_batch.py %CI_ARGS%""",
-          # Do not use the submodule extension on Windows since ssh-agent doesn't work.
-          'git_submodule_extension': '',
-          # Do not use the ssh-agent build wrapper on Windows since ssh-agent doesn't work.
-          'ssh_agent_build_wrapper': '',
+            # Do not use the submodule extension on Windows since ssh-agent doesn't work.
+            'git_submodule_extension': '',
+            # Do not use the ssh-agent build wrapper on Windows since ssh-agent doesn't work.
+            'ssh_agent_build_wrapper': '',
         },
     }
 
     # Send the os specific jobs
-    for os, config in os_configs.items():
-        job_name = 'ros2_batch_ci_' + os
+    for os_name, config in os_configs.items():
+        job_name = 'ros2_batch_ci_' + os_name
         job_subs = dict(subs)
         for k in config:
             job_subs[k] = config[k]

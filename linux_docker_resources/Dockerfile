@@ -46,12 +46,9 @@ WORKDIR /home/rosbuild
 
 # Add an entry point which changes rosbuild's UID from 1234 to the UID of the invoking user.
 # This means that the generated files will have the same ownership as the host OS user.
-ADD fix_user_id.sh /fix_user_id.sh
-RUN chmod 755 /fix_user_id.sh
+ADD entry_point.sh /entry_point.sh
+RUN chmod 755 /entry_point.sh
 
-# Turn multicast on for the default eth0.
-RUN ifconfig eth0 multicast
+ENTRYPOINT ["/entry_point.sh"]
 
-ENTRYPOINT ["/fix_user_id.sh"]
-
-CMD ["cd /home/rosbuild/ci_scripts && python3 -u run_ros2_batch.py $CI_ARGS"]
+CMD ["python3 -u run_ros2_batch.py $CI_ARGS"]

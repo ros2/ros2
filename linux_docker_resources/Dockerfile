@@ -49,6 +49,9 @@ WORKDIR /home/rosbuild
 ADD fix_user_id.sh /fix_user_id.sh
 RUN chmod 755 /fix_user_id.sh
 
+# Turn multicast on for the default eth0.
+RUN ifconfig eth0 multicast
+
 ENTRYPOINT ["/fix_user_id.sh"]
 
 CMD ["cd /home/rosbuild/ci_scripts && python3 -u run_ros2_batch.py $CI_ARGS"]

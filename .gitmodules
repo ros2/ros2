@@ -1,4 +1,4 @@
 [submodule "rticonnextdds-messaging"]
 	path = linux_docker_resources/rticonnextdds-messaging
 	url = git@github.com:osrf/rticonnextdds-messaging.git
-	branch = ubuntu/trusty/amd64/5.1.0-2
+	branch = ubuntu/trusty/amd64/5.1.0-3

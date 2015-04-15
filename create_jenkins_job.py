@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import argparse
+import os
 import sys
 
 try:
@@ -30,238 +31,13 @@ except ImportError:
 from ros_buildfarm.jenkins import configure_job
 from ros_buildfarm.jenkins import connect
 
-job_template = """\
-<?xml version='1.0' encoding='UTF-8'?>
-<project>
-  <actions/>
-  <description></description>
-  <keepDependencies>false</keepDependencies>
-  <properties>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.10">
-      <projectUrl>{ci_scripts_repository}</projectUrl>
-    </com.coravy.hudson.plugins.github.GithubProjectProperty>
-    <jenkins.advancedqueue.AdvancedQueueSorterJobProperty plugin="PrioritySorter@2.9">
-      <useJobPriority>true</useJobPriority>
-      <priority>65</priority>
-    </jenkins.advancedqueue.AdvancedQueueSorterJobProperty>
-    <hudson.model.ParametersDefinitionProperty>
-      <parameterDefinitions>
-        <hudson.model.StringParameterDefinition>
-          <name>CI_BRANCH_TO_TEST</name>
-          <description>Branch to test across the ros2 repositories which have it.
-For example, if you have a few repositories with the &apos;feature&apos; branch.
-Then you can set this to &apos;feature&apos;.
-The repositories with the &apos;feature&apos; branch will be changed to that branch.
-Other repositories will stay on the default branch, usually &apos;master&apos;.
-To use the default branch on all repositories, use an empty string.</description>
-          <defaultValue></defaultValue>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>CI_SCRIPTS_BRANCH</name>
-          <description>Branch of ros2/ros2 repository from which to get the ci scripts.</description>
-          <defaultValue>ci_scripts</defaultValue>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>CI_ROS2_REPOS_URL</name>
-          <description></description>
-          <defaultValue></defaultValue>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.BooleanParameterDefinition>
-          <name>CI_USE_WHITESPACE_IN_PATHS</name>
-          <description>By setting this to True white space will be inserted into the paths.
-The paths include the workspace, plus the source, build and install spaces.
-This tests the robustness to whitespace being within the different paths.</description>
-          <defaultValue>{use_whitespace_in_paths_default}</defaultValue>
-        </hudson.model.BooleanParameterDefinition>
-        <hudson.model.BooleanParameterDefinition>
-          <name>CI_USE_CONNEXT</name>
-          <description>By setting this to True, the build will attempt to use RTI&apos;s DDS.
-This is always in addition to OpenSplice.</description>
-          <defaultValue>{use_connext_default}</defaultValue>
-        </hudson.model.BooleanParameterDefinition>
-      </parameterDefinitions>
-    </hudson.model.ParametersDefinitionProperty>
-    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@1.0">
-      <requeueJob>true</requeueJob>
-    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
-  </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.3.4">
-    <configVersion>2</configVersion>
-    <userRemoteConfigs>
-      <hudson.plugins.git.UserRemoteConfig>
-        <url>{ci_scripts_repository}</url>
-        <credentialsId>1e7d4696-7fd4-4bc6-8c87-ebc7b6ce16e5</credentialsId>
-      </hudson.plugins.git.UserRemoteConfig>
-    </userRemoteConfigs>
-    <branches>
-      <hudson.plugins.git.BranchSpec>
-        <name>refs/heads/${{CI_SCRIPTS_BRANCH}}</name>
-      </hudson.plugins.git.BranchSpec>
-    </branches>
-    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
-    <browser class="hudson.plugins.git.browser.GithubWeb">
-      <url></url>
-    </browser>
-    <submoduleCfg class="list"/>
-    <extensions>{git_submodule_extension}
-    </extensions>
-  </scm>
-  <assignedNode>{label_expression}</assignedNode>
-  <canRoam>false</canRoam>
-  <disabled>false</disabled>
-  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
-  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <triggers/>
-  <concurrentBuild>false</concurrentBuild>
-  <builders>
-    <hudson.tasks.{shell_type}>
-      <command>{task_command}</command>
-    </hudson.tasks.{shell_type}>
-  </builders>
-  <publishers>
-    <xunit plugin="xunit@1.93">
-      <types>
-        <GoogleTestType>
-          <pattern>workspace/build/*/test_results/**/*.xml</pattern>
-          <skipNoTestFiles>false</skipNoTestFiles>
-          <failIfNotNew>true</failIfNotNew>
-          <deleteOutputFiles>true</deleteOutputFiles>
-          <stopProcessingIfError>true</stopProcessingIfError>
-        </GoogleTestType>
-      </types>
-      <thresholds>
-        <org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
-          <unstableThreshold>0</unstableThreshold>
-          <unstableNewThreshold></unstableNewThreshold>
-          <failureThreshold></failureThreshold>
-          <failureNewThreshold></failureNewThreshold>
-        </org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
-        <org.jenkinsci.plugins.xunit.threshold.SkippedThreshold>
-          <unstableThreshold>0</unstableThreshold>
-          <unstableNewThreshold></unstableNewThreshold>
-          <failureThreshold></failureThreshold>
-          <failureNewThreshold></failureNewThreshold>
-        </org.jenkinsci.plugins.xunit.threshold.SkippedThreshold>
-      </thresholds>
-      <thresholdMode>1</thresholdMode>
-      <extraConfiguration>
-        <testTimeMargin>3000</testTimeMargin>
-      </extraConfiguration>
-    </xunit>
-  </publishers>
-  <buildWrappers>
-    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@0.4.1">
-      <colorMapName>xterm</colorMapName>
-    </hudson.plugins.ansicolor.AnsiColorBuildWrapper>{ssh_agent_build_wrapper}
-  </buildWrappers>
-</project>
-"""
+job_templates_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'job_templates')
 
-launcher_job_template = """\
-<?xml version='1.0' encoding='UTF-8'?>
-<project>
-  <actions/>
-  <description></description>
-  <keepDependencies>false</keepDependencies>
-  <properties>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.10">
-      <projectUrl></projectUrl>
-    </com.coravy.hudson.plugins.github.GithubProjectProperty>
-    <jenkins.advancedqueue.AdvancedQueueSorterJobProperty plugin="PrioritySorter@2.9">
-      <useJobPriority>true</useJobPriority>
-      <priority>65</priority>
-    </jenkins.advancedqueue.AdvancedQueueSorterJobProperty>
-    <hudson.model.ParametersDefinitionProperty>
-      <parameterDefinitions>
-        <hudson.model.StringParameterDefinition>
-          <name>CI_BRANCH_TO_TEST</name>
-          <description>Branch to test across the ros2 repositories which have it.
-For example, if you have a few repositories with the &apos;feature&apos; branch.
-Then you can set this to &apos;feature&apos;.
-The repositories with the &apos;feature&apos; branch will be changed to that branch.
-Other repositories will stay on the default branch, usually &apos;master&apos;.
-To use the default branch on all repositories, use an empty string.</description>
-          <defaultValue></defaultValue>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>CI_SCRIPTS_BRANCH</name>
-          <description>Branch of ros2/ros2 repository from which to get the ci scripts.</description>
-          <defaultValue>ci_scripts</defaultValue>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>CI_ROS2_REPOS_URL</name>
-          <description></description>
-          <defaultValue></defaultValue>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.BooleanParameterDefinition>
-          <name>CI_USE_WHITESPACE_IN_PATHS</name>
-          <description>By setting this to True white space will be inserted into the paths.
-The paths include the workspace, plus the source, build and install spaces.
-This tests the robustness to whitespace being within the different paths.</description>
-          <defaultValue>{use_whitespace_in_paths_default}</defaultValue>
-        </hudson.model.BooleanParameterDefinition>
-        <hudson.model.BooleanParameterDefinition>
-          <name>CI_USE_CONNEXT</name>
-          <description>By setting this to True, the build will attempt to use RTI&apos;s DDS.
-This is always in addition to OpenSplice.</description>
-          <defaultValue>{use_connext_default}</defaultValue>
-        </hudson.model.BooleanParameterDefinition>
-      </parameterDefinitions>
-    </hudson.model.ParametersDefinitionProperty>
-    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@1.0">
-      <requeueJob>true</requeueJob>
-    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
-  </properties>
-  <assignedNode>{label_expression}</assignedNode>
-  <scm class="hudson.scm.NullSCM"/>
-  <canRoam>false</canRoam>
-  <disabled>false</disabled>
-  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
-  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <triggers/>
-  <concurrentBuild>false</concurrentBuild>
-  <builders/>
-  <publishers>
-    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@2.25">
-      <configs>
-        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-          <configs>
-            <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
-          </configs>
-          <projects>ros2_batch_ci_linux</projects>
-          <condition>SUCCESS</condition>
-          <triggerWithNoParameters>false</triggerWithNoParameters>
-        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-      </configs>
-    </hudson.plugins.parameterizedtrigger.BuildTrigger>
-    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@2.25">
-      <configs>
-        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-          <configs>
-            <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
-          </configs>
-          <projects>ros2_batch_ci_osx</projects>
-          <condition>SUCCESS</condition>
-          <triggerWithNoParameters>false</triggerWithNoParameters>
-        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-      </configs>
-    </hudson.plugins.parameterizedtrigger.BuildTrigger>
-    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@2.25">
-      <configs>
-        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-          <configs>
-            <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
-          </configs>
-          <projects>ros2_batch_ci_windows</projects>
-          <condition>SUCCESS</condition>
-          <triggerWithNoParameters>false</triggerWithNoParameters>
-        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-      </configs>
-    </hudson.plugins.parameterizedtrigger.BuildTrigger>
-  </publishers>
-  <buildWrappers/>
-</project>
-"""
+with open(os.path.join(job_templates_dir, 'ros2_batch_ci_job.xml')) as f:
+  job_template = f.read()
+
+with open(os.path.join(job_templates_dir, 'ros2_batch_ci_launcher_job.xml')) as f:
+  launcher_job_template = f.read()
 
 
 def main(argv=None):
@@ -335,6 +111,7 @@ rm -rf workspace "work space"
 docker build -t ros2_batch_ci linux_docker_resources
 echo "Using args: $CI_ARGS"
 docker run \\
+       --privileged \\
        -e UID=`id -u` -e GID=`id -g` -e CI_ARGS="$CI_ARGS" \\
        -i \\
        -v `pwd`:/home/rosbuild/ci_scripts \\

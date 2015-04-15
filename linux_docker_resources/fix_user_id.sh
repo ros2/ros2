@@ -15,7 +15,7 @@ echo "Fixing permissions..."
 sed -i -e "s/:$ORIG_UID:$ORIG_GID:/:$UID:$GID:/" /etc/passwd
 sed -i -e "s/rosbuild:x:$ORIG_GID:/rosbuild:x:$GID:/" /etc/group
 
-chown -R ${UID}:${GID} "${ORIG_HOME}/ci_scripts"
+chown -R ${UID}:${GID} "${ORIG_HOME}"
 echo "done."
 
 exec sudo -H -u rosbuild -E -- /bin/sh -c "$*"

@@ -41,6 +41,7 @@ RUN dpkg -i /tmp/librticonnextdds-messaging51-dev_5.1.0-2_amd64.deb
 
 # Create a user to own the build output.
 RUN useradd -u 1234 -m rosbuild
+RUN echo 'rosbuild ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 WORKDIR /home/rosbuild
 
 # Add an entry point which changes rosbuild's UID from 1234 to the UID of the invoking user.

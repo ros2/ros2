@@ -88,13 +88,13 @@ This is always in addition to OpenSplice.</description>
   <publishers>
     <xunit plugin="xunit@1.93">
       <types>
-        <GoogleTestType>
+        <JUnitType>
           <pattern>workspace/build/*/test_results/**/*.xml</pattern>
           <skipNoTestFiles>false</skipNoTestFiles>
           <failIfNotNew>true</failIfNotNew>
           <deleteOutputFiles>true</deleteOutputFiles>
           <stopProcessingIfError>true</stopProcessingIfError>
-        </GoogleTestType>
+        </JUnitType>
       </types>
       <thresholds>
         <org.jenkinsci.plugins.xunit.threshold.FailedThreshold>

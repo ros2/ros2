@@ -34,15 +34,10 @@ RUN apt-get update && apt-get install -y default-jre-headless
 
 # Add and install the RTI binaries we made.
 ADD rticonnextdds-messaging/librticonnextdds51_5.1.0-4_amd64.deb /tmp/librticonnextdds51_5.1.0-4_amd64.deb
-RUN dpkg -i /tmp/librticonnextdds51_5.1.0-4_amd64.deb
 ADD rticonnextdds-messaging/librticonnextdds51-dev_5.1.0-4_amd64.deb /tmp/librticonnextdds51-dev_5.1.0-4_amd64.deb
-RUN dpkg -i /tmp/librticonnextdds51-dev_5.1.0-4_amd64.deb
 ADD rticonnextdds-messaging/rticonnextdds-tools_5.1.0-4_amd64.deb /tmp/rticonnextdds-tools_5.1.0-4_amd64.deb
-RUN dpkg -i /tmp/rticonnextdds-tools_5.1.0-4_amd64.deb
 ADD rticonnextdds-messaging/librticonnextdds-messaging51_5.1.0-3_amd64.deb /tmp/librticonnextdds-messaging51_5.1.0-3_amd64.deb
-RUN dpkg -i /tmp/librticonnextdds-messaging51_5.1.0-3_amd64.deb
 ADD rticonnextdds-messaging/librticonnextdds-messaging51-dev_5.1.0-3_amd64.deb /tmp/librticonnextdds-messaging51-dev_5.1.0-3_amd64.deb
-RUN dpkg -i /tmp/librticonnextdds-messaging51-dev_5.1.0-3_amd64.deb
 
 # Create a user to own the build output.
 RUN useradd -u 1234 -m rosbuild

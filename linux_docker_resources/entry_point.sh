@@ -25,6 +25,18 @@ echo "Enabling multicast..."
 ifconfig eth0 multicast
 echo "done."
 
+if [ "$CI_USE_CONNEXT" = "true" ]; then
+  echo "Installing Connext..."
+  dpkg -i /tmp/librticonnextdds51_5.1.0-4_amd64.deb
+  dpkg -i /tmp/librticonnextdds51-dev_5.1.0-4_amd64.deb
+  dpkg -i /tmp/rticonnextdds-tools_5.1.0-4_amd64.deb
+  dpkg -i /tmp/librticonnextdds-messaging51_5.1.0-3_amd64.deb
+  dpkg -i /tmp/librticonnextdds-messaging51-dev_5.1.0-3_amd64.deb
+  echo "done."
+else
+  echo "NOT installing Connext."
+fi
+
 cd /home/rosbuild/ci_scripts
 
 exec sudo -H -u rosbuild -E -- /bin/sh -c "$*"

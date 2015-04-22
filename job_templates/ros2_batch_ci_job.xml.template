@@ -81,6 +81,23 @@ This is always in addition to OpenSplice.</description>
   <triggers/>
   <concurrentBuild>false</concurrentBuild>
   <builders>
+    <hudson.plugins.groovy.SystemGroovy plugin="groovy@1.24">
+      <scriptSource class="hudson.plugins.groovy.StringScriptSource">
+        <command>
+          <![CDATA[
+build.setDescription("""\
+branch: ${{build.buildVariableResolver.resolve('CI_BRANCH_TO_TEST')}}, <br/>
+connext: ${{build.buildVariableResolver.resolve('CI_USE_CONNEXT')}}, <br/>
+ci_branch: ${{build.buildVariableResolver.resolve('CI_SCRIPTS_BRANCH')}}, <br/>
+repos_url: ${{build.buildVariableResolver.resolve('CI_ROS2_REPOS_URL')}}, <br/>
+use_whitespace: ${{build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PATHS')}}\
+""");
+          ]]>
+        </command>
+      </scriptSource>
+      <bindings/>
+      <classpath/>
+    </hudson.plugins.groovy.SystemGroovy>
     <hudson.tasks.{shell_type}>
       <command>{task_command}</command>
     </hudson.tasks.{shell_type}>

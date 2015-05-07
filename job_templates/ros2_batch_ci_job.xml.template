@@ -4,10 +4,10 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.10">
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.11.3">
       <projectUrl>{ci_scripts_repository}</projectUrl>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
-    <jenkins.advancedqueue.AdvancedQueueSorterJobProperty plugin="PrioritySorter@2.9">
+    <jenkins.advancedqueue.AdvancedQueueSorterJobProperty plugin="PrioritySorter@2.12">
       <useJobPriority>true</useJobPriority>
       <priority>65</priority>
     </jenkins.advancedqueue.AdvancedQueueSorterJobProperty>
@@ -52,7 +52,7 @@ This is always in addition to OpenSplice.</description>
       <requeueJob>true</requeueJob>
     </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.3.4">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.3.5">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -103,7 +103,7 @@ use_whitespace: ${{build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PAT
     </hudson.tasks.{shell_type}>
   </builders>
   <publishers>
-    <xunit plugin="xunit@1.93">
+    <xunit plugin="xunit@1.94">
       <types>
         <JUnitType>
           <pattern>workspace/build/*/test_results/**/*.xml</pattern>

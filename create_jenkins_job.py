@@ -73,7 +73,7 @@ def main(argv=None):
 """,
         'extra_git_repos': '',
         'ssh_agent_build_wrapper': """
-    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@1.5">
+    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@1.6">
       <credentialIds>
         <string>1e7d4696-7fd4-4bc6-8c87-ebc7b6ce16e5</string>
       </credentialIds>

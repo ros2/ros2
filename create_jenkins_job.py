@@ -125,8 +125,6 @@ docker run \\
 echo "Using args: $CI_ARGS"
 /usr/local/bin/python3 -u run_ros2_batch.py $CI_ARGS
 """,
-            # TODO(wjwwood): remove next line when ros2/ros2#31 is fixed.
-            'use_connext_default': 'false',
         },
         'windows': {
             'label_expression': 'windows_slave_eatable_desktop',

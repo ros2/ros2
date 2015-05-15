@@ -75,7 +75,7 @@ def main(argv=None):
         'ssh_agent_build_wrapper': """
     <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@1.6">
       <credentialIds>
-        <string>1e7d4696-7fd4-4bc6-8c87-ebc7b6ce16e5</string>
+        <string>c7c103b5-2019-48df-bea6-11a6f8947142</string>
       </credentialIds>
       <ignoreMissing>false</ignoreMissing>
     </com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper>

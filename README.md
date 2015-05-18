@@ -44,7 +44,7 @@ Your Windows slave may be named differently and you'll need to update the label 
 
 Another thing to check is the credentials settings.
 The RTI binaries are provided by a git submodule which points to a private GitHub repository.
-You'll need to setup at least one ssh key in the Jenkins Credentials plugin and add the public part of that key as a deploy key on the private GitHub repository, currently https://github.com/osrf/rticonnextdds-messaging.
+You'll need to setup at least one ssh key in the Jenkins Credentials plugin and add the public part of that key as a deploy key on the private GitHub repository, currently https://github.com/osrf/rticonnextdds-src.
 Then on each job you'll want to make sure that this key is selected in two places.
 First under the 'Source Code Management' section, there is a 'Credentials' drop down box under the 'Repositories' section.
 Select the appropriate ssh key from that list.

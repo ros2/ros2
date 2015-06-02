@@ -102,7 +102,7 @@ use_whitespace: ${{build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PAT
       <command>{task_command}</command>
     </hudson.tasks.{shell_type}>
   </builders>
-  <publishers>
+  <publishers>{extra_publishers}
     <xunit plugin="xunit@1.94">
       <types>
         <JUnitType>

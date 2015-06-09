@@ -80,6 +80,7 @@ def main(argv=None):
       <ignoreMissing>false</ignoreMissing>
     </com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper>
 """,
+        'extra_publishers': '',
     }
 
     jenkins = connect(args.jenkins_url)
@@ -103,6 +104,39 @@ rm -rf workspace "work space"
 
 """
 
+    compiler_warning_snippet = """
+    <hudson.plugins.warnings.WarningsPublisher plugin="warnings@4.47">
+      <healthy/>
+      <unHealthy/>
+      <thresholdLimit>low</thresholdLimit>
+      <pluginName>[WARNINGS]</pluginName>
+      <defaultEncoding/>
+      <canRunOnFailed>false</canRunOnFailed>
+      <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+      <useStableBuildAsReference>false</useStableBuildAsReference>
+      <useDeltaValues>false</useDeltaValues>
+      <thresholds plugin="analysis-core@1.71">
+        <unstableTotalAll/>
+        <unstableTotalHigh/>
+        <unstableTotalNormal/>
+        <unstableTotalLow/>
+        <failedTotalAll/>
+        <failedTotalHigh/>
+        <failedTotalNormal/>
+        <failedTotalLow/>
+      </thresholds>
+      <shouldDetectModules>false</shouldDetectModules>
+      <dontComputeNew>true</dontComputeNew>
+      <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
+      <parserConfigurations/>
+      <consoleParsers>
+        <hudson.plugins.warnings.ConsoleParser>
+          <parserName>{parser_name}</parserName>
+        </hudson.plugins.warnings.ConsoleParser>
+      </consoleParsers>
+    </hudson.plugins.warnings.WarningsPublisher>
+"""
+
     os_configs = {
         'linux': {
             'label_expression': 'buildslave',
@@ -117,6 +151,9 @@ docker run \\
        -v `pwd`:/home/rosbuild/ci_scripts \\
        ros2_batch_ci
 """,
+            'extra_publishers': compiler_warning_snippet.format(
+                parser_name='GNU C Compiler 4 (gcc)'
+            ),
         },
         'osx': {
             'label_expression': 'osx_slave',
@@ -125,6 +162,9 @@ docker run \\
 echo "Using args: $CI_ARGS"
 /usr/local/bin/python3 -u run_ros2_batch.py $CI_ARGS
 """,
+            'extra_publishers': compiler_warning_snippet.format(
+                parser_name='Clang (LLVM based)'
+            ),
         },
         'windows': {
             'label_expression': 'windows_slave_eatable_desktop',
@@ -152,6 +192,9 @@ python -u run_ros2_batch.py %CI_ARGS%""",
             'git_submodule_extension': '',
             # Do not use the ssh-agent build wrapper on Windows since ssh-agent doesn't work.
             'ssh_agent_build_wrapper': '',
+            'extra_publishers': compiler_warning_snippet.format(
+                parser_name='MSBuild'
+            ),
         },
     }
 

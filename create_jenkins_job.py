@@ -192,6 +192,9 @@ python -u run_ros2_batch.py %CI_ARGS%""",
             'git_submodule_extension': '',
             # Do not use the ssh-agent build wrapper on Windows since ssh-agent doesn't work.
             'ssh_agent_build_wrapper': '',
+            'extra_publishers': compiler_warning_snippet.format(
+                parser_name='MSBuild'
+            ),
         },
     }
 

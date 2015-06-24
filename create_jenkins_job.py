@@ -170,6 +170,7 @@ echo "Using args: $CI_ARGS"
             'label_expression': 'windows_slave_eatable',
             'shell_type': 'BatchFile',
             'task_command': """\
+set "PATH=%PATH:"=%"
 set "CI_ARGS=--force-ansi-color"
 if "%CI_BRANCH_TO_TEST%" NEQ "" (
   set "CI_ARGS=%CI_ARGS% --test-branch %CI_BRANCH_TO_TEST%"

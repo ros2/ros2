@@ -57,7 +57,7 @@ This is always in addition to OpenSplice.</description>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
         <url>{ci_scripts_repository}</url>
-        <credentialsId>c7c103b5-2019-48df-bea6-11a6f8947142</credentialsId>
+        <credentialsId>1c2004f6-2e00-425d-a421-2e1ba62ca7a7</credentialsId>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>

@@ -75,7 +75,7 @@ def main(argv=None):
         'ssh_agent_build_wrapper': """
     <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@1.6">
       <credentialIds>
-        <string>c7c103b5-2019-48df-bea6-11a6f8947142</string>
+        <string>1c2004f6-2e00-425d-a421-2e1ba62ca7a7</string>
       </credentialIds>
       <ignoreMissing>false</ignoreMissing>
     </com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper>
@@ -139,7 +139,7 @@ rm -rf workspace "work space"
 
     os_configs = {
         'linux': {
-            'label_expression': 'buildslave',
+            'label_expression': 'linux_slave_on_master',
             'shell_type': 'Shell',
             'task_command': unix_common_logic + """\
 docker build -t ros2_batch_ci linux_docker_resources
@@ -156,7 +156,7 @@ docker run \\
             ),
         },
         'osx': {
-            'label_expression': 'osx_slave',
+            'label_expression': 'osx_slave_dosa',
             'shell_type': 'Shell',
             'task_command': unix_common_logic + """\
 echo "Using args: $CI_ARGS"
@@ -167,7 +167,7 @@ echo "Using args: $CI_ARGS"
             ),
         },
         'windows': {
-            'label_expression': 'windows_slave_eatable_desktop',
+            'label_expression': 'windows_slave_eatable',
             'shell_type': 'BatchFile',
             'task_command': """\
 set "CI_ARGS=--force-ansi-color"

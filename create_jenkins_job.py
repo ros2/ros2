@@ -55,6 +55,10 @@ def main(argv=None):
         '--ci-scripts-default-branch', default='ci_scripts',
         help="default branch of the ci scripts repository to get ci scripts from (this is a job parameter)"
     )
+    parser.add_argument(
+        '--dry-run', action='store_true',
+        help='Only pretend to update the jobs and show the diff',
+    )
     args = parser.parse_args(argv)
 
     subs = {
@@ -196,6 +200,10 @@ python -u run_ros2_batch.py %CI_ARGS%""",
         },
     }
 
+    jenkins_kwargs = {}
+    if args.dry_run:
+        jenkins_kwargs['dry_run'] = True
+
     # Send the os specific jobs
     for os_name in sorted(os_configs.keys()):
         config = os_configs[os_name]
@@ -203,12 +211,14 @@ python -u run_ros2_batch.py %CI_ARGS%""",
         job_subs = dict(subs)
         for k in config:
             job_subs[k] = config[k]
-        configure_job(jenkins, job_name, job_template.format(**job_subs))
+        configure_job(jenkins, job_name, job_template.format(**job_subs), **jenkins_kwargs)
 
     # Send the launch job
     launcher_job_subs = dict(subs)
     launcher_job_subs['label_expression'] = 'buildslave'
-    configure_job(jenkins, 'ros2_batch_ci_launcher', launcher_job_template.format(**launcher_job_subs))
+    configure_job(
+        jenkins, 'ros2_batch_ci_launcher', launcher_job_template.format(**launcher_job_subs),
+        **jenkins_kwargs)
 
 
 if __name__ == '__main__':

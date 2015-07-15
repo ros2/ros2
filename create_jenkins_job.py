@@ -197,7 +197,8 @@ python -u run_ros2_batch.py %CI_ARGS%""",
     }
 
     # Send the os specific jobs
-    for os_name, config in os_configs.items():
+    for os_name in sorted(os_configs.keys()):
+        config = os_configs[os_name]
         job_name = 'ros2_batch_ci_' + os_name
         job_subs = dict(subs)
         for k in config:

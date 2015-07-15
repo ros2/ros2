@@ -69,17 +69,15 @@ def main(argv=None):
         <disableSubmodules>false</disableSubmodules>
         <recursiveSubmodules>true</recursiveSubmodules>
         <trackingSubmodules>false</trackingSubmodules>
-      </hudson.plugins.git.extensions.impl.SubmoduleOption>
-""",
+      </hudson.plugins.git.extensions.impl.SubmoduleOption>""",
         'extra_git_repos': '',
         'ssh_agent_build_wrapper': """
-    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@1.6">
+    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@1.7">
       <credentialIds>
         <string>1c2004f6-2e00-425d-a421-2e1ba62ca7a7</string>
       </credentialIds>
       <ignoreMissing>false</ignoreMissing>
-    </com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper>
-""",
+    </com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper>""",
         'extra_publishers': '',
     }
 
@@ -105,17 +103,17 @@ rm -rf workspace "work space"
 """
 
     compiler_warning_snippet = """
-    <hudson.plugins.warnings.WarningsPublisher plugin="warnings@4.47">
+    <hudson.plugins.warnings.WarningsPublisher plugin="warnings@4.48">
       <healthy/>
       <unHealthy/>
       <thresholdLimit>low</thresholdLimit>
-      <pluginName>[WARNINGS]</pluginName>
+      <pluginName>[WARNINGS] </pluginName>
       <defaultEncoding/>
       <canRunOnFailed>false</canRunOnFailed>
       <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
       <useStableBuildAsReference>false</useStableBuildAsReference>
       <useDeltaValues>false</useDeltaValues>
-      <thresholds plugin="analysis-core@1.71">
+      <thresholds plugin="analysis-core@1.72">
         <unstableTotalAll/>
         <unstableTotalHigh/>
         <unstableTotalNormal/>
@@ -134,8 +132,7 @@ rm -rf workspace "work space"
           <parserName>{parser_name}</parserName>
         </hudson.plugins.warnings.ConsoleParser>
       </consoleParsers>
-    </hudson.plugins.warnings.WarningsPublisher>
-"""
+    </hudson.plugins.warnings.WarningsPublisher>"""
 
     os_configs = {
         'linux': {

@@ -5,12 +5,8 @@
   <keepDependencies>false</keepDependencies>
   <properties>
     <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.11.3">
-      <projectUrl>{ci_scripts_repository}</projectUrl>
+      <projectUrl>{ci_scripts_repository}/</projectUrl>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
-    <jenkins.advancedqueue.AdvancedQueueSorterJobProperty plugin="PrioritySorter@2.12">
-      <useJobPriority>true</useJobPriority>
-      <priority>65</priority>
-    </jenkins.advancedqueue.AdvancedQueueSorterJobProperty>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
@@ -81,18 +77,15 @@ This is always in addition to OpenSplice.</description>
   <triggers/>
   <concurrentBuild>false</concurrentBuild>
   <builders>
-    <hudson.plugins.groovy.SystemGroovy plugin="groovy@1.24">
+    <hudson.plugins.groovy.SystemGroovy plugin="groovy@1.25">
       <scriptSource class="hudson.plugins.groovy.StringScriptSource">
-        <command>
-          <![CDATA[
-build.setDescription("""\
+        <command><![CDATA[build.setDescription("""\
 branch: ${{build.buildVariableResolver.resolve('CI_BRANCH_TO_TEST')}}, <br/>
 connext: ${{build.buildVariableResolver.resolve('CI_USE_CONNEXT')}}, <br/>
 ci_branch: ${{build.buildVariableResolver.resolve('CI_SCRIPTS_BRANCH')}}, <br/>
 repos_url: ${{build.buildVariableResolver.resolve('CI_ROS2_REPOS_URL')}}, <br/>
 use_whitespace: ${{build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PATHS')}}\
-""");
-          ]]>
+""");]]>
         </command>
       </scriptSource>
       <bindings/>
@@ -103,7 +96,7 @@ use_whitespace: ${{build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PAT
     </hudson.tasks.{shell_type}>
   </builders>
   <publishers>{extra_publishers}
-    <xunit plugin="xunit@1.94">
+    <xunit plugin="xunit@1.96">
       <types>
         <JUnitType>
           <pattern>workspace/build/*/test_results/**/*.xml</pattern>

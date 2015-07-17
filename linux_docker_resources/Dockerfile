@@ -37,6 +37,9 @@ ADD rticonnextdds-src/librticonnextdds51_5.1.0.1-1_amd64.deb /tmp/librticonnextd
 ADD rticonnextdds-src/librticonnextdds51-dev_5.1.0.1-1_amd64.deb /tmp/librticonnextdds51-dev_5.1.0.1-1_amd64.deb
 ADD rticonnextdds-src/rticonnextdds-tools_5.1.0.1-1_amd64.deb /tmp/rticonnextdds-tools_5.1.0.1-1_amd64.deb
 
+# Install OpenCV
+RUN apt-get update && apt-get install -y libopencv-dev
+
 # Create a user to own the build output.
 RUN useradd -u 1234 -m rosbuild
 RUN echo 'rosbuild ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers

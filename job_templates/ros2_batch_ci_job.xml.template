@@ -98,13 +98,13 @@ use_whitespace: ${{build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PAT
   <publishers>{extra_publishers}
     <xunit plugin="xunit@1.96">
       <types>
-        <JUnitType>
+        <GoogleTestType>
           <pattern>workspace/build/*/test_results/**/*.xml</pattern>
           <skipNoTestFiles>false</skipNoTestFiles>
           <failIfNotNew>true</failIfNotNew>
           <deleteOutputFiles>true</deleteOutputFiles>
           <stopProcessingIfError>true</stopProcessingIfError>
-        </JUnitType>
+         </GoogleTestType>
       </types>
       <thresholds>
         <org.jenkinsci.plugins.xunit.threshold.FailedThreshold>

@@ -62,7 +62,7 @@ class WindowsBatchJob(BatchJob):
             f.write(
                 'call '
                 '"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat" '
-                'amd64' + os.linesep)
+                'x86_amd64' + os.linesep)
             if connext_env_file is not None:
                 f.write('call "%s"%s' % (connext_env_file, os.linesep))
             if opensplice_env_file is not None:

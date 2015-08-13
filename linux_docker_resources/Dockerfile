@@ -33,9 +33,9 @@ RUN apt-get update && apt-get install -y libopensplice64
 RUN apt-get update && apt-get install -y default-jre-headless
 
 # Add and install the RTI binaries we made.
-ADD rticonnextdds-src/librticonnextdds51_5.1.0.1-1_amd64.deb /tmp/librticonnextdds51_5.1.0.1-1_amd64.deb
-ADD rticonnextdds-src/librticonnextdds51-dev_5.1.0.1-1_amd64.deb /tmp/librticonnextdds51-dev_5.1.0.1-1_amd64.deb
-ADD rticonnextdds-src/rticonnextdds-tools_5.1.0.1-1_amd64.deb /tmp/rticonnextdds-tools_5.1.0.1-1_amd64.deb
+ADD rticonnextdds-src/librticonnextdds52_5.2.0-1_amd64.deb /tmp/librticonnextdds52_5.2.0-1_amd64.deb
+ADD rticonnextdds-src/librticonnextdds52-dev_5.2.0-1_amd64.deb /tmp/librticonnextdds52-dev_5.2.0-1_amd64.deb                                
+ADD rticonnextdds-src/rticonnextdds-tools_5.2.0-1_amd64.deb /tmp/rticonnextdds-tools_5.2.0-1_amd64.deb
 
 # Install OpenCV
 RUN apt-get update && apt-get install -y libopencv-dev

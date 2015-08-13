@@ -41,7 +41,9 @@ class OSXBatchJob(BatchJob):
         connext_env_file = None
         if self.args.connext:
             # Try to find the connext env file and source it
-            connext_env_file = os.path.join(os.path.expanduser('~'), 'RTI', 'rti_set_bash_5.1.0')
+            connext_env_file = os.path.join(
+                '/Applications', 'rti_connext_dds-5.2.0', 'resource', 'scripts',
+                'rtisetenv_x64Darwin14clang6.0.bash')
             if not os.path.exists(connext_env_file):
                 warn("Asked to use Connext but the RTI env was not found at '{0}'".format(
                     connext_env_file))

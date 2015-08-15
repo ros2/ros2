@@ -75,6 +75,7 @@ def main(argv=None):
         <trackingSubmodules>false</trackingSubmodules>
       </hudson.plugins.git.extensions.impl.SubmoduleOption>""",
         'extra_git_repos': '',
+        'triggers': '',
         'ssh_agent_build_wrapper': """
     <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@1.7">
       <credentialIds>
@@ -211,6 +212,18 @@ python -u run_ros2_batch.py %CI_ARGS%""",
         job_subs = dict(subs)
         for k in config:
             job_subs[k] = config[k]
+        configure_job(jenkins, job_name, job_template.format(**job_subs), **jenkins_kwargs)
+        job_name += '_nightly'
+        job_subs['triggers'] = """
+    <hudson.triggers.TimerTrigger>
+      <spec>0 10 * * *</spec>
+    </hudson.triggers.TimerTrigger>"""
+        job_subs['extra_publishers'] += """
+    <hudson.tasks.Mailer plugin="mailer@1.15">
+      <recipients>ros@osrfoundation.org</recipients>
+      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>false</sendToIndividuals>
+    </hudson.tasks.Mailer>"""
         configure_job(jenkins, job_name, job_template.format(**job_subs), **jenkins_kwargs)
 
     # Send the launch job

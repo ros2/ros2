@@ -215,7 +215,7 @@ python -u run_ros2_batch.py %CI_ARGS%""",
 
     # Send the launch job
     launcher_job_subs = dict(subs)
-    launcher_job_subs['label_expression'] = 'buildslave'
+    launcher_job_subs['label_expression'] = 'master'
     configure_job(
         jenkins, 'ros2_batch_ci_launcher', launcher_job_template.format(**launcher_job_subs),
         **jenkins_kwargs)

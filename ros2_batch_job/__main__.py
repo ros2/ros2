@@ -162,6 +162,13 @@ def main(sysargv=None):
             ret = job.run(vcs_custom_cmd, exit_on_error=False)
             info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
             print()
+        # Attempt to rebase all the repositories to the master branch
+        if args.test_branch is not None:
+            info("Attempting to rebase all repositories to the 'master' branch")
+            vcs_custom_cmd = ['vcs', 'custom', '.', '--git', '--args', 'rebase', 'master']
+            ret = job.run(vcs_custom_cmd)
+            info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
+            print()
         # Show the latest commit log on each repository (includes the commit hash).
         job.run(['vcs', 'log', '-l1', 'src'])
         # Allow the batch job to push custom sourcing onto the run command

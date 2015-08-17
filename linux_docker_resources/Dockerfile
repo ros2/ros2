@@ -42,6 +42,8 @@ RUN apt-get update && apt-get install -y libopencv-dev
 
 # Create a user to own the build output.
 RUN useradd -u 1234 -m rosbuild
+RUN sudo -H -u rosbuild -- git config --global user.email "jenkins@ci.ros2.org"
+RUN sudo -H -u rosbuild -- git config --global user.name "Jenkins ROS 2"
 RUN echo 'rosbuild ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 WORKDIR /home/rosbuild
 

@@ -125,7 +125,7 @@ use_whitespace: ${{build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PAT
       <extraConfiguration>
         <testTimeMargin>3000</testTimeMargin>
       </extraConfiguration>
-    </xunit>
+    </xunit>{append_extra_publishers}
   </publishers>
   <buildWrappers>
     <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.7.1" />

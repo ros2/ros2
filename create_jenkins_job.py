@@ -84,6 +84,7 @@ def main(argv=None):
       <ignoreMissing>false</ignoreMissing>
     </com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper>""",
         'extra_publishers': '',
+        'append_extra_publishers': '',
     }
 
     jenkins = connect(args.jenkins_url)
@@ -218,7 +219,7 @@ python -u run_ros2_batch.py %CI_ARGS%""",
     <hudson.triggers.TimerTrigger>
       <spec>0 10 * * *</spec>
     </hudson.triggers.TimerTrigger>"""
-        job_subs['extra_publishers'] += """
+        job_subs['append_extra_publishers'] = """
     <hudson.tasks.Mailer plugin="mailer@1.15">
       <recipients>ros@osrfoundation.org</recipients>
       <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>

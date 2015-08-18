@@ -4,7 +4,7 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.11.3">
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.12.1">
       <projectUrl>{ci_scripts_repository}/</projectUrl>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
     <hudson.model.ParametersDefinitionProperty>
@@ -48,7 +48,7 @@ This is always in addition to OpenSplice.</description>
       <requeueJob>true</requeueJob>
     </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.3.5">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.4.0">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -78,7 +78,7 @@ This is always in addition to OpenSplice.</description>
   </triggers>
   <concurrentBuild>false</concurrentBuild>
   <builders>
-    <hudson.plugins.groovy.SystemGroovy plugin="groovy@1.25">
+    <hudson.plugins.groovy.SystemGroovy plugin="groovy@1.27">
       <scriptSource class="hudson.plugins.groovy.StringScriptSource">
         <command><![CDATA[build.setDescription("""\
 branch: ${{build.buildVariableResolver.resolve('CI_BRANCH_TO_TEST')}}, <br/>
@@ -128,7 +128,7 @@ use_whitespace: ${{build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PAT
     </xunit>
   </publishers>
   <buildWrappers>
-    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.7" />
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.7.1" />
     <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@0.4.1">
       <colorMapName>xterm</colorMapName>
     </hudson.plugins.ansicolor.AnsiColorBuildWrapper>{ssh_agent_build_wrapper}

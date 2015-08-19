@@ -132,6 +132,7 @@ rm -rf workspace "work space"
       <shouldDetectModules>false</shouldDetectModules>
       <dontComputeNew>true</dontComputeNew>
       <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
+      <excludePattern>.*Microsoft.CppCommon.targets</excludePattern>
       <parserConfigurations/>
       <consoleParsers>
         <hudson.plugins.warnings.ConsoleParser>

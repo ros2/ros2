@@ -26,7 +26,7 @@ class LinuxBatchJob(BatchJob):
         BatchJob.__init__(self)
 
     def pre(self):
-        pass
+        os.environ['ROS_DOMAIN_ID'] = '108'
 
     def show_env(self):
         # Show the env

@@ -28,6 +28,8 @@ RUN pip3 install -U setuptools pip virtualenv
 
 # Install the OpenSplice binary from the OSRF repositories.
 RUN apt-get update && apt-get install -y libopensplice64
+# Update default domain id
+RUN sed -i "s/<Id>0<\/Id>/<Id>108<\/Id>/" /usr/etc/opensplice/config/ospl.xml
 
 # Install the RTI dependencies
 RUN apt-get update && apt-get install -y default-jre-headless

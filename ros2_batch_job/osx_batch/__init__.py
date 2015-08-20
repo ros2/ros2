@@ -28,6 +28,7 @@ class OSXBatchJob(BatchJob):
     def pre(self):
         # Prepend the PATH with `/usr/local/bin` for global Homebrew binaries.
         os.environ['PATH'] = "/usr/local/bin" + os.pathsep + os.environ.get('PATH', '')
+        os.environ['ROS_DOMAIN_ID'] = '111'
 
     def show_env(self):
         # Show the env

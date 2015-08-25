@@ -30,14 +30,14 @@ except ImportError:
 
 from ros_buildfarm.jenkins import configure_job
 from ros_buildfarm.jenkins import connect
+from ros_buildfarm.templates import expand_template
+try:
+    from ros_buildfarm.templates import template_prefix_path
+except ImportError:
+    sys.exit("Could not import symbol from ros_buildfarm, please update ros_buildfarm.")
 
-job_templates_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'job_templates')
-
-with open(os.path.join(job_templates_dir, 'ros2_batch_ci_job.xml.template')) as f:
-    job_template = f.read()
-
-with open(os.path.join(job_templates_dir, 'ros2_batch_ci_launcher_job.xml.template')) as f:
-    launcher_job_template = f.read()
+template_prefix_path[:] = \
+    [os.path.join(os.path.abspath(os.path.dirname(__file__)), 'job_templates')]
 
 
 def main(argv=None):
@@ -214,7 +214,8 @@ python -u run_ros2_batch.py %CI_ARGS%""",
         job_subs = dict(subs)
         for k in config:
             job_subs[k] = config[k]
-        configure_job(jenkins, job_name, job_template.format(**job_subs), **jenkins_kwargs)
+        job_config = expand_template('ros2_batch_ci_job.xml.template', job_subs)
+        configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
         job_name += '_nightly'
         job_subs['triggers'] = """
     <hudson.triggers.TimerTrigger>
@@ -226,13 +227,15 @@ python -u run_ros2_batch.py %CI_ARGS%""",
       <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
       <sendToIndividuals>false</sendToIndividuals>
     </hudson.tasks.Mailer>"""
-        configure_job(jenkins, job_name, job_template.format(**job_subs), **jenkins_kwargs)
+        job_config = expand_template('ros2_batch_ci_job.xml.template', job_subs)
+        configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 
     # Send the launch job
     launcher_job_subs = dict(subs)
     launcher_job_subs['label_expression'] = 'master'
+    job_config = expand_template('ros2_batch_ci_launcher_job.xml.template', launcher_job_subs)
     configure_job(
-        jenkins, 'ros2_batch_ci_launcher', launcher_job_template.format(**launcher_job_subs),
+        jenkins, 'ros2_batch_ci_launcher', job_config,
         **jenkins_kwargs)
 
 

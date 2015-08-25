@@ -31,22 +31,22 @@ To use the default branch on all repositories, use an empty string.</description
           <description>By setting this to True white space will be inserted into the paths.
 The paths include the workspace, plus the source, build and install spaces.
 This tests the robustness to whitespace being within the different paths.</description>
-          <defaultValue>{use_whitespace_in_paths_default}</defaultValue>
+          <defaultValue>@(use_whitespace_in_paths_default)</defaultValue>
         </hudson.model.BooleanParameterDefinition>
         <hudson.model.BooleanParameterDefinition>
           <name>CI_USE_CONNEXT</name>
           <description>By setting this to True, the build will attempt to use RTI&apos;s DDS.
 This is always in addition to OpenSplice.</description>
-          <defaultValue>{use_connext_default}</defaultValue>
+          <defaultValue>@(use_connext_default)</defaultValue>
         </hudson.model.BooleanParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
-    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@1.0">
+    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
       <requeueJob>true</requeueJob>
     </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
   </properties>
   <scm class="hudson.scm.NullSCM"/>
-  <assignedNode>{label_expression}</assignedNode>
+  <assignedNode>@(label_expression)</assignedNode>
   <canRoam>false</canRoam>
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
@@ -55,7 +55,7 @@ This is always in addition to OpenSplice.</description>
   <concurrentBuild>false</concurrentBuild>
   <builders/>
   <publishers>
-    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@2.28">
+    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@@2.28">
       <configs>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
           <configs>
@@ -67,7 +67,7 @@ This is always in addition to OpenSplice.</description>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>
     </hudson.plugins.parameterizedtrigger.BuildTrigger>
-    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@2.28">
+    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@@2.28">
       <configs>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
           <configs>
@@ -79,7 +79,7 @@ This is always in addition to OpenSplice.</description>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>
     </hudson.plugins.parameterizedtrigger.BuildTrigger>
-    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@2.28">
+    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@@2.28">
       <configs>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
           <configs>

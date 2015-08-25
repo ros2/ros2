@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@@1.12.1">
+      <projectUrl>@(ci_scripts_repository)/</projectUrl>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>CI_BRANCH_TO_TEST</name>
+          <description>Branch to test across the ros2 repositories which have it.
+For example, if you have a few repositories with the &apos;feature&apos; branch.
+Then you can set this to &apos;feature&apos;.
+The repositories with the &apos;feature&apos; branch will be changed to that branch.
+Other repositories will stay on the default branch, usually &apos;master&apos;.
+To use the default branch on all repositories, use an empty string.</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>CI_SCRIPTS_BRANCH</name>
+          <description>Branch of ros2/ros2 repository from which to get the ci scripts.</description>
+          <defaultValue>ci_scripts</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>CI_ROS2_REPOS_URL</name>
+          <description></description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
+      <requeueJob>true</requeueJob>
+    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@@2.4.0">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>@(ci_scripts_repository)</url>
+        <credentialsId>1c2004f6-2e00-425d-a421-2e1ba62ca7a7</credentialsId>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>refs/heads/${CI_SCRIPTS_BRANCH}</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <browser class="hudson.plugins.git.browser.GithubWeb">
+      <url></url>
+    </browser>
+    <submoduleCfg class="list"/>
+    <extensions>@
+@[if os_name != 'windows']
+      <hudson.plugins.git.extensions.impl.SubmoduleOption>
+        <disableSubmodules>false</disableSubmodules>
+        <recursiveSubmodules>true</recursiveSubmodules>
+        <trackingSubmodules>false</trackingSubmodules>
+      </hudson.plugins.git.extensions.impl.SubmoduleOption>
+    @
+@[end if]</extensions>
+  </scm>
+  <assignedNode>@(label_expression)</assignedNode>
+  <canRoam>false</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.plugins.groovy.SystemGroovy plugin="groovy@@1.27">
+      <scriptSource class="hudson.plugins.groovy.StringScriptSource">
+        <command><![CDATA[build.setDescription("""\
+branch: ${build.buildVariableResolver.resolve('CI_BRANCH_TO_TEST')}, <br/>
+ci_branch: ${build.buildVariableResolver.resolve('CI_SCRIPTS_BRANCH')}, <br/>
+repos_url: ${build.buildVariableResolver.resolve('CI_ROS2_REPOS_URL')}\
+""");]]>
+        </command>
+      </scriptSource>
+      <bindings/>
+      <classpath/>
+    </hudson.plugins.groovy.SystemGroovy>
+    <hudson.tasks.@(shell_type)>
+      <command>@
+@[if os_name == 'linux']@
+export CI_ARGS="--do-venv --force-ansi-color"
+if [ -n "${CI_BRANCH_TO_TEST+x}" ]; then
+  export CI_ARGS="$CI_ARGS --test-branch $CI_BRANCH_TO_TEST"
+fi
+if [ -n "${CI_ROS2_REPOS_URL+x}" ]; then
+  export CI_ARGS="$CI_ARGS --repo-file-url $CI_ROS2_REPOS_URL"
+fi
+export CI_ARGS="$CI_ARGS --ros1-path /opt/ros/indigo"
+
+rm -rf workspace
+
+docker build -t ros2_packaging linux_packaging_docker_resources
+echo "Using args: $CI_ARGS"
+docker run --privileged -e UID=`id -u` -e GID=`id -g` -e CI_ARGS="$CI_ARGS" -i -v `pwd`:/home/rosbuild/ci_scripts ros2_packaging
+@[else]@
+@{ assert 'Unknown os_name: ' + os_name }@
+@[end if]</command>
+    </hudson.tasks.@(shell_type)>
+  </builders>
+  <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>workspace/ros2-package-*.*</artifacts>
+      <allowEmptyArchive>false</allowEmptyArchive>
+      <onlyIfSuccessful>true</onlyIfSuccessful>
+      <fingerprint>false</fingerprint>
+      <defaultExcludes>true</defaultExcludes>
+    </hudson.tasks.ArtifactArchiver>
+  </publishers>
+  <buildWrappers>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@@1.7.1" />
+    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@@0.4.1">
+      <colorMapName>xterm</colorMapName>
+    </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
+@[if os_name != 'windows']@
+    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@@1.8">
+      <credentialIds>
+        <string>1c2004f6-2e00-425d-a421-2e1ba62ca7a7</string>
+      </credentialIds>
+      <ignoreMissing>false</ignoreMissing>
+    </com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper>
+@[end if]@
+  </buildWrappers>
+</project>

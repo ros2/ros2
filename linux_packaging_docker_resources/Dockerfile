@@ -1,5 +1,5 @@
 FROM ubuntu:trusty
-MAINTAINER William Woodall <william@osrfoundation.org>
+MAINTAINER Dirk Thomas <dthomas@osrfoundation.org>
 
 # Prevent errors from apt-get.
 # See: http://askubuntu.com/questions/506158/unable-to-initialize-frontend-dialog-when-using-ssh
@@ -28,19 +28,18 @@ RUN pip3 install -U setuptools pip virtualenv
 
 # Install the OpenSplice binary from the OSRF repositories.
 RUN apt-get update && apt-get install -y libopensplice64
-# Update default domain id
-RUN sed -i "s/<Id>0<\/Id>/<Id>108<\/Id>/" /usr/etc/opensplice/config/ospl.xml
-
-# Install the RTI dependencies
-RUN apt-get update && apt-get install -y default-jre-headless
-
-# Add and install the RTI binaries we made.
-ADD rticonnextdds-src/librticonnextdds52_5.2.0-1_amd64.deb /tmp/librticonnextdds52_5.2.0-1_amd64.deb
-ADD rticonnextdds-src/librticonnextdds52-dev_5.2.0-1_amd64.deb /tmp/librticonnextdds52-dev_5.2.0-1_amd64.deb
-ADD rticonnextdds-src/rticonnextdds-tools_5.2.0-1_amd64.deb /tmp/rticonnextdds-tools_5.2.0-1_amd64.deb
 
 # Install OpenCV
 RUN apt-get update && apt-get install -y libopencv-dev
+
+# automatic invalidation once every day
+RUN echo "@today_str"
+
+# Install build and test dependencies of ROS 2 packages.
+RUN apt-get update && apt-get install -y python-rospkg ros-indigo-catkin ros-indigo-common-msgs ros-indigo-roscpp ros-indigo-rosmsg
+
+# TODO hack to fix rosbag until official packages are available with the real fix
+RUN sed -i 's/import roslz4//' /opt/ros/indigo/lib/python2.7/dist-packages/rosbag/bag.py
 
 # Create a user to own the build output.
 RUN useradd -u 1234 -m rosbuild
@@ -56,4 +55,4 @@ RUN chmod 755 /entry_point.sh
 
 ENTRYPOINT ["/entry_point.sh"]
 
-CMD ["python3 -u run_ros2_batch.py $CI_ARGS"]
+CMD ["python3 -u run_ros2_packaging.py $CI_ARGS"]

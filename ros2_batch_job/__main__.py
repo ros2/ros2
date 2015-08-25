@@ -45,6 +45,11 @@ pip_dependencies = [
 
 
 def main(sysargv=None):
+    args = get_args(sysargv=sysargv)
+    return run(args, build_and_test)
+
+
+def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ros1=False):
     parser = argparse.ArgumentParser(
         description="Builds the ROS2 repositories as a single batch job")
     parser.add_argument(
@@ -54,24 +59,71 @@ def main(sysargv=None):
     parser.add_argument(
         '--test-branch', default=None,
         help="branch to attempt to checkout before doing batch job")
-    parser.add_argument(
-        '--white-space-in', nargs='*', default=None,
-        choices=['sourcespace', 'buildspace', 'installspace', 'workspace'],
-        help="which folder structures in which white space should be added")
+    if not skip_white_space_in:
+        parser.add_argument(
+            '--white-space-in', nargs='*', default=None,
+            choices=['sourcespace', 'buildspace', 'installspace', 'workspace'],
+            help="which folder structures in which white space should be added")
     parser.add_argument(
         '--do-venv', default=False, action='store_true',
         help="create and use a virtual env in the build process")
     parser.add_argument(
         '--os', default=None, choices=['linux', 'osx', 'windows'])
-    parser.add_argument(
-        '--connext', default=False, action='store_true',
-        help="try to build with connext")
+    if not skip_connext:
+        parser.add_argument(
+            '--connext', default=False, action='store_true',
+            help="try to build with connext")
     parser.add_argument(
         '--force-ansi-color', default=False, action='store_true',
         help="forces this program to output ansi color")
+    if add_ros1:
+        parser.add_argument(
+            '--ros1-path', default=None,
+            help="path of ROS 1 workspace to be sourced")
 
     args = parser.parse_args(sysargv)
+    if skip_white_space_in:
+        args.white_space_in = None
+    if skip_connext:
+        args.connext = False
+    if not add_ros1:
+        args.ros1_path = None
+    return args
 
+
+def build_and_test(args, job):
+    ament_py = '"%s"' % os.path.join(
+        '.', args.sourcespace, 'ament', 'ament_tools', 'scripts', 'ament.py'
+    )
+    # Now run ament build
+    job.run([
+        job.python, '-u', ament_py, 'build', '--build-tests',
+        '--build-space', '"%s"' % args.buildspace,
+        '--install-space', '"%s"' % args.installspace,
+        '"%s"' % args.sourcespace
+    ])
+    # Run tests
+    ret_test = job.run([
+        job.python, '-u', ament_py, 'test',
+        '--build-space', '"%s"' % args.buildspace,
+        '--install-space', '"%s"' % args.installspace,
+        # Skip building and installing, since we just did that successfully.
+        '--skip-build', '--skip-install',
+        '"%s"' % args.sourcespace
+    ], exit_on_error=False)
+    info("ament.py test returned: '{0}'".format(ret_test))
+    # Collect the test results
+    ret_test_results = job.run(
+        [job.python, '-u', ament_py, 'test_results', '"%s"' % args.buildspace],
+        exit_on_error=False
+    )
+    info("ament.py test_results returned: '{0}'".format(ret_test_results))
+    # Uncomment this line to failing tests a failrue of this command.
+    # return 0 if ret_test == 0 and ret_testr == 0 else 1
+    return 0
+
+
+def run(args, build_function):
     if args.force_ansi_color:
         force_color()
 
@@ -173,36 +225,8 @@ def main(sysargv=None):
         job.run(['vcs', 'log', '-l1', 'src'])
         # Allow the batch job to push custom sourcing onto the run command
         job.setup_env()
-        ament_py = '"%s"' % os.path.join(
-            '.', args.sourcespace, 'ament', 'ament_tools', 'scripts', 'ament.py'
-        )
-        # Now run ament build
-        job.run([
-            job.python, '-u', ament_py, 'build', '--build-tests',
-            '--build-space', '"%s"' % args.buildspace,
-            '--install-space', '"%s"' % args.installspace,
-            '"%s"' % args.sourcespace
-        ])
-        # Run tests
-        ret_test = job.run([
-            job.python, '-u', ament_py, 'test',
-            '--build-space', '"%s"' % args.buildspace,
-            '--install-space', '"%s"' % args.installspace,
-            # Skip building and installing, since we just did that successfully.
-            '--skip-build', '--skip-install',
-            '"%s"' % args.sourcespace
-        ], exit_on_error=False)
-        info("ament.py test returned: '{0}'".format(ret_test))
-        # Collect the test results
-        ret_test_results = job.run(
-            [job.python, '-u', ament_py, 'test_results', '"%s"' % args.buildspace],
-            exit_on_error=False
-        )
-        info("ament.py test_results returned: '{0}'".format(ret_test_results))
-        # Uncomment this line to failing tests a failrue of this command.
-        # return 0 if ret_test == 0 and ret_testr == 0 else 1
-        return 0
 
+        return build_function(args, job)
 
 if __name__ == '__main__':
     sys.exit(main())

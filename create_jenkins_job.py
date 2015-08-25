@@ -30,14 +30,14 @@ except ImportError:
 
 from ros_buildfarm.jenkins import configure_job
 from ros_buildfarm.jenkins import connect
+from ros_buildfarm.templates import expand_template
+try:
+    from ros_buildfarm.templates import template_prefix_path
+except ImportError:
+    sys.exit("Could not import symbol from ros_buildfarm, please update ros_buildfarm.")
 
-job_templates_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'job_templates')
-
-with open(os.path.join(job_templates_dir, 'ros2_batch_ci_job.xml.template')) as f:
-    job_template = f.read()
-
-with open(os.path.join(job_templates_dir, 'ros2_batch_ci_launcher_job.xml.template')) as f:
-    launcher_job_template = f.read()
+template_prefix_path[:] = \
+    [os.path.join(os.path.abspath(os.path.dirname(__file__)), 'job_templates')]
 
 
 def main(argv=None):
@@ -61,145 +61,27 @@ def main(argv=None):
     )
     args = parser.parse_args(argv)
 
-    subs = {
+    data = {
         'ci_scripts_repository': args.ci_scripts_repository,
         'ci_scripts_default_branch': args.ci_scripts_default_branch,
-        'use_connext_default': 'true',
-        'use_whitespace_in_paths_default': 'false',
-        'label_expression': None,
-        'task_command': None,
-        'git_submodule_extension': """
-      <hudson.plugins.git.extensions.impl.SubmoduleOption>
-        <disableSubmodules>false</disableSubmodules>
-        <recursiveSubmodules>true</recursiveSubmodules>
-        <trackingSubmodules>false</trackingSubmodules>
-      </hudson.plugins.git.extensions.impl.SubmoduleOption>""",
-        'extra_git_repos': '',
-        'triggers': '',
-        'ssh_agent_build_wrapper': """
-    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@1.8">
-      <credentialIds>
-        <string>1c2004f6-2e00-425d-a421-2e1ba62ca7a7</string>
-      </credentialIds>
-      <ignoreMissing>false</ignoreMissing>
-    </com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper>""",
-        'extra_publishers': '',
-        'append_extra_publishers': '',
+        'time_trigger_spec': '',
+        'mailer_recipients': '',
     }
 
     jenkins = connect(args.jenkins_url)
-
-    unix_common_logic = """\
-export CI_ARGS="--do-venv --force-ansi-color"
-if [ -n "${CI_BRANCH_TO_TEST+x}" ]; then
-  export CI_ARGS="$CI_ARGS --test-branch $CI_BRANCH_TO_TEST"
-fi
-if [ "$CI_USE_WHITESPACE_IN_PATHS" = "true" ]; then
-  export CI_ARGS="$CI_ARGS --white-space-in sourcespace buildspace installspace workspace"
-fi
-if [ "$CI_USE_CONNEXT" = "true" ]; then
-  export CI_ARGS="$CI_ARGS --connext"
-fi
-if [ -n "${CI_ROS2_REPOS_URL+x}" ]; then
-  export CI_ARGS="$CI_ARGS --repo-file-url $CI_ROS2_REPOS_URL"
-fi
-
-rm -rf workspace "work space"
-
-"""
-
-    compiler_warning_snippet = """
-    <hudson.plugins.warnings.WarningsPublisher plugin="warnings@4.48">
-      <healthy/>
-      <unHealthy/>
-      <thresholdLimit>low</thresholdLimit>
-      <pluginName>[WARNINGS] </pluginName>
-      <defaultEncoding/>
-      <canRunOnFailed>false</canRunOnFailed>
-      <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
-      <useStableBuildAsReference>false</useStableBuildAsReference>
-      <useDeltaValues>false</useDeltaValues>
-      <thresholds plugin="analysis-core@1.72">
-        <unstableTotalAll/>
-        <unstableTotalHigh/>
-        <unstableTotalNormal/>
-        <unstableTotalLow/>
-        <failedTotalAll/>
-        <failedTotalHigh/>
-        <failedTotalNormal/>
-        <failedTotalLow/>
-      </thresholds>
-      <shouldDetectModules>false</shouldDetectModules>
-      <dontComputeNew>true</dontComputeNew>
-      <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
-      <excludePattern>.*Microsoft.CppCommon.targets</excludePattern>
-      <parserConfigurations/>
-      <consoleParsers>
-        <hudson.plugins.warnings.ConsoleParser>
-          <parserName>{parser_name}</parserName>
-        </hudson.plugins.warnings.ConsoleParser>
-      </consoleParsers>
-    </hudson.plugins.warnings.WarningsPublisher>"""
 
     os_configs = {
         'linux': {
             'label_expression': 'linux_slave_on_master',
             'shell_type': 'Shell',
-            'task_command': unix_common_logic + """\
-docker build -t ros2_batch_ci linux_docker_resources
-echo "Using args: $CI_ARGS"
-docker run \\
-       --privileged \\
-       -e UID=`id -u` -e GID=`id -g` -e CI_ARGS="$CI_ARGS" \\
-       -i \\
-       -v `pwd`:/home/rosbuild/ci_scripts \\
-       ros2_batch_ci
-""",
-            'extra_publishers': compiler_warning_snippet.format(
-                parser_name='GNU C Compiler 4 (gcc)'
-            ),
         },
         'osx': {
             'label_expression': 'osx_slave_dosa',
             'shell_type': 'Shell',
-            'task_command': unix_common_logic + """\
-echo "Using args: $CI_ARGS"
-/usr/local/bin/python3 -u run_ros2_batch.py $CI_ARGS
-""",
-            'extra_publishers': compiler_warning_snippet.format(
-                parser_name='Clang (LLVM based)'
-            ),
         },
         'windows': {
             'label_expression': 'windows_slave_eatable',
             'shell_type': 'BatchFile',
-            'task_command': """\
-set "PATH=%PATH:"=%"
-set "CI_ARGS=--force-ansi-color"
-if "%CI_BRANCH_TO_TEST%" NEQ "" (
-  set "CI_ARGS=%CI_ARGS% --test-branch %CI_BRANCH_TO_TEST%"
-)
-if "%CI_USE_WHITESPACE_IN_PATHS%" == "true" (
-  set "CI_ARGS=%CI_ARGS% --white-space-in sourcespace buildspace installspace workspace"
-)
-if "%CI_USE_CONNEXT%" == "true" (
-  set "CI_ARGS=%CI_ARGS% --connext"
-)
-if "%CI_ROS2_REPOS_URL%" NEQ "" (
-  set "CI_ARGS=%CI_ARGS% --repo-file-url %CI_ROS2_REPOS_URL%"
-)
-
-rmdir /S /Q workspace "work space"
-
-echo Using args: %CI_ARGS%
-python -u run_ros2_batch.py %CI_ARGS%""",
-            # Do not use the submodule extension on Windows since ssh-agent doesn't work.
-            'git_submodule_extension': '',
-            # Do not use the ssh-agent build wrapper on Windows since ssh-agent doesn't work.
-            'ssh_agent_build_wrapper': '',
-            'extra_publishers': compiler_warning_snippet.format(
-                parser_name='MSBuild'
-            ),
         },
     }
 
@@ -207,33 +89,27 @@ python -u run_ros2_batch.py %CI_ARGS%""",
     if args.dry_run:
         jenkins_kwargs['dry_run'] = True
 
-    # Send the os specific jobs
+    # configure os specific jobs
     for os_name in sorted(os_configs.keys()):
-        config = os_configs[os_name]
+        # configure manual triggered job
         job_name = 'ros2_batch_ci_' + os_name
-        job_subs = dict(subs)
-        for k in config:
-            job_subs[k] = config[k]
-        configure_job(jenkins, job_name, job_template.format(**job_subs), **jenkins_kwargs)
-        job_name += '_nightly'
-        job_subs['triggers'] = """
-    <hudson.triggers.TimerTrigger>
-      <spec>0 10 * * *</spec>
-    </hudson.triggers.TimerTrigger>"""
-        job_subs['append_extra_publishers'] = """
-    <hudson.tasks.Mailer plugin="mailer@1.15">
-      <recipients>ros@osrfoundation.org</recipients>
-      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
-      <sendToIndividuals>false</sendToIndividuals>
-    </hudson.tasks.Mailer>"""
-        configure_job(jenkins, job_name, job_template.format(**job_subs), **jenkins_kwargs)
+        job_data = dict(data)
+        job_data['os_name'] = os_name
+        job_data.update(os_configs[os_name])
+        job_config = expand_template('ros2_batch_ci_job.xml.template', job_data)
+        configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 
-    # Send the launch job
-    launcher_job_subs = dict(subs)
-    launcher_job_subs['label_expression'] = 'master'
-    configure_job(
-        jenkins, 'ros2_batch_ci_launcher', launcher_job_template.format(**launcher_job_subs),
-        **jenkins_kwargs)
+        # configure nightly triggered job
+        job_name += '_nightly'
+        job_data['time_trigger_spec'] = '0 10 * * *'
+        job_data['mailer_recipients'] = 'ros@osrfoundation.org'
+        job_config = expand_template('ros2_batch_ci_job.xml.template', job_data)
+        configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
+
+    # configure the launch job
+    job_data = {'label_expression': 'master'}
+    job_config = expand_template('ros2_batch_ci_launcher_job.xml.template', job_data)
+    configure_job(jenkins, 'ros2_batch_ci_launcher', job_config, **jenkins_kwargs)
 
 
 if __name__ == '__main__':

@@ -34,13 +34,13 @@ To use the default branch on all repositories, use an empty string.</description
           <description>By setting this to True white space will be inserted into the paths.
 The paths include the workspace, plus the source, build and install spaces.
 This tests the robustness to whitespace being within the different paths.</description>
-          <defaultValue>@(use_whitespace_in_paths_default)</defaultValue>
+          <defaultValue>false</defaultValue>
         </hudson.model.BooleanParameterDefinition>
         <hudson.model.BooleanParameterDefinition>
           <name>CI_USE_CONNEXT</name>
           <description>By setting this to True, the build will attempt to use RTI&apos;s DDS.
 This is always in addition to OpenSplice.</description>
-          <defaultValue>@(use_connext_default)</defaultValue>
+          <defaultValue>true</defaultValue>
         </hudson.model.BooleanParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
@@ -66,16 +66,28 @@ This is always in addition to OpenSplice.</description>
       <url></url>
     </browser>
     <submoduleCfg class="list"/>
-    <extensions>@(git_submodule_extension)
-    </extensions>
+    <extensions>@
+@[if os_name != 'windows']
+      <hudson.plugins.git.extensions.impl.SubmoduleOption>
+        <disableSubmodules>false</disableSubmodules>
+        <recursiveSubmodules>true</recursiveSubmodules>
+        <trackingSubmodules>false</trackingSubmodules>
+      </hudson.plugins.git.extensions.impl.SubmoduleOption>
+    @
+@[end if]</extensions>
   </scm>
   <assignedNode>@(label_expression)</assignedNode>
   <canRoam>false</canRoam>
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <triggers>@(triggers)
-  </triggers>
+  <triggers>@
+@[if time_trigger_spec]
+    <hudson.triggers.TimerTrigger>
+      <spec>@(time_trigger_spec)</spec>
+    </hudson.triggers.TimerTrigger>
+  @
+@[end if]</triggers>
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.plugins.groovy.SystemGroovy plugin="groovy@@1.27">
@@ -93,10 +105,97 @@ use_whitespace: ${build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PATH
       <classpath/>
     </hudson.plugins.groovy.SystemGroovy>
     <hudson.tasks.@(shell_type)>
-      <command>@(task_command)</command>
+      <command>@
+@[if os_name in ['linux', 'osx']]@
+export CI_ARGS="--do-venv --force-ansi-color"
+if [ -n "${CI_BRANCH_TO_TEST+x}" ]; then
+  export CI_ARGS="$CI_ARGS --test-branch $CI_BRANCH_TO_TEST"
+fi
+if [ "$CI_USE_WHITESPACE_IN_PATHS" = "true" ]; then
+  export CI_ARGS="$CI_ARGS --white-space-in sourcespace buildspace installspace workspace"
+fi
+if [ "$CI_USE_CONNEXT" = "true" ]; then
+  export CI_ARGS="$CI_ARGS --connext"
+fi
+if [ -n "${CI_ROS2_REPOS_URL+x}" ]; then
+  export CI_ARGS="$CI_ARGS --repo-file-url $CI_ROS2_REPOS_URL"
+fi
+
+rm -rf workspace "work space"
+
+@[if os_name == 'linux']@
+docker build -t ros2_batch_ci linux_docker_resources
+echo "Using args: $CI_ARGS"
+docker run --privileged -e UID=`id -u` -e GID=`id -g` -e CI_ARGS="$CI_ARGS" -i -v `pwd`:/home/rosbuild/ci_scripts ros2_batch_ci
+@[else]@
+echo "Using args: $CI_ARGS"
+/usr/local/bin/python3 -u run_ros2_batch.py $CI_ARGS
+@[end if]@
+@[elif os_name == 'windows']@
+set "PATH=%PATH:"=%"
+set "CI_ARGS=--force-ansi-color"
+if "%CI_BRANCH_TO_TEST%" NEQ "" (
+  set "CI_ARGS=%CI_ARGS% --test-branch %CI_BRANCH_TO_TEST%"
+)
+if "%CI_USE_WHITESPACE_IN_PATHS%" == "true" (
+  set "CI_ARGS=%CI_ARGS% --white-space-in sourcespace buildspace installspace workspace"
+)
+if "%CI_USE_CONNEXT%" == "true" (
+  set "CI_ARGS=%CI_ARGS% --connext"
+)
+if "%CI_ROS2_REPOS_URL%" NEQ "" (
+  set "CI_ARGS=%CI_ARGS% --repo-file-url %CI_ROS2_REPOS_URL%"
+)
+
+rmdir /S /Q workspace "work space"
+
+echo Using args: %CI_ARGS%
+python -u run_ros2_batch.py %CI_ARGS%
+@[else]@
+@{ assert 'Unknown os_name: ' + os_name }@
+@[end if]</command>
     </hudson.tasks.@(shell_type)>
   </builders>
-  <publishers>@(extra_publishers)
+  <publishers>
+    <hudson.plugins.warnings.WarningsPublisher plugin="warnings@@4.48">
+      <healthy/>
+      <unHealthy/>
+      <thresholdLimit>low</thresholdLimit>
+      <pluginName>[WARNINGS] </pluginName>
+      <defaultEncoding/>
+      <canRunOnFailed>false</canRunOnFailed>
+      <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+      <useStableBuildAsReference>false</useStableBuildAsReference>
+      <useDeltaValues>false</useDeltaValues>
+      <thresholds plugin="analysis-core@@1.72">
+        <unstableTotalAll/>
+        <unstableTotalHigh/>
+        <unstableTotalNormal/>
+        <unstableTotalLow/>
+        <failedTotalAll/>
+        <failedTotalHigh/>
+        <failedTotalNormal/>
+        <failedTotalLow/>
+      </thresholds>
+      <shouldDetectModules>false</shouldDetectModules>
+      <dontComputeNew>true</dontComputeNew>
+      <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
+      <excludePattern>.*Microsoft.CppCommon.targets</excludePattern>
+      <parserConfigurations/>
+      <consoleParsers>
+        <hudson.plugins.warnings.ConsoleParser>
+@[if os_name == 'linux']@
+          <parserName>GNU C Compiler 4 (gcc)</parserName>
+@[elif os_name == 'osx']@
+          <parserName>Clang (LLVM based)</parserName>
+@[elif os_name == 'windows']@
+          <parserName>MSBuild</parserName>
+@[else]@
+@{ assert 'Unknown os_name: ' + os_name }@
+@[end if]@
+        </hudson.plugins.warnings.ConsoleParser>
+      </consoleParsers>
+    </hudson.plugins.warnings.WarningsPublisher>
     <xunit plugin="xunit@@1.96">
       <types>
         <GoogleTestType>
@@ -125,12 +224,27 @@ use_whitespace: ${build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PATH
       <extraConfiguration>
         <testTimeMargin>3000</testTimeMargin>
       </extraConfiguration>
-    </xunit>@(append_extra_publishers)
+    </xunit>
+@[if mailer_recipients]@
+    <hudson.tasks.Mailer plugin="mailer@@1.15">
+      <recipients>@(mailer_recipients)</recipients>
+      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>false</sendToIndividuals>
+    </hudson.tasks.Mailer>
+@[end if]@
   </publishers>
   <buildWrappers>
     <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@@1.7.1" />
     <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@@0.4.1">
       <colorMapName>xterm</colorMapName>
-    </hudson.plugins.ansicolor.AnsiColorBuildWrapper>@(ssh_agent_build_wrapper)
+    </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
+@[if os_name != 'windows']@
+    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@@1.8">
+      <credentialIds>
+        <string>1c2004f6-2e00-425d-a421-2e1ba62ca7a7</string>
+      </credentialIds>
+      <ignoreMissing>false</ignoreMissing>
+    </com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper>
+@[end if]@
   </buildWrappers>
 </project>

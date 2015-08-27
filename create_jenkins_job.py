@@ -99,7 +99,7 @@ def main(argv=None):
         job_config = expand_template('ros2_batch_ci_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 
-        if os_name == 'linux':
+        if os_name == 'linux' or os_name == 'windows':
             # configure packaging job
             job_name = 'ros2_packaging_' + os_name
             job_config = expand_template('ros2_packaging_job.xml.template', job_data)

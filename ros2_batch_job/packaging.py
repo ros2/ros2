@@ -13,8 +13,10 @@
 # limitations under the License.
 
 import os
+import shutil
 import sys
 import tarfile
+import zipfile
 
 from .__main__ import get_args
 from .__main__ import run
@@ -28,10 +30,12 @@ def main(sysargv=None):
 
 def build_and_package(args, job):
     # ignore ROS 1 bridge package for now
-    ros1_bridge_path = os.path.join(args.sourcespace, 'ros1_bridge')
+    ros1_bridge_path = os.path.join(args.sourcespace, 'ros2', 'ros1_bridge')
+    info('ROS1 bridge path: %s' % ros1_bridge_path)
     ros1_bridge_ignore_marker = None
     if os.path.exists(ros1_bridge_path):
         ros1_bridge_ignore_marker = os.path.join(ros1_bridge_path, 'AMENT_IGNORE')
+        info('ROS1 bridge path ignore file: %s' % ros1_bridge_ignore_marker)
         with open(ros1_bridge_ignore_marker, 'w'):
             pass
 
@@ -48,15 +52,19 @@ def build_and_package(args, job):
 
     if ros1_bridge_ignore_marker:
         os.remove(ros1_bridge_ignore_marker)
-    # Now run ament build only for the bridge
-    job.run([
-        job.python, '-u', ament_py, 'build',
-        '--build-space', '"%s"' % args.buildspace,
-        '--install-space', '"%s"' % args.installspace,
-        '--only', 'ros1_bridge',
-        '"%s"' % args.sourcespace,
-        '--make-flags', '-j1'
-    ])
+
+    # It only makes sense to build the bridge for Linux or OSX, since
+    # ROS1 is not supported on Windows
+    if args.os == 'linux':
+        # Now run ament build only for the bridge
+        job.run([
+            job.python, '-u', ament_py, 'build',
+            '--build-space', '"%s"' % args.buildspace,
+            '--install-space', '"%s"' % args.installspace,
+            '--only', 'ros1_bridge',
+            '"%s"' % args.sourcespace,
+            '--make-flags', '-j1'
+        ])
 
     # Remove "unnecessary" executables
     install_bin_path = os.path.join(args.installspace, 'bin')
@@ -69,9 +77,27 @@ def build_and_package(args, job):
             os.remove(os.path.join(install_bin_path, filename))
 
     # create an archive
-    archive_path = 'ros2-package-linux.tar.bz2'
-    with tarfile.open(archive_path, 'w:bz2') as h:
-        h.add(args.installspace, arcname='ros2')
+    if args.os == 'linux':
+        archive_path = 'ros2-package-linux.tar.bz2'
+        with tarfile.open(archive_path, 'w:bz2') as h:
+            h.add(args.installspace, arcname='ros2')
+    elif args.os == 'windows':
+        archive_path = 'ros2-package-windows.zip'
+        # NOTE(esteve): hack to copy our custom built VS2015-compatible OpenCV DLLs
+        opencv_libdir = os.path.join('c:/', 'opencv', 'build', 'x64', 'vc14', 'bin')
+        for libfile in ['opencv_core2412.dll', 'opencv_highgui2412.dll']:
+            libpath = os.path.join(opencv_libdir, libfile)
+            shutil.copy(libpath, os.path.join(args.installspace, 'bin', libfile))
+        with zipfile.ZipFile(archive_path, 'w') as zf:
+            for dirname, subdirs, files in os.walk(args.installspace):
+                arcname = os.path.join('ros2', os.path.relpath(dirname, start=args.installspace))
+                zf.write(dirname, arcname=arcname)
+                for filename in files:
+                    filearcname = os.path.join(
+                        'ros2', os.path.relpath(dirname, start=args.installspace), filename)
+                    zf.write(os.path.join(dirname, filename), arcname=filearcname)
+    else:
+        raise RuntimeError('Unsupported operating system: %s' % args.os)
     info("created archive: '{0}'".format(archive_path))
 
     return 0

@@ -45,6 +45,7 @@ class LinuxBatchJob(BatchJob):
                 connext_env_file = None
         # There is nothing extra to be done for OpenSplice
 
+        ros1_setup_file = None
         if self.args.ros1_path:
             # Try to find the setup file and source it
             ros1_setup_file = os.path.join(self.args.ros1_path, 'setup.sh')

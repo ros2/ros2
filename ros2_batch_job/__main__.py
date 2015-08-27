@@ -74,6 +74,9 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
             '--connext', default=False, action='store_true',
             help="try to build with connext")
     parser.add_argument(
+        '--isolated', default=False, action='store_true',
+        help="build and install each package a separate folders")
+    parser.add_argument(
         '--force-ansi-color', default=False, action='store_true',
         help="forces this program to output ansi color")
     if add_ros1:
@@ -101,7 +104,7 @@ def build_and_test(args, job):
         '--build-space', '"%s"' % args.buildspace,
         '--install-space', '"%s"' % args.installspace,
         '"%s"' % args.sourcespace
-    ])
+    ] + (['--isolated'] if args.isolated else []))
     # Run tests
     ret_test = job.run([
         job.python, '-u', ament_py, 'test',
@@ -110,7 +113,7 @@ def build_and_test(args, job):
         # Skip building and installing, since we just did that successfully.
         '--skip-build', '--skip-install',
         '"%s"' % args.sourcespace
-    ], exit_on_error=False)
+    ] + (['--isolated'] if args.isolated else []), exit_on_error=False)
     info("ament.py test returned: '{0}'".format(ret_test))
     # Collect the test results
     ret_test_results = job.run(

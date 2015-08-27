@@ -48,7 +48,7 @@ def build_and_package(args, job):
         '--build-space', '"%s"' % args.buildspace,
         '--install-space', '"%s"' % args.installspace,
         '"%s"' % args.sourcespace
-    ])
+    ] + (['--isolated'] if args.isolated else []))
 
     if ros1_bridge_ignore_marker:
         os.remove(ros1_bridge_ignore_marker)
@@ -63,6 +63,7 @@ def build_and_package(args, job):
             '--install-space', '"%s"' % args.installspace,
             '--only', 'ros1_bridge',
             '"%s"' % args.sourcespace,
+        ] + (['--isolated'] if args.isolated else []) + [
             '--make-flags', '-j1'
         ])
 

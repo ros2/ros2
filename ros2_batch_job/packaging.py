@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import shutil
 import sys
 import tarfile
 import zipfile
@@ -82,6 +83,11 @@ def build_and_package(args, job):
             h.add(args.installspace, arcname='ros2')
     elif args.os == 'windows':
         archive_path = 'ros2-package-windows.zip'
+        # NOTE(esteve): hack to copy our custom built VS2015-compatible OpenCV DLLs
+        opencv_libdir = os.path.join('c:/', 'opencv', 'build', 'x64', 'vc14', 'bin')
+        for libfile in ['opencv_core2412.dll', 'opencv_highgui2412.dll']:
+            libpath = os.path.join(opencv_libdir, libfile)
+            shutil.copy(libpath, os.path.join(args.installspace, 'bin', libfile))
         with zipfile.ZipFile(archive_path, 'w') as zf:
             for dirname, subdirs, files in os.walk(args.installspace):
                 arcname = os.path.join('ros2', os.path.relpath(dirname, start=args.installspace))

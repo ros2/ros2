@@ -43,12 +43,16 @@ def build_and_package(args, job):
         '.', args.sourcespace, 'ament', 'ament_tools', 'scripts', 'ament.py'
     )
     # Now run ament build
-    job.run([
+    cmd = [
         job.python, '-u', ament_py, 'build',
         '--build-space', '"%s"' % args.buildspace,
         '--install-space', '"%s"' % args.installspace,
-        '"%s"' % args.sourcespace
-    ] + (['--isolated'] if args.isolated else []))
+        '"%s"' % args.sourcespace]
+    if args.isolated:
+        cmd.append('--isolated')
+    if args.os != 'windows':
+        cmd += ['--cmake-args', '-DCMAKE_BUILD_TYPE=RelWithDebInfo']
+    job.run(cmd)
 
     if ros1_bridge_ignore_marker:
         os.remove(ros1_bridge_ignore_marker)
@@ -64,6 +68,7 @@ def build_and_package(args, job):
             '--only', 'ros1_bridge',
             '"%s"' % args.sourcespace,
         ] + (['--isolated'] if args.isolated else []) + [
+            '--cmake-args', '-DCMAKE_BUILD_TYPE=RelWithDebInfo',
             '--make-flags', '-j1'
         ])
 

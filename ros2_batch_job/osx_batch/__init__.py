@@ -50,6 +50,16 @@ class OSXBatchJob(BatchJob):
                     connext_env_file))
                 connext_env_file = None
         # There is nothing extra to be done for OpenSplice
+
+        ros1_setup_file = None
+        if self.args.ros1_path:
+            # Try to find the setup file and source it
+            ros1_setup_file = os.path.join(self.args.ros1_path, 'setup.sh')
+            if not os.path.exists(ros1_setup_file):
+                warn("Asked to use ROS 1 but the setup file was not found at '{0}'".format(
+                    ros1_setup_file))
+                ros1_setup_file = None
+
         current_run = self.run
 
         def with_vendors(cmd, **kwargs):
@@ -59,6 +69,9 @@ class OSXBatchJob(BatchJob):
             if connext_env_file is not None:
                 cmd = ['.', '"%s"' % connext_env_file, '&&'] + cmd
                 log('(RTI)')
+            if ros1_setup_file:
+                cmd = ['.', '"%s"' % ros1_setup_file, '&&'] + cmd
+                log('(ROS1)')
             # Pass along to the original runner
             return current_run(cmd, **kwargs)
 

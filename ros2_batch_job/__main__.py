@@ -54,7 +54,7 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
         description="Builds the ROS2 repositories as a single batch job")
     parser.add_argument(
         '--repo-file-url',
-        default='https://raw.githubusercontent.com/ros2/examples/master/ros2.repos',
+        default='https://raw.githubusercontent.com/ros2/ros2/master/ros2.repos',
         help="url of the ros2.repos file to fetch and use for the basis of the batch job")
     parser.add_argument(
         '--test-branch', default=None,

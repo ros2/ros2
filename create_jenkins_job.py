@@ -56,8 +56,8 @@ def main(argv=None):
         help="default branch of the ci scripts repository to get ci scripts from (this is a job parameter)"
     )
     parser.add_argument(
-        '--dry-run', action='store_true',
-        help='Only pretend to update the jobs and show the diff',
+        '--commit', action='store_true',
+        help='Actually modify the Jenkis jobs instead of only doing a dry run',
     )
     args = parser.parse_args(argv)
 
@@ -86,7 +86,7 @@ def main(argv=None):
     }
 
     jenkins_kwargs = {}
-    if args.dry_run:
+    if not args.commit:
         jenkins_kwargs['dry_run'] = True
 
     # configure os specific jobs

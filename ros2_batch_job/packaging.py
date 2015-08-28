@@ -78,10 +78,11 @@ def build_and_package(args, job):
             os.remove(os.path.join(install_bin_path, filename))
 
     # create an archive
+    folder_name = 'ros2-' + args.os
     if args.os == 'linux' or args.os == 'osx':
         archive_path = 'ros2-package-%s.tar.bz2' % args.os
         with tarfile.open(archive_path, 'w:bz2') as h:
-            h.add(args.installspace, arcname='ros2')
+            h.add(args.installspace, arcname=folder_name)
     elif args.os == 'windows':
         archive_path = 'ros2-package-windows.zip'
         # NOTE(esteve): hack to copy our custom built VS2015-compatible OpenCV DLLs
@@ -91,7 +92,8 @@ def build_and_package(args, job):
             shutil.copy(libpath, os.path.join(args.installspace, 'bin', libfile))
         with zipfile.ZipFile(archive_path, 'w') as zf:
             for dirname, subdirs, files in os.walk(args.installspace):
-                arcname = os.path.join('ros2', os.path.relpath(dirname, start=args.installspace))
+                arcname = os.path.join(
+                    folder_name, os.path.relpath(dirname, start=args.installspace))
                 zf.write(dirname, arcname=arcname)
                 for filename in files:
                     filearcname = os.path.join(

@@ -85,7 +85,7 @@ repos_url: ${build.buildVariableResolver.resolve('CI_ROS2_REPOS_URL')}\
     </hudson.plugins.groovy.SystemGroovy>
     <hudson.tasks.@(shell_type)>
       <command>@
-@[if os_name == 'linux']@
+@[if os_name in ['linux', 'osx']]@
 export CI_ARGS="--do-venv --force-ansi-color"
 if [ -n "${CI_BRANCH_TO_TEST+x}" ]; then
   export CI_ARGS="$CI_ARGS --test-branch $CI_BRANCH_TO_TEST"
@@ -97,9 +97,14 @@ export CI_ARGS="$CI_ARGS --ros1-path /opt/ros/indigo"
 
 rm -rf workspace
 
+@[if os_name == 'linux']@
 docker build -t ros2_packaging linux_packaging_docker_resources
 echo "Using args: $CI_ARGS"
 docker run --privileged -e UID=`id -u` -e GID=`id -g` -e CI_ARGS="$CI_ARGS" -i -v `pwd`:/home/rosbuild/ci_scripts ros2_packaging
+@[else]@
+echo "Using args: $CI_ARGS"
+/usr/local/bin/python3 -u run_ros2_packaging.py $CI_ARGS
+@[end if]@
 @[elif os_name == 'windows']@
 set "PATH=%PATH:"=%"
 set "CI_ARGS=--force-ansi-color"

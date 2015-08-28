@@ -97,7 +97,7 @@ def build_and_package(args, job):
                 zf.write(dirname, arcname=arcname)
                 for filename in files:
                     filearcname = os.path.join(
-                        'ros2', os.path.relpath(dirname, start=args.installspace), filename)
+                        folder_name, os.path.relpath(dirname, start=args.installspace), filename)
                     zf.write(os.path.join(dirname, filename), arcname=filearcname)
     else:
         raise RuntimeError('Unsupported operating system: %s' % args.os)

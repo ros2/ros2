@@ -33,5 +33,10 @@ This tests the robustness to whitespace being within the different paths.</descr
 This is always in addition to OpenSplice.</description>
           <defaultValue>true</defaultValue>
         </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>CI_ISOLATED</name>
+          <description>By setting this to True, the build will use the --isolated option.</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>

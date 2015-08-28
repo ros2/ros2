@@ -63,7 +63,8 @@ branch: ${build.buildVariableResolver.resolve('CI_BRANCH_TO_TEST')}, <br/>
 connext: ${build.buildVariableResolver.resolve('CI_USE_CONNEXT')}, <br/>
 ci_branch: ${build.buildVariableResolver.resolve('CI_SCRIPTS_BRANCH')}, <br/>
 repos_url: ${build.buildVariableResolver.resolve('CI_ROS2_REPOS_URL')}, <br/>
-use_whitespace: ${build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PATHS')}\
+use_whitespace: ${build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PATHS')}, <br/>
+isolated: ${build.buildVariableResolver.resolve('CI_ISOLATED')}\
 """);]]>
         </command>
       </scriptSource>
@@ -85,6 +86,9 @@ if [ "$CI_USE_CONNEXT" = "true" ]; then
 fi
 if [ -n "${CI_ROS2_REPOS_URL+x}" ]; then
   export CI_ARGS="$CI_ARGS --repo-file-url $CI_ROS2_REPOS_URL"
+fi
+if [ "$CI_ISOLATED" = "true" ]; then
+  export CI_ARGS="$CI_ARGS --isolated"
 fi
 
 rm -rf workspace "work space"
@@ -111,6 +115,9 @@ if "%CI_USE_CONNEXT%" == "true" (
 )
 if "%CI_ROS2_REPOS_URL%" NEQ "" (
   set "CI_ARGS=%CI_ARGS% --repo-file-url %CI_ROS2_REPOS_URL%"
+)
+if "%CI_ISOLATED%" == "true" (
+  set "CI_ARGS=%CI_ARGS% --isolated"
 )
 
 rmdir /S /Q workspace "work space"

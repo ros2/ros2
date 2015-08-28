@@ -78,8 +78,8 @@ def build_and_package(args, job):
             os.remove(os.path.join(install_bin_path, filename))
 
     # create an archive
-    if args.os == 'linux':
-        archive_path = 'ros2-package-linux.tar.bz2'
+    if args.os == 'linux' or args.os == 'osx':
+        archive_path = 'ros2-package-%s.tar.bz2' % args.os
         with tarfile.open(archive_path, 'w:bz2') as h:
             h.add(args.installspace, arcname='ros2')
     elif args.os == 'windows':

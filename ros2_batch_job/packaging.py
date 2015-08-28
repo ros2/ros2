@@ -55,7 +55,7 @@ def build_and_package(args, job):
 
     # It only makes sense to build the bridge for Linux or OSX, since
     # ROS1 is not supported on Windows
-    if args.os == 'linux':
+    if args.os in ['linux', 'osx']:
         # Now run ament build only for the bridge
         job.run([
             job.python, '-u', ament_py, 'build',

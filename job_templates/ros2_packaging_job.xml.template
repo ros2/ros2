@@ -93,15 +93,16 @@ fi
 if [ -n "${CI_ROS2_REPOS_URL+x}" ]; then
   export CI_ARGS="$CI_ARGS --repo-file-url $CI_ROS2_REPOS_URL"
 fi
-export CI_ARGS="$CI_ARGS --ros1-path /opt/ros/indigo"
 
 rm -rf workspace
 
 @[if os_name == 'linux']@
+export CI_ARGS="$CI_ARGS --ros1-path /opt/ros/indigo"
 docker build -t ros2_packaging linux_packaging_docker_resources
 echo "Using args: $CI_ARGS"
 docker run --privileged -e UID=`id -u` -e GID=`id -g` -e CI_ARGS="$CI_ARGS" -i -v `pwd`:/home/rosbuild/ci_scripts ros2_packaging
 @[else]@
+export CI_ARGS="$CI_ARGS --ros1-path /Users/osrf/indigo/install_isolated"
 echo "Using args: $CI_ARGS"
 /usr/local/bin/python3 -u run_ros2_packaging.py $CI_ARGS
 @[end if]@

@@ -141,7 +141,7 @@ python -u run_ros2_batch.py %CI_ARGS%
       <useStableBuildAsReference>false</useStableBuildAsReference>
       <useDeltaValues>false</useDeltaValues>
       <thresholds plugin="analysis-core@@1.72">
-        <unstableTotalAll/>
+        <unstableTotalAll>0</unstableTotalAll>
         <unstableTotalHigh/>
         <unstableTotalNormal/>
         <unstableTotalLow/>

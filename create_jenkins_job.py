@@ -78,6 +78,9 @@ def main(argv=None):
         'osx': {
             'label_expression': 'osx_slave_dosa',
             'shell_type': 'Shell',
+            # the current OS X slave can't handle  git@github urls
+            'ci_scripts_repository': args.ci_scripts_repository.replace(
+                'git@github.com:', 'https://github.com/'),
         },
         'windows': {
             'label_expression': 'windows_slave_eatable',

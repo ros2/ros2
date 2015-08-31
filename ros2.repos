@@ -19,6 +19,14 @@ repositories:
     type: git
     url: https://github.com/ament/ament_tools.git
     version: master
+  ament/gmock_vendor:
+    type: git
+    url: https://github.com/ament/gmock_vendor.git
+    version: master
+  ament/gtest_vendor:
+    type: git
+    url: https://github.com/ament/gtest_vendor.git
+    version: master
   ament/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git

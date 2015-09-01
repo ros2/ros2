@@ -32,7 +32,7 @@ class LinuxBatchJob(BatchJob):
         # Show the env
         self.run(['export'], shell=True)
         # Show what pip has
-        self.run([self.python, '-m', 'pip', 'freeze'])
+        self.run(['"%s"' % self.python, '-m', 'pip', 'freeze'], shell=True)
 
     def setup_env(self):
         connext_env_file = None

@@ -172,13 +172,27 @@ python -u run_ros2_batch.py %CI_ARGS%
     <xunit plugin="xunit@@1.96">
       <types>
 @[for prefix in ['workspace/build', 'work space/build space']]@
+        <CTestType>
+          <pattern>@(prefix)/*/Testing/*/Test.xml</pattern>
+          <skipNoTestFiles>true</skipNoTestFiles>
+          <failIfNotNew>true</failIfNotNew>
+          <deleteOutputFiles>true</deleteOutputFiles>
+          <stopProcessingIfError>true</stopProcessingIfError>
+        </CTestType>
         <GoogleTestType>
-          <pattern>@(prefix)/*/test_results/**/*.xml</pattern>
+          <pattern>@(prefix)/*/test_results/**/*.gtest.xml</pattern>
           <skipNoTestFiles>true</skipNoTestFiles>
           <failIfNotNew>true</failIfNotNew>
           <deleteOutputFiles>true</deleteOutputFiles>
           <stopProcessingIfError>true</stopProcessingIfError>
         </GoogleTestType>
+        <JUnitType>
+          <pattern>@(prefix)/*/test_results/**/*.xunit.xml</pattern>
+          <skipNoTestFiles>true</skipNoTestFiles>
+          <failIfNotNew>true</failIfNotNew>
+          <deleteOutputFiles>true</deleteOutputFiles>
+          <stopProcessingIfError>true</stopProcessingIfError>
+        </JUnitType>
 @[end for]@
       </types>
       <thresholds>

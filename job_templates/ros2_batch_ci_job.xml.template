@@ -171,13 +171,15 @@ python -u run_ros2_batch.py %CI_ARGS%
     </hudson.plugins.warnings.WarningsPublisher>
     <xunit plugin="xunit@@1.96">
       <types>
+@[for prefix in ['workspace/build', 'work space/build space']]@
         <GoogleTestType>
-          <pattern>workspace/build/*/test_results/**/*.xml</pattern>
-          <skipNoTestFiles>false</skipNoTestFiles>
+          <pattern>@(prefix)/*/test_results/**/*.xml</pattern>
+          <skipNoTestFiles>true</skipNoTestFiles>
           <failIfNotNew>true</failIfNotNew>
           <deleteOutputFiles>true</deleteOutputFiles>
           <stopProcessingIfError>true</stopProcessingIfError>
         </GoogleTestType>
+@[end for]@
       </types>
       <thresholds>
         <org.jenkinsci.plugins.xunit.threshold.FailedThreshold>

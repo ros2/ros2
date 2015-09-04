@@ -100,25 +100,25 @@ def build_and_test(args, job):
     )
     # Now run ament build
     job.run([
-        job.python, '-u', ament_py, 'build', '--build-tests',
+        '"%s"' % job.python, '-u', ament_py, 'build', '--build-tests',
         '--build-space', '"%s"' % args.buildspace,
         '--install-space', '"%s"' % args.installspace,
         '"%s"' % args.sourcespace
-    ] + (['--isolated'] if args.isolated else []))
+    ] + (['--isolated'] if args.isolated else []), shell=True)
     # Run tests
     ret_test = job.run([
-        job.python, '-u', ament_py, 'test',
+        '"%s"' % job.python, '-u', ament_py, 'test',
         '--build-space', '"%s"' % args.buildspace,
         '--install-space', '"%s"' % args.installspace,
         # Skip building and installing, since we just did that successfully.
         '--skip-build', '--skip-install',
         '"%s"' % args.sourcespace
-    ] + (['--isolated'] if args.isolated else []), exit_on_error=False)
+    ] + (['--isolated'] if args.isolated else []), exit_on_error=False, shell=True)
     info("ament.py test returned: '{0}'".format(ret_test))
     # Collect the test results
     ret_test_results = job.run(
-        [job.python, '-u', ament_py, 'test_results', '"%s"' % args.buildspace],
-        exit_on_error=False
+        ['"%s"' % job.python, '-u', ament_py, 'test_results', '"%s"' % args.buildspace],
+        exit_on_error=False, shell=True
     )
     info("ament.py test_results returned: '{0}'".format(ret_test_results))
     # Uncomment this line to failing tests a failrue of this command.
@@ -191,14 +191,15 @@ def run(args, build_function):
             job.push_python(venv_python)  # job.python is now venv_python
             job.show_env()
         # Update setuptools
-        job.run([job.python, '-m', 'pip', 'install', '-U', 'pip', 'setuptools'])
+        job.run(['"%s"' % job.python, '-m', 'pip', 'install', '-U', 'pip', 'setuptools'],
+                shell=True)
         # Print setuptools version
-        job.run([job.python, '-c', '"import setuptools; print(setuptools.__version__)"'],
+        job.run(['"%s"' % job.python, '-c', '"import setuptools; print(setuptools.__version__)"'],
                 shell=True)
         # Print the pip version
-        job.run([job.python, '-m', 'pip', '--version'])
+        job.run(['"%s"' % job.python, '-m', 'pip', '--version'], shell=True)
         # Install pip dependencies
-        job.run([job.python, '-m', 'pip', 'install', '-U'] + pip_dependencies)
+        job.run(['"%s"' % job.python, '-m', 'pip', 'install', '-U'] + pip_dependencies, shell=True)
         # Get the repositories
         job.run(['curl', '-sk', args.repo_file_url, '-o', 'ros2.repos'])
         # Show the contents
@@ -208,24 +209,31 @@ def run(args, build_function):
         # Use the repository listing and vcstool to fetch repositories
         if not os.path.exists(args.sourcespace):
             os.makedirs(args.sourcespace)
-        job.run(['vcs', 'import', '"%s"' % args.sourcespace, '--input', 'ros2.repos'], shell=True)
+        # OS X can't invoke a file which has a space in the shebang line
+        # therefore invoking vcs explicitly through Python
+        if args.do_venv:
+            vcs_cmd = ['"%s"' % job.python, '"%s"' % os.path.join(venv_path, 'bin', 'vcs')]
+        else:
+            vcs_cmd = ['vcs']
+        job.run(vcs_cmd + ['import', '"%s"' % args.sourcespace, '--input', 'ros2.repos'],
+                shell=True)
         # Attempt to switch all the repositories to a given branch
         if args.test_branch is not None:
             info("Attempting to switch all repositories to the '{0}' branch"
                  .format(args.test_branch))
-            vcs_custom_cmd = ['vcs', 'custom', '.', '--args', 'checkout', args.test_branch]
+            vcs_custom_cmd = vcs_cmd + ['custom', '.', '--args', 'checkout', args.test_branch]
             ret = job.run(vcs_custom_cmd, exit_on_error=False)
             info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
             print()
         # Attempt to rebase all the repositories to the master branch
         if args.test_branch is not None:
             info("Attempting to rebase all repositories to the 'master' branch")
-            vcs_custom_cmd = ['vcs', 'custom', '.', '--git', '--args', 'rebase', 'master']
+            vcs_custom_cmd = vcs_cmd + ['custom', '.', '--git', '--args', 'rebase', 'master']
             ret = job.run(vcs_custom_cmd)
             info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
             print()
         # Show the latest commit log on each repository (includes the commit hash).
-        job.run(['vcs', 'log', '-l1', 'src'])
+        job.run(vcs_cmd + ['log', '-l1', '"%s"' % args.sourcespace], shell=True)
         # Allow the batch job to push custom sourcing onto the run command
         job.setup_env()
 

@@ -20,6 +20,16 @@ import sys
 # Make sure we're using Python3
 assert sys.version.startswith('3'), "This script is only meant to work with Python3"
 
+# Make sure to get osrf_pycommon from the vendor folder
+vendor_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'vendor'))
+sys.path.insert(0, os.path.join(vendor_path, 'osrf_pycommon'))
+import osrf_pycommon
+# Assert that we got it from the right place
+assert osrf_pycommon.__file__.startswith(vendor_path), \
+    ("osrf_pycommon imported from '{0}' which is not in the vendor folder '{1}'"
+     .format(osrf_pycommon.__file__, vendor_path))
+from osrf_pycommon.cli_utils.common import extract_argument_group
+
 from .util import change_directory
 from .util import clean_workspace
 from .util import force_color
@@ -83,8 +93,14 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
         parser.add_argument(
             '--ros1-path', default=None,
             help="path of ROS 1 workspace to be sourced")
+    parser.add_argument(
+        '--ament-args', default=None,
+        help='arguments passed to ament')
 
-    args = parser.parse_args(sysargv)
+    argv = sysargv[1:] if sysargv is not None else sys.argv[1:]
+    argv, ament_args = extract_argument_group(argv, '--ament-args')
+    args = parser.parse_args(argv)
+    args.ament_args = ament_args
     if skip_white_space_in:
         args.white_space_in = None
     if skip_connext:
@@ -104,7 +120,7 @@ def build_and_test(args, job):
         '--build-space', '"%s"' % args.buildspace,
         '--install-space', '"%s"' % args.installspace,
         '"%s"' % args.sourcespace
-    ] + (['--isolated'] if args.isolated else []), shell=True)
+    ] + (['--isolated'] if args.isolated else []) + args.ament_args, shell=True)
     # Run tests
     ret_test = job.run([
         '"%s"' % job.python, '-u', ament_py, 'test',
@@ -113,7 +129,8 @@ def build_and_test(args, job):
         # Skip building and installing, since we just did that successfully.
         '--skip-build', '--skip-install',
         '"%s"' % args.sourcespace
-    ] + (['--isolated'] if args.isolated else []), exit_on_error=False, shell=True)
+    ] + (['--isolated'] if args.isolated else []) + args.ament_args,
+        exit_on_error=False, shell=True)
     info("ament.py test returned: '{0}'".format(ret_test))
     # Collect the test results
     ret_test_results = job.run(

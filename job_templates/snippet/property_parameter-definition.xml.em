@@ -38,5 +38,10 @@ This is always in addition to OpenSplice.</description>
           <description>By setting this to True, the build will use the --isolated option.</description>
           <defaultValue>false</defaultValue>
         </hudson.model.BooleanParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>CI_AMENT_ARGS</name>
+          <description>Additional arguments passed to ament.</description>
+          <defaultValue></defaultValue>
+        </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>

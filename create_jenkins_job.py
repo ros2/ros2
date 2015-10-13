@@ -66,6 +66,7 @@ def main(argv=None):
         'ci_scripts_default_branch': args.ci_scripts_default_branch,
         'time_trigger_spec': '',
         'mailer_recipients': '',
+        'ament_args_default': '',
     }
 
     jenkins = connect(args.jenkins_url)
@@ -111,6 +112,7 @@ def main(argv=None):
         job_name = 'ros2_batch_ci_' + os_name + '_nightly'
         job_data['time_trigger_spec'] = '0 10 * * *'
         job_data['mailer_recipients'] = 'ros@osrfoundation.org'
+        job_data['ament_args_default'] = '--ctest-args --repeat-until-fail 20'
         job_config = expand_template('ros2_batch_ci_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 

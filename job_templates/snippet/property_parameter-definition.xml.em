@@ -41,7 +41,7 @@ This is always in addition to OpenSplice.</description>
         <hudson.model.StringParameterDefinition>
           <name>CI_AMENT_ARGS</name>
           <description>Additional arguments passed to ament.</description>
-          <defaultValue></defaultValue>
+          <defaultValue>@(ament_args_default)</defaultValue>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>

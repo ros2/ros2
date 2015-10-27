@@ -29,6 +29,9 @@ RUN pip3 install -U setuptools pip virtualenv
 # Install the OpenSplice binary from the OSRF repositories.
 RUN apt-get update && apt-get install -y libopensplice64
 
+# Install Poco
+RUN apt-get update && apt-get install -y libpoco-dev
+
 # Install OpenCV
 RUN apt-get update && apt-get install -y libopencv-dev
 

@@ -271,8 +271,12 @@ def run(args, build_function):
             vcs_cmd = ['vcs']
         job.run(vcs_cmd + ['import', '"%s"' % args.sourcespace, '--input', 'ros2.repos'],
                 shell=True)
-        # Attempt to switch all the repositories to a given branch
         if args.test_branch is not None:
+            # Store current branch as well-known branch name for later rebasing
+            info("Attempting to create a well known branch name for all the default branches")
+            job.run(vcs_cmd + ['custom', '.', '--git', '--args', 'checkout', '-b', '__ci_default'])
+
+            # Attempt to switch all the repositories to a given branch
             info("Attempting to switch all repositories to the '{0}' branch"
                  .format(args.test_branch))
             # use -b and --track to checkout correctly when file/folder with the same name exists
@@ -282,10 +286,10 @@ def run(args, build_function):
             ret = job.run(vcs_custom_cmd, exit_on_error=False)
             info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
             print()
-        # Attempt to rebase all the repositories to the master branch
-        if args.test_branch is not None:
-            info("Attempting to rebase all repositories to the 'master' branch")
-            vcs_custom_cmd = vcs_cmd + ['custom', '.', '--git', '--args', 'rebase', 'master']
+
+            # Attempt to rebase all the repositories to the __ci_default branch
+            info("Attempting to rebase all repositories to the '__ci_default' branch")
+            vcs_custom_cmd = vcs_cmd + ['custom', '.', '--git', '--args', 'rebase', '__ci_default']
             ret = job.run(vcs_custom_cmd)
             info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
             print()

@@ -36,7 +36,7 @@ This is always in addition to OpenSplice.</description>
         <hudson.model.BooleanParameterDefinition>
           <name>CI_ISOLATED</name>
           <description>By setting this to True, the build will use the --isolated option.</description>
-          <defaultValue>false</defaultValue>
+          <defaultValue>true</defaultValue>
         </hudson.model.BooleanParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>CI_AMENT_ARGS</name>

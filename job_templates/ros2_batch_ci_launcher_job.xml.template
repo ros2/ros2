@@ -6,6 +6,7 @@
   <properties>
 @(SNIPPET(
     'property_parameter-definition',
+    ament_args_default='',
 ))@
     <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
       <requeueJob>true</requeueJob>

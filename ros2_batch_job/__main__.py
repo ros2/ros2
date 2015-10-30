@@ -84,6 +84,9 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
             '--connext', default=False, action='store_true',
             help="try to build with connext")
     parser.add_argument(
+        '--opensplice', default=False, action='store_true',
+        help="try to build with OpenSplice")
+    parser.add_argument(
         '--isolated', default=False, action='store_true',
         help="build and install each package a separate folders")
     parser.add_argument(

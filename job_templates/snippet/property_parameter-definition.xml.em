@@ -29,8 +29,12 @@ This tests the robustness to whitespace being within the different paths.</descr
         </hudson.model.BooleanParameterDefinition>
         <hudson.model.BooleanParameterDefinition>
           <name>CI_USE_CONNEXT</name>
-          <description>By setting this to True, the build will attempt to use RTI&apos;s DDS.
-This is always in addition to OpenSplice.</description>
+          <description>By setting this to True, the build will attempt to use RTI&apos;s Connext.</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>CI_USE_OPENSPLICE</name>
+          <description>By setting this to True, the build will attempt to use PrismTech&apos;s OpenSplice. On Linux and OS X OpenSplice is always being used despite the setting of this checkbox.</description>
           <defaultValue>true</defaultValue>
         </hudson.model.BooleanParameterDefinition>
         <hudson.model.BooleanParameterDefinition>

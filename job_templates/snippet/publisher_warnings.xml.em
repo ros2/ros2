@@ -1,0 +1,39 @@
+    <hudson.plugins.warnings.WarningsPublisher plugin="warnings@@4.48">
+      <healthy/>
+      <unHealthy/>
+      <thresholdLimit>low</thresholdLimit>
+      <pluginName>[WARNINGS] </pluginName>
+      <defaultEncoding/>
+      <canRunOnFailed>false</canRunOnFailed>
+      <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
+      <useStableBuildAsReference>false</useStableBuildAsReference>
+      <useDeltaValues>false</useDeltaValues>
+      <thresholds plugin="analysis-core@@1.72">
+        <unstableTotalAll>0</unstableTotalAll>
+        <unstableTotalHigh/>
+        <unstableTotalNormal/>
+        <unstableTotalLow/>
+        <failedTotalAll/>
+        <failedTotalHigh/>
+        <failedTotalNormal/>
+        <failedTotalLow/>
+      </thresholds>
+      <shouldDetectModules>false</shouldDetectModules>
+      <dontComputeNew>true</dontComputeNew>
+      <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
+      <excludePattern>.*Microsoft.CppCommon.targets</excludePattern>
+      <parserConfigurations/>
+      <consoleParsers>
+        <hudson.plugins.warnings.ConsoleParser>
+@[if os_name == 'linux']@
+          <parserName>GNU C Compiler 4 (gcc)</parserName>
+@[elif os_name == 'osx']@
+          <parserName>Clang (LLVM based)</parserName>
+@[elif os_name == 'windows']@
+          <parserName>MSBuild</parserName>
+@[else]@
+@{assert 'Unknown os_name: ' + os_name}@
+@[end if]@
+        </hudson.plugins.warnings.ConsoleParser>
+      </consoleParsers>
+    </hudson.plugins.warnings.WarningsPublisher>

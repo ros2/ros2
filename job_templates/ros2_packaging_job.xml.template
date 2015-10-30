@@ -126,6 +126,10 @@ python -u run_ros2_packaging.py %CI_ARGS%
     </hudson.tasks.@(shell_type)>
   </builders>
   <publishers>
+@(SNIPPET(
+    'publisher_warnings',
+    os_name=os_name,
+))@
     <hudson.tasks.ArtifactArchiver>
       <artifacts>workspace/ros2-package-*.*</artifacts>
       <allowEmptyArchive>false</allowEmptyArchive>

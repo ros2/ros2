@@ -61,7 +61,8 @@
       <scriptSource class="hudson.plugins.groovy.StringScriptSource">
         <command><![CDATA[build.setDescription("""\
 branch: ${build.buildVariableResolver.resolve('CI_BRANCH_TO_TEST')}, <br/>
-connext: ${build.buildVariableResolver.resolve('CI_USE_CONNEXT')}, <br/>
+use_connext: ${build.buildVariableResolver.resolve('CI_USE_CONNEXT')}, <br/>
+use_opensplice: ${build.buildVariableResolver.resolve('CI_USE_OPENSPLICE')}, <br/>
 ci_branch: ${build.buildVariableResolver.resolve('CI_SCRIPTS_BRANCH')}, <br/>
 repos_url: ${build.buildVariableResolver.resolve('CI_ROS2_REPOS_URL')}, <br/>
 use_whitespace: ${build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PATHS')}, <br/>
@@ -85,6 +86,9 @@ if [ "$CI_USE_WHITESPACE_IN_PATHS" = "true" ]; then
 fi
 if [ "$CI_USE_CONNEXT" = "true" ]; then
   export CI_ARGS="$CI_ARGS --connext"
+fi
+if [ "$CI_USE_OPENSPLICE" = "true" ]; then
+  export CI_ARGS="$CI_ARGS --opensplice"
 fi
 if [ -n "${CI_ROS2_REPOS_URL+x}" ]; then
   export CI_ARGS="$CI_ARGS --repo-file-url $CI_ROS2_REPOS_URL"
@@ -117,6 +121,9 @@ if "%CI_USE_WHITESPACE_IN_PATHS%" == "true" (
 )
 if "%CI_USE_CONNEXT%" == "true" (
   set "CI_ARGS=%CI_ARGS% --connext"
+)
+if "%CI_USE_OPENSPLICE%" == "true" (
+  set "CI_ARGS=%CI_ARGS% --opensplice"
 )
 if "%CI_ROS2_REPOS_URL%" NEQ "" (
   set "CI_ARGS=%CI_ARGS% --repo-file-url %CI_ROS2_REPOS_URL%"

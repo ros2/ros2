@@ -90,6 +90,7 @@ export CI_ARGS="--do-venv --force-ansi-color"
 if [ -n "${CI_BRANCH_TO_TEST+x}" ]; then
   export CI_ARGS="$CI_ARGS --test-branch $CI_BRANCH_TO_TEST"
 fi
+export CI_ARGS="$CI_ARGS --opensplice"
 if [ -n "${CI_ROS2_REPOS_URL+x}" ]; then
   export CI_ARGS="$CI_ARGS --repo-file-url $CI_ROS2_REPOS_URL"
 fi
@@ -112,6 +113,7 @@ set "CI_ARGS=--force-ansi-color"
 if "%CI_BRANCH_TO_TEST%" NEQ "" (
   set "CI_ARGS=%CI_ARGS% --test-branch %CI_BRANCH_TO_TEST%"
 )
+set "CI_ARGS=%CI_ARGS% --opensplice"
 if "%CI_ROS2_REPOS_URL%" NEQ "" (
   set "CI_ARGS=%CI_ARGS% --repo-file-url %CI_ROS2_REPOS_URL%"
 )

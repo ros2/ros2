@@ -5,6 +5,9 @@ MAINTAINER Dirk Thomas <dthomas@osrfoundation.org>
 # See: http://askubuntu.com/questions/506158/unable-to-initialize-frontend-dialog-when-using-ssh
 ENV DEBIAN_FRONTEND noninteractive
 
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+
 # Get curl for fetching the repo keys.
 RUN apt-get install -y curl
 

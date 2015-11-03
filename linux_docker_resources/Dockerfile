@@ -23,7 +23,7 @@ RUN curl --silent http://packages.osrfoundation.org/gazebo.key | sudo apt-key ad
 RUN apt-get update && apt-get install -y build-essential cmake pkg-config python3-empy python3-setuptools python3-vcstool
 
 # Install build and test dependencies of ROS 2 packages.
-RUN apt-get update && apt-get install -y clang-format-3.4 cppcheck git libgtest-dev pyflakes python3-coverage python3-mock python3-nose python3-pep8 uncrustify
+RUN apt-get update && apt-get install -y clang-format-3.4 cppcheck git pyflakes python3-coverage python3-mock python3-nose python3-pep8 uncrustify
 
 # Install and self update pip/setuptools to the latest version.
 RUN apt-get update && apt-get install -y python3-pip

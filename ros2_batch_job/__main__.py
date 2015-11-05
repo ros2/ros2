@@ -168,6 +168,11 @@ def run(args, build_function):
     args.buildspace = 'build space' if 'buildspace' in args.white_space_in else 'build'
     args.installspace = 'install space' if 'installspace' in args.white_space_in else 'install'
 
+    if args.disable_connext_static:
+        os.environ["CONNEXT_STATIC_DISABLE"] = '1'
+    if args.disable_connext_dynamic:
+        os.environ["CONNEXT_DYNAMIC_DISABLE"] = '1'
+
     platform_name = platform.platform().lower()
     if args.os == 'linux' or platform_name.startswith('linux'):
         args.os = 'linux'

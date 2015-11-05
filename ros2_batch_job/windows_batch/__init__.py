@@ -70,6 +70,10 @@ class WindowsBatchJob(BatchJob):
                 f.write('call "%s"%s' % (connext_env_file, os.linesep))
             if opensplice_env_file is not None:
                 f.write('call "%s"%s' % (opensplice_env_file, os.linesep))
+            if self.args.disable_connext_static:
+                f.write('set CONNEXT_STATIC_DISABLE=1' + os.linesep)
+            if self.args.disable_connext_dynamic:
+                f.write('set CONNEXT_DYNAMIC_DISABLE=1' + os.linesep)
             f.write("%*" + os.linesep)
             f.write("if %ERRORLEVEL% NEQ 0 exit /b %ERRORLEVEL%" + os.linesep)
 

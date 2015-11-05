@@ -83,6 +83,12 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
         parser.add_argument(
             '--connext', default=False, action='store_true',
             help="try to build with connext")
+        parser.add_argument(
+            '--disable-connext-static', default=False, action='store_true',
+            help="disable connext static")
+        parser.add_argument(
+            '--disable-connext-dynamic', default=False, action='store_true',
+            help="disable connext dynamic")
     parser.add_argument(
         '--opensplice', default=False, action='store_true',
         help="try to build with OpenSplice")

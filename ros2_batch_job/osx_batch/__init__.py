@@ -67,6 +67,12 @@ class OSXBatchJob(BatchJob):
         def with_vendors(cmd, **kwargs):
             # Ensure shell is on since we're using &&
             kwargs['shell'] = True
+            # Extend the environment if needed.
+            env = kwargs.setdefault('env', dict(os.environ))
+            if self.args.disable_connext_static:
+                env["CONNEXT_STATIC_DISABLE"] = '1'
+            if self.args.disable_connext_dynamic:
+                env["CONNEXT_DYNAMIC_DISABLE"] = '1'
             # If the connext file is there, source it.
             if connext_env_file is not None:
                 cmd = ['.', '"%s"' % connext_env_file, '&&'] + cmd

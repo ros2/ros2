@@ -33,6 +33,16 @@ This tests the robustness to whitespace being within the different paths.</descr
           <defaultValue>true</defaultValue>
         </hudson.model.BooleanParameterDefinition>
         <hudson.model.BooleanParameterDefinition>
+          <name>CI_DISABLE_CONNEXT_STATIC</name>
+          <description>By setting this to True, the build will disable the Connext static rmw implementation.</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>CI_DISABLE_CONNEXT_DYNAMIC</name>
+          <description>By setting this to True, the build will disable the Connext dynamic rmw implementation.</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
           <name>CI_USE_OPENSPLICE</name>
           <description>By setting this to True, the build will attempt to use PrismTech&apos;s OpenSplice. On Linux and OS X OpenSplice is always being used despite the setting of this checkbox.</description>
           <defaultValue>true</defaultValue>

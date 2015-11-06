@@ -83,6 +83,12 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
         parser.add_argument(
             '--connext', default=False, action='store_true',
             help="try to build with connext")
+        parser.add_argument(
+            '--disable-connext-static', default=False, action='store_true',
+            help="disable connext static")
+        parser.add_argument(
+            '--disable-connext-dynamic', default=False, action='store_true',
+            help="disable connext dynamic")
     parser.add_argument(
         '--opensplice', default=False, action='store_true',
         help="try to build with OpenSplice")
@@ -161,6 +167,11 @@ def run(args, build_function):
     args.sourcespace = 'source space' if 'sourcespace' in args.white_space_in else 'src'
     args.buildspace = 'build space' if 'buildspace' in args.white_space_in else 'build'
     args.installspace = 'install space' if 'installspace' in args.white_space_in else 'install'
+
+    if args.disable_connext_static:
+        os.environ["CONNEXT_STATIC_DISABLE"] = '1'
+    if args.disable_connext_dynamic:
+        os.environ["CONNEXT_DYNAMIC_DISABLE"] = '1'
 
     platform_name = platform.platform().lower()
     if args.os == 'linux' or platform_name.startswith('linux'):

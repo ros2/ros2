@@ -110,7 +110,7 @@ def main(argv=None):
 
         # configure nightly triggered job
         job_name = 'ros2_batch_ci_' + os_name + '_nightly'
-        job_data['time_trigger_spec'] = '0 10 * * *'
+        job_data['time_trigger_spec'] = '0 11 * * *'
         job_data['mailer_recipients'] = 'ros@osrfoundation.org'
         job_data['ament_args_default'] = '--ctest-args --repeat-until-fail 20'
         job_config = expand_template('ros2_batch_ci_job.xml.template', job_data)

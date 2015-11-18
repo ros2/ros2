@@ -2,7 +2,7 @@
 <project>
   <actions/>
   <description>
-    Note: Connext is always disabled on the Windows job, even when selected explicitly.
+    Note: The Windows jobs ignore the middleware selection flags.
   </description>
   <keepDependencies>false</keepDependencies>
   <properties>
@@ -28,58 +28,42 @@
   <concurrentBuild>false</concurrentBuild>
   <builders/>
   <publishers>
+@[for os_name, os_data in os_specific_data.items()]@
     <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@@2.28">
       <configs>
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
           <configs>
             <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
-          </configs>
-          <projects>ros2_batch_ci_linux</projects>
-          <condition>SUCCESS</condition>
-          <triggerWithNoParameters>false</triggerWithNoParameters>
-        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-      </configs>
-    </hudson.plugins.parameterizedtrigger.BuildTrigger>
-    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@@2.28">
-      <configs>
-        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-          <configs>
-            <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
-          </configs>
-          <projects>ros2_batch_ci_osx</projects>
-          <condition>SUCCESS</condition>
-          <triggerWithNoParameters>false</triggerWithNoParameters>
-        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-      </configs>
-    </hudson.plugins.parameterizedtrigger.BuildTrigger>
-    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@@2.28">
-      <configs>
-        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-          <configs>
-            <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
+@[if os_name.startswith('windows')]@
             <hudson.plugins.parameterizedtrigger.BooleanParameters>
               <configs>
                 <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
                   <name>CI_USE_CONNEXT</name>
-                  <value>false</value>
+                  <value>@(os_data['use_connext_default'])</value>
                 </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
                 <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
                   <name>CI_DISABLE_CONNEXT_STATIC</name>
-                  <value>false</value>
+                  <value>@(os_data['disable_connext_static_default'])</value>
                 </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
                 <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
                   <name>CI_DISABLE_CONNEXT_DYNAMIC</name>
-                  <value>false</value>
+                  <value>@(os_data['disable_connext_dynamic_default'])</value>
+                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                  <name>CI_USE_OPENSPLICE</name>
+                  <value>@(os_data['use_opensplice_default'])</value>
                 </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
               </configs>
             </hudson.plugins.parameterizedtrigger.BooleanParameters>
+@[end if]@
           </configs>
-          <projects>ros2_batch_ci_windows</projects>
+          <projects>@(os_data['job_name'])</projects>
           <condition>SUCCESS</condition>
           <triggerWithNoParameters>false</triggerWithNoParameters>
         </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
       </configs>
     </hudson.plugins.parameterizedtrigger.BuildTrigger>
+@[end for]@
   </publishers>
   <buildWrappers/>
 </project>

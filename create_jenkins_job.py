@@ -87,7 +87,7 @@ def main(argv=None):
             'ci_scripts_repository': args.ci_scripts_repository.replace(
                 'git@github.com:', 'https://github.com/'),
         },
-        'windows': {
+        'windows_opensplice': {
             'label_expression': 'windows_slave_eatable',
             'shell_type': 'BatchFile',
             'use_connext_default': 'false',
@@ -141,7 +141,15 @@ def main(argv=None):
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 
     # configure the launch job
-    job_data = {'label_expression': 'master'}
+    os_specific_data = {}
+    for os_name, os_data in os_configs.items():
+        os_specific_data[os_name] = dict(data)
+        os_specific_data[os_name].update(os_configs[os_name])
+        os_specific_data[os_name]['job_name'] = 'ros2_batch_ci_' + os_name
+    job_data = {
+        'label_expression': 'master',
+        'os_specific_data': os_specific_data,
+    }
     job_config = expand_template('ros2_batch_ci_launcher_job.xml.template', job_data)
     configure_job(jenkins, 'ros2_batch_ci_launcher', job_config, **jenkins_kwargs)
 

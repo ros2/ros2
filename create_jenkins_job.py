@@ -66,6 +66,10 @@ def main(argv=None):
         'ci_scripts_default_branch': args.ci_scripts_default_branch,
         'time_trigger_spec': '',
         'mailer_recipients': '',
+        'use_connext_default': 'true',
+        'disable_connext_static_default': 'false',
+        'disable_connext_dynamic_default': 'false',
+        'use_opensplice_default': 'true',
         'ament_args_default': '',
     }
 
@@ -86,6 +90,26 @@ def main(argv=None):
         'windows': {
             'label_expression': 'windows_slave_eatable',
             'shell_type': 'BatchFile',
+            'use_connext_default': 'false',
+            'disable_connext_static_default': 'false',
+            'disable_connext_dynamic_default': 'false',
+            'use_opensplice_default': 'true',
+        },
+        'windows_connext_static': {
+            'label_expression': 'windows_slave_eatable',
+            'shell_type': 'BatchFile',
+            'use_connext_default': 'true',
+            'disable_connext_static_default': 'false',
+            'disable_connext_dynamic_default': 'true',
+            'use_opensplice_default': 'false',
+        },
+        'windows_connext_dynamic': {
+            'label_expression': 'windows_slave_eatable',
+            'shell_type': 'BatchFile',
+            'use_connext_default': 'true',
+            'disable_connext_static_default': 'true',
+            'disable_connext_dynamic_default': 'false',
+            'use_opensplice_default': 'false',
         },
     }
 
@@ -98,7 +122,7 @@ def main(argv=None):
         # configure manual triggered job
         job_name = 'ros2_batch_ci_' + os_name
         job_data = dict(data)
-        job_data['os_name'] = os_name
+        job_data['os_name'] = 'windows' if os_name.startswith('windows') else os_name
         job_data.update(os_configs[os_name])
         job_config = expand_template('ros2_batch_ci_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)

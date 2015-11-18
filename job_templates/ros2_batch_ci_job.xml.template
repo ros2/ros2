@@ -9,6 +9,10 @@
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
 @(SNIPPET(
     'property_parameter-definition',
+    use_connext_default=use_connext_default,
+    disable_connext_static_default=disable_connext_static_default,
+    disable_connext_dynamic_default=disable_connext_dynamic_default,
+    use_opensplice_default=use_opensplice_default,
     ament_args_default=ament_args_default,
 ))@
     <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">

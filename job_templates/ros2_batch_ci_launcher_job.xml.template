@@ -1,11 +1,17 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
-  <description></description>
+  <description>
+    Note: Connext is always disabled on the Windows job, even when selected explicitly.
+  </description>
   <keepDependencies>false</keepDependencies>
   <properties>
 @(SNIPPET(
     'property_parameter-definition',
+    use_connext_default='true',
+    disable_connext_static_default='false',
+    disable_connext_dynamic_default='false',
+    use_opensplice_default='true',
     ament_args_default='',
 ))@
     <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
@@ -51,6 +57,22 @@
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
           <configs>
             <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
+            <hudson.plugins.parameterizedtrigger.BooleanParameters>
+              <configs>
+                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                  <name>CI_USE_CONNEXT</name>
+                  <value>false</value>
+                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                  <name>CI_DISABLE_CONNEXT_STATIC</name>
+                  <value>false</value>
+                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                  <name>CI_DISABLE_CONNEXT_DYNAMIC</name>
+                  <value>false</value>
+                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+              </configs>
+            </hudson.plugins.parameterizedtrigger.BooleanParameters>
           </configs>
           <projects>ros2_batch_ci_windows</projects>
           <condition>SUCCESS</condition>

@@ -163,7 +163,7 @@ def run(args, build_function):
     job = None
 
     args.white_space_in = args.white_space_in or []
-    args.workspace = 'work space' if 'workspace' in args.white_space_in else 'workspace'
+    args.workspace = 'work space' if 'workspace' in args.white_space_in else 'ws'
     args.sourcespace = 'source space' if 'sourcespace' in args.white_space_in else 'src'
     args.buildspace = 'build space' if 'buildspace' in args.white_space_in else 'build'
     args.installspace = 'install space' if 'installspace' in args.white_space_in else 'install'

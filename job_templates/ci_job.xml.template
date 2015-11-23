@@ -4,11 +4,15 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@@1.12.1">
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@@1.14.0">
       <projectUrl>@(ci_scripts_repository)/</projectUrl>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
 @(SNIPPET(
     'property_parameter-definition',
+    use_connext_default=use_connext_default,
+    disable_connext_static_default=disable_connext_static_default,
+    disable_connext_dynamic_default=disable_connext_dynamic_default,
+    use_opensplice_default=use_opensplice_default,
     ament_args_default=ament_args_default,
 ))@
     <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
@@ -108,7 +112,7 @@ if [ -n "${CI_AMENT_ARGS+x}" ]; then
   export CI_ARGS="$CI_ARGS --ament-args $CI_AMENT_ARGS"
 fi
 
-rm -rf workspace "work space"
+rm -rf ws workspace "work space"
 
 @[if os_name == 'linux']@
 docker build -t ros2_batch_ci linux_docker_resources
@@ -149,7 +153,7 @@ if "%CI_AMENT_ARGS%" NEQ "" (
   set "CI_ARGS=%CI_ARGS% --ament-args %CI_AMENT_ARGS%"
 )
 
-rmdir /S /Q workspace "work space"
+rmdir /S /Q ws workspace "work space"
 
 echo Using args: %CI_ARGS%
 python -u run_ros2_batch.py %CI_ARGS%
@@ -164,7 +168,7 @@ python -u run_ros2_batch.py %CI_ARGS%
     os_name=os_name,
 ))@
     <hudson.plugins.cobertura.CoberturaPublisher plugin="cobertura@@1.9.7">
-      <coberturaReportFile>workspace/build*/*/coverage.xml</coberturaReportFile>
+      <coberturaReportFile>ws/build*/*/coverage.xml</coberturaReportFile>
       <onlyStable>false</onlyStable>
       <failUnhealthy>false</failUnhealthy>
       <failUnstable>false</failUnstable>
@@ -223,9 +227,9 @@ python -u run_ros2_batch.py %CI_ARGS%
       </failingTarget>
       <sourceEncoding>ASCII</sourceEncoding>
     </hudson.plugins.cobertura.CoberturaPublisher>
-    <xunit plugin="xunit@@1.96">
+    <xunit plugin="xunit@@1.98">
       <types>
-@[for prefix in ['workspace/build', 'work space/build space']]@
+@[for prefix in ['ws/build', 'work space/build space']]@
         <CTestType>
           <pattern>@(prefix)/*/Testing/*/Test.xml</pattern>
           <skipNoTestFiles>true</skipNoTestFiles>
@@ -269,7 +273,7 @@ python -u run_ros2_batch.py %CI_ARGS%
       </extraConfiguration>
     </xunit>
 @[if mailer_recipients]@
-    <hudson.tasks.Mailer plugin="mailer@@1.15">
+    <hudson.tasks.Mailer plugin="mailer@@1.16">
       <recipients>@(mailer_recipients)</recipients>
       <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
       <sendToIndividuals>false</sendToIndividuals>
@@ -277,8 +281,8 @@ python -u run_ros2_batch.py %CI_ARGS%
 @[end if]@
   </publishers>
   <buildWrappers>
-    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@@1.7.1" />
-    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@@0.4.1">
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@@1.7.2" />
+    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@@0.4.2">
       <colorMapName>xterm</colorMapName>
     </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
 @[if os_name != 'windows']@

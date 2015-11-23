@@ -4,7 +4,7 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@@1.12.1">
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@@1.14.0">
       <projectUrl>@(ci_scripts_repository)/</projectUrl>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
     <hudson.model.ParametersDefinitionProperty>
@@ -95,7 +95,7 @@ if [ -n "${CI_ROS2_REPOS_URL+x}" ]; then
   export CI_ARGS="$CI_ARGS --repo-file-url $CI_ROS2_REPOS_URL"
 fi
 
-rm -rf workspace
+rm -rf ws workspace
 
 @[if os_name == 'linux']@
 export CI_ARGS="$CI_ARGS --ros1-path /opt/ros/indigo"
@@ -118,7 +118,7 @@ if "%CI_ROS2_REPOS_URL%" NEQ "" (
   set "CI_ARGS=%CI_ARGS% --repo-file-url %CI_ROS2_REPOS_URL%"
 )
 
-rmdir /S /Q workspace "work space"
+rmdir /S /Q ws workspace
 
 echo Using args: %CI_ARGS%
 python -u run_ros2_packaging.py %CI_ARGS%
@@ -133,7 +133,7 @@ python -u run_ros2_packaging.py %CI_ARGS%
     os_name=os_name,
 ))@
     <hudson.tasks.ArtifactArchiver>
-      <artifacts>workspace/ros2-package-*.*</artifacts>
+      <artifacts>ws/ros2-package-*.*</artifacts>
       <allowEmptyArchive>false</allowEmptyArchive>
       <onlyIfSuccessful>true</onlyIfSuccessful>
       <fingerprint>false</fingerprint>
@@ -141,8 +141,8 @@ python -u run_ros2_packaging.py %CI_ARGS%
     </hudson.tasks.ArtifactArchiver>
   </publishers>
   <buildWrappers>
-    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@@1.7.1" />
-    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@@0.4.1">
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@@1.7.2" />
+    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@@0.4.2">
       <colorMapName>xterm</colorMapName>
     </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
 @[if os_name != 'windows']@

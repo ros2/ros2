@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>
+    Note: The Windows jobs ignore the middleware selection flags.
+  </description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+@(SNIPPET(
+    'property_parameter-definition',
+    use_connext_default='true',
+    disable_connext_static_default='false',
+    disable_connext_dynamic_default='false',
+    use_opensplice_default='true',
+    ament_args_default='',
+))@
+    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
+      <requeueJob>true</requeueJob>
+    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <assignedNode>@(label_expression)</assignedNode>
+  <canRoam>false</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders/>
+  <publishers>
+@[for os_name, os_data in os_specific_data.items()]@
+    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@@2.29">
+      <configs>
+        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+          <configs>
+            <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
+@[if os_name.startswith('windows')]@
+            <hudson.plugins.parameterizedtrigger.BooleanParameters>
+              <configs>
+                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                  <name>CI_USE_CONNEXT</name>
+                  <value>@(os_data['use_connext_default'])</value>
+                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                  <name>CI_DISABLE_CONNEXT_STATIC</name>
+                  <value>@(os_data['disable_connext_static_default'])</value>
+                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                  <name>CI_DISABLE_CONNEXT_DYNAMIC</name>
+                  <value>@(os_data['disable_connext_dynamic_default'])</value>
+                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+                  <name>CI_USE_OPENSPLICE</name>
+                  <value>@(os_data['use_opensplice_default'])</value>
+                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
+              </configs>
+            </hudson.plugins.parameterizedtrigger.BooleanParameters>
+@[end if]@
+          </configs>
+          <projects>@(os_data['job_name'])</projects>
+          <condition>SUCCESS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+      </configs>
+    </hudson.plugins.parameterizedtrigger.BuildTrigger>
+@[end for]@
+  </publishers>
+  <buildWrappers/>
+</project>

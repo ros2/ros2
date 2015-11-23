@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import argparse
+import collections
 import os
 import sys
 
@@ -43,7 +44,7 @@ template_prefix_path[:] = \
 def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
-    parser = argparse.ArgumentParser(description="Creates the 'ros2_batch_ci_osx' job on Jenkins")
+    parser = argparse.ArgumentParser(description="Creates the ros2 jobs on Jenkins")
     parser.add_argument(
         '--jenkins-url', '-u', default='http://ci.ros2.org',
         help="Url of the jenkins server to which the job should be added")
@@ -66,6 +67,10 @@ def main(argv=None):
         'ci_scripts_default_branch': args.ci_scripts_default_branch,
         'time_trigger_spec': '',
         'mailer_recipients': '',
+        'use_connext_default': 'true',
+        'disable_connext_static_default': 'false',
+        'disable_connext_dynamic_default': 'false',
+        'use_opensplice_default': 'true',
         'ament_args_default': '',
     }
 
@@ -83,9 +88,29 @@ def main(argv=None):
             'ci_scripts_repository': args.ci_scripts_repository.replace(
                 'git@github.com:', 'https://github.com/'),
         },
-        'windows': {
+        'windows_opensplice': {
             'label_expression': 'windows_slave_eatable',
             'shell_type': 'BatchFile',
+            'use_connext_default': 'false',
+            'disable_connext_static_default': 'false',
+            'disable_connext_dynamic_default': 'false',
+            'use_opensplice_default': 'true',
+        },
+        'windows_connext_static': {
+            'label_expression': 'windows_slave_eatable',
+            'shell_type': 'BatchFile',
+            'use_connext_default': 'true',
+            'disable_connext_static_default': 'false',
+            'disable_connext_dynamic_default': 'true',
+            'use_opensplice_default': 'false',
+        },
+        'windows_connext_dynamic': {
+            'label_expression': 'windows_slave_eatable',
+            'shell_type': 'BatchFile',
+            'use_connext_default': 'true',
+            'disable_connext_static_default': 'true',
+            'disable_connext_dynamic_default': 'false',
+            'use_opensplice_default': 'false',
         },
     }
 
@@ -96,30 +121,40 @@ def main(argv=None):
     # configure os specific jobs
     for os_name in sorted(os_configs.keys()):
         # configure manual triggered job
-        job_name = 'ros2_batch_ci_' + os_name
+        job_name = 'ci_' + os_name
         job_data = dict(data)
-        job_data['os_name'] = os_name
+        job_data['os_name'] = 'windows' if os_name.startswith('windows') else os_name
         job_data.update(os_configs[os_name])
-        job_config = expand_template('ros2_batch_ci_job.xml.template', job_data)
+        job_config = expand_template('ci_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 
-        # configure packaging job
-        job_name = 'ros2_packaging_' + os_name
-        job_config = expand_template('ros2_packaging_job.xml.template', job_data)
-        configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
+        # configure packaging job (skip non-opensplice Windows packaging jobs)
+        if not os_name.startswith('windows') or 'opensplice' in os_name:
+            job_name = 'packaging_' + os_name
+            job_config = expand_template('packaging_job.xml.template', job_data)
+            configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 
         # configure nightly triggered job
-        job_name = 'ros2_batch_ci_' + os_name + '_nightly'
+        job_name = 'nightly_' + os_name
         job_data['time_trigger_spec'] = '0 11 * * *'
         job_data['mailer_recipients'] = 'ros@osrfoundation.org'
         job_data['ament_args_default'] = '--ctest-args --repeat-until-fail 20'
-        job_config = expand_template('ros2_batch_ci_job.xml.template', job_data)
+        job_config = expand_template('ci_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 
     # configure the launch job
-    job_data = {'label_expression': 'master'}
-    job_config = expand_template('ros2_batch_ci_launcher_job.xml.template', job_data)
-    configure_job(jenkins, 'ros2_batch_ci_launcher', job_config, **jenkins_kwargs)
+    os_specific_data = collections.OrderedDict()
+    for os_name in sorted(os_configs.keys()):
+        os_data = os_configs[os_name]
+        os_specific_data[os_name] = dict(data)
+        os_specific_data[os_name].update(os_configs[os_name])
+        os_specific_data[os_name]['job_name'] = 'ci_' + os_name
+    job_data = {
+        'label_expression': 'master',
+        'os_specific_data': os_specific_data,
+    }
+    job_config = expand_template('ci_launcher_job.xml.template', job_data)
+    configure_job(jenkins, 'ci_launcher', job_config, **jenkins_kwargs)
 
 
 if __name__ == '__main__':

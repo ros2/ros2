@@ -115,6 +115,7 @@ fi
 rm -rf ws workspace "work space"
 
 @[if os_name == 'linux']@
+docker info
 docker build -t ros2_batch_ci linux_docker_resources
 echo "Using args: $CI_ARGS"
 docker run --privileged -e UID=`id -u` -e GID=`id -g` -e CI_ARGS="$CI_ARGS" -i -v `pwd`:/home/rosbuild/ci_scripts ros2_batch_ci

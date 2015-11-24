@@ -252,7 +252,10 @@ def run(args, build_function):
         if args.test_branch is not None:
             info("Attempting to switch all repositories to the '{0}' branch"
                  .format(args.test_branch))
-            vcs_custom_cmd = vcs_cmd + ['custom', '.', '--args', 'checkout', args.test_branch]
+            # use -b and --track to checkout correctly when file/folder with the same name exists
+            vcs_custom_cmd = vcs_cmd + [
+                'custom', '.', '--args', 'checkout',
+                '-b', args.test_branch, '--track', 'origin/' + args.test_branch]
             ret = job.run(vcs_custom_cmd, exit_on_error=False)
             info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
             print()

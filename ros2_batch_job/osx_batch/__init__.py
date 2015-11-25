@@ -27,7 +27,13 @@ class OSXBatchJob(BatchJob):
 
     def pre(self):
         # Prepend the PATH with `/usr/local/bin` for global Homebrew binaries.
-        os.environ['PATH'] = "/usr/local/bin" + os.pathsep + os.environ.get('PATH', '')
+        os.environ['PATH'] = '/usr/local/bin' + os.pathsep + os.environ.get('PATH', '')
+        # Check for ccache's directory, as installed by brew
+        ccache_exe_dir = '/usr/local/opt/ccache/libexec'
+        if os.path.isdir(ccache_exe_dir):
+            os.environ['PATH'] = ccache_exe_dir + os.pathsep + os.environ.get('PATH', '')
+        else:
+            warn('ccache does not appear to be installed; not modifying PATH')
         if 'LANG' not in os.environ:
             os.environ['LANG'] = 'en_US.UTF-8'
         os.environ['ROS_DOMAIN_ID'] = '111'

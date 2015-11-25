@@ -27,6 +27,13 @@ class LinuxBatchJob(BatchJob):
 
     def pre(self):
         os.environ['ROS_DOMAIN_ID'] = '108'
+        # Check for ccache's directory, as installed by apt-get
+        ccache_exe_dir = '/usr/lib/ccache'
+        if os.path.isdir(ccache_exe_dir):
+            os.environ['PATH'] = ccache_exe_dir + os.pathsep +\
+                os.environ.get('PATH', '')
+        else:
+            warn('ccache does not appear to be installed; not modifying PATH')
 
     def show_env(self):
         # Show the env

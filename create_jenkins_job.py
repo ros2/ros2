@@ -131,6 +131,9 @@ def main(argv=None):
         # configure packaging job (skip non-opensplice Windows packaging jobs)
         if not os_name.startswith('windows') or 'opensplice' in os_name:
             job_name = 'packaging_' + os_name
+            # Also make it nightly, as a sanity check
+            job_data['time_trigger_spec'] = '0 12 * * *'
+            job_data['mailer_recipients'] = 'ros@osrfoundation.org'
             job_config = expand_template('packaging_job.xml.template', job_data)
             configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 

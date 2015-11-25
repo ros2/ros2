@@ -114,6 +114,8 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
         args.white_space_in = None
     if skip_connext:
         args.connext = False
+        args.disable_connext_dynamic = False
+        args.disable_connext_static = False
     if not add_ros1:
         args.ros1_path = None
     return args

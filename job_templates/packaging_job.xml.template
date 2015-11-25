@@ -99,10 +99,11 @@ rm -rf ws workspace
 
 @[if os_name == 'linux']@
 export CI_ARGS="$CI_ARGS --ros1-path /opt/ros/indigo"
+mkdir -p $HOME/.ccache
 docker info
 docker build -t ros2_packaging linux_packaging_docker_resources
 echo "Using args: $CI_ARGS"
-docker run --privileged -e UID=`id -u` -e GID=`id -g` -e CI_ARGS="$CI_ARGS" -i -v `pwd`:/home/rosbuild/ci_scripts ros2_packaging
+docker run --privileged -e UID=`id -u` -e GID=`id -g` -e CI_ARGS="$CI_ARGS" -e CCACHE_DIR=/home/rosbuild/.ccache -i -v `pwd`:/home/rosbuild/ci_scripts -v $HOME/.ccache:/home/rosbuild/.ccache ros2_packaging
 @[else]@
 export CI_ARGS="$CI_ARGS --ros1-path /Users/osrf/indigo/install_isolated"
 echo "Using args: $CI_ARGS"

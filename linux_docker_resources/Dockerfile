@@ -45,6 +45,9 @@ ADD rticonnextdds-src/rticonnextdds-tools_5.2.0-1_amd64.deb /tmp/rticonnextdds-t
 # Install the eProsima dependencies
 RUN apt-get update && apt-get install -y libboost-chrono-dev libboost-date-time-dev libboost-regex-dev libboost-system-dev libboost-thread-dev
 
+# Install Poco
+RUN apt-get update && apt-get install -y libpoco-dev
+
 # Install OpenCV
 RUN apt-get update && apt-get install -y libopencv-dev
 

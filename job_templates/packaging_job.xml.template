@@ -68,7 +68,13 @@ To use the default branch on all repositories, use an empty string.</description
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <triggers/>
+  <triggers>@
+@[if time_trigger_spec]
+    <hudson.triggers.TimerTrigger>
+      <spec>@(time_trigger_spec)</spec>
+    </hudson.triggers.TimerTrigger>
+  @
+@[end if]</triggers>
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.plugins.groovy.SystemGroovy plugin="groovy@@1.27">

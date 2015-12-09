@@ -11,6 +11,9 @@ ENV LANG en_US.UTF-8
 # Get curl for fetching the repo keys.
 RUN apt-get install -y curl
 
+# Get https transport for APT
+RUN apt-get install -y apt-transport-https
+
 # Add the ROS repositories to the apt sources list.
 RUN echo "deb http://54.183.65.232/ubuntu/testing/ `lsb_release -cs` main" > /etc/apt/sources.list.d/ros-latest.list
 RUN curl --silent http://54.183.65.232/repos.key | sudo apt-key add -
@@ -18,6 +21,10 @@ RUN curl --silent http://54.183.65.232/repos.key | sudo apt-key add -
 # Add the OSRF repositories to the apt sources list.
 RUN echo "deb http://packages.osrfoundation.org/gazebo/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-latest.list
 RUN curl --silent http://packages.osrfoundation.org/gazebo.key | sudo apt-key add -
+
+# Add the Git-LFS repository.
+RUN echo "deb https://packagecloud.io/github/git-lfs/ubuntu/ `lsb_release -cs` main" > /etc/apt/sources.list.d/github_git-lfs.list
+RUN curl --silent https://packagecloud.io/gpg.key | sudo apt-key add -
 
 # Install some development tools.
 RUN apt-get update && apt-get install -y build-essential ccache cmake pkg-config python3-empy python3-setuptools python3-vcstool
@@ -47,6 +54,9 @@ RUN apt-get update && apt-get install -y libboost-chrono-dev libboost-date-time-
 
 # Install OpenCV
 RUN apt-get update && apt-get install -y libopencv-dev
+
+# Install Git-LFS
+RUN apt-get update && apt-get install -y git-lfs
 
 # Create a user to own the build output.
 RUN useradd -u 1234 -m rosbuild

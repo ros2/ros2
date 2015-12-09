@@ -25,6 +25,10 @@ echo "Enabling multicast..."
 ifconfig eth0 multicast
 echo "done."
 
+echo "Initializing Git-LFS..."
+sudo -H -u rosbuild -- git lfs install
+echo "done."
+
 case "${CI_ARGS}" in
   *--connext*)
     echo "Installing Connext..."

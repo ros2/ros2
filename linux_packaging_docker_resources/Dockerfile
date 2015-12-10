@@ -11,7 +11,7 @@ ENV LANG en_US.UTF-8
 # Get curl for fetching the repo keys.
 RUN apt-get install -y curl
 
-# Get https transport for APT
+# Get https transport for APT.
 RUN apt-get install -y apt-transport-https
 
 # Add the ROS repositories to the apt sources list.
@@ -39,19 +39,19 @@ RUN pip3 install -U setuptools pip virtualenv
 # Install the OpenSplice binary from the OSRF repositories.
 RUN apt-get update && apt-get install -y libopensplice64
 
-# Install OpenCV
+# Install OpenCV.
 RUN apt-get update && apt-get install -y libopencv-dev
 
-# Install Git-LFS
+# Install Git-LFS.
 RUN apt-get update && apt-get install -y git-lfs
 
-# automatic invalidation once every day
+# automatic invalidation once every day.
 RUN echo "@today_str"
 
 # Install build and test dependencies of ROS 2 packages.
 RUN apt-get update && apt-get install -y python-rospkg ros-indigo-catkin ros-indigo-common-msgs ros-indigo-roscpp ros-indigo-rosmsg
 
-# TODO hack to fix rosbag until official packages are available with the real fix
+# TODO hack to fix rosbag until official packages are available with the real fix.
 RUN sed -i 's/import roslz4//' /opt/ros/indigo/lib/python2.7/dist-packages/rosbag/bag.py
 
 # Create a user to own the build output.

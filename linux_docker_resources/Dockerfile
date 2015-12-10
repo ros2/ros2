@@ -11,7 +11,7 @@ ENV LANG en_US.UTF-8
 # Get curl for fetching the repo keys.
 RUN apt-get install -y curl
 
-# Get https transport for APT
+# Get https transport for APT.
 RUN apt-get install -y apt-transport-https
 
 # Add the ROS repositories to the apt sources list.
@@ -38,10 +38,10 @@ RUN pip3 install -U setuptools pip virtualenv
 
 # Install the OpenSplice binary from the OSRF repositories.
 RUN apt-get update && apt-get install -y libopensplice64
-# Update default domain id
+# Update default domain id.
 RUN sed -i "s/<Id>0<\/Id>/<Id>108<\/Id>/" /usr/etc/opensplice/config/ospl.xml
 
-# Install the RTI dependencies
+# Install the RTI dependencies.
 RUN apt-get update && apt-get install -y default-jre-headless
 
 # Add and install the RTI binaries we made.
@@ -49,13 +49,13 @@ ADD rticonnextdds-src/librticonnextdds52_5.2.0-1_amd64.deb /tmp/librticonnextdds
 ADD rticonnextdds-src/librticonnextdds52-dev_5.2.0-1_amd64.deb /tmp/librticonnextdds52-dev_5.2.0-1_amd64.deb
 ADD rticonnextdds-src/rticonnextdds-tools_5.2.0-1_amd64.deb /tmp/rticonnextdds-tools_5.2.0-1_amd64.deb
 
-# Install the eProsima dependencies
+# Install the eProsima dependencies.
 RUN apt-get update && apt-get install -y libboost-chrono-dev libboost-date-time-dev libboost-regex-dev libboost-system-dev libboost-thread-dev
 
-# Install OpenCV
+# Install OpenCV.
 RUN apt-get update && apt-get install -y libopencv-dev
 
-# Install Git-LFS
+# Install Git-LFS.
 RUN apt-get update && apt-get install -y git-lfs
 
 # Create a user to own the build output.

@@ -7,6 +7,9 @@
     <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@@1.14.0">
       <projectUrl>@(ci_scripts_repository)/</projectUrl>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
+      <requeueJob>true</requeueJob>
+    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
@@ -31,9 +34,6 @@ To use the default branch on all repositories, use an empty string.</description
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
-    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
-      <requeueJob>true</requeueJob>
-    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
   </properties>
   <scm class="hudson.plugins.git.GitSCM" plugin="git@@2.4.0">
     <configVersion>2</configVersion>
@@ -146,6 +146,7 @@ python -u run_ros2_packaging.py %CI_ARGS%
       <onlyIfSuccessful>true</onlyIfSuccessful>
       <fingerprint>false</fingerprint>
       <defaultExcludes>true</defaultExcludes>
+      <caseSensitive>true</caseSensitive>
     </hudson.tasks.ArtifactArchiver>
   </publishers>
   <buildWrappers>

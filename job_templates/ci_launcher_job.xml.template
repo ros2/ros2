@@ -6,6 +6,9 @@
   </description>
   <keepDependencies>false</keepDependencies>
   <properties>
+    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
+      <requeueJob>true</requeueJob>
+    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
 @(SNIPPET(
     'property_parameter-definition',
     use_connext_default='true',
@@ -14,9 +17,6 @@
     use_opensplice_default='true',
     ament_args_default='',
 ))@
-    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
-      <requeueJob>true</requeueJob>
-    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
   </properties>
   <scm class="hudson.scm.NullSCM"/>
   <assignedNode>@(label_expression)</assignedNode>

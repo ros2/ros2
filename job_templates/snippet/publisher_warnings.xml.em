@@ -13,14 +13,23 @@
         <unstableTotalHigh/>
         <unstableTotalNormal/>
         <unstableTotalLow/>
+        <unstableNewAll/>
+        <unstableNewHigh/>
+        <unstableNewNormal/>
+        <unstableNewLow/>
         <failedTotalAll/>
         <failedTotalHigh/>
         <failedTotalNormal/>
         <failedTotalLow/>
+        <failedNewAll/>
+        <failedNewHigh/>
+        <failedNewNormal/>
+        <failedNewLow/>
       </thresholds>
       <shouldDetectModules>false</shouldDetectModules>
       <dontComputeNew>true</dontComputeNew>
       <doNotResolveRelativePaths>true</doNotResolveRelativePaths>
+      <includePattern/>
       <excludePattern>.*Microsoft.CppCommon.targets</excludePattern>
       <parserConfigurations/>
       <consoleParsers>

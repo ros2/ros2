@@ -7,6 +7,9 @@
     <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@@1.14.0">
       <projectUrl>@(ci_scripts_repository)/</projectUrl>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
+      <requeueJob>true</requeueJob>
+    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
 @(SNIPPET(
     'property_parameter-definition',
     use_connext_default=use_connext_default,
@@ -15,9 +18,6 @@
     use_opensplice_default=use_opensplice_default,
     ament_args_default=ament_args_default,
 ))@
-    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
-      <requeueJob>true</requeueJob>
-    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
   </properties>
   <scm class="hudson.plugins.git.GitSCM" plugin="git@@2.4.0">
     <configVersion>2</configVersion>

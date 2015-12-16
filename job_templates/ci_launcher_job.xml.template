@@ -38,28 +38,6 @@
         <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
           <configs>
             <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
-@[if os_name.startswith('windows')]@
-            <hudson.plugins.parameterizedtrigger.BooleanParameters>
-              <configs>
-                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
-                  <name>CI_USE_CONNEXT</name>
-                  <value>@(os_data['use_connext_default'])</value>
-                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
-                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
-                  <name>CI_DISABLE_CONNEXT_STATIC</name>
-                  <value>@(os_data['disable_connext_static_default'])</value>
-                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
-                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
-                  <name>CI_DISABLE_CONNEXT_DYNAMIC</name>
-                  <value>@(os_data['disable_connext_dynamic_default'])</value>
-                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
-                <hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
-                  <name>CI_USE_OPENSPLICE</name>
-                  <value>@(os_data['use_opensplice_default'])</value>
-                </hudson.plugins.parameterizedtrigger.BooleanParameterConfig>
-              </configs>
-            </hudson.plugins.parameterizedtrigger.BooleanParameters>
-@[end if]@
           </configs>
           <projects>@(os_data['job_name'])</projects>
           <condition>SUCCESS</condition>

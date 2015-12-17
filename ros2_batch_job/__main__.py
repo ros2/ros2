@@ -16,6 +16,7 @@ import argparse
 import os
 import platform
 import sys
+from xml.etree import ElementTree
 
 # Make sure we're using Python3
 assert sys.version.startswith('3'), "This script is only meant to work with Python3"
@@ -154,6 +155,37 @@ def build_and_test(args, job):
     return 0
 
 
+def ignore_packages(package_names, basepath):
+    print('Trying to ignore the following packages:')
+    [print('- ' + name) for name in package_names]
+    for dirpath, dirnames, filenames in os.walk(basepath, followlinks=True):
+        if 'AMENT_IGNORE' in filenames:
+            del dirnames[:]
+            continue
+        manifest_file = os.path.join(dirpath, 'package.xml')
+        if os.path.exists(manifest_file):
+            with open(manifest_file, 'r') as h:
+                content = h.read()
+            try:
+                root = ElementTree.fromstring(content)
+            except Exception:
+                print("The manifest '%s' contains invalid XML" % manifest_file, file=sys.stderr)
+                raise
+            name_element = root.find('./name')
+            if name_element is None:
+                assert False, "The manifest '%s' doesn't contain a name tag" % manifest_file
+            if name_element.text in package_names:
+                marker_file = os.path.join(dirpath, 'AMENT_IGNORE')
+                with open(marker_file, 'w') as h:
+                    pass
+                print('Created marker file: ' + marker_file)
+            del dirnames[:]
+            continue
+        for dirname in dirnames:
+            if dirname.startswith('.'):
+                dirnames.remove(dirname)
+
+
 def run(args, build_function):
     if args.force_ansi_color:
         force_color()
@@ -270,6 +302,26 @@ def run(args, build_function):
             print()
         # Show the latest commit log on each repository (includes the commit hash).
         job.run(vcs_cmd + ['log', '-l1', '"%s"' % args.sourcespace], shell=True)
+
+        # create AMENT_IGNORE files in package folders which should not be used
+        blacklisted_packages = []
+        if not args.connext:
+            blacklisted_packages += [
+                'connext_cmake_module',
+                'rmw_connext_cpp',
+                'rmw_connext_dynamic_cpp',
+                'rmw_connext_shared_cpp',
+                'rosidl_typesupport_connext_cpp',
+            ]
+        if not args.opensplice:
+            blacklisted_packages += [
+                'opensplice_cmake_module',
+                'rmw_opensplice_cpp',
+                'rosidl_typesupport_opensplice_cpp',
+            ]
+        if blacklisted_packages:
+            ignore_packages(blacklisted_packages, args.sourcespace)
+
         # Allow the batch job to push custom sourcing onto the run command
         job.setup_env()
 

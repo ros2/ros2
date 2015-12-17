@@ -15,6 +15,7 @@
 import argparse
 import os
 import platform
+import subprocess
 import sys
 from xml.etree import ElementTree
 
@@ -122,20 +123,36 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
     return args
 
 
-def build_and_test(args, job):
-    ament_py = '"%s"' % os.path.join(
+def build_and_test(args, job, blacklisted_package_names=None):
+    ament_py = os.path.join(
         '.', args.sourcespace, 'ament', 'ament_tools', 'scripts', 'ament.py'
     )
+
+    if blacklisted_package_names:
+        print('Trying to ignore the following packages:')
+        [print('- ' + name) for name in blacklisted_package_names]
+        # create AMENT_IGNORE files in package folders which should not be used
+        output = subprocess.check_output(
+            [job.python, '-u', ament_py, 'list_packages', args.sourcespace])
+        for line in output.decode().splitlines():
+            package_name, package_path = line.split(' ', 1)
+            if package_name in blacklisted_package_names:
+                marker_file = os.path.join(args.sourcespace, package_path, 'AMENT_IGNORE')
+                print('Create marker file: ' + marker_file)
+                with open(marker_file, 'w'):
+                    pass
+
     # Now run ament build
     job.run([
-        '"%s"' % job.python, '-u', ament_py, 'build', '--build-tests',
+        '"%s"' % job.python, '-u', '"%s"' % ament_py, 'build', '--build-tests',
         '--build-space', '"%s"' % args.buildspace,
         '--install-space', '"%s"' % args.installspace,
         '"%s"' % args.sourcespace
     ] + (['--isolated'] if args.isolated else []) + args.ament_args, shell=True)
+
     # Run tests
     ret_test = job.run([
-        '"%s"' % job.python, '-u', ament_py, 'test',
+        '"%s"' % job.python, '-u', '"%s"' % ament_py, 'test',
         '--build-space', '"%s"' % args.buildspace,
         '--install-space', '"%s"' % args.installspace,
         # Skip building and installing, since we just did that successfully.
@@ -146,44 +163,13 @@ def build_and_test(args, job):
     info("ament.py test returned: '{0}'".format(ret_test))
     # Collect the test results
     ret_test_results = job.run(
-        ['"%s"' % job.python, '-u', ament_py, 'test_results', '"%s"' % args.buildspace],
+        ['"%s"' % job.python, '-u', '"%s"' % ament_py, 'test_results', '"%s"' % args.buildspace],
         exit_on_error=False, shell=True
     )
     info("ament.py test_results returned: '{0}'".format(ret_test_results))
     # Uncomment this line to failing tests a failrue of this command.
     # return 0 if ret_test == 0 and ret_testr == 0 else 1
     return 0
-
-
-def ignore_packages(package_names, basepath):
-    print('Trying to ignore the following packages:')
-    [print('- ' + name) for name in package_names]
-    for dirpath, dirnames, filenames in os.walk(basepath, followlinks=True):
-        if 'AMENT_IGNORE' in filenames:
-            del dirnames[:]
-            continue
-        manifest_file = os.path.join(dirpath, 'package.xml')
-        if os.path.exists(manifest_file):
-            with open(manifest_file, 'r') as h:
-                content = h.read()
-            try:
-                root = ElementTree.fromstring(content)
-            except Exception:
-                print("The manifest '%s' contains invalid XML" % manifest_file, file=sys.stderr)
-                raise
-            name_element = root.find('./name')
-            if name_element is None:
-                assert False, "The manifest '%s' doesn't contain a name tag" % manifest_file
-            if name_element.text in package_names:
-                marker_file = os.path.join(dirpath, 'AMENT_IGNORE')
-                with open(marker_file, 'w') as h:
-                    pass
-                print('Created marker file: ' + marker_file)
-            del dirnames[:]
-            continue
-        for dirname in dirnames:
-            if dirname.startswith('.'):
-                dirnames.remove(dirname)
 
 
 def run(args, build_function):
@@ -303,10 +289,9 @@ def run(args, build_function):
         # Show the latest commit log on each repository (includes the commit hash).
         job.run(vcs_cmd + ['log', '-l1', '"%s"' % args.sourcespace], shell=True)
 
-        # create AMENT_IGNORE files in package folders which should not be used
-        blacklisted_packages = []
+        blacklisted_package_names = []
         if not args.connext:
-            blacklisted_packages += [
+            blacklisted_package_names += [
                 'connext_cmake_module',
                 'rmw_connext_cpp',
                 'rmw_connext_dynamic_cpp',
@@ -314,18 +299,16 @@ def run(args, build_function):
                 'rosidl_typesupport_connext_cpp',
             ]
         if not args.opensplice:
-            blacklisted_packages += [
+            blacklisted_package_names += [
                 'opensplice_cmake_module',
                 'rmw_opensplice_cpp',
                 'rosidl_typesupport_opensplice_cpp',
             ]
-        if blacklisted_packages:
-            ignore_packages(blacklisted_packages, args.sourcespace)
 
         # Allow the batch job to push custom sourcing onto the run command
         job.setup_env()
 
-        return build_function(args, job)
+        return build_function(args, job, blacklisted_package_names)
 
 if __name__ == '__main__':
     sys.exit(main())

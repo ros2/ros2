@@ -92,6 +92,9 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
             '--disable-connext-dynamic', default=False, action='store_true',
             help="disable connext dynamic")
     parser.add_argument(
+        '--fastrtps', default=False, action='store_true',
+        help="try to build with FastRTPS")
+    parser.add_argument(
         '--opensplice', default=False, action='store_true',
         help="try to build with OpenSplice")
     parser.add_argument(
@@ -297,6 +300,13 @@ def run(args, build_function):
                 'rmw_connext_dynamic_cpp',
                 'rmw_connext_shared_cpp',
                 'rosidl_typesupport_connext_cpp',
+            ]
+        if not args.fastrtps:
+            blacklisted_package_names += [
+                'fastcdr',
+                'fastrtps',
+                'fastrtps_cmake_module',
+                'rmw_fastrtps_cpp',
             ]
         if not args.opensplice:
             blacklisted_package_names += [

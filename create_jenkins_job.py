@@ -70,6 +70,7 @@ def main(argv=None):
         'use_connext_default': 'true',
         'disable_connext_static_default': 'false',
         'disable_connext_dynamic_default': 'false',
+        'use_fastrtps_default': 'true',
         'use_opensplice_default': 'true',
         'ament_args_default': '',
     }

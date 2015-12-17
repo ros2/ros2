@@ -43,8 +43,13 @@ This tests the robustness to whitespace being within the different paths.</descr
           <defaultValue>@(disable_connext_dynamic_default)</defaultValue>
         </hudson.model.BooleanParameterDefinition>
         <hudson.model.BooleanParameterDefinition>
+          <name>CI_USE_FASTRTPS</name>
+          <description>By setting this to True, the build will attempt to use eProsima&apos;s FastRTPS.</description>
+          <defaultValue>@(use_fastrtps_default)</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
           <name>CI_USE_OPENSPLICE</name>
-          <description>By setting this to True, the build will attempt to use PrismTech&apos;s OpenSplice. On Linux and OS X OpenSplice is always being used despite the setting of this checkbox.</description>
+          <description>By setting this to True, the build will attempt to use PrismTech&apos;s OpenSplice.</description>
           <defaultValue>@(use_opensplice_default)</defaultValue>
         </hudson.model.BooleanParameterDefinition>
         <hudson.model.BooleanParameterDefinition>

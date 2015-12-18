@@ -273,7 +273,7 @@ def run(args, build_function):
                 shell=True)
         if args.test_branch is not None:
             # Store current branch as well-known branch name for later rebasing
-            info("Attempting to create a well known branch name for all the default branches")
+            info('Attempting to create a well known branch name for all the default branches')
             job.run(vcs_cmd + ['custom', '.', '--git', '--args', 'checkout', '-b', '__ci_default'])
 
             # Attempt to switch all the repositories to a given branch

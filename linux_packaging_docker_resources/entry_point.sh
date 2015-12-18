@@ -21,6 +21,10 @@ sed -i -e "s/rosbuild:x:$ORIG_GID:/rosbuild:x:$GID:/" /etc/group
 chown -R ${UID}:${GID} "${ORIG_HOME}"
 echo "done."
 
+echo "Initializing Git-LFS..."
+sudo -H -u rosbuild -- git lfs install
+echo "done."
+
 cd /home/rosbuild/ci_scripts
 
 exec sudo -H -u rosbuild -E -- /bin/sh -c "$*"

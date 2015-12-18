@@ -41,7 +41,7 @@ class WindowsBatchJob(BatchJob):
         if self.args.connext:
             pf = os.environ.get('ProgramFiles', "C:\\Program Files\\")
             connext_env_file = os.path.join(
-                pf, 'rti_connext_dds-5.2.0', 'resource', 'scripts', 'rtisetenv_X64Win64VS2013.bat')
+                pf, 'rti_connext_dds-5.2.0.4', 'resource', 'scripts', 'rtisetenv_x64Win64VS2015.bat')
             if not os.path.exists(connext_env_file):
                 warn("Asked to use Connext but the RTI env was not found at '{0}'".format(
                     connext_env_file))

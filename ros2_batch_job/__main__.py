@@ -126,24 +126,8 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
     return args
 
 
-def build_and_test(args, job, blacklisted_package_names=None):
-    ament_py = os.path.join(
-        '.', args.sourcespace, 'ament', 'ament_tools', 'scripts', 'ament.py'
-    )
-
-    if blacklisted_package_names:
-        print('Trying to ignore the following packages:')
-        [print('- ' + name) for name in blacklisted_package_names]
-        # create AMENT_IGNORE files in package folders which should not be used
-        output = subprocess.check_output(
-            [job.python, '-u', ament_py, 'list_packages', args.sourcespace])
-        for line in output.decode().splitlines():
-            package_name, package_path = line.split(' ', 1)
-            if package_name in blacklisted_package_names:
-                marker_file = os.path.join(args.sourcespace, package_path, 'AMENT_IGNORE')
-                print('Create marker file: ' + marker_file)
-                with open(marker_file, 'w'):
-                    pass
+def build_and_test(args, job):
+    ament_py = get_ament_script(args.sourcespace)
 
     # Now run ament build
     job.run([
@@ -322,7 +306,27 @@ def run(args, build_function):
         # Allow the batch job to push custom sourcing onto the run command
         job.setup_env()
 
-        return build_function(args, job, blacklisted_package_names)
+        # create AMENT_IGNORE files in package folders which should not be used
+        if blacklisted_package_names:
+            print('Trying to ignore the following packages:')
+            [print('- ' + name) for name in blacklisted_package_names]
+            ament_py = get_ament_script(args.sourcespace)
+            output = subprocess.check_output(
+                [job.python, '-u', ament_py, 'list_packages', args.sourcespace])
+            for line in output.decode().splitlines():
+                package_name, package_path = line.split(' ', 1)
+                if package_name in blacklisted_package_names:
+                    marker_file = os.path.join(args.sourcespace, package_path, 'AMENT_IGNORE')
+                    print('Create marker file: ' + marker_file)
+                    with open(marker_file, 'w'):
+                        pass
+
+        return build_function(args, job)
+
+
+def get_ament_script(basepath):
+    return os.path.join(basepath, 'ament', 'ament_tools', 'scripts', 'ament.py')
+
 
 if __name__ == '__main__':
     sys.exit(main())

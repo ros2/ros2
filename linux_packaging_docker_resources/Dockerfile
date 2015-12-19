@@ -23,7 +23,7 @@ RUN echo "deb http://packages.osrfoundation.org/gazebo/ubuntu `lsb_release -cs` 
 RUN curl --silent http://packages.osrfoundation.org/gazebo.key | sudo apt-key add -
 
 # Add the Git-LFS repository.
-RUN echo "deb https://packagecloud.io/github/git-lfs/ubuntu/ `lsb_release -cs` main" > /etc/apt/sources.list.d/git
+RUN echo "deb https://packagecloud.io/github/git-lfs/ubuntu/ `lsb_release -cs` main" > /etc/apt/sources.list.d/github_git-lfs.list
 RUN curl --silent https://packagecloud.io/gpg.key | sudo apt-key add -
 
 # Install some development tools.

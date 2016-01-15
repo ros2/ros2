@@ -126,4 +126,4 @@ repositories:
   vendor/console_bridge:
     type: git
     url: https://github.com/ros/console_bridge.git
-    version: ros2
+    version: master

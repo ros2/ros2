@@ -152,6 +152,13 @@ python -u run_ros2_packaging.py %CI_ARGS%
       <fingerprint>false</fingerprint>
       <defaultExcludes>true</defaultExcludes>
     </hudson.tasks.ArtifactArchiver>
+@[if mailer_recipients]@
+    <hudson.tasks.Mailer plugin="mailer@@1.16">
+      <recipients>@(mailer_recipients)</recipients>
+      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>false</sendToIndividuals>
+    </hudson.tasks.Mailer>
+@[end if]@
   </publishers>
   <buildWrappers>
     <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@@1.7.2" />

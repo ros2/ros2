@@ -135,6 +135,7 @@ def main(argv=None):
         os_specific_data[os_name].update(os_configs[os_name])
         os_specific_data[os_name]['job_name'] = 'ci_' + os_name
     job_data = {
+        'ci_scripts_default_branch': args.ci_scripts_default_branch,
         'label_expression': 'master',
         'os_specific_data': os_specific_data,
         'cmake_build_type': '',

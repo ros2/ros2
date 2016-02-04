@@ -108,6 +108,9 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
             '--ros1-path', default=None,
             help="path of ROS 1 workspace to be sourced")
     parser.add_argument(
+        '--cmake-build-type', default=None,
+        help='select the CMake build type')
+    parser.add_argument(
         '--ament-args', default=None,
         help='arguments passed to ament')
 
@@ -135,7 +138,11 @@ def build_and_test(args, job):
         '--build-space', '"%s"' % args.buildspace,
         '--install-space', '"%s"' % args.installspace,
         '"%s"' % args.sourcespace
-    ] + (['--isolated'] if args.isolated else []) + args.ament_args, shell=True)
+    ] + (['--isolated'] if args.isolated else []) +
+        (
+            ['--cmake-args', '-DCMAKE_BUILD_TYPE=' + args.cmake_build_type]
+            if args.cmake_build_type else []
+        ) + args.ament_args, shell=True)
 
     # Run tests
     ret_test = job.run([

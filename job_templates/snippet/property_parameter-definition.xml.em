@@ -13,7 +13,7 @@ To use the default branch on all repositories, use an empty string.</description
         <hudson.model.StringParameterDefinition>
           <name>CI_SCRIPTS_BRANCH</name>
           <description>Branch of ros2/ros2 repository from which to get the ci scripts.</description>
-          <defaultValue>ci_scripts</defaultValue>
+          <defaultValue>@ci_scripts_default_branch</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>CI_ROS2_REPOS_URL</name>
@@ -57,6 +57,23 @@ This tests the robustness to whitespace being within the different paths.</descr
           <description>By setting this to True, the build will use the --isolated option.</description>
           <defaultValue>true</defaultValue>
         </hudson.model.BooleanParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>CI_CMAKE_BUILD_TYPE</name>
+          <description>Select the CMake build type.</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>@cmake_build_type</string>
+@{
+# the empty string must not be the last choice
+choices = ['', 'Debug', 'Release', 'RelWithDebInfo']
+choices.remove(cmake_build_type)
+}@
+@[for choice in choices]@
+              <string>@choice</string>
+@[end for]@
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>CI_AMENT_ARGS</name>
           <description>Additional arguments passed to ament.</description>

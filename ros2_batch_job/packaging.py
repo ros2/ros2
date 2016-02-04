@@ -50,8 +50,8 @@ def build_and_package(args, job):
         '"%s"' % args.sourcespace]
     if args.isolated:
         cmd.append('--isolated')
-    if args.os != 'windows':
-        cmd += ['--cmake-args', '-DCMAKE_BUILD_TYPE=RelWithDebInfo']
+    if args.cmake_build_type:
+        cmd += ['--cmake-args', '-DCMAKE_BUILD_TYPE=' + args.cmake_build_type]
     job.run(cmd)
 
     if ros1_bridge_ignore_marker:
@@ -67,8 +67,11 @@ def build_and_package(args, job):
             '--install-space', '"%s"' % args.installspace,
             '--only', 'ros1_bridge',
             '"%s"' % args.sourcespace,
-        ] + (['--isolated'] if args.isolated else []) + [
-            '--cmake-args', '-DCMAKE_BUILD_TYPE=RelWithDebInfo',
+        ] + (['--isolated'] if args.isolated else []) +
+            (
+                ['--cmake-args', '-DCMAKE_BUILD_TYPE=' + args.cmake_build_type]
+                if args.cmake_build_type else []
+            ) + [
             '--make-flags', '-j1'
         ])
 

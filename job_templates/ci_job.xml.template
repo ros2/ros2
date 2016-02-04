@@ -10,6 +10,7 @@
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
 @(SNIPPET(
     'property_parameter-definition',
+    ci_scripts_default_branch=ci_scripts_default_branch,
     use_connext_default=use_connext_default,
     disable_connext_static_default=disable_connext_static_default,
     disable_connext_dynamic_default=disable_connext_dynamic_default,
@@ -81,6 +82,7 @@ ci_branch: ${build.buildVariableResolver.resolve('CI_SCRIPTS_BRANCH')}, <br/>
 repos_url: ${build.buildVariableResolver.resolve('CI_ROS2_REPOS_URL')}, <br/>
 use_whitespace: ${build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PATHS')}, <br/>
 isolated: ${build.buildVariableResolver.resolve('CI_ISOLATED')}, <br/>
+cmake_build_type: ${build.buildVariableResolver.resolve('CI_CMAKE_BUILD_TYPE')}, <br/>
 ament_args: ${build.buildVariableResolver.resolve('CI_AMENT_ARGS')}\
 """);]]>
         </command>

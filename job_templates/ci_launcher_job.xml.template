@@ -8,6 +8,7 @@
   <properties>
 @(SNIPPET(
     'property_parameter-definition',
+    ci_scripts_default_branch=ci_scripts_default_branch,
     use_connext_default='true',
     disable_connext_static_default='false',
     disable_connext_dynamic_default='false',

@@ -23,13 +23,30 @@ To use the default branch on all repositories, use an empty string.</description
         <hudson.model.StringParameterDefinition>
           <name>CI_SCRIPTS_BRANCH</name>
           <description>Branch of ros2/ros2 repository from which to get the ci scripts.</description>
-          <defaultValue>ci_scripts</defaultValue>
+          <defaultValue>@ci_scripts_default_branch</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>CI_ROS2_REPOS_URL</name>
           <description></description>
           <defaultValue></defaultValue>
         </hudson.model.StringParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>CI_CMAKE_BUILD_TYPE</name>
+          <description>Select the CMake build type.</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>@cmake_build_type</string>
+@{
+# the empty string must not be the last choice
+choices = ['', 'Debug', 'Release', 'RelWithDebInfo']
+choices.remove(cmake_build_type)
+}@
+@[for choice in choices]@
+              <string>@choice</string>
+@[end for]@
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
     <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@@1.25">
@@ -87,7 +104,8 @@ To use the default branch on all repositories, use an empty string.</description
         <command><![CDATA[build.setDescription("""\
 branch: ${build.buildVariableResolver.resolve('CI_BRANCH_TO_TEST')}, <br/>
 ci_branch: ${build.buildVariableResolver.resolve('CI_SCRIPTS_BRANCH')}, <br/>
-repos_url: ${build.buildVariableResolver.resolve('CI_ROS2_REPOS_URL')}\
+repos_url: ${build.buildVariableResolver.resolve('CI_ROS2_REPOS_URL')}, <br/>
+cmake_build_type: ${build.buildVariableResolver.resolve('CI_CMAKE_BUILD_TYPE')}\
 """);]]>
         </command>
       </scriptSource>

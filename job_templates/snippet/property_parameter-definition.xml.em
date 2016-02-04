@@ -13,7 +13,7 @@ To use the default branch on all repositories, use an empty string.</description
         <hudson.model.StringParameterDefinition>
           <name>CI_SCRIPTS_BRANCH</name>
           <description>Branch of ros2/ros2 repository from which to get the ci scripts.</description>
-          <defaultValue>ci_scripts</defaultValue>
+          <defaultValue>@ci_scripts_default_branch</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>CI_ROS2_REPOS_URL</name>

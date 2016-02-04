@@ -15,6 +15,7 @@
     disable_connext_dynamic_default=disable_connext_dynamic_default,
     use_fastrtps_default=use_fastrtps_default,
     use_opensplice_default=use_opensplice_default,
+    cmake_build_type=cmake_build_type,
     ament_args_default=ament_args_default,
 ))@
     <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@@1.25">
@@ -117,6 +118,9 @@ if [ -n "${CI_ROS2_REPOS_URL+x}" ]; then
 fi
 if [ "$CI_ISOLATED" = "true" ]; then
   export CI_ARGS="$CI_ARGS --isolated"
+fi
+if [ -n "${CI_CMAKE_BUILD_TYPE+x}" ]; then
+  export CI_ARGS="$CI_ARGS --cmake-build-type $CI_CMAKE_BUILD_TYPE"
 fi
 if [ -n "${CI_AMENT_ARGS+x}" ]; then
   export CI_ARGS="$CI_ARGS --ament-args $CI_AMENT_ARGS"

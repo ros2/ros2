@@ -105,6 +105,9 @@ export CI_ARGS="$CI_ARGS --opensplice"
 if [ -n "${CI_ROS2_REPOS_URL+x}" ]; then
   export CI_ARGS="$CI_ARGS --repo-file-url $CI_ROS2_REPOS_URL"
 fi
+if [ -n "${CI_CMAKE_BUILD_TYPE+x}" ]; then
+  export CI_ARGS="$CI_ARGS --cmake-build-type $CI_CMAKE_BUILD_TYPE"
+fi
 
 rm -rf ws workspace
 

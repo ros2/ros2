@@ -13,6 +13,7 @@
     disable_connext_dynamic_default='false',
     use_fastrtps_default='true',
     use_opensplice_default='true',
+    cmake_build_type=cmake_build_type,
     ament_args_default='',
 ))@
     <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@@1.25">

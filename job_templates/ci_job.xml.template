@@ -170,6 +170,9 @@ if "%CI_ROS2_REPOS_URL%" NEQ "" (
 if "%CI_ISOLATED%" == "true" (
   set "CI_ARGS=%CI_ARGS% --isolated"
 )
+if "%CI_CMAKE_BUILD_TYPE%" NEQ "" (
+  set "CI_ARGS=%CI_ARGS% --cmake-build-type %CI_CMAKE_BUILD_TYPE%"
+)
 if "%CI_AMENT_ARGS%" NEQ "" (
   set "CI_ARGS=%CI_ARGS% --ament-args %CI_AMENT_ARGS%"
 )

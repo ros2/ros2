@@ -64,8 +64,7 @@ This tests the robustness to whitespace being within the different paths.</descr
             <a class="string-array">
               <string>@cmake_build_type</string>
 @{
-# the empty string must not be the last choice
-choices = ['', 'Debug', 'Release', 'RelWithDebInfo']
+choices = ['None', 'Debug', 'Release', 'RelWithDebInfo']
 choices.remove(cmake_build_type)
 }@
 @[for choice in choices]@

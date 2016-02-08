@@ -37,8 +37,7 @@ To use the default branch on all repositories, use an empty string.</description
             <a class="string-array">
               <string>@cmake_build_type</string>
 @{
-# the empty string must not be the last choice
-choices = ['', 'Debug', 'Release', 'RelWithDebInfo']
+choices = ['None', 'Debug', 'Release', 'RelWithDebInfo']
 choices.remove(cmake_build_type)
 }@
 @[for choice in choices]@
@@ -123,7 +122,7 @@ export CI_ARGS="$CI_ARGS --opensplice"
 if [ -n "${CI_ROS2_REPOS_URL+x}" ]; then
   export CI_ARGS="$CI_ARGS --repo-file-url $CI_ROS2_REPOS_URL"
 fi
-if [ -n "${CI_CMAKE_BUILD_TYPE+x}" ]; then
+if [ "${CI_CMAKE_BUILD_TYPE}" != "None" ]; then
   export CI_ARGS="$CI_ARGS --cmake-build-type $CI_CMAKE_BUILD_TYPE"
 fi
 
@@ -150,6 +149,9 @@ if "%CI_BRANCH_TO_TEST%" NEQ "" (
 set "CI_ARGS=%CI_ARGS% --opensplice"
 if "%CI_ROS2_REPOS_URL%" NEQ "" (
   set "CI_ARGS=%CI_ARGS% --repo-file-url %CI_ROS2_REPOS_URL%"
+)
+if "%CI_CMAKE_BUILD_TYPE%" NEQ "None" (
+  set "CI_ARGS=%CI_ARGS% --cmake-build-type %CI_CMAKE_BUILD_TYPE%"
 )
 
 rmdir /S /Q ws workspace

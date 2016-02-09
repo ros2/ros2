@@ -58,6 +58,9 @@ RUN apt-get update && apt-get install -y libopencv-dev
 # Install Git-LFS.
 RUN apt-get update && apt-get install -y git-lfs
 
+# Install Python3 development files.
+RUN apt-get update && apt-get install -y python3-dev
+
 # Create a user to own the build output.
 RUN useradd -u 1234 -m rosbuild
 RUN sudo -H -u rosbuild -- git config --global user.email "jenkins@ci.ros2.org"

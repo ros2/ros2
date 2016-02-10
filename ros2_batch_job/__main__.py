@@ -294,6 +294,7 @@ def run(args, build_function):
                 'rmw_connext_cpp',
                 'rmw_connext_dynamic_cpp',
                 'rmw_connext_shared_cpp',
+                'rosidl_typesupport_connext_c',
                 'rosidl_typesupport_connext_cpp',
             ]
         if not args.fastrtps:
@@ -307,6 +308,7 @@ def run(args, build_function):
             blacklisted_package_names += [
                 'opensplice_cmake_module',
                 'rmw_opensplice_cpp',
+                'rosidl_typesupport_opensplice_c',
                 'rosidl_typesupport_opensplice_cpp',
             ]
 

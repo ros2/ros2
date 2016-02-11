@@ -132,6 +132,7 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
 def build_and_test(args, job):
     ament_py = get_ament_script(args.sourcespace)
 
+    print('# BEGIN SUBSECTION: ament build')
     # Now run ament build
     job.run([
         '"%s"' % job.python, '-u', '"%s"' % ament_py, 'build', '--build-tests',
@@ -143,7 +144,9 @@ def build_and_test(args, job):
             ['--cmake-args', '-DCMAKE_BUILD_TYPE=' + args.cmake_build_type]
             if args.cmake_build_type else []
         ) + args.ament_args, shell=True)
+    print('# END SUBSECTION')
 
+    print('# BEGIN SUBSECTION: ament test')
     # Run tests
     ret_test = job.run([
         '"%s"' % job.python, '-u', '"%s"' % ament_py, 'test',
@@ -155,12 +158,16 @@ def build_and_test(args, job):
     ] + (['--isolated'] if args.isolated else []) + args.ament_args,
         exit_on_error=False, shell=True)
     info("ament.py test returned: '{0}'".format(ret_test))
+    print('# END SUBSECTION')
+
+    print('# BEGIN SUBSECTION: ament test_results')
     # Collect the test results
     ret_test_results = job.run(
         ['"%s"' % job.python, '-u', '"%s"' % ament_py, 'test_results', '"%s"' % args.buildspace],
         exit_on_error=False, shell=True
     )
     info("ament.py test_results returned: '{0}'".format(ret_test_results))
+    print('# END SUBSECTION')
     # Uncomment this line to failing tests a failrue of this command.
     # return 0 if ret_test == 0 and ret_testr == 0 else 1
     return 0
@@ -229,12 +236,16 @@ def run(args, build_function):
     with change_directory(args.workspace):
         # Enter a venv if asked to
         if args.do_venv:
+            print('# BEGIN SUBSECTION: enter virtualenv')
             job.run([sys.executable, '-m', 'virtualenv', '-p', sys.executable, 'venv'])
             venv_path = os.path.abspath(os.path.join(os.getcwd(), 'venv'))
             venv, venv_python = generated_venv_vars(venv_path)
             job.push_run(venv)  # job.run is now venv
             job.push_python(venv_python)  # job.python is now venv_python
             job.show_env()
+            print('# END SUBSECTION')
+
+        print('# BEGIN SUBSECTION: install Python packages')
         # Update setuptools
         job.run(['"%s"' % job.python, '-m', 'pip', 'install', '-U', 'pip', 'setuptools'],
                 shell=True)
@@ -245,6 +256,9 @@ def run(args, build_function):
         job.run(['"%s"' % job.python, '-m', 'pip', '--version'], shell=True)
         # Install pip dependencies
         job.run(['"%s"' % job.python, '-m', 'pip', 'install', '-U'] + pip_dependencies, shell=True)
+        print('# END SUBSECTION')
+
+        print('# BEGIN SUBSECTION: import repositories')
         # Get the repositories
         job.run(['curl', '-sk', args.repo_file_url, '-o', 'ros2.repos'])
         # Show the contents
@@ -262,7 +276,10 @@ def run(args, build_function):
             vcs_cmd = ['vcs']
         job.run(vcs_cmd + ['import', '"%s"' % args.sourcespace, '--input', 'ros2.repos'],
                 shell=True)
+        print('# END SUBSECTION')
+
         if args.test_branch is not None:
+            print('# BEGIN SUBSECTION: checkout custom branch')
             # Store current branch as well-known branch name for later rebasing
             info('Attempting to create a well known branch name for all the default branches')
             job.run(vcs_cmd + ['custom', '.', '--git', '--args', 'checkout', '-b', '__ci_default'])
@@ -284,8 +301,12 @@ def run(args, build_function):
             ret = job.run(vcs_custom_cmd)
             info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
             print()
+            print('# END SUBSECTION')
+
+        print('# BEGIN SUBSECTION: repository hashes')
         # Show the latest commit log on each repository (includes the commit hash).
         job.run(vcs_cmd + ['log', '-l1', '"%s"' % args.sourcespace], shell=True)
+        print('# END SUBSECTION')
 
         blacklisted_package_names = []
         if not args.connext:
@@ -317,6 +338,7 @@ def run(args, build_function):
 
         # create AMENT_IGNORE files in package folders which should not be used
         if blacklisted_package_names:
+            print('# BEGIN SUBSECTION: ignored packages')
             print('Trying to ignore the following packages:')
             [print('- ' + name) for name in blacklisted_package_names]
             ament_py = get_ament_script(args.sourcespace)
@@ -329,6 +351,7 @@ def run(args, build_function):
                     print('Create marker file: ' + marker_file)
                     with open(marker_file, 'w'):
                         pass
+            print('# END SUBSECTION')
 
         return build_function(args, job)
 

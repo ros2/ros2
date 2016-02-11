@@ -29,6 +29,7 @@ def main(sysargv=None):
 
 
 def build_and_package(args, job):
+    print('# BEGIN SUBSECTION: ament build')
     # ignore ROS 1 bridge package for now
     ros1_bridge_path = os.path.join(args.sourcespace, 'ros2', 'ros1_bridge')
     info('ROS1 bridge path: %s' % ros1_bridge_path)
@@ -56,10 +57,12 @@ def build_and_package(args, job):
 
     if ros1_bridge_ignore_marker:
         os.remove(ros1_bridge_ignore_marker)
+    print('# END SUBSECTION')
 
     # It only makes sense to build the bridge for Linux or OSX, since
     # ROS1 is not supported on Windows
     if args.os in ['linux', 'osx']:
+        print('# BEGIN SUBSECTION: build ROS 1 bridge')
         # Now run ament build only for the bridge
         job.run([
             job.python, '-u', ament_py, 'build',
@@ -74,7 +77,9 @@ def build_and_package(args, job):
             ) + [
             '--make-flags', '-j1'
         ])
+        print('# END SUBSECTION')
 
+    print('# BEGIN SUBSECTION: create archive')
     # Remove "unnecessary" executables
     install_bin_path = os.path.join(args.installspace, 'bin')
     for filename in os.listdir(install_bin_path):
@@ -110,6 +115,7 @@ def build_and_package(args, job):
     else:
         raise RuntimeError('Unsupported operating system: %s' % args.os)
     info("created archive: '{0}'".format(archive_path))
+    print('# END SUBSECTION')
 
     return 0
 

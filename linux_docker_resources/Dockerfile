@@ -15,8 +15,8 @@ RUN apt-get install -y curl
 RUN apt-get install -y apt-transport-https
 
 # Add the ROS repositories to the apt sources list.
-RUN echo "deb http://54.183.65.232/ubuntu/testing/ `lsb_release -cs` main" > /etc/apt/sources.list.d/ros-latest.list
-RUN curl --silent http://54.183.65.232/repos.key | sudo apt-key add -
+RUN echo "deb http://repositories.ros.org/ubuntu/testing/ `lsb_release -cs` main" > /etc/apt/sources.list.d/ros-latest.list
+RUN curl --silent http://repositories.ros.org/repos.key | sudo apt-key add -
 
 # Add the OSRF repositories to the apt sources list.
 RUN echo "deb http://packages.osrfoundation.org/gazebo/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-latest.list

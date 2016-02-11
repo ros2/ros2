@@ -114,6 +114,9 @@ cmake_build_type: ${build.buildVariableResolver.resolve('CI_CMAKE_BUILD_TYPE')}\
     <hudson.tasks.@(shell_type)>
       <command>@
 @[if os_name in ['linux', 'osx']]@
+rm -rf ws workspace
+
+echo "# BEGIN SECTION: Determine arguments"
 export CI_ARGS="--do-venv --force-ansi-color"
 if [ -n "${CI_BRANCH_TO_TEST+x}" ]; then
   export CI_ARGS="$CI_ARGS --test-branch $CI_BRANCH_TO_TEST"
@@ -125,22 +128,37 @@ fi
 if [ "${CI_CMAKE_BUILD_TYPE}" != "None" ]; then
   export CI_ARGS="$CI_ARGS --cmake-build-type $CI_CMAKE_BUILD_TYPE"
 fi
-
-rm -rf ws workspace
-
 @[if os_name == 'linux']@
 export CI_ARGS="$CI_ARGS --ros1-path /opt/ros/indigo"
-mkdir -p $HOME/.ccache
-docker info
-docker build -t ros2_packaging linux_packaging_docker_resources
-echo "Using args: $CI_ARGS"
-docker run --privileged -e UID=`id -u` -e GID=`id -g` -e CI_ARGS="$CI_ARGS" -e CCACHE_DIR=/home/rosbuild/.ccache -i -v `pwd`:/home/rosbuild/ci_scripts -v $HOME/.ccache:/home/rosbuild/.ccache ros2_packaging
 @[else]@
 export CI_ARGS="$CI_ARGS --ros1-path /Users/osrf/indigo/install_isolated"
+@[end if]@
 echo "Using args: $CI_ARGS"
+echo "# END SECTION"
+
+@[if os_name == 'linux']@
+mkdir -p $HOME/.ccache
+echo "# BEGIN SECTION: docker version"
+docker version
+echo "# END SECTION"
+echo "# BEGIN SECTION: docker info"
+docker info
+echo "# END SECTION"
+echo "# BEGIN SECTION: Build Dockerfile"
+docker build -t ros2_packaging linux_packaging_docker_resources
+echo "# END SECTION"
+echo "# BEGIN SECTION: Run Dockerfile"
+docker run --privileged -e UID=`id -u` -e GID=`id -g` -e CI_ARGS="$CI_ARGS" -e CCACHE_DIR=/home/rosbuild/.ccache -i -v `pwd`:/home/rosbuild/ci_scripts -v $HOME/.ccache:/home/rosbuild/.ccache ros2_packaging
+echo "# END SECTION"
+@[else]@
+echo "# BEGIN SECTION: Run packaging script"
 /usr/local/bin/python3 -u run_ros2_packaging.py $CI_ARGS
+echo "# END SECTION"
 @[end if]@
 @[elif os_name == 'windows']@
+rmdir /S /Q ws workspace
+
+echo "# BEGIN SECTION: Determine arguments"
 set "PATH=%PATH:"=%"
 set "CI_ARGS=--force-ansi-color"
 if "%CI_BRANCH_TO_TEST%" NEQ "" (
@@ -153,11 +171,12 @@ if "%CI_ROS2_REPOS_URL%" NEQ "" (
 if "%CI_CMAKE_BUILD_TYPE%" NEQ "None" (
   set "CI_ARGS=%CI_ARGS% --cmake-build-type %CI_CMAKE_BUILD_TYPE%"
 )
-
-rmdir /S /Q ws workspace
-
 echo Using args: %CI_ARGS%
+echo "# END SECTION"
+
+echo "# BEGIN SECTION: Run packaging script"
 python -u run_ros2_packaging.py %CI_ARGS%
+echo "# END SECTION"
 @[else]@
 @{ assert 'Unknown os_name: ' + os_name }@
 @[end if]</command>

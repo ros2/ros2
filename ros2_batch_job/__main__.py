@@ -308,6 +308,11 @@ def run(args, build_function):
         job.run(vcs_cmd + ['log', '-l1', '"%s"' % args.sourcespace], shell=True)
         print('# END SUBSECTION')
 
+        print('# BEGIN SUBSECTION: vcs export --exact')
+        # Show the output of 'vcs export --exact`
+        job.run(vcs_cmd + ['export', '--exact', '"%s"' % args.sourcespace], shell=True)
+        print('# END SUBSECTION')
+
         blacklisted_package_names = []
         if not args.connext:
             blacklisted_package_names += [

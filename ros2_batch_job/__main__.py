@@ -310,7 +310,10 @@ def run(args, build_function):
 
         print('# BEGIN SUBSECTION: vcs export --exact')
         # Show the output of 'vcs export --exact`
-        job.run(vcs_cmd + ['export', '--exact', '"%s"' % args.sourcespace], shell=True)
+        job.run(
+            vcs_cmd + ['export', '--exact', '"%s"' % args.sourcespace], shell=True,
+            # if a repo has been rebased against the default branch vcs can't detect the remote
+            exit_on_error=False)
         print('# END SUBSECTION')
 
         blacklisted_package_names = []

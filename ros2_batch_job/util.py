@@ -96,13 +96,13 @@ def generated_venv_vars(venv_path):
     return venv, venv_python
 
 
-def clean_workspace(workspace):
-    if os.path.exists(workspace):
+def remove_folder(path):
+    if os.path.exists(path):
         if IS_JENKINS:
-            warn("Deleting the workspace at '@!{0}@|@{yb}'.", fargs=(workspace,))
+            warn("Deleting the folder at '@!{0}@|@{yb}'.", fargs=(path,))
         else:
-            warn("@{rf}@!DELETING ALL FILES@|@{yf} in the workspace '@|@!{0}@|@{yf}', "
-                 "you have 5 seconds to ctrl-c...", fargs=(workspace,))
+            warn("@{rf}@!DELETING ALL FILES@|@{yf} in the folder '@|@!{0}@|@{yf}', "
+                 "you have 5 seconds to ctrl-c...", fargs=(path,))
             time.sleep(5)
 
         # Use custom on error handler for shutil.rmtree in order to remove
@@ -111,10 +111,8 @@ def clean_workspace(workspace):
         def del_rw(action, name, exc):
             os.chmod(name, stat.S_IWRITE)
             os.remove(name)
-        shutil.rmtree(workspace, onerror=del_rw)
-    assert not os.path.exists(workspace), "'{0}' should not exist.".format(workspace)
-    info("Creating folder: @!{0}", fargs=(workspace,))
-    os.makedirs(workspace)
+        shutil.rmtree(path, onerror=del_rw)
+    assert not os.path.exists(path), "'{0}' should not exist.".format(path)
 
 
 class UnbufferedIO(object):

@@ -17,7 +17,6 @@ import os
 import platform
 import subprocess
 import sys
-from xml.etree import ElementTree
 
 # Make sure we're using Python3
 assert sys.version.startswith('3'), "This script is only meant to work with Python3"
@@ -33,7 +32,7 @@ assert osrf_pycommon.__file__.startswith(vendor_path), \
 from osrf_pycommon.cli_utils.common import extract_argument_group
 
 from .util import change_directory
-from .util import clean_workspace
+from .util import remove_folder
 from .util import force_color
 from .util import generated_venv_vars
 from .util import info
@@ -219,32 +218,38 @@ def run(args, build_function):
         os.environ['ConEmuANSI'] = 'ON'
 
     info("Using workspace: @!{0}", fargs=(args.workspace,))
-    clean_workspace(args.workspace)
+    remove_folder(args.workspace)
+    os.makedirs(args.workspace)
 
     # Allow batch job to do OS specific stuff
     job.pre()
     # Check the env
     job.show_env()
-    # Make sure virtual env is installed
-    if args.os != 'linux':
-        # Do not try this on Linux, as elevated privileges are needed.
-        # Also there is no good way to get elevated privileges.
-        # So the Linux host or Docker vm will need to ensure a modern
-        # version of virtualenv is available.
-        job.run([sys.executable, '-m', 'pip', 'install', '-U', 'virtualenv'])
+
+    # Enter a venv if asked to, the venv must be in a path without spaces
+    if args.do_venv:
+        print('# BEGIN SUBSECTION: enter virtualenv')
+
+        # Make sure virtual env is installed
+        if args.os != 'linux':
+            # Do not try this on Linux, as elevated privileges are needed.
+            # Also there is no good way to get elevated privileges.
+            # So the Linux host or Docker vm will need to ensure a modern
+            # version of virtualenv is available.
+            job.run([sys.executable, '-m', 'pip', 'install', '-U', 'virtualenv'])
+
+        venv_subfolder = 'venv'
+        remove_folder(venv_subfolder)
+        job.run([sys.executable, '-m', 'virtualenv', '-p', sys.executable, venv_subfolder])
+        venv_path = os.path.abspath(os.path.join(os.getcwd(), venv_subfolder))
+        venv, venv_python = generated_venv_vars(venv_path)
+        job.push_run(venv)  # job.run is now venv
+        job.push_python(venv_python)  # job.python is now venv_python
+        job.show_env()
+        print('# END SUBSECTION')
+
     # Now inside of the workspace...
     with change_directory(args.workspace):
-        # Enter a venv if asked to
-        if args.do_venv:
-            print('# BEGIN SUBSECTION: enter virtualenv')
-            job.run([sys.executable, '-m', 'virtualenv', '-p', sys.executable, 'venv'])
-            venv_path = os.path.abspath(os.path.join(os.getcwd(), 'venv'))
-            venv, venv_python = generated_venv_vars(venv_path)
-            job.push_run(venv)  # job.run is now venv
-            job.push_python(venv_python)  # job.python is now venv_python
-            job.show_env()
-            print('# END SUBSECTION')
-
         print('# BEGIN SUBSECTION: install Python packages')
         # Update setuptools
         job.run(['"%s"' % job.python, '-m', 'pip', 'install', '-U', 'pip', 'setuptools'],

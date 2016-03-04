@@ -101,29 +101,42 @@ def main(argv=None):
 
     # configure os specific jobs
     for os_name in sorted(os_configs.keys()):
-        # configure manual triggered job
-        job_name = 'ci_' + os_name
         job_data = dict(data)
         job_data['os_name'] = os_name
-        job_data['cmake_build_type'] = 'None'
         job_data.update(os_configs[os_name])
+
+        # configure manual triggered job
+        job_name = 'ci_' + os_name
+        job_data['cmake_build_type'] = 'None'
         job_config = expand_template('ci_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 
-        # configure packaging job (skip non-opensplice Windows packaging jobs)
-        job_name = 'packaging_' + os_name
-        # Also make it nightly, as a sanity check
-        job_data['time_trigger_spec'] = '0 12 * * *'
-        job_data['cmake_build_type'] = 'RelWithDebInfo'
+        # all following jobs are triggered nightly with email notification
+        job_data['time_trigger_spec'] = '0 11 * * *'
         job_data['mailer_recipients'] = 'ros@osrfoundation.org'
+
+        # configure packaging job
+        job_name = 'packaging_' + os_name
+        job_data['cmake_build_type'] = 'RelWithDebInfo'
         job_config = expand_template('packaging_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 
         # configure nightly triggered job
-        job_name = 'nightly_' + os_name
-        job_data['time_trigger_spec'] = '0 11 * * *'
+        job_name = 'nightly_' + os_name + '_debug'
+        job_data['cmake_build_type'] = 'Debug'
+        job_config = expand_template('ci_job.xml.template', job_data)
+        configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
+
+        # configure nightly triggered job
+        job_name = 'nightly_' + os_name + '_release'
+        job_data['cmake_build_type'] = 'Release'
+        job_config = expand_template('ci_job.xml.template', job_data)
+        configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
+
+        # configure nightly triggered job with repeated testing
+        job_name = 'nightly_' + os_name + '_repeated'
+        job_data['time_trigger_spec'] = '0 12 * * *'
         job_data['cmake_build_type'] = 'None'
-        job_data['mailer_recipients'] = 'ros@osrfoundation.org'
         job_data['ament_args_default'] = '--ctest-args --repeat-until-fail 20'
         job_config = expand_template('ci_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)

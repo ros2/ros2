@@ -50,7 +50,7 @@ ADD rticonnextdds-src/librticonnextdds52-dev_5.2.0-1_amd64.deb /tmp/librticonnex
 ADD rticonnextdds-src/rticonnextdds-tools_5.2.0-1_amd64.deb /tmp/rticonnextdds-tools_5.2.0-1_amd64.deb
 
 # Install the eProsima dependencies.
-RUN apt-get update && apt-get install -y libboost-chrono-dev libboost-date-time-dev libboost-regex-dev libboost-system-dev libboost-thread-dev
+RUN apt-get update && apt-get install -y libboost-chrono-dev libboost-date-time-dev libboost-program-options-dev libboost-regex-dev libboost-system-dev libboost-thread-dev
 
 # Install OpenCV.
 RUN apt-get update && apt-get install -y libopencv-dev

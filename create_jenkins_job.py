@@ -121,20 +121,28 @@ def main(argv=None):
         job_config = expand_template('packaging_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 
+        # keeping the paths on Windows shorter
+        os_name = os_name.replace('windows', 'win')
         # configure nightly triggered job
         job_name = 'nightly_' + os_name + '_debug'
+        if os_name == 'win':
+            job_name = job_name[0:-2]
         job_data['cmake_build_type'] = 'Debug'
         job_config = expand_template('ci_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 
         # configure nightly triggered job
         job_name = 'nightly_' + os_name + '_release'
+        if os_name == 'win':
+            job_name = job_name[0:-4]
         job_data['cmake_build_type'] = 'Release'
         job_config = expand_template('ci_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 
         # configure nightly triggered job with repeated testing
         job_name = 'nightly_' + os_name + '_repeated'
+        if os_name == 'win':
+            job_name = job_name[0:-5]
         job_data['time_trigger_spec'] = '0 12 * * *'
         job_data['cmake_build_type'] = 'None'
         job_data['ament_args_default'] = '--ctest-args --repeat-until-fail 20'

@@ -112,6 +112,9 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
     parser.add_argument(
         '--ament-args', default=None,
         help='arguments passed to ament')
+    parser.add_argument(
+        '--src-mounted', default=False, action='store_true',
+        help="src directory is already mounted into the workspace")
 
     argv = sysargv[1:] if sysargv is not None else sys.argv[1:]
     argv, ament_args = extract_argument_group(argv, '--ament-args')
@@ -218,8 +221,16 @@ def run(args, build_function):
         os.environ['ConEmuANSI'] = 'ON'
 
     info("Using workspace: @!{0}", fargs=(args.workspace,))
-    remove_folder(args.workspace)
-    os.makedirs(args.workspace)
+    # git doesn't work reliably inside qemu, so we're assuming that somebody
+    # already checked out the code on the host and mounted it in at the right
+    # place in <workspace>/src, which we don't want to remove here.
+    if args.src_mounted:
+        remove_folder(os.path.join(args.workspace, 'build'))
+        remove_folder(os.path.join(args.workspace, 'install'))
+    else:
+        remove_folder(args.workspace)
+    if not os.path.isdir(args.workspace):
+        os.makedirs(args.workspace)
 
     # Allow batch job to do OS specific stuff
     job.pre()
@@ -263,63 +274,67 @@ def run(args, build_function):
         job.run(['"%s"' % job.python, '-m', 'pip', 'install', '-U'] + pip_dependencies, shell=True)
         print('# END SUBSECTION')
 
-        print('# BEGIN SUBSECTION: import repositories')
-        # Get the repositories
-        job.run(['curl', '-sk', args.repo_file_url, '-o', 'ros2.repos'])
-        # Show the contents
-        log("@{bf}==>@| Contents of `ros2.repos`:")
-        with open('ros2.repos', 'r') as f:
-            print(f.read())
-        # Use the repository listing and vcstool to fetch repositories
-        if not os.path.exists(args.sourcespace):
-            os.makedirs(args.sourcespace)
-        # OS X can't invoke a file which has a space in the shebang line
-        # therefore invoking vcs explicitly through Python
-        if args.do_venv:
-            vcs_cmd = ['"%s"' % job.python, '"%s"' % os.path.join(venv_path, 'bin', 'vcs')]
-        else:
-            vcs_cmd = ['vcs']
-        job.run(vcs_cmd + ['import', '"%s"' % args.sourcespace, '--input', 'ros2.repos'],
-                shell=True)
-        print('# END SUBSECTION')
-
-        if args.test_branch is not None:
-            print('# BEGIN SUBSECTION: checkout custom branch')
-            # Store current branch as well-known branch name for later rebasing
-            info('Attempting to create a well known branch name for all the default branches')
-            job.run(vcs_cmd + ['custom', '.', '--git', '--args', 'checkout', '-b', '__ci_default'])
-
-            # Attempt to switch all the repositories to a given branch
-            info("Attempting to switch all repositories to the '{0}' branch"
-                 .format(args.test_branch))
-            # use -b and --track to checkout correctly when file/folder with the same name exists
-            vcs_custom_cmd = vcs_cmd + [
-                'custom', '.', '--args', 'checkout',
-                '-b', args.test_branch, '--track', 'origin/' + args.test_branch]
-            ret = job.run(vcs_custom_cmd, exit_on_error=False)
-            info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
-            print()
-
-            # Attempt to rebase all the repositories to the __ci_default branch
-            info("Attempting to rebase all repositories to the '__ci_default' branch")
-            vcs_custom_cmd = vcs_cmd + ['custom', '.', '--git', '--args', 'rebase', '__ci_default']
-            ret = job.run(vcs_custom_cmd)
-            info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
-            print()
+        # Skip git operations on arm because git doesn't work in qemu. Assume
+        # that somebody has already pulled the code on the host and mounted it
+        # in.
+        if not args.src_mounted:
+            print('# BEGIN SUBSECTION: import repositories')
+            # Get the repositories
+            job.run(['curl', '-sk', args.repo_file_url, '-o', 'ros2.repos'])
+            # Show the contents
+            log("@{bf}==>@| Contents of `ros2.repos`:")
+            with open('ros2.repos', 'r') as f:
+                print(f.read())
+            # Use the repository listing and vcstool to fetch repositories
+            if not os.path.exists(args.sourcespace):
+                os.makedirs(args.sourcespace)
+            # OS X can't invoke a file which has a space in the shebang line
+            # therefore invoking vcs explicitly through Python
+            if args.do_venv:
+                vcs_cmd = ['"%s"' % job.python, '"%s"' % os.path.join(venv_path, 'bin', 'vcs')]
+            else:
+                vcs_cmd = ['vcs']
+            job.run(vcs_cmd + ['import', '"%s"' % args.sourcespace, '--input', 'ros2.repos'],
+                    shell=True)
             print('# END SUBSECTION')
 
-        print('# BEGIN SUBSECTION: repository hashes')
-        # Show the latest commit log on each repository (includes the commit hash).
-        job.run(vcs_cmd + ['log', '-l1', '"%s"' % args.sourcespace], shell=True)
-        print('# END SUBSECTION')
+            if args.test_branch is not None:
+                print('# BEGIN SUBSECTION: checkout custom branch')
+                # Store current branch as well-known branch name for later rebasing
+                info('Attempting to create a well known branch name for all the default branches')
+                job.run(vcs_cmd + ['custom', '.', '--git', '--args', 'checkout', '-b', '__ci_default'])
+    
+                # Attempt to switch all the repositories to a given branch
+                info("Attempting to switch all repositories to the '{0}' branch"
+                     .format(args.test_branch))
+                # use -b and --track to checkout correctly when file/folder with the same name exists
+                vcs_custom_cmd = vcs_cmd + [
+                    'custom', '.', '--args', 'checkout',
+                    '-b', args.test_branch, '--track', 'origin/' + args.test_branch]
+                ret = job.run(vcs_custom_cmd, exit_on_error=False)
+                info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
+                print()
+    
+                # Attempt to rebase all the repositories to the __ci_default branch
+                info("Attempting to rebase all repositories to the '__ci_default' branch")
+                vcs_custom_cmd = vcs_cmd + ['custom', '.', '--git', '--args', 'rebase', '__ci_default']
+                ret = job.run(vcs_custom_cmd)
+                info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
+                print()
+                print('# END SUBSECTION')
+    
+            print('# BEGIN SUBSECTION: repository hashes')
+            # Show the latest commit log on each repository (includes the commit hash).
+            job.run(vcs_cmd + ['log', '-l1', '"%s"' % args.sourcespace], shell=True)
+            print('# END SUBSECTION')
 
-        print('# BEGIN SUBSECTION: vcs export --exact')
-        # Show the output of 'vcs export --exact`
-        job.run(
-            vcs_cmd + ['export', '--exact', '"%s"' % args.sourcespace], shell=True,
-            # if a repo has been rebased against the default branch vcs can't detect the remote
-            exit_on_error=False)
-        print('# END SUBSECTION')
+            print('# BEGIN SUBSECTION: vcs export --exact')
+            # Show the output of 'vcs export --exact`
+            job.run(
+                vcs_cmd + ['export', '--exact', '"%s"' % args.sourcespace], shell=True,
+                # if a repo has been rebased against the default branch vcs can't detect the remote
+                exit_on_error=False)
+            print('# END SUBSECTION')
 
         blacklisted_package_names = []
         if not args.connext:

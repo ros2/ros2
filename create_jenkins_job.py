@@ -79,19 +79,27 @@ def main(argv=None):
 
     os_configs = {
         'linux': {
-            'label_expression': 'linux_slave_on_master',
+            'label_expression': 'linux',
             'shell_type': 'Shell',
         },
         'osx': {
-            'label_expression': 'osx_slave_dosa',
+            'label_expression': 'osx_slave',
             'shell_type': 'Shell',
             # the current OS X slave can't handle  git@github urls
             'ci_scripts_repository': args.ci_scripts_repository.replace(
                 'git@github.com:', 'https://github.com/'),
         },
         'windows': {
-            'label_expression': 'windows_slave_eatable',
+            'label_expression': 'windows_slave',
             'shell_type': 'BatchFile',
+        },
+        'linux-armhf': {
+            'label_expression': 'linux',
+            'shell_type': 'Shell',
+        },
+        'linux-aarch64': {
+            'label_expression': 'linux',
+            'shell_type': 'Shell',
         },
     }
 
@@ -110,6 +118,10 @@ def main(argv=None):
         job_data['cmake_build_type'] = 'None'
         job_config = expand_template('ci_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
+
+        # skip non-manual jobs on ARM for now
+        if os_name == 'linux-armhf' or os_name == 'linux-aarch64':
+            continue
 
         # all following jobs are triggered nightly with email notification
         job_data['time_trigger_spec'] = '0 11 * * *'
@@ -152,6 +164,9 @@ def main(argv=None):
     # configure the launch job
     os_specific_data = collections.OrderedDict()
     for os_name in sorted(os_configs.keys()):
+        # skip non-manual jobs on ARM for now
+        if os_name == 'linux-armhf' or os_name == 'linux-aarch64':
+            continue
         os_specific_data[os_name] = dict(data)
         os_specific_data[os_name].update(os_configs[os_name])
         os_specific_data[os_name]['job_name'] = 'ci_' + os_name

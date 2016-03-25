@@ -67,7 +67,7 @@
     </hudson.triggers.TimerTrigger>
   @
 @[end if]</triggers>
-  <concurrentBuild>false</concurrentBuild>
+  <concurrentBuild>true</concurrentBuild>
   <builders>
     <hudson.plugins.groovy.SystemGroovy plugin="groovy@@1.27">
       <scriptSource class="hudson.plugins.groovy.StringScriptSource">

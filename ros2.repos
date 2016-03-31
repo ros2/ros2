@@ -47,9 +47,9 @@ repositories:
     type: git
     url: https://github.com/eProsima/ROS-RMW-Fast-RTPS-cpp.git
     version: master
-  ros/geometry_experimental:
+  ros/geometry2:
     type: git
-    url: https://github.com/ros/geometry_experimental.git
+    url: https://github.com/ros/geometry2.git
     version: ros2_alpha
   ros2/common_interfaces:
     type: git

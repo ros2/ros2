@@ -36,7 +36,8 @@ class OSXBatchJob(BatchJob):
             warn('ccache does not appear to be installed; not modifying PATH')
         if 'LANG' not in os.environ:
             os.environ['LANG'] = 'en_US.UTF-8'
-        os.environ['ROS_DOMAIN_ID'] = '111'
+        if 'ROS_DOMAIN_ID' not in os.environ:
+            os.environ['ROS_DOMAIN_ID'] = '111'
 
     def show_env(self):
         # Show the env

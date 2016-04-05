@@ -26,7 +26,9 @@ class LinuxBatchJob(BatchJob):
         BatchJob.__init__(self)
 
     def pre(self):
-        os.environ['ROS_DOMAIN_ID'] = '108'
+        # Check if ROS_DOMAIN_ID was already set in the environment
+        if 'ROS_DOMAIN_ID' not in os.environ:
+            os.environ['ROS_DOMAIN_ID'] = '108'
         # Check for ccache's directory, as installed by apt-get
         ccache_exe_dir = '/usr/lib/ccache'
         if os.path.isdir(ccache_exe_dir):

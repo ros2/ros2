@@ -2,132 +2,132 @@ repositories:
   ament/ament_cmake:
     type: git
     url: https://github.com/ament/ament_cmake.git
-    version: master
+    version: ebeb5994632c3d1e9f116a6869fea7a80a5a6af5
   ament/ament_index:
     type: git
     url: https://github.com/ament/ament_index.git
-    version: master
+    version: 51875a29c806a2d579dc0e7dab6d60250d724554
   ament/ament_lint:
     type: git
     url: https://github.com/ament/ament_lint.git
-    version: master
+    version: a44af3ba7db34a9373d2dc24a6e526144f9a2e64
   ament/ament_package:
     type: git
     url: https://github.com/ament/ament_package.git
-    version: master
+    version: a0b202e37e157d1a849761fcbe94caa82ea738f3
   ament/ament_tools:
     type: git
     url: https://github.com/ament/ament_tools.git
-    version: master
+    version: 5f4f1b3dcc7b7b419a156b529c5fb5af6eb2b614
   ament/gmock_vendor:
     type: git
     url: https://github.com/ament/gmock_vendor.git
-    version: master
+    version: 8e4b92bacb564b92fd0e480c65fb69b061dfa12f
   ament/gtest_vendor:
     type: git
     url: https://github.com/ament/gtest_vendor.git
-    version: master
+    version: 79e31ba120a8529c9324bda69eb58e97470ec32e
   ament/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
-    version: master
+    version: bc972a9db5a0db96fd624da9efe031ecd11d7aef
   ament/uncrustify:
     type: git
     url: https://github.com/ament/uncrustify.git
-    version: master
+    version: 549edf54e1526e912aab233948b44eacd71c4a08
   eProsima/Fast-CDR:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git
-    version: master
+    version: d418e2004b53545261ebf84868831ebc95e7747a
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
-    version: master
+    version: 1ad3a1bf41e58f27190e4054f4ca261a63f93472
   eProsima/ROS-RMW-Fast-RTPS-cpp:
     type: git
     url: https://github.com/eProsima/ROS-RMW-Fast-RTPS-cpp.git
-    version: master
+    version: 8e4586f68a1b983e8022bbeb8313d934fb830155
   ros/geometry2:
     type: git
     url: https://github.com/ros/geometry2.git
-    version: ros2_alpha
+    version: 98a1f95d39eecd7f6ce771a6686837b70648bd60
   ros2/common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git
-    version: master
+    version: 3eaa4a3bd7e219c0fad21632c1c71a246af794a0
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
-    version: master
+    version: 27e765778afba76173824c9700a77ae093f50dc3
   ros2/examples:
     type: git
     url: https://github.com/ros2/examples.git
-    version: master
+    version: 0fb46a87aa59422066161839c70cfe6a1482b211
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: master
+    version: 6bff204d2e7b18d246b0de2b42a6a0bdaf79a664
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: master
+    version: 3f886e075f286b451b53da871270af141d266644
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
-    version: master
+    version: f8b88c697ebe9d4087c5631f3535c8e619f9f0b5
   ros2/rclc:
     type: git
     url: https://github.com/ros2/rclc.git
-    version: master
+    version: 66d35e9f201e04bf9307c3876fdd308bde1192a9
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: master
+    version: 6bcd9db4d62c128f6d9ca60011c1cc4a43971a0f
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: master
+    version: ac4a0dd32295d16fe6f7df7c9b32c34dc3cd4e23
   ros2/realtime_support:
     type: git
     url: https://github.com/ros2/realtime_support.git
-    version: master
+    version: dc1a3073a6cf90814f057735ce51943661779d6c
   ros2/rmw:
     type: git
     url: https://github.com/ros2/rmw.git
-    version: master
+    version: 50e26073878fe8eff877d42e9fcb6b0a9eb9c8d0
   ros2/rmw_connext:
     type: git
     url: https://github.com/ros2/rmw_connext.git
-    version: master
+    version: 6f1113f38be1cbb388311a2bcd0bc658edf29c8e
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
-    version: master
+    version: f6644b759d4d80030764e0a0d6704f7c5d18d6c1
   ros2/rmw_opensplice:
     type: git
     url: https://github.com/ros2/rmw_opensplice.git
-    version: master
+    version: d63fed94064e111b7dff6904f4475faf9f56c9bb
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
-    version: master
+    version: 52e8c2d5510c85392520b98c23354af40ffd3325
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: master
+    version: cd476bff1437d5d3a90a67af5137836e69090c00
   ros2/rosidl_dds:
     type: git
     url: https://github.com/ros2/rosidl_dds.git
-    version: master
+    version: 7883a95cdaf51147b47d9d3f3df18d1709e0acfd
   ros2/system_tests:
     type: git
     url: https://github.com/ros2/system_tests.git
-    version: master
+    version: ad0dde5ada2da301699519d296bdf98ea66735b2
   ros2/tlsf:
     type: git
     url: https://github.com/ros2/tlsf.git
-    version: master
+    version: 68faa7cf4b0fccd76b821f5e60e1c6f5a7fa882c
   vendor/console_bridge:
     type: git
     url: https://github.com/ros/console_bridge.git
-    version: master
+    version: 148df7e841b91da488ec3bb4abd295a2bccdb728

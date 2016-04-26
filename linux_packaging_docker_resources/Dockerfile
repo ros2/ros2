@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:xenial
 MAINTAINER Dirk Thomas <dthomas@osrfoundation.org>
 
 # Prevent errors from apt-get.
@@ -8,29 +8,32 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 
+RUN apt-get update && apt-get install -y lsb-release
+RUN apt-get update && apt-get install -y sudo
+
 # Get curl for fetching the repo keys.
-RUN apt-get install -y curl
+RUN apt-get update && apt-get install -y curl
 
 # Get https transport for APT.
-RUN apt-get install -y apt-transport-https
+RUN apt-get update && apt-get install -y apt-transport-https
 
 # Add the ROS repositories to the apt sources list.
 RUN echo "deb http://repositories.ros.org/ubuntu/testing/ `lsb_release -cs` main" > /etc/apt/sources.list.d/ros-latest.list
-RUN curl --silent http://repositories.ros.org/repos.key | sudo apt-key add -
+RUN curl --silent http://repositories.ros.org/repos.key | apt-key add -
 
 # Add the OSRF repositories to the apt sources list.
 RUN echo "deb http://packages.osrfoundation.org/gazebo/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-latest.list
-RUN curl --silent http://packages.osrfoundation.org/gazebo.key | sudo apt-key add -
+RUN curl --silent http://packages.osrfoundation.org/gazebo.key | apt-key add -
 
 # Add the Git-LFS repository.
 RUN echo "deb https://packagecloud.io/github/git-lfs/ubuntu/ `lsb_release -cs` main" > /etc/apt/sources.list.d/github_git-lfs.list
-RUN curl --silent https://packagecloud.io/gpg.key | sudo apt-key add -
+RUN curl --silent https://packagecloud.io/gpg.key | apt-key add -
 
 # Install some development tools.
 RUN apt-get update && apt-get install -y build-essential ccache cmake pkg-config python3-empy python3-setuptools python3-vcstool
 
 # Install build and test dependencies of ROS 2 packages.
-RUN apt-get update && apt-get install -y clang-format-3.4 cppcheck git pyflakes python3-coverage python3-mock python3-nose python3-pep8 uncrustify
+RUN apt-get update && apt-get install -y clang-format-3.8 cppcheck git pydocstyle pyflakes python3-coverage python3-mock python3-nose python3-pep8 uncrustify
 
 # Install and self update pip/setuptools to the latest version.
 RUN apt-get update && apt-get install -y python3-pip

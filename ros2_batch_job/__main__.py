@@ -46,6 +46,7 @@ sys.stderr = UnbufferedIO(sys.stderr)
 pip_dependencies = [
     'nose',
     'pep8',
+    'pydocstyle',
     'pyflakes',
     'flake8',
     'mock',

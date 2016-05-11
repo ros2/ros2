@@ -36,6 +36,9 @@ RUN apt-get update && apt-get install -y clang-format-3.4 cppcheck git pyflakes 
 RUN apt-get update && apt-get install -y python3-pip
 RUN pip3 install -U setuptools pip virtualenv
 
+# Install the build dependencies for uncrustify
+RUN apt-get update && apt-get install -y autoconf
+
 # Install the OpenSplice binary from the OSRF repositories.
 RUN apt-get update && apt-get install -y libopensplice64
 # Update default domain id.

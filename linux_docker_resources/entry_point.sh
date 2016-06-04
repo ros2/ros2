@@ -26,7 +26,9 @@ ifconfig eth0 multicast
 echo "done."
 
 echo "Initializing Git-LFS..."
-sudo -H -u rosbuild -- git lfs install
+if ! sudo -H -u rosbuild -- git lfs install; then
+  echo "Git-LFS failed to initialize (this is expected on ARM platforms)."
+fi
 echo "done."
 
 case "${CI_ARGS}" in

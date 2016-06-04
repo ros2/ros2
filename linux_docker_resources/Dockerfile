@@ -1,5 +1,6 @@
 FROM ubuntu:trusty
 MAINTAINER William Woodall <william@osrfoundation.org>
+ARG PLATFORM=x86
 
 # Prevent errors from apt-get.
 # See: http://askubuntu.com/questions/506158/unable-to-initialize-frontend-dialog-when-using-ssh
@@ -9,7 +10,7 @@ RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 
 # Get curl for fetching the repo keys.
-RUN apt-get install -y curl
+RUN apt-get update && apt-get install -y curl
 
 # Get https transport for APT.
 RUN apt-get install -y apt-transport-https
@@ -23,8 +24,9 @@ RUN echo "deb http://packages.osrfoundation.org/gazebo/ubuntu `lsb_release -cs` 
 RUN curl --silent http://packages.osrfoundation.org/gazebo.key | sudo apt-key add -
 
 # Add the Git-LFS repository.
-RUN echo "deb https://packagecloud.io/github/git-lfs/ubuntu/ `lsb_release -cs` main" > /etc/apt/sources.list.d/github_git-lfs.list
-RUN curl --silent https://packagecloud.io/gpg.key | sudo apt-key add -
+RUN echo "platform: ${PLATFORM}"
+RUN if test ${PLATFORM} = x86; then echo "deb https://packagecloud.io/github/git-lfs/ubuntu/ `lsb_release -cs` main" > /etc/apt/sources.list.d/github_git-lfs.list; fi
+RUN if test ${PLATFORM} = x86; then curl --silent https://packagecloud.io/gpg.key | sudo apt-key add -; fi
 
 # Install some development tools.
 RUN apt-get update && apt-get install -y build-essential ccache cmake pkg-config python3-empy python3-setuptools python3-vcstool
@@ -42,7 +44,7 @@ RUN apt-get update && apt-get install -y libopensplice64
 RUN sed -i "s/<Id>0<\/Id>/<Id>108<\/Id>/" /usr/etc/opensplice/config/ospl.xml
 
 # Install the RTI dependencies.
-RUN apt-get update && apt-get install -y default-jre-headless
+RUN if test ${PLATFORM} = x86; then apt-get update && apt-get install -y default-jre-headless; fi
 
 # Add and install the RTI binaries we made.
 ADD rticonnextdds-src/librticonnextdds52_5.2.0-1_amd64.deb /tmp/librticonnextdds52_5.2.0-1_amd64.deb
@@ -56,7 +58,7 @@ RUN apt-get update && apt-get install -y libboost-chrono-dev libboost-date-time-
 RUN apt-get update && apt-get install -y libopencv-dev
 
 # Install Git-LFS.
-RUN apt-get update && apt-get install -y git-lfs
+RUN if test ${PLATFORM} = x86; then apt-get update && apt-get install -y git-lfs; fi
 
 # Install Python3 development files.
 RUN apt-get update && apt-get install -y python3-dev

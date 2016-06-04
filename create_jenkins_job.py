@@ -67,7 +67,7 @@ def main(argv=None):
         'ci_scripts_default_branch': args.ci_scripts_default_branch,
         'time_trigger_spec': '',
         'mailer_recipients': '',
-        'use_connext_default': 'true',
+        'use_connext_default': 'false',
         'disable_connext_static_default': 'false',
         'disable_connext_dynamic_default': 'false',
         'use_fastrtps_default': 'true',

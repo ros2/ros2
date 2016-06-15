@@ -52,7 +52,7 @@ RUN apt-get update && apt-get install -y git-lfs
 RUN echo "@today_str"
 
 # Install build and test dependencies of ROS 2 packages.
-RUN apt-get update && apt-get install -y python-rospkg ros-indigo-catkin ros-indigo-common-msgs ros-indigo-roscpp ros-indigo-rosmsg
+RUN apt-get update && apt-get install -y python-rospkg ros-kinetic-catkin ros-kinetic-common-msgs ros-kinetic-roscpp ros-kinetic-rosmsg
 
 # TODO hack to fix rosbag until official packages are available with the real fix.
 RUN sed -i 's/import roslz4//' /opt/ros/indigo/lib/python2.7/dist-packages/rosbag/bag.py

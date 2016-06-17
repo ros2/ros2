@@ -50,9 +50,9 @@ RUN sed -i "s/<Id>0<\/Id>/<Id>108<\/Id>/" /usr/etc/opensplice/config/ospl.xml
 RUN if test ${PLATFORM} = x86; then apt-get update && apt-get install -y default-jre-headless; fi
 
 # Add and install the RTI binaries we made.
-ADD rticonnextdds-src/librticonnextdds52_5.2.0-1_amd64.deb /tmp/librticonnextdds52_5.2.0-1_amd64.deb
-ADD rticonnextdds-src/librticonnextdds52-dev_5.2.0-1_amd64.deb /tmp/librticonnextdds52-dev_5.2.0-1_amd64.deb
-ADD rticonnextdds-src/rticonnextdds-tools_5.2.0-1_amd64.deb /tmp/rticonnextdds-tools_5.2.0-1_amd64.deb
+ADD rticonnextdds-src/librticonnextdds52_5.2.3-1_amd64.deb /tmp/librticonnextdds52_5.2.3-1_amd64.deb
+ADD rticonnextdds-src/librticonnextdds52-dev_5.2.3-1_amd64.deb /tmp/librticonnextdds52-dev_5.2.3-1_amd64.deb
+ADD rticonnextdds-src/rticonnextdds-tools_5.2.3-1_amd64.deb /tmp/rticonnextdds-tools_5.2.3-1_amd64.deb
 
 # Install the eProsima dependencies.
 RUN apt-get update && apt-get install -y libboost-chrono-dev libboost-date-time-dev libboost-program-options-dev libboost-regex-dev libboost-system-dev libboost-thread-dev

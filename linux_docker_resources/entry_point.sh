@@ -34,9 +34,9 @@ echo "done."
 case "${CI_ARGS}" in
   *--connext*)
     echo "Installing Connext..."
-    dpkg -i /tmp/librticonnextdds52_5.2.0-1_amd64.deb
-    dpkg -i /tmp/librticonnextdds52-dev_5.2.0-1_amd64.deb
-    dpkg -i /tmp/rticonnextdds-tools_5.2.0-1_amd64.deb
+    dpkg -i /tmp/librticonnextdds52_5.2.3-1_amd64.deb
+    dpkg -i /tmp/librticonnextdds52-dev_5.2.3-1_amd64.deb
+    dpkg -i /tmp/rticonnextdds-tools_5.2.3-1_amd64.deb
     echo "done."
     ;;
   *)

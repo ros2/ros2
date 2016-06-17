@@ -50,7 +50,7 @@ class LinuxBatchJob(BatchJob):
         if self.args.connext:
             # Try to find the connext env file and source it
             connext_env_file = os.path.join(
-                os.path.expanduser('~'), 'rti_connext_dds-5.2.0', 'resource', 'scripts',
+                os.path.expanduser('~'), 'rti_connext_dds-5.2.3', 'resource', 'scripts',
                 'rtisetenv_x64Linux3.xgcc4.6.3.bash')
             if not os.path.exists(connext_env_file):
                 warn("Asked to use Connext but the RTI env was not found at '{0}'".format(

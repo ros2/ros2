@@ -152,6 +152,7 @@ def main(argv=None):
             job_data['enable_c_coverage_default'] = 'true'
             job_config = expand_template('ci_job.xml.template', job_data)
             configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
+            job_data['enable_c_coverage_default'] = 'false'
 
         # configure nightly triggered job
         job_name = 'nightly_' + os_name + '_release'

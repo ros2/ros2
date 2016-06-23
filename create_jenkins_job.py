@@ -125,7 +125,11 @@ def main(argv=None):
 
         # all following jobs are triggered nightly with email notification
         job_data['time_trigger_spec'] = '0 11 * * *'
-        job_data['mailer_recipients'] = 'ros@osrfoundation.org'
+        # for now, skip emailing about Windows failures
+        if os_name != 'windows':
+            job_data['mailer_recipients'] = 'ros@osrfoundation.org'
+        else:
+            job_data['mailer_recipients'] = ''
 
         # configure packaging job
         job_name = 'packaging_' + os_name

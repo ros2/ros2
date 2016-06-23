@@ -164,6 +164,9 @@ def main(argv=None):
     # configure the launch job
     os_specific_data = collections.OrderedDict()
     for os_name in sorted(os_configs.keys()):
+        # skip windows for now
+        if os_name == 'windows':
+            continue
         # skip non-manual jobs on ARM for now
         if os_name == 'linux-armhf' or os_name == 'linux-aarch64':
             continue

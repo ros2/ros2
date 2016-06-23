@@ -73,6 +73,7 @@ def main(argv=None):
         'use_fastrtps_default': 'true',
         'use_opensplice_default': 'false',
         'ament_args_default': '',
+        'enable_c_coverage_default': 'false',
     }
 
     jenkins = connect(args.jenkins_url)
@@ -143,6 +144,14 @@ def main(argv=None):
         job_data['cmake_build_type'] = 'Debug'
         job_config = expand_template('ci_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
+
+        # configure nightly coverage job on Linux only
+        if os_name == 'linux':
+            job_name = 'nightly_' + os_name + '_coverage'
+            job_data['cmake_build_type'] = 'Debug'
+            job_data['enable_c_coverage_default'] = 'true'
+            job_config = expand_template('ci_job.xml.template', job_data)
+            configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 
         # configure nightly triggered job
         job_name = 'nightly_' + os_name + '_release'

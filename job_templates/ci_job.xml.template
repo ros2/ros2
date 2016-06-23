@@ -18,6 +18,7 @@
     use_opensplice_default=use_opensplice_default,
     cmake_build_type=cmake_build_type,
     ament_args_default=ament_args_default,
+    enable_c_coverage_default=enable_c_coverage_default,
 ))@
     <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@@1.25">
       <autoRebuild>false</autoRebuild>
@@ -84,7 +85,7 @@ use_whitespace: ${build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PATH
 isolated: ${build.buildVariableResolver.resolve('CI_ISOLATED')}, <br/>
 cmake_build_type: ${build.buildVariableResolver.resolve('CI_CMAKE_BUILD_TYPE')}, <br/>
 ament_args: ${build.buildVariableResolver.resolve('CI_AMENT_ARGS')}, <br/>
-coverage: ${build.buildVariableResolver.resolve('CI_COVERAGE')}\
+coverage: ${build.buildVariableResolver.resolve('CI_ENABLE_C_COVERAGE')}\
 """);]]>
         </command>
       </scriptSource>
@@ -131,7 +132,7 @@ fi
 if [ -n "${CI_AMENT_ARGS+x}" ]; then
   export CI_ARGS="$CI_ARGS --ament-args $CI_AMENT_ARGS"
 fi
-if [ -n "${CI_COVERAGE}" ]; then
+if [ -n "${CI_ENABLE_C_COVERAGE}" ]; then
   export CI_ARGS="$CI_ARGS --coverage"
 fi
 echo "Using args: $CI_ARGS"
@@ -226,7 +227,7 @@ if "%CI_CMAKE_BUILD_TYPE%" NEQ "None" (
 if "%CI_AMENT_ARGS%" NEQ "" (
   set "CI_ARGS=%CI_ARGS% --ament-args %CI_AMENT_ARGS%"
 )
-if "%CI_COVERAGE%" == "true" (
+if "%CI_ENABLE_C_COVERAGE%" == "true" (
   set "CI_ARGS=%CI_ARGS% --coverage"
 )
 echo Using args: %CI_ARGS%

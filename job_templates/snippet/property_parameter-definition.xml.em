@@ -57,6 +57,11 @@ This tests the robustness to whitespace being within the different paths.</descr
           <description>By setting this to True, the build will use the --isolated option.</description>
           <defaultValue>true</defaultValue>
         </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>CI_ENABLE_C_COVERAGE</name>
+          <description>By setting this to true, the build will report test coverage for C/C++ code (currently ignored on non-Linux).</description>
+          <defaultValue>@(enable_c_coverage_default)</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
         <hudson.model.ChoiceParameterDefinition>
           <name>CI_CMAKE_BUILD_TYPE</name>
           <description>Select the CMake build type.</description>

@@ -67,11 +67,11 @@ def main(argv=None):
         'ci_scripts_default_branch': args.ci_scripts_default_branch,
         'time_trigger_spec': '',
         'mailer_recipients': '',
-        'use_connext_default': 'false',
+        'use_connext_default': 'true',
         'disable_connext_static_default': 'false',
-        'disable_connext_dynamic_default': 'false',
+        'disable_connext_dynamic_default': 'true',
         'use_fastrtps_default': 'true',
-        'use_opensplice_default': 'true',
+        'use_opensplice_default': 'false',
         'ament_args_default': '',
     }
 
@@ -125,7 +125,8 @@ def main(argv=None):
 
         # all following jobs are triggered nightly with email notification
         job_data['time_trigger_spec'] = '0 11 * * *'
-        job_data['mailer_recipients'] = 'ros@osrfoundation.org'
+        # for now, skip emailing about Windows failures
+        job_data['mailer_recipients'] = 'ros@osrfoundation.org' if os_name != 'windows' else ''
 
         # configure packaging job
         job_name = 'packaging_' + os_name
@@ -164,6 +165,9 @@ def main(argv=None):
     # configure the launch job
     os_specific_data = collections.OrderedDict()
     for os_name in sorted(os_configs.keys()):
+        # skip windows for now
+        if os_name == 'windows':
+            continue
         # skip non-manual jobs on ARM for now
         if os_name == 'linux-armhf' or os_name == 'linux-aarch64':
             continue

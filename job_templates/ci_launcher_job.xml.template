@@ -16,6 +16,7 @@
     use_opensplice_default=use_opensplice_default,
     cmake_build_type=cmake_build_type,
     ament_args_default=ament_args_default,
+    enable_c_coverage_default=enable_c_coverage_default,
 ))@
     <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@@1.25">
       <autoRebuild>false</autoRebuild>

@@ -41,6 +41,9 @@ RUN apt-get update && apt-get install -y clang-format-3.8 cppcheck git pydocstyl
 RUN apt-get update && apt-get install -y python3-pip
 RUN pip3 install -U setuptools pip virtualenv
 
+# Install coverage build dependencies.
+RUN apt-get update && apt-get install -y gcovr
+
 # Install the OpenSplice binary from the OSRF repositories.
 RUN apt-get update && apt-get install -y libopensplice64
 # Update default domain id.

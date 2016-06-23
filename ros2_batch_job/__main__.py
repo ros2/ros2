@@ -55,6 +55,7 @@ pip_dependencies = [
     'vcstool',
 ]
 
+gcov_flags = " -fprofile-arcs -ftest-coverage "
 
 def main(sysargv=None):
     args = get_args(sysargv=sysargv)
@@ -116,6 +117,9 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
     parser.add_argument(
         '--src-mounted', default=False, action='store_true',
         help="src directory is already mounted into the workspace")
+    parser.add_argument(
+        '--coverage', default=False, action='store_true',
+        help="enable collection of coverage statistics")
 
     argv = sysargv[1:] if sysargv is not None else sys.argv[1:]
     argv, ament_args = extract_argument_group(argv, '--ament-args')
@@ -132,8 +136,52 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
     return args
 
 
+def process_coverage(args, job):
+    print('# BEGIN SUBSECTION: coverage analysis')
+    # Collect all .gcda files in args.workspace
+    ament_py = get_ament_script(args.sourcespace)
+    output = subprocess.check_output(
+        [job.python, '-u', ament_py, 'list_packages', args.sourcespace])
+    for line in output.decode().splitlines():
+        package_name, package_path = line.split(' ', 1)
+        package_build_path = os.path.join(args.buildspace, package_name)
+        gcda_files = []
+        for root, dirs, files in os.walk(package_build_path):
+            gcda_files.extend(
+                    [os.path.abspath(os.path.join(root, f))
+                        for f in files if f.endswith('.gcda')])
+        if len(gcda_files) is 0:
+            continue
+        print(gcda_files)
+
+        # Run one gcov command for all gcda files for this package.
+        subprocess.run(['gcov', '--preserve-paths'] + gcda_files, check=True)
+        # Remove coverage files that did not originate in the workspace
+        for cov_file in (f for f in os.listdir(package_build_path)
+                         if f.endswith('.gcov')):
+            cov_path = cov_file.replace('#', '/')
+            # TODO Better path filter here
+            if not cov_path.beginswith(os.path.abspath(args.workspace)):
+                os.remove(os.path.join(root, cov_file))
+        # Write one report for the entire package.
+        # cobertura plugin looks for files of the regex *coverage.xml
+        outfile = os.path.join(package_build_path, package_name + '.coverage.xml')
+        print('Writing coverage.xml report at path {}'.format(outfile))
+        # -e /usr  Ignore files from /usr
+        # -xml  Output cobertura xml
+        # -output=<outfile>  Pass name of output file
+        # -g  use existing .gcov files in the directory
+        subprocess.run(
+            ['gcovr', '-e', '/usr', '--xml', '--output=' + outfile, '-g'],
+            check=True)
+
+    print('# END SUBSECTION')
+    return 0
+
+
 def build_and_test(args, job):
     ament_py = get_ament_script(args.sourcespace)
+    coverage = args.coverage and args.os == 'linux'
 
     print('# BEGIN SUBSECTION: ament build')
     # Now run ament build
@@ -144,9 +192,14 @@ def build_and_test(args, job):
         '"%s"' % args.sourcespace
     ] + (['--isolated'] if args.isolated else []) +
         (
-            ['--cmake-args', '-DCMAKE_BUILD_TYPE=' + args.cmake_build_type]
+            ['--cmake-args', '-DCMAKE_BUILD_TYPE=' +
+                args.cmake_build_type + ' -- ']
             if args.cmake_build_type else []
-        ) + args.ament_args, shell=True)
+        ) + args.ament_args +
+        (['--ament-cmake-args -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} ' +
+            gcov_flags + ' " -DCMAKE_C_FLAGS="${CMAKE_C_FLAGS} ' +
+            gcov_flags + '" -- ']
+            if coverage else []), shell=True)
     print('# END SUBSECTION')
 
     print('# BEGIN SUBSECTION: ament test')
@@ -171,6 +224,9 @@ def build_and_test(args, job):
     )
     info("ament.py test_results returned: '{0}'".format(ret_test_results))
     print('# END SUBSECTION')
+    if coverage:
+        process_coverage(args, job)
+
     # Uncomment this line to failing tests a failrue of this command.
     # return 0 if ret_test == 0 and ret_testr == 0 else 1
     return 0

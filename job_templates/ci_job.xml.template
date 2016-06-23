@@ -83,7 +83,8 @@ repos_url: ${build.buildVariableResolver.resolve('CI_ROS2_REPOS_URL')}, <br/>
 use_whitespace: ${build.buildVariableResolver.resolve('CI_USE_WHITESPACE_IN_PATHS')}, <br/>
 isolated: ${build.buildVariableResolver.resolve('CI_ISOLATED')}, <br/>
 cmake_build_type: ${build.buildVariableResolver.resolve('CI_CMAKE_BUILD_TYPE')}, <br/>
-ament_args: ${build.buildVariableResolver.resolve('CI_AMENT_ARGS')}\
+ament_args: ${build.buildVariableResolver.resolve('CI_AMENT_ARGS')}, <br/>
+coverage: ${build.buildVariableResolver.resolve('CI_COVERAGE')}\
 """);]]>
         </command>
       </scriptSource>
@@ -129,6 +130,9 @@ if [ "${CI_CMAKE_BUILD_TYPE}" != "None" ]; then
 fi
 if [ -n "${CI_AMENT_ARGS+x}" ]; then
   export CI_ARGS="$CI_ARGS --ament-args $CI_AMENT_ARGS"
+fi
+if [ -n "${CI_COVERAGE}" ]; then
+  export CI_ARGS="$CI_ARGS --coverage"
 fi
 echo "Using args: $CI_ARGS"
 echo "# END SECTION"
@@ -222,6 +226,9 @@ if "%CI_CMAKE_BUILD_TYPE%" NEQ "None" (
 if "%CI_AMENT_ARGS%" NEQ "" (
   set "CI_ARGS=%CI_ARGS% --ament-args %CI_AMENT_ARGS%"
 )
+if "%CI_COVERAGE%" == "true" (
+  set "CI_ARGS=%CI_ARGS% --coverage"
+)
 echo Using args: %CI_ARGS%
 echo "# END SECTION"
 
@@ -239,7 +246,7 @@ echo "# END SECTION"
     os_name=os_name,
 ))@
     <hudson.plugins.cobertura.CoberturaPublisher plugin="cobertura@@1.9.7">
-      <coberturaReportFile>ws/build*/*/coverage.xml</coberturaReportFile>
+      <coberturaReportFile>ws/build*/**/*coverage.xml</coberturaReportFile>
       <onlyStable>false</onlyStable>
       <failUnhealthy>false</failUnhealthy>
       <failUnstable>false</failUnstable>

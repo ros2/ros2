@@ -304,7 +304,7 @@ def run(args, build_function):
                 # Store current branch as well-known branch name for later rebasing
                 info('Attempting to create a well known branch name for all the default branches')
                 job.run(vcs_cmd + ['custom', '.', '--git', '--args', 'checkout', '-b', '__ci_default'])
-    
+
                 # Attempt to switch all the repositories to a given branch
                 info("Attempting to switch all repositories to the '{0}' branch"
                      .format(args.test_branch))
@@ -315,7 +315,7 @@ def run(args, build_function):
                 ret = job.run(vcs_custom_cmd, exit_on_error=False)
                 info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
                 print()
-    
+
                 # Attempt to rebase all the repositories to the __ci_default branch
                 info("Attempting to rebase all repositories to the '__ci_default' branch")
                 vcs_custom_cmd = vcs_cmd + ['custom', '.', '--git', '--args', 'rebase', '__ci_default']
@@ -323,7 +323,7 @@ def run(args, build_function):
                 info("'{0}' returned exit code '{1}'", fargs=(" ".join(vcs_custom_cmd), ret))
                 print()
                 print('# END SUBSECTION')
-    
+
             print('# BEGIN SUBSECTION: repository hashes')
             # Show the latest commit log on each repository (includes the commit hash).
             job.run(vcs_cmd + ['log', '-l1', '"%s"' % args.sourcespace], shell=True)

@@ -34,7 +34,9 @@ echo "done."
 case "${CI_ARGS}" in
   *--connext*)
     echo "Installing Connext..."
-    python3 -u /tmp/rti_web_binaries_install_script.py /tmp/rti-installer.run ~
+    python3 -u /tmp/rti_web_binaries_install_script.py /tmp/rti-installer.run /home/rosbuild
+    mv /tmp/rti_license.dat /home/rosbuild/rti_license.dat
+    export RTI_LICENSE_FILE=/home/rosbuild/rti_license.dat
     # dpkg -i /tmp/librticonnextdds52_5.2.3-1_amd64.deb
     # dpkg -i /tmp/librticonnextdds52-dev_5.2.3-1_amd64.deb
     # dpkg -i /tmp/rticonnextdds-tools_5.2.3-1_amd64.deb

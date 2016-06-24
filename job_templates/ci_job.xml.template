@@ -132,7 +132,7 @@ fi
 if [ -n "${CI_AMENT_ARGS+x}" ]; then
   export CI_ARGS="$CI_ARGS --ament-args $CI_AMENT_ARGS"
 fi
-if [ -n "${CI_ENABLE_C_COVERAGE}" ]; then
+if [ "$CI_ENABLE_C_COVERAGE" = "true" ]; then
   export CI_ARGS="$CI_ARGS --coverage"
 fi
 echo "Using args: $CI_ARGS"

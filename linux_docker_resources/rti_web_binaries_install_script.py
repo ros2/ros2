@@ -13,12 +13,13 @@
 # limitations under the License.
 
 import argparse
+import sys
 
 import pexpect
 
 
 def install_connext(installer_path, install_directory):
-    child = pexpect.spawn(installer_path + ' --mode text', encoding='utf8')
+    child = pexpect.spawn(installer_path + ' --mode text', encoding='utf8', logfile=sys.stdout)
 
     spamEnter = True
     while(spamEnter):

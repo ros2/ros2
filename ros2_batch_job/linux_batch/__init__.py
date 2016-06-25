@@ -74,7 +74,7 @@ class LinuxBatchJob(BatchJob):
             kwargs['shell'] = True
             # If the connext file is there, source it.
             if connext_env_file is not None:
-                cmd = ['/bin/bash', '"%s"' % connext_env_file, '&&'] + cmd
+                cmd = ['.', '"%s"' % connext_env_file, '&&'] + cmd
                 log('(RTI)')
             if ros1_setup_file:
                 cmd = ['.', '"%s"' % ros1_setup_file, '&&'] + cmd

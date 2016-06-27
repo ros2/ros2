@@ -4,10 +4,17 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@@1.14.1">
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@@1.18.1">
       <projectUrl>@(ci_scripts_repository)/</projectUrl>
       <displayName />
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@@1.25">
+      <autoRebuild>false</autoRebuild>
+      <rebuildDisabled>false</rebuildDisabled>
+    </com.sonyericsson.rebuild.RebuildSettings>
+    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
+      <requeueJob>true</requeueJob>
+    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
 @(SNIPPET(
     'property_parameter-definition',
     ci_scripts_default_branch=ci_scripts_default_branch,
@@ -20,15 +27,8 @@
     ament_args_default=ament_args_default,
     enable_c_coverage_default=enable_c_coverage_default,
 ))@
-    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@@1.25">
-      <autoRebuild>false</autoRebuild>
-      <rebuildDisabled>false</rebuildDisabled>
-    </com.sonyericsson.rebuild.RebuildSettings>
-    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
-      <requeueJob>true</requeueJob>
-    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@@2.4.0">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@@2.4.4">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -52,6 +52,7 @@
         <disableSubmodules>false</disableSubmodules>
         <recursiveSubmodules>true</recursiveSubmodules>
         <trackingSubmodules>false</trackingSubmodules>
+        <reference/>
       </hudson.plugins.git.extensions.impl.SubmoduleOption>
     @
 @[end if]</extensions>
@@ -70,7 +71,7 @@
 @[end if]</triggers>
   <concurrentBuild>true</concurrentBuild>
   <builders>
-    <hudson.plugins.groovy.SystemGroovy plugin="groovy@@1.27">
+    <hudson.plugins.groovy.SystemGroovy plugin="groovy@@1.29">
       <scriptSource class="hudson.plugins.groovy.StringScriptSource">
         <command><![CDATA[build.setDescription("""\
 branch: ${build.buildVariableResolver.resolve('CI_BRANCH_TO_TEST')}, <br/>
@@ -306,7 +307,7 @@ echo "# END SECTION"
       </failingTarget>
       <sourceEncoding>ASCII</sourceEncoding>
     </hudson.plugins.cobertura.CoberturaPublisher>
-    <xunit plugin="xunit@@1.99">
+    <xunit plugin="xunit@@1.101">
       <types>
 @[for prefix in ['ws/build', 'work space/build space']]@
         <CTestType>
@@ -360,12 +361,12 @@ echo "# END SECTION"
 @[end if]@
   </publishers>
   <buildWrappers>
-    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@@1.7.2" />
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@@1.7.4" />
     <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@@0.4.2">
       <colorMapName>xterm</colorMapName>
     </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
 @[if os_name != 'windows']@
-    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@@1.9">
+    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@@1.10">
       <credentialIds>
         <string>1c2004f6-2e00-425d-a421-2e1ba62ca7a7</string>
       </credentialIds>

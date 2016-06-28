@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:xenial
 MAINTAINER William Woodall <william@osrfoundation.org>
 ARG PLATFORM=x86
 

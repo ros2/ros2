@@ -72,7 +72,8 @@ def main(argv=None):
         'disable_connext_dynamic_default': 'true',
         'use_fastrtps_default': 'true',
         'use_opensplice_default': 'false',
-        'ament_args_default': '',
+        'ament_build_args_default': '',
+        'ament_test_args_default': '--retest-until-pass 5',
         'enable_c_coverage_default': 'false',
     }
 
@@ -168,7 +169,7 @@ def main(argv=None):
             job_name = job_name[0:-5]
         job_data['time_trigger_spec'] = '0 12 * * *'
         job_data['cmake_build_type'] = 'None'
-        job_data['ament_args_default'] = '--ctest-args --repeat-until-fail 20'
+        job_data['ament_test_args_default'] = '--retest-until-fail 20'
         job_config = expand_template('ci_job.xml.template', job_data)
         configure_job(jenkins, job_name, job_config, **jenkins_kwargs)
 

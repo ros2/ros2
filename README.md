@@ -51,6 +51,10 @@ Select the appropriate ssh key from that list.
 Second, under the 'SSH Agent' option, select the same ssh key from the drop down list called 'Credentials'.
 Note this option will not be there for Windows because I could not get the ssh-agent to work on Windows correctly and it is not needed anyways.
 
+## Setup CMake Warning Parsing
+
+For CMake warnings to be parsed by the Warnigns plugin you need to add a global configuration, see: https://github.com/ros2/ros2/pull/248#issuecomment-228885779
+
 ## Using the batch CI jobs
 
 Each of the batch CI jobs have the same set of parameters.

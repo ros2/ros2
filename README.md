@@ -53,7 +53,7 @@ Note this option will not be there for Windows because I could not get the ssh-a
 
 ## Setup CMake Warning Parsing
 
-For CMake warnings to be parsed by the Warnigns plugin you need to add a global configuration, see: https://github.com/ros2/ros2/pull/248#issuecomment-228885779
+For CMake warnings to be parsed by the Warnings plugin you need to add a global configuration, see: https://github.com/ros2/ros2/pull/248#issuecomment-228885779
 
 ## Using the batch CI jobs
 

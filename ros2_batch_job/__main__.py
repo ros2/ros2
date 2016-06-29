@@ -112,8 +112,11 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
         '--cmake-build-type', default=None,
         help='select the CMake build type')
     parser.add_argument(
-        '--ament-args', default=None,
-        help='arguments passed to ament')
+        '--ament-build-args', default=None,
+        help="arguments passed to 'ament build'")
+    parser.add_argument(
+        '--ament-test-args', default=None,
+        help="arguments passed to 'ament test'")
     parser.add_argument(
         '--src-mounted', default=False, action='store_true',
         help="src directory is already mounted into the workspace")
@@ -122,9 +125,14 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
         help="enable collection of coverage statistics")
 
     argv = sysargv[1:] if sysargv is not None else sys.argv[1:]
-    argv, ament_args = extract_argument_group(argv, '--ament-args')
+    argv, ament_build_args = extract_argument_group(argv, '--ament-build_args')
+    if '--ament-test-args' in argv:
+        argv, ament_test_args = extract_argument_group(argv, '--ament-test-args')
+    else:
+        ament_build_args, ament_test_args = extract_argument_group(ament_build_args, '--ament-test-args')
     args = parser.parse_args(argv)
-    args.ament_args = ament_args
+    args.ament_build_args = ament_build_args
+    args.ament_test_args = ament_test_args
     if skip_white_space_in:
         args.white_space_in = None
     if skip_connext:
@@ -195,7 +203,7 @@ def build_and_test(args, job):
             ['--cmake-args', '-DCMAKE_BUILD_TYPE=' +
                 args.cmake_build_type + ' -- ']
             if args.cmake_build_type else []
-        ) + args.ament_args +
+        ) + args.ament_build_args +
         (['--ament-cmake-args -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} ' +
             gcov_flags + ' " -DCMAKE_C_FLAGS="${CMAKE_C_FLAGS} ' +
             gcov_flags + '" -- ']
@@ -211,7 +219,7 @@ def build_and_test(args, job):
         # Skip building and installing, since we just did that successfully.
         '--skip-build', '--skip-install',
         '"%s"' % args.sourcespace
-    ] + (['--isolated'] if args.isolated else []) + args.ament_args,
+    ] + (['--isolated'] if args.isolated else []) + args.ament_test_args,
         exit_on_error=False, shell=True)
     info("ament.py test returned: '{0}'".format(ret_test))
     print('# END SUBSECTION')

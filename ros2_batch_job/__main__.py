@@ -125,7 +125,7 @@ def get_args(sysargv=None, skip_white_space_in=False, skip_connext=False, add_ro
         help="enable collection of coverage statistics")
 
     argv = sysargv[1:] if sysargv is not None else sys.argv[1:]
-    argv, ament_build_args = extract_argument_group(argv, '--ament-build_args')
+    argv, ament_build_args = extract_argument_group(argv, '--ament-build-args')
     if '--ament-test-args' in argv:
         argv, ament_test_args = extract_argument_group(argv, '--ament-test-args')
     else:

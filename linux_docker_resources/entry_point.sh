@@ -36,7 +36,7 @@ case "${CI_ARGS}" in
     echo "Installing Connext..."
     case "${CI_ARGS}" in
       *--osrf-connext-debs*)
-	echo "Installing OSRF-build Connext debs..."
+	echo "Installing OSRF-built Connext debs..."
 	dpkg -i /tmp/librticonnextdds52_5.2.3-1_amd64.deb
 	dpkg -i /tmp/librticonnextdds52-dev_5.2.3-1_amd64.deb
 	dpkg -i /tmp/rticonnextdds-tools_5.2.3-1_amd64.deb

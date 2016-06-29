@@ -255,7 +255,7 @@ echo "# END SECTION"
     'publisher_warnings',
     os_name=os_name,
 ))@
-    <hudson.plugins.cobertura.CoberturaPublisher plugin="cobertura@@1.9.7">
+    <hudson.plugins.cobertura.CoberturaPublisher plugin="cobertura@@1.9.8">
       <coberturaReportFile>ws/build*/**/*coverage.xml</coberturaReportFile>
       <onlyStable>false</onlyStable>
       <failUnhealthy>false</failUnhealthy>

@@ -13,29 +13,29 @@
 # limitations under the License.
 
 import argparse
-import sys
 
 import pexpect
 
 
 def install_connext(installer_path, install_directory):
-    child = pexpect.spawn(installer_path + ' --mode text', encoding='utf8', logfile=sys.stdout)
+    child = pexpect.spawn(installer_path + ' --mode text', encoding='utf8')
 
-    spamEnter = True
-    while(spamEnter):
+    keep_agreeing = True
+    while(keep_agreeing):
         result_index = child.expect([
             'Installation Directory.*?:',
             'Press \[Enter\] to continue:',
             'Do you accept this license\? \[y/n\]: '])
         if result_index == 0:
-            spamEnter = False
+            keep_agreeing = False
         else:
             child.sendline('y')
 
     child.sendline(install_directory)
     child.expect_exact('Do you want to continue? [Y/n]:')
     child.sendline('y')
-    result_index = child.expect_exact(['Create an RTI Launcher shortcut on the Desktop [y/N]: ', pexpect.EOF])
+    result_index = child.expect_exact([
+        'Create an RTI Launcher shortcut on the Desktop [y/N]: ', pexpect.EOF])
     if result_index == 0:
         child.sendline('n')
         child.expect(pexpect.EOF)

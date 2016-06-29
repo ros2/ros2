@@ -43,6 +43,11 @@ This tests the robustness to whitespace being within the different paths.</descr
           <defaultValue>@(disable_connext_dynamic_default)</defaultValue>
         </hudson.model.BooleanParameterDefinition>
         <hudson.model.BooleanParameterDefinition>
+          <name>CI_USE_OSRF_CONNEXT_DEBS</name>
+          <description>By setting this to True, the build will use the deb packages built by OSRF for Connext, instead of the binaries off the RTI website (applies to linux only).</description>
+          <defaultValue>@(use_osrf_connext_debs_default)</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
           <name>CI_USE_FASTRTPS</name>
           <description>By setting this to True, the build will attempt to use eProsima&apos;s FastRTPS.</description>
           <defaultValue>@(use_fastrtps_default)</defaultValue>

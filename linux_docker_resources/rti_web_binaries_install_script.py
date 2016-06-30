@@ -36,7 +36,7 @@ def install_connext(installer_path, install_directory):
         child.expect_exact('Do you want to continue? [Y/n]:')
         child.sendline('y')
         result_index = child.expect_exact([
-            'Create an RTI Launcher shortcut on the Desktop [y/N]: ', pexpect.EOF])
+            'Create an RTI Launcher shortcut on the Desktop [y/N]: ', pexpect.EOF], timeout=120)
         if result_index == 0:
             child.sendline('n')
             child.expect(pexpect.EOF)

@@ -48,11 +48,19 @@ class LinuxBatchJob(BatchJob):
         # this block is only relevant if it is not using the custom Debian package
         # but the installed official packages
         if self.args.connext:
-            # Try to find the connext env file and source it
+            # Try to find the connext env file to later source it
             connext_env_file = os.path.join(
                 os.path.expanduser('~'), 'rti_connext_dds-5.2.3', 'resource', 'scripts',
                 'rtisetenv_x64Linux3gcc4.8.2.bash')
-            if not os.path.exists(connext_env_file):
+
+            if os.path.exists(connext_env_file):
+                # Make script compatible with dash
+                with open(connext_env_file, 'r') as env_file:
+                    env_file_data = env_file.read()
+                env_file_data = env_file_data.replace('${BASH_SOURCE[0]}', connext_env_file)
+                with open(connext_env_file, 'w') as env_file:
+                    env_file.write(env_file_data)
+            else:
                 warn("Asked to use Connext but the RTI env was not found at '{0}'".format(
                     connext_env_file))
                 connext_env_file = None

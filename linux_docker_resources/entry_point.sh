@@ -42,8 +42,13 @@ case "${CI_ARGS}" in
 	dpkg -i /tmp/rticonnextdds-tools_5.2.3-1_amd64.deb
 	;;
       *)
-	echo "Install Connext binaries off RTI website..."
+	echo "Installing Connext binaries off RTI website..."
 	python3 -u /tmp/rti_web_binaries_install_script.py /tmp/rti-installer.run /home/rosbuild
+	if [ $? -ne 0 ]
+	then
+	  echo "Connext not installed correctly." >&2
+	  exit 1
+	fi
 	mv /tmp/rti_license.dat /home/rosbuild/rti_license.dat
 	export RTI_LICENSE_FILE=/home/rosbuild/rti_license.dat
 	;;

@@ -14,13 +14,6 @@ export GID=${GID:=$ORIG_GID}
 
 ORIG_HOME=$(echo $ORIGPASSWD | cut -f6 -d:)
 
-echo "Fixing permissions..."
-sed -i -e "s/:$ORIG_UID:$ORIG_GID:/:$UID:$GID:/" /etc/passwd
-sed -i -e "s/rosbuild:x:$ORIG_GID:/rosbuild:x:$GID:/" /etc/group
-
-chown -R ${UID}:${GID} "${ORIG_HOME}"
-echo "done."
-
 echo "Enabling multicast..."
 ifconfig eth0 multicast
 echo "done."
@@ -59,6 +52,13 @@ case "${CI_ARGS}" in
     echo "NOT installing Connext."
     ;;
 esac
+
+echo "Fixing permissions..."
+sed -i -e "s/:$ORIG_UID:$ORIG_GID:/:$UID:$GID:/" /etc/passwd
+sed -i -e "s/rosbuild:x:$ORIG_GID:/rosbuild:x:$GID:/" /etc/group
+
+chown -R ${UID}:${GID} "${ORIG_HOME}"
+echo "done."
 
 cd /home/rosbuild/ci_scripts
 

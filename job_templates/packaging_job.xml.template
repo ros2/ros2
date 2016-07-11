@@ -31,6 +31,16 @@ To use the default branch on all repositories, use an empty string.</description
           <defaultValue></defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.ChoiceParameterDefinition>
+          <name>CI_USED_RMW_IMPL</name>
+          <description/>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>OpenSplice</string>
+              <string>FastRTPS</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.ChoiceParameterDefinition>
           <name>CI_CMAKE_BUILD_TYPE</name>
           <description>Select the CMake build type.</description>
           <choices class="java.util.Arrays$ArrayList">
@@ -104,6 +114,7 @@ choices.remove(cmake_build_type)
 branch: ${build.buildVariableResolver.resolve('CI_BRANCH_TO_TEST')}, <br/>
 ci_branch: ${build.buildVariableResolver.resolve('CI_SCRIPTS_BRANCH')}, <br/>
 repos_url: ${build.buildVariableResolver.resolve('CI_ROS2_REPOS_URL')}, <br/>
+used_rmw_impl: ${build.buildVariableResolver.resolve('CI_USED_RMW_IMPL')}, <br/>
 cmake_build_type: ${build.buildVariableResolver.resolve('CI_CMAKE_BUILD_TYPE')}\
 """);]]>
         </command>
@@ -121,7 +132,11 @@ export CI_ARGS="--do-venv --force-ansi-color"
 if [ -n "${CI_BRANCH_TO_TEST+x}" ]; then
   export CI_ARGS="$CI_ARGS --test-branch $CI_BRANCH_TO_TEST"
 fi
-export CI_ARGS="$CI_ARGS --opensplice"
+if [ "${CI_USED_RMW_IMPL}" = "FastRTPS" ]; then
+  export CI_ARGS="$CI_ARGS --fastrtps"
+elif [ "${CI_USED_RMW_IMPL}" = "OpenSplice" ]; then
+  export CI_ARGS="$CI_ARGS --opensplice"
+fi
 if [ -n "${CI_ROS2_REPOS_URL+x}" ]; then
   export CI_ARGS="$CI_ARGS --repo-file-url $CI_ROS2_REPOS_URL"
 fi
@@ -164,7 +179,11 @@ set "CI_ARGS=--force-ansi-color"
 if "%CI_BRANCH_TO_TEST%" NEQ "" (
   set "CI_ARGS=%CI_ARGS% --test-branch %CI_BRANCH_TO_TEST%"
 )
-set "CI_ARGS=%CI_ARGS% --opensplice"
+if "%CI_USED_RMW_IMPL%" EQU "FastRTPS" (
+  set "CI_ARGS=%CI_ARGS% --fastrtps"
+) else if "%CI_USED_RMW_IMPL%" EQU "OpenSplice" (
+  set "CI_ARGS=%CI_ARGS% --opensplice"
+)
 if "%CI_ROS2_REPOS_URL%" NEQ "" (
   set "CI_ARGS=%CI_ARGS% --repo-file-url %CI_ROS2_REPOS_URL%"
 )

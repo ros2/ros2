@@ -42,6 +42,9 @@ RUN pip3 install -U setuptools pip virtualenv
 # Install the OpenSplice binary from the OSRF repositories.
 RUN apt-get update && apt-get install -y libopensplice64
 
+# Install the eProsima dependencies.
+RUN apt-get update && apt-get install -y libboost-chrono-dev libboost-date-time-dev libboost-program-options-dev libboost-regex-dev libboost-system-dev libboost-thread-dev valgrind
+
 # Install OpenCV.
 RUN apt-get update && apt-get install -y libopencv-dev
 

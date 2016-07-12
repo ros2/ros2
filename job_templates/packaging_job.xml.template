@@ -4,10 +4,17 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@@1.18.1">
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@@1.19.2">
       <projectUrl>@(ci_scripts_repository)/</projectUrl>
       <displayName />
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@@1.25">
+      <autoRebuild>false</autoRebuild>
+      <rebuildDisabled>false</rebuildDisabled>
+    </com.sonyericsson.rebuild.RebuildSettings>
+    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
+      <requeueJob>true</requeueJob>
+    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
@@ -58,15 +65,8 @@ choices.remove(cmake_build_type)
         </hudson.model.ChoiceParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
-    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@@1.25">
-      <autoRebuild>false</autoRebuild>
-      <rebuildDisabled>false</rebuildDisabled>
-    </com.sonyericsson.rebuild.RebuildSettings>
-    <org.jenkinsci.plugins.requeuejob.RequeueJobProperty plugin="jobrequeue@@1.0">
-      <requeueJob>true</requeueJob>
-    </org.jenkinsci.plugins.requeuejob.RequeueJobProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@@2.4.4">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@@2.5.2">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -90,6 +90,7 @@ choices.remove(cmake_build_type)
         <disableSubmodules>false</disableSubmodules>
         <recursiveSubmodules>true</recursiveSubmodules>
         <trackingSubmodules>false</trackingSubmodules>
+        <reference/>
       </hudson.plugins.git.extensions.impl.SubmoduleOption>
     @
 @[end if]</extensions>
@@ -212,9 +213,10 @@ echo "# END SECTION"
       <onlyIfSuccessful>true</onlyIfSuccessful>
       <fingerprint>false</fingerprint>
       <defaultExcludes>true</defaultExcludes>
+      <caseSensitive>true</caseSensitive>
     </hudson.tasks.ArtifactArchiver>
 @[if mailer_recipients]@
-    <hudson.tasks.Mailer plugin="mailer@@1.16">
+    <hudson.tasks.Mailer plugin="mailer@@1.17">
       <recipients>@(mailer_recipients)</recipients>
       <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
       <sendToIndividuals>false</sendToIndividuals>
@@ -222,12 +224,12 @@ echo "# END SECTION"
 @[end if]@
   </publishers>
   <buildWrappers>
-    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@@1.7.4" />
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@@1.8.4" />
     <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@@0.4.2">
       <colorMapName>xterm</colorMapName>
     </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
 @[if os_name != 'windows']@
-    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@@1.10">
+    <com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin="ssh-agent@@1.13">
       <credentialIds>
         <string>1c2004f6-2e00-425d-a421-2e1ba62ca7a7</string>
       </credentialIds>

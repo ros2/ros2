@@ -1,4 +1,4 @@
-    <hudson.plugins.warnings.WarningsPublisher plugin="warnings@@4.52">
+    <hudson.plugins.warnings.WarningsPublisher plugin="warnings@@4.56">
       <healthy/>
       <unHealthy/>
       <thresholdLimit>low</thresholdLimit>
@@ -8,7 +8,7 @@
       <usePreviousBuildAsReference>false</usePreviousBuildAsReference>
       <useStableBuildAsReference>false</useStableBuildAsReference>
       <useDeltaValues>false</useDeltaValues>
-      <thresholds plugin="analysis-core@@1.76">
+      <thresholds plugin="analysis-core@@1.78">
         <unstableTotalAll>0</unstableTotalAll>
         <unstableTotalHigh/>
         <unstableTotalNormal/>

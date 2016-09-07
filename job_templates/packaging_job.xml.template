@@ -145,9 +145,9 @@ if [ "${CI_CMAKE_BUILD_TYPE}" != "None" ]; then
   export CI_ARGS="$CI_ARGS --cmake-build-type $CI_CMAKE_BUILD_TYPE"
 fi
 @[if os_name == 'linux']@
-export CI_ARGS="$CI_ARGS --ros1-path /opt/ros/indigo"
+export CI_ARGS="$CI_ARGS --ros1-path /opt/ros/kinetic"
 @[else]@
-export CI_ARGS="$CI_ARGS --ros1-path /Users/osrf/indigo/install_isolated"
+export CI_ARGS="$CI_ARGS --ros1-path /Users/osrf/kinetic/install_isolated"
 @[end if]@
 echo "Using args: $CI_ARGS"
 echo "# END SECTION"

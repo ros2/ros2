@@ -14,13 +14,6 @@ export GID=${GID:=$ORIG_GID}
 
 ORIG_HOME=$(echo $ORIGPASSWD | cut -f6 -d:)
 
-echo "Fixing permissions..."
-sed -i -e "s/:$ORIG_UID:$ORIG_GID:/:$UID:$GID:/" /etc/passwd
-sed -i -e "s/rosbuild:x:$ORIG_GID:/rosbuild:x:$GID:/" /etc/group
-
-chown -R ${UID}:${GID} "${ORIG_HOME}"
-echo "done."
-
 echo "Enabling multicast..."
 ifconfig eth0 multicast
 echo "done."
@@ -34,15 +27,38 @@ echo "done."
 case "${CI_ARGS}" in
   *--connext*)
     echo "Installing Connext..."
-    dpkg -i /tmp/librticonnextdds52_5.2.3-1_amd64.deb
-    dpkg -i /tmp/librticonnextdds52-dev_5.2.3-1_amd64.deb
-    dpkg -i /tmp/rticonnextdds-tools_5.2.3-1_amd64.deb
+    case "${CI_ARGS}" in
+      *--osrf-connext-debs*)
+	echo "Installing OSRF-built Connext debs..."
+	dpkg -i /tmp/librticonnextdds52_5.2.3-1_amd64.deb
+	dpkg -i /tmp/librticonnextdds52-dev_5.2.3-1_amd64.deb
+	dpkg -i /tmp/rticonnextdds-tools_5.2.3-1_amd64.deb
+	;;
+      *)
+	echo "Installing Connext binaries off RTI website..."
+	python3 -u /tmp/rti_web_binaries_install_script.py /tmp/rti-installer.run /home/rosbuild
+	if [ $? -ne 0 ]
+	then
+	  echo "Connext not installed correctly." >&2
+	  exit 1
+	fi
+	mv /tmp/rti_license.dat /home/rosbuild/rti_license.dat
+	export RTI_LICENSE_FILE=/home/rosbuild/rti_license.dat
+	;;
+    esac
     echo "done."
     ;;
   *)
     echo "NOT installing Connext."
     ;;
 esac
+
+echo "Fixing permissions..."
+sed -i -e "s/:$ORIG_UID:$ORIG_GID:/:$UID:$GID:/" /etc/passwd
+sed -i -e "s/rosbuild:x:$ORIG_GID:/rosbuild:x:$GID:/" /etc/group
+
+chown -R ${UID}:${GID} "${ORIG_HOME}"
+echo "done."
 
 cd /home/rosbuild/ci_scripts
 

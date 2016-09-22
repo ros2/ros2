@@ -1,3 +1,7 @@
 [submodule "linux_docker_resources/rticonnextdds-src"]
 	path = linux_docker_resources/rticonnextdds-src
 	url = git@github.com:osrf/rticonnextdds-src.git
+[submodule "linux_docker_resources/rticonnextdds-license"]
+	path = linux_docker_resources/rticonnextdds-license
+	url = git@github.com:osrf/rticonnextdds-src.git
+	branch = license

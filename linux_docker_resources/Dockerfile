@@ -52,7 +52,17 @@ RUN sed -i "s/<Id>0<\/Id>/<Id>108<\/Id>/" /usr/etc/opensplice/config/ospl.xml
 # Install the RTI dependencies.
 RUN if test ${PLATFORM} = x86; then apt-get update && apt-get install -y default-jre-headless; fi
 
-# Add and install the RTI binaries we made.
+# Install dependencies for RTI web binaries install script.
+RUN pip3 install pexpect
+
+# Get and install the RTI web binaries.
+RUN curl --silent http://s3.amazonaws.com/RTI/Bundles/5.2.3/Evaluation/rti_connext_dds-5.2.3-eval-x64Linux3gcc4.8.2.run -o /tmp/rti-installer.run && chmod +x /tmp/rti-installer.run
+ADD rti_web_binaries_install_script.py /tmp/rti_web_binaries_install_script.py
+
+# Add the RTI license file.
+ADD rticonnextdds-license/rti_license.dat /tmp/rti_license.dat
+
+# Add the RTI binaries we made.
 ADD rticonnextdds-src/librticonnextdds52_5.2.3-1_amd64.deb /tmp/librticonnextdds52_5.2.3-1_amd64.deb
 ADD rticonnextdds-src/librticonnextdds52-dev_5.2.3-1_amd64.deb /tmp/librticonnextdds52-dev_5.2.3-1_amd64.deb
 ADD rticonnextdds-src/rticonnextdds-tools_5.2.3-1_amd64.deb /tmp/rticonnextdds-tools_5.2.3-1_amd64.deb

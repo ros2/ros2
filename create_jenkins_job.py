@@ -73,7 +73,7 @@ def main(argv=None):
         'use_osrf_connext_debs_default': 'false',
         'use_fastrtps_default': 'true',
         'use_opensplice_default': 'false',
-        'ament_build_args_default': '',
+        'ament_build_args_default': '--parallel',
         'ament_test_args_default': '--retest-until-pass 5',
         'enable_c_coverage_default': 'false',
     }
@@ -129,7 +129,7 @@ def main(argv=None):
         # all following jobs are triggered nightly with email notification
         job_data['time_trigger_spec'] = '0 11 * * *'
         # for now, skip emailing about Windows failures
-        job_data['mailer_recipients'] = 'ros@osrfoundation.org' if os_name != 'windows' else ''
+        job_data['mailer_recipients'] = 'ros@osrfoundation.org'
 
         # configure packaging job
         job_name = 'packaging_' + os_name
@@ -177,9 +177,6 @@ def main(argv=None):
     # configure the launch job
     os_specific_data = collections.OrderedDict()
     for os_name in sorted(os_configs.keys()):
-        # skip windows for now
-        if os_name == 'windows':
-            continue
         # skip non-manual jobs on ARM for now
         if os_name == 'linux-armhf' or os_name == 'linux-aarch64':
             continue

@@ -42,8 +42,8 @@ To use the default branch on all repositories, use an empty string.</description
           <description/>
           <choices class="java.util.Arrays$ArrayList">
             <a class="string-array">
-              <string>OpenSplice</string>
               <string>FastRTPS</string>
+              <string>OpenSplice</string>
             </a>
           </choices>
         </hudson.model.ChoiceParameterDefinition>

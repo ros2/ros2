@@ -2,132 +2,132 @@ repositories:
   ament/ament_cmake:
     type: git
     url: https://github.com/ament/ament_cmake.git
-    version: master
+    version: release-alpha8
   ament/ament_index:
     type: git
     url: https://github.com/ament/ament_index.git
-    version: master
+    version: release-alpha8
   ament/ament_lint:
     type: git
     url: https://github.com/ament/ament_lint.git
-    version: master
+    version: release-alpha8
   ament/ament_package:
     type: git
     url: https://github.com/ament/ament_package.git
-    version: master
+    version: release-alpha8
   ament/ament_tools:
     type: git
     url: https://github.com/ament/ament_tools.git
-    version: master
+    version: release-alpha8
   ament/gmock_vendor:
     type: git
     url: https://github.com/ament/gmock_vendor.git
-    version: master
+    version: release-alpha8
   ament/gtest_vendor:
     type: git
     url: https://github.com/ament/gtest_vendor.git
-    version: master
+    version: release-alpha8
   ament/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
-    version: master
+    version: 8533400ecf69aac64c6210cb9fca1dfe90d0e6b7
   ament/uncrustify:
     type: git
     url: https://github.com/ament/uncrustify.git
-    version: master
+    version: release-alpha8
   eProsima/Fast-CDR:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git
-    version: master
+    version: 8653f20bd3028621cc6b2f06fb6e0477d5f120fc
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
-    version: master
+    version: 3a9e3b864635121589387f8429802a43b7a8a293
   eProsima/ROS-RMW-Fast-RTPS-cpp:
     type: git
     url: https://github.com/eProsima/ROS-RMW-Fast-RTPS-cpp.git
-    version: master
+    version: a2ef350f9a997cec7495bede7442fc0d261cf35a
   ros/geometry2:
     type: git
     url: https://github.com/ros/geometry2.git
-    version: ros2_alpha
+    version: 464565c1d10c900656a24fb06cf782e5a302c90a
   ros2/common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git
-    version: master
+    version: release-alpha8
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
-    version: master
+    version: release-alpha8
   ros2/examples:
     type: git
     url: https://github.com/ros2/examples.git
-    version: master
+    version: release-alpha8
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: master
+    version: release-alpha8
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: master
+    version: release-alpha8
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
-    version: master
+    version: release-alpha8
   ros2/rclc:
     type: git
     url: https://github.com/ros2/rclc.git
-    version: master
+    version: release-alpha8
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: master
+    version: release-alpha8
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: master
+    version: release-alpha8
   ros2/realtime_support:
     type: git
     url: https://github.com/ros2/realtime_support.git
-    version: master
+    version: release-alpha8
   ros2/rmw:
     type: git
     url: https://github.com/ros2/rmw.git
-    version: master
+    version: release-alpha8
   ros2/rmw_connext:
     type: git
     url: https://github.com/ros2/rmw_connext.git
-    version: master
+    version: release-alpha8
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
-    version: master
+    version: release-alpha8
   ros2/rmw_opensplice:
     type: git
     url: https://github.com/ros2/rmw_opensplice.git
-    version: master
+    version: release-alpha8
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
-    version: master
+    version: release-alpha8
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: master
+    version: release-alpha8
   ros2/rosidl_dds:
     type: git
     url: https://github.com/ros2/rosidl_dds.git
-    version: master
+    version: release-alpha8
   ros2/system_tests:
     type: git
     url: https://github.com/ros2/system_tests.git
-    version: master
+    version: release-alpha8
   ros2/tlsf:
     type: git
     url: https://github.com/ros2/tlsf.git
-    version: master
+    version: release-alpha8
   vendor/console_bridge:
     type: git
     url: https://github.com/ros/console_bridge.git
-    version: master
+    version: 148df7e841b91da488ec3bb4abd295a2bccdb728

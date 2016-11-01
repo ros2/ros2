@@ -103,9 +103,9 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_connext.git
     version: master
-  ros2/rmw_fastrtps_cpp:
+  ros2/rmw_fastrtps:
     type: git
-    url: https://github.com/ros2/rmw_fastrtps_cpp.git
+    url: https://github.com/ros2/rmw_fastrtps.git
     version: master
   ros2/rmw_implementation:
     type: git

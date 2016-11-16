@@ -127,6 +127,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rosidl_dds.git
     version: master
+  ros2/rosidl_typesupport:
+    type: git
+    url: https://github.com/ros2/rosidl_typesupport.git
+    version: master
   ros2/system_tests:
     type: git
     url: https://github.com/ros2/system_tests.git

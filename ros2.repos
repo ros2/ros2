@@ -139,10 +139,10 @@ repositories:
     type: git
     url: https://github.com/ros2/tlsf.git
     version: master
-  ros2/tutorials:
-    type: git
-    url: https://github.com/ros2/tutorials.git
-    version: master
+#  ros2/tutorials:
+#    type: git
+#    url: https://github.com/ros2/tutorials.git
+#    version: master
   vendor/console_bridge:
     type: git
     url: https://github.com/ros/console_bridge.git

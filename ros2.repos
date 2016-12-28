@@ -50,7 +50,7 @@ repositories:
   ros/geometry2:
     type: git
     url: https://github.com/ros/geometry2.git
-    version: ros2_alpha
+    version: ros2
   ros2/common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git

@@ -51,6 +51,10 @@ repositories:
     type: git
     url: https://github.com/ros/geometry2.git
     version: ros2
+  ros2/ament_cmake_ros:
+    type: git
+    url: https://github.com/ros2/ament_cmake_ros.git
+    version: master
   ros2/common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git

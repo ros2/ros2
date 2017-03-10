@@ -50,7 +50,7 @@ repositories:
   ros/geometry2:
     type: git
     url: https://github.com/ros/geometry2.git
-    version: ros2
+    version: fix_build_karsten
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
@@ -70,7 +70,7 @@ repositories:
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
-    version: master
+    version: dummy_robot_demo
   ros2/examples:
     type: git
     url: https://github.com/ros2/examples.git

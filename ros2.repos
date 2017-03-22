@@ -70,7 +70,7 @@ repositories:
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
-    version: dummy_robot_demo
+    version: master
   ros2/examples:
     type: git
     url: https://github.com/ros2/examples.git
@@ -79,6 +79,10 @@ repositories:
     type: git
     url: https://github.com/ros2/launch.git
     version: master
+  ros2/orocos_kinematics_dynamics:
+    type: git
+    url: https://github.com/ros2/orocos_kinematics_dynamics.git
+    version: ros2
   ros2/poco_vendor:
     type: git
     url: https://github.com/ros2/poco_vendor.git
@@ -127,6 +131,14 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_opensplice.git
     version: master
+  ros2/robot_model:
+    type: git
+    url: https://github.com/ros2/robot_model.git
+    version: ros2
+  ros2/robot_state_publisher:
+    type: git
+    url: https://github.com/ros2/robot_state_publisher.git
+    version: ros2
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
@@ -147,6 +159,10 @@ repositories:
     type: git
     url: https://github.com/ros2/system_tests.git
     version: master
+  ros2/tinyxml_vendor:
+    type: git
+    url: https://github.com/ros2/tinyxml_vendor.git
+    version: master
   ros2/tlsf:
     type: git
     url: https://github.com/ros2/tlsf.git
@@ -155,14 +171,6 @@ repositories:
 #    type: git
 #    url: https://github.com/ros2/tutorials.git
 #    version: master
-  vendor/console_bridge:
-    type: git
-    url: https://github.com/ros/console_bridge.git
-    version: master
-  ros2/tinyxml_vendor:
-    type: git
-    url: https://github.com/ros2/tinyxml_vendor.git
-    version: master
   ros2/urdfdom:
     type: git
     url: https://github.com/ros2/urdfdom.git
@@ -171,15 +179,7 @@ repositories:
     type: git
     url: https://github.com/ros2/urdfdom_headers.git
     version: math_h
-  ros2/robot_model:
+  vendor/console_bridge:
     type: git
-    url: https://github.com/ros2/robot_model.git
-    version: ros2
-  ros2/robot_state_publisher:
-    type: git
-    url: https://github.com/ros2/robot_state_publisher.git
-    version: ros2
-  ros2/orocos_kinematics_dynamics:
-    type: git
-    url: https://github.com/ros2/orocos_kinematics_dynamics.git
-    version: ros2
+    url: https://github.com/ros/console_bridge.git
+    version: master

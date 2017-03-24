@@ -47,10 +47,6 @@ repositories:
     type: git
     url: https://github.com/ros/class_loader.git
     version: ros2
-  ros/geometry2:
-    type: git
-    url: https://github.com/ros/geometry2.git
-    version: ros2
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
@@ -75,6 +71,10 @@ repositories:
     type: git
     url: https://github.com/ros2/examples.git
     version: master
+  ros2/geometry2:
+    type: git
+    url: https://github.com/ros2/geometry2.git
+    version: ros2
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git

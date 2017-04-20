@@ -51,9 +51,9 @@ repositories:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
     version: master
-  ros2/c_utilities:
+  ros2/rcutils:
     type: git
-    url: https://github.com/ros2/c_utilities.git
+    url: https://github.com/ros2/rcutils.git
     version: master
   ros2/cli_tools:
     type: git

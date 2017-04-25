@@ -67,6 +67,10 @@ repositories:
     type: git
     url: https://github.com/ros2/examples.git
     version: master
+  ros2/example_interfaces:
+    type: git
+    url: https://github.com/ros2/example_interfaces.git
+    version: master
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git

@@ -51,10 +51,6 @@ repositories:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
     version: master
-  ros2/rcutils:
-    type: git
-    url: https://github.com/ros2/rcutils.git
-    version: master
   ros2/cli_tools:
     type: git
     url: https://github.com/ros2/cli_tools.git
@@ -106,6 +102,10 @@ repositories:
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
+    version: master
+  ros2/rcutils:
+    type: git
+    url: https://github.com/ros2/rcutils.git
     version: master
   ros2/realtime_support:
     type: git
@@ -175,10 +175,14 @@ repositories:
     type: git
     url: https://github.com/ros2/urdfdom.git
     version: ros2
-  ros/urdfdom_headers:
+  ros2/urdfdom_headers:
     type: git
     url: https://github.com/ros2/urdfdom_headers.git
     version: math_h
+  ros2/vision_opencv:
+    type: git
+    url: https://github.com/ros2/vision_opencv.git
+    version: ros2
   vendor/console_bridge:
     type: git
     url: https://github.com/ros/console_bridge.git

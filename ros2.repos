@@ -182,7 +182,7 @@ repositories:
   ros2/urdfdom_headers:
     type: git
     url: https://github.com/ros2/urdfdom_headers.git
-    version: math_h
+    version: ros2
   ros2/vision_opencv:
     type: git
     url: https://github.com/ros2/vision_opencv.git

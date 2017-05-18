@@ -31,7 +31,7 @@ For Bug report or feature requests, please fill out the relevant category below
 ## Feature request
 
 #### Feature description
-<!-- Description in a few sentences what the feature consists in and what problem it will solve -->
+<!-- Description in a few sentences what the feature consists of and what problem it will solve -->
 
 #### Implementation considerations
-<!-- Relevant information of how the feature could be implemented and pros and cons of the different solutions -->
+<!-- Relevant information on how the feature could be implemented and pros and cons of the different solutions -->

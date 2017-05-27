@@ -5,13 +5,18 @@ For Bug report or feature requests, please fill out the relevant category below
 
 ## Bug report
 
-| Required Info | |
-|---|---|
-|Operating System|<!-- OS and version (e.g. Windows 10, Ubuntu 16.04...) -->|
-|Installation type|<!-- binaries or from source  -->|
-|Version or commit hash|<!-- Output of git rev-parse HEAD, release version or repos file  -->|
-|DDS implementation|<!-- rmw_implementation used (e.g. Fast-RTPS, RTI Connext, etc -->|
-|Client library (if applicable)|<!-- e.g. rclcpp, rclpy or N/A -->|
+**Required Info:**
+
+- Operating System:
+  - <!-- OS and version (e.g. Windows 10, Ubuntu 16.04...) -->
+- Installation type:
+  - <!-- binaries or from source  -->
+- Version or commit hash:
+  - <!-- Output of git rev-parse HEAD, release version, or repos file  -->
+- DDS implementation:
+  - <!-- rmw_implementation used (e.g. Fast-RTPS, RTI Connext, etc -->
+- Client library (if applicable):
+  - <!-- e.g. rclcpp, rclpy, or N/A -->
 
 #### Steps to reproduce issue
 <!-- Detailed instructions on how to reliably reproduce this issue http://sscce.org/
@@ -26,7 +31,8 @@ For Bug report or feature requests, please fill out the relevant category below
 
 #### Additional information
 
-
+<!-- If you are reporting a bug delete everything below
+     If you are requesting a feature deleted everything above this line -->
 ----
 ## Feature request
 

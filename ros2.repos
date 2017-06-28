@@ -197,5 +197,5 @@ repositories:
     version: ros2
   vendor/console_bridge:
     type: git
-    url: https://github.com/ros/console_bridge.git
-    version: master
+    url: https://github.com/nuclearsandwich/console_bridge.git
+    version: ros2-beta2

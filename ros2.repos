@@ -59,10 +59,6 @@ repositories:
     type: git
     url: https://github.com/ros2/common_interfaces.git
     version: master
-  ros2/console_bridge:
-    type: git
-    url: https://github.com/ros2/console_bridge.git
-    version: ros2
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
@@ -199,3 +195,7 @@ repositories:
     type: git
     url: https://github.com/ros2/vision_opencv.git
     version: ros2
+  vendor/console_bridge:
+    type: git
+    url: https://github.com/ros/console_bridge.git
+    version: master

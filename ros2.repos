@@ -51,6 +51,10 @@ repositories:
     type: git
     url: https://github.com/ros/class_loader.git
     version: ros2
+  ros/console_bridge:
+    type: git
+    url: https://github.com/ros/console_bridge.git
+    version: master
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
@@ -195,7 +199,3 @@ repositories:
     type: git
     url: https://github.com/ros2/vision_opencv.git
     version: ros2
-  vendor/console_bridge:
-    type: git
-    url: https://github.com/ros/console_bridge.git
-    version: master

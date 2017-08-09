@@ -15,10 +15,6 @@ repositories:
     type: git
     url: https://github.com/ament/ament_package.git
     version: master
-  ament/ament_python:
-    type: git
-    url: https://github.com/ament/ament_python.git
-    version: master
   ament/ament_tools:
     type: git
     url: https://github.com/ament/ament_tools.git

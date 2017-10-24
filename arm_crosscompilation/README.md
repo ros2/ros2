@@ -28,7 +28,7 @@ No target filesystem with python libraries is provided here, so python is not su
 -- src/ros2/examples/rclpy : add an empty file called AMENT_IGNORE
 - ignore test_msgs (this one use the path to the python libraries during the install step and in this case try to install under /test_msgs because of the missing path !)
 -- src/ros2/rcl_interfaces/test_msgs : add an empty file called AMENT_IGNORE
-- ignore oterhs repos (see list below)
+- ignore others repos (see list below)
 
 You can do all of this with:
 `sed -e '/py/ s/^#*/#/' -i src/ros2/rosidl_typesupport/rosidl_default_generators/CMakeLists.txt`

@@ -56,5 +56,3 @@ src/ament/ament_tools/scripts/ament.py build --force-cmake-configure --cmake-arg
 ## Installation
 Once the compilation is done you will have to move the generated libraries (`install/lib`) in your target filesystem.
 The default path is under `/lib` but you can also choose another directory and set the `LD_LIBRARY_PATH` variable to it.
-
-*Copyright (c) 2017, ARM Limited and Contributors. All rights reserved.*

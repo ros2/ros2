@@ -15,7 +15,7 @@ tar -xf gcc-linaro-5.4.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz
 Create a workspace and clone all repos:
 
 ```
-git clone https://github.com/ros2/ros2.git -b aarch64_cross_compilation
+git clone https://github.com/ros2/ros2.git
 cd ros2/arm_crosscompilation
 mkdir src
 vcs-import src < ../ros2.repos

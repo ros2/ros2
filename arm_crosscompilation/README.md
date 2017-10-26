@@ -15,10 +15,10 @@ tar -xf gcc-linaro-5.4.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz
 Create a workspace and clone all repos:
 
 ```
+mkdir -p ros2_ws/src
 git clone https://github.com/ros2/ros2.git
-cd ros2/arm_crosscompilation
-mkdir src
-vcs-import src < ../ros2.repos
+vcs-import ros2_ws/src < ./ros2/ros2.repos
+cd ros2_ws
 ```
 
 ## Export the CC toolchain

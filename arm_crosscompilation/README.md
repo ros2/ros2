@@ -15,17 +15,18 @@ tar -xf gcc-linaro-5.4.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz
 Create a workspace and clone all repos:
 
 ```
-git clone https://github.com/ros2/ros2.git
-cd ros2/arm_crosscompilation
-mkdir src
-vcs-import src < ../ros2.repos
+mkdir -p ros2_ws/src
+cd ros2_ws
+wget https://raw.githubusercontent.com/ros2/ros2/release-latest/ros2.repos
+wget https://raw.githubusercontent.com/ros2/ros2/master/arm_crosscompilation/aarch64_toolchainfile.cmake
+vcs-import src < ros2.repos
 ```
 
 ## Export the CC toolchain
 Set the toolchain available for CMake:
 
 ```
-export CROSS_COMPILE=`pwd`/../../gcc-linaro-5.4.1-2017.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
+export CROSS_COMPILE=`pwd`/../gcc-linaro-5.4.1-2017.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
 ```
 
 ## Remove Python support
@@ -50,7 +51,7 @@ touch src/ros2/geometry2/AMENT_IGNORE src/ros2/demos/AMENT_IGNORE src/ros2/oroco
 
 ## Trigger a build
 ```
-src/ament/ament_tools/scripts/ament.py build --force-cmake-configure --cmake-args -DCMAKE_TOOLCHAIN_FILE=`pwd`/aarch64_toolchainfile.cmake -DTHIRDPARTY=ON
+src/ament/ament_tools/scripts/ament.py build --force-cmake-configure --cmake-args -DCMAKE_TOOLCHAIN_FILE=`pwd`/aarch64_toolchainfile.cmake -DTHIRDPARTY=ON --
 ```
 
 ## Installation

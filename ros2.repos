@@ -71,6 +71,10 @@ repositories:
     type: git
     url: https://github.com/ros2/geometry2.git
     version: ros2
+  ros2/kdl_parser:
+    type: git
+    url: https://github.com/ros2/kdl_parser.git
+    version: ros2
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git

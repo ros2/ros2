@@ -24,3 +24,8 @@ SET(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 SET(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 SET(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 SET(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+
+# This assumes that pthread will be available on the target system
+# (this emulates that the return of the TRY_RUN is a return code "0"
+set(THREADS_PTHREAD_ARG "0"
+  CACHE STRING "Result from TRY_RUN" FORCE)

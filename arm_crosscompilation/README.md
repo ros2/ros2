@@ -46,9 +46,10 @@ You can do all of this with:
 ```
 sed -e '/py/ s/^#*/#/' -i src/ros2/rosidl_typesupport/rosidl_default_generators/CMakeLists.txt
 sed -i -r 's/<build(.+?py.+?)/<\!\-\-build\1\-\->/' src/ros2/rosidl_typesupport/rosidl_default_generators/package.xml
-touch src/ros2/geometry2/AMENT_IGNORE \
+touch \
   src/ros2/demos/AMENT_IGNORE \
   src/ros2/examples/rclpy/AMENT_IGNORE \
+  src/ros2/geometry2/AMENT_IGNORE \
   src/ros2/orocos_kinematics_dynamics/AMENT_IGNORE \
   src/ros2/rclpy/AMENT_IGNORE \
   src/ros2/rcl_interfaces/test_msgs/AMENT_IGNORE \

@@ -183,6 +183,10 @@ repositories:
 #    type: git
 #    url: https://github.com/ros2/tutorials.git
 #    version: master
+  ros2/urdf:
+    type: git
+    url: https://github.com/ros2/urdf.git
+    version: ros2
   ros2/urdfdom:
     type: git
     url: https://github.com/ros2/urdfdom.git

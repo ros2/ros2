@@ -135,10 +135,6 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_opensplice.git
     version: master
-  ros2/robot_model:
-    type: git
-    url: https://github.com/ros2/robot_model.git
-    version: ros2
   ros2/robot_state_publisher:
     type: git
     url: https://github.com/ros2/robot_state_publisher.git

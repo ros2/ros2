@@ -47,6 +47,10 @@ repositories:
     type: git
     url: https://github.com/ros/console_bridge.git
     version: master
+  ros/pluginlib:
+    type: git
+    url: https://github.com/ros/pluginlib.git
+    version: ros2
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
@@ -170,6 +174,10 @@ repositories:
   ros2/tinyxml_vendor:
     type: git
     url: https://github.com/ros2/tinyxml_vendor.git
+    version: master
+  ros2/tinyxml2_vendor:
+    type: git
+    url: https://github.com/ros2/tinyxml2_vendor.git
     version: master
   ros2/tlsf:
     type: git

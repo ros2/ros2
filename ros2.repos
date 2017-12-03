@@ -51,6 +51,10 @@ repositories:
     type: git
     url: https://github.com/ros/pluginlib.git
     version: ros2
+  ros/resource_retriever:
+    type: git
+    url: https://github.com/ros/resource_retriever.git
+    version: ros2
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git

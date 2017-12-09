@@ -206,4 +206,4 @@ repositories:
   ros2/urdfdom_headers:
     type: git
     url: https://github.com/ros2/urdfdom_headers.git
-    version: acb0c4bd3879a4e2ae5bd7d3551d8e7cc1037fa2
+    version: acb0c4bd3879a4e2ae5bd7d3551d8e7cc1037fa8

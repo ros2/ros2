@@ -55,6 +55,10 @@ repositories:
     type: git
     url: https://github.com/ros/resource_retriever.git
     version: 2.0.0
+  ros/ros_environment:
+    type: git
+    url: https://github.com/ros/ros_environment.git
+    version: 2.0.0
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git

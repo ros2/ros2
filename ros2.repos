@@ -38,7 +38,7 @@ repositories:
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
-    version: 1f135d478dd9dcde98ed96c9aeef4f229e3a1450
+    version: bfb448e19bff253293e8f28ee8c3d3d78d882be2
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git

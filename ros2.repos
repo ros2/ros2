@@ -50,11 +50,11 @@ repositories:
   ros/pluginlib:
     type: git
     url: https://github.com/ros/pluginlib.git
-    version: 2.0.0
+    version: 3.0.0
   ros/resource_retriever:
     type: git
     url: https://github.com/ros/resource_retriever.git
-    version: 2.0.0
+    version: 2.0.1
   ros/ros_environment:
     type: git
     url: https://github.com/ros/ros_environment.git
@@ -174,7 +174,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 2.0.0
+    version: 3.0.0
   ros2/sros2:
     type: git
     url: https://github.com/ros2/sros2.git

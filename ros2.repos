@@ -38,7 +38,7 @@ repositories:
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
-    version: 1f135d478dd9dcde98ed96c9aeef4f229e3a1450
+    version: bfb448e19bff253293e8f28ee8c3d3d78d882be2
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git
@@ -50,10 +50,14 @@ repositories:
   ros/pluginlib:
     type: git
     url: https://github.com/ros/pluginlib.git
-    version: 2.0.0
+    version: 3.0.0
   ros/resource_retriever:
     type: git
     url: https://github.com/ros/resource_retriever.git
+    version: 2.0.1
+  ros/ros_environment:
+    type: git
+    url: https://github.com/ros/ros_environment.git
     version: 2.0.0
   ros2/ament_cmake_ros:
     type: git
@@ -158,7 +162,7 @@ repositories:
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: 0.4.0
+    version: 0.4.1
   ros2/rosidl_dds:
     type: git
     url: https://github.com/ros2/rosidl_dds.git
@@ -170,7 +174,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 2.0.0
+    version: 3.0.0
   ros2/sros2:
     type: git
     url: https://github.com/ros2/sros2.git

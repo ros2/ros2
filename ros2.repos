@@ -54,7 +54,7 @@ repositories:
   ros/resource_retriever:
     type: git
     url: https://github.com/ros/resource_retriever.git
-    version: 2.0.1
+    version: 2.0.2
   ros/ros_environment:
     type: git
     url: https://github.com/ros/ros_environment.git

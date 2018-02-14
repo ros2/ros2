@@ -58,7 +58,7 @@ repositories:
   ros/ros_environment:
     type: git
     url: https://github.com/ros/ros_environment.git
-    version: ardent
+    version: bouncy
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git

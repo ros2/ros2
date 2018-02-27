@@ -1,5 +1,6 @@
 <!--
-For general questions, please post on discourse: https://discourse.ros.org/c/ng-ros
+For general questions, please ask on ROS answers: https://answers.ros.org, make sure to include at least the `ros2` tag and the rosdistro version you are running, e.g. `ardent`.
+For general design discussions, please post on discourse: https://discourse.ros.org/c/ng-ros
 For Bug report or feature requests, please fill out the relevant category below
 -->
 

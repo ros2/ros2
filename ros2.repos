@@ -39,6 +39,10 @@ repositories:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
     version: master
+  ros/angles:
+    type: git
+    url: https://github.com/ros/angles.git
+    version: ros2
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git
@@ -63,6 +67,10 @@ repositories:
     type: git
     url: https://github.com/ros/urdfdom_headers.git
     version: master
+  ros-perception/laser_geometry:
+    type: git
+    url: https://github.com/ros-perception/laser_geometry.git
+    version: ros2
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git

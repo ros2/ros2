@@ -38,7 +38,7 @@ repositories:
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
-    version: 15d49e9bb7f0bdb25532a936d05e072ec0cfe0b1
+    version: master
   ros/angles:
     type: git
     url: https://github.com/ros/angles.git

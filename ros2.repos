@@ -191,9 +191,25 @@ repositories:
     type: git
     url: https://github.com/ros2/rosidl_dds.git
     version: master
+  ros2/rosidl_defaults:
+    type: git
+    url: https://github.com/ros2/rosidl_defaults.git
+    version: master
+  ros2/rosidl_python:
+    type: git
+    url: https://github.com/ros2/rosidl_python.git
+    version: master
   ros2/rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git
+    version: master
+  ros2/rosidl_typesupport_connext:
+    type: git
+    url: https://github.com/ros2/rosidl_typesupport_connext.git
+    version: master
+  ros2/rosidl_typesupport_opensplice:
+    type: git
+    url: https://github.com/ros2/rosidl_typesupport_opensplice.git
     version: master
   ros2/rviz:
     type: git

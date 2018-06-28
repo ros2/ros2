@@ -43,10 +43,6 @@ repositories:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
     version: master
-  ros/angles:
-    type: git
-    url: https://github.com/ros/angles.git
-    version: ros2
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git

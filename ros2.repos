@@ -47,10 +47,6 @@ repositories:
     type: git
     url: https://github.com/ros/class_loader.git
     version: ros2
-  ros/console_bridge:
-    type: git
-    url: https://github.com/ros/console_bridge.git
-    version: master
   ros/pluginlib:
     type: git
     url: https://github.com/ros/pluginlib.git
@@ -82,6 +78,10 @@ repositories:
   ros2/common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git
+    version: master
+  ros2/console_bridge_vendor:
+    type: git
+    url: https://github.com/ros2/console_bridge_vendor.git
     version: master
   ros2/demos:
     type: git

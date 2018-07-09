@@ -27,9 +27,9 @@ repositories:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
     version: master
-  ament/uncrustify:
+  ament/uncrustify_vendor:
     type: git
-    url: https://github.com/ament/uncrustify.git
+    url: https://github.com/ament/uncrustify_vendor.git
     version: master
   eProsima/Fast-CDR:
     type: git

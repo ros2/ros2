@@ -2,7 +2,7 @@ repositories:
   ament/ament_cmake:
     type: git
     url: https://github.com/ament/ament_cmake.git
-    version: 0.5.0
+    version: 0.5.1
   ament/ament_index:
     type: git
     url: https://github.com/ament/ament_index.git
@@ -38,7 +38,7 @@ repositories:
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
-    version: ea57f15aaf689144cb8e75aa8d23e7b6ed832b3a
+    version: 7a0b0fe7ca8d2c4ea41e36744c6024c263a6505a
   osrf/osrf_testing_tools_cpp:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
@@ -54,7 +54,7 @@ repositories:
   ros/pluginlib:
     type: git
     url: https://github.com/ros/pluginlib.git
-    version: 2.1.0
+    version: 2.1.1
   ros/resource_retriever:
     type: git
     url: https://github.com/ros/resource_retriever.git
@@ -106,7 +106,7 @@ repositories:
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: 0.5.1
+    version: 0.5.2
   ros2/libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
@@ -122,7 +122,7 @@ repositories:
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: 0.5.0
+    version: 0.5.1
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
@@ -138,7 +138,7 @@ repositories:
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 0.5.2
+    version: 0.5.3
   ros2/rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git
@@ -162,7 +162,7 @@ repositories:
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
-    version: 0.5.0
+    version: 0.5.1
   ros2/rmw_opensplice:
     type: git
     url: https://github.com/ros2/rmw_opensplice.git
@@ -178,7 +178,7 @@ repositories:
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: 0.5.2
+    version: 0.5.3
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
@@ -194,7 +194,7 @@ repositories:
   ros2/rosidl_python:
     type: git
     url: https://github.com/ros2/rosidl_python.git
-    version: 0.5.1
+    version: 0.5.2
   ros2/rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git

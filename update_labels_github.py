@@ -41,6 +41,18 @@ MILESTONES_DICT = {
 }
 
 
+class SuppressRepoArchivedException:
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, type_, value, traceback):
+        if type_ == GithubException:
+            if value.data['message'] == 'Repository was archived so is read-only.':
+                print('repo has been archived, skipping update')
+                return True
+
+
 def update_labels(commit, repo, label_dict):
     # print('  update label called with repo: %s and labels\n  %s' % (repo.name, label_dict))
     current_labels = [_ for _ in repo.get_labels()]
@@ -67,15 +79,9 @@ def update_labels(commit, repo, label_dict):
                 ))
             if not commit:
                 continue
-            try:
+            with SuppressRepoArchivedException():
                 current_label.edit(label, color, description=description)
                 current_label.update()
-            except GithubException as e:
-                if e.data['message'] == 'Repository was archived so is read-only.':
-                    print('%s has been archived, skipping label update' % repo.name)
-                    pass
-                else:
-                    raise
 
         else:
             # if label doesn't exist: create it
@@ -83,7 +89,8 @@ def update_labels(commit, repo, label_dict):
                 label, color, description))
             if not commit:
                 continue
-            repo.create_label(label, color, description=description)
+            with SuppressRepoArchivedException():
+                repo.create_label(label, color, description=description)
 
 
 def update_milestones(commit, repo, milestones_dict):
@@ -113,9 +120,10 @@ def update_milestones(commit, repo, milestones_dict):
                 ))
             if not commit:
                 continue
-            current_milestone.edit(
-                milestone, description=milestone_infos[0],
-                due_on=milestone_infos[1] if milestone_infos[1] is not None else GithubObject.NotSet)
+            with SuppressRepoArchivedException():
+                current_milestone.edit(
+                    milestone, description=milestone_infos[0],
+                    due_on=milestone_infos[1] if milestone_infos[1] is not None else GithubObject.NotSet)
         else:
             # if milestone doesn't exist: create it
             print("  -> creating milestone '{0}' with description '{1}' and due date '{2}'".format(
@@ -126,9 +134,10 @@ def update_milestones(commit, repo, milestones_dict):
             if not commit:
                 continue
             due_on = milestone_infos[1] if milestone_infos[1] is not None else GithubObject.NotSet
-            repo.create_milestone(
-                milestone, description=milestone_infos[0],
-                due_on=due_on)
+            with SuppressRepoArchivedException():
+                repo.create_milestone(
+                    milestone, description=milestone_infos[0],
+                    due_on=due_on)
 
 
 def main(*, token, commit, orgs, label_dict, milestones_dict):

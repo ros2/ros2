@@ -37,7 +37,7 @@ REPO_BLACKLIST = [
 MILESTONES_DICT = {
     'untargeted': ['It is unlikely that the maintainers will have time to address these issues. Please provide pull requests if you want these issues to be addressed.', None],
     'bouncy': ['The ROS 2 release "Bouncy Bolson".', datetime.datetime(2018, 6, 22, 7, 0)],
-    'crystal': ['The ROS 2 release "Crystal Clemmys".', datetime.datetime(2018, 12, 31)],
+    'crystal': ['The ROS 2 release "Crystal Clemmys".', datetime.datetime(2018, 12, 14)],
 }
 
 

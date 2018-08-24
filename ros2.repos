@@ -82,7 +82,7 @@ repositories:
   ros2/common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git
-    version: 0.5.0
+    version: 0.5.1
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
@@ -106,7 +106,7 @@ repositories:
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: 0.5.2
+    version: 0.6.0
   ros2/libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
@@ -138,7 +138,7 @@ repositories:
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 0.5.3
+    version: 0.5.4
   ros2/rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git
@@ -174,11 +174,11 @@ repositories:
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
-    version: 0.5.0
+    version: 0.5.1
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: 0.5.3
+    version: 0.5.4
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
@@ -210,7 +210,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 4.0.1
+    version: 4.0.2
   ros2/sros2:
     type: git
     url: https://github.com/ros2/sros2.git

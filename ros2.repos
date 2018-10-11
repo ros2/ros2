@@ -243,3 +243,7 @@ repositories:
     type: git
     url: https://github.com/ros2/urdfdom.git
     version: ros2
+  ros2/yaml_cpp_vendor:
+    type: git
+    url: https://github.com/ros2/yaml_cpp_vendor.git
+    version: master

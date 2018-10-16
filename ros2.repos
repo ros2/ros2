@@ -107,6 +107,10 @@ repositories:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
     version: master
+  ros2/message_filters:
+    type: git
+    url: https://github.com/ros2/message_filters.git
+    version: master
   ros2/orocos_kinematics_dynamics:
     type: git
     url: https://github.com/ros2/orocos_kinematics_dynamics.git

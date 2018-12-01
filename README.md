@@ -1,1 +1,1 @@
-Documentation is in the wiki: https://github.com/ros2/ros2/wiki
+Documentation is in the wiki: https://index.ros.org/doc/ros2/

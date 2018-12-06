@@ -121,7 +121,7 @@ repositories:
     version: master
   ros2/rc_logging:
     type: git
-    url: https://github.com/nburek/rc_logging.git
+    url: https://github.com/ros2/rc_logging.git
     version: master
   ros2/rcl:
     type: git

@@ -54,7 +54,7 @@ repositories:
   ros/ros_environment:
     type: git
     url: https://github.com/ros/ros_environment.git
-    version: bouncy
+    version: crystal
   ros/urdfdom_headers:
     type: git
     url: https://github.com/ros/urdfdom_headers.git

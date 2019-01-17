@@ -10,7 +10,7 @@ repositories:
   ament/ament_lint:
     type: git
     url: https://github.com/ament/ament_lint.git
-    version: 0.6.2
+    version: 0.6.3
   ament/ament_package:
     type: git
     url: https://github.com/ament/ament_package.git
@@ -26,7 +26,7 @@ repositories:
   ament/uncrustify_vendor:
     type: git
     url: https://github.com/ament/uncrustify_vendor.git
-    version: 1.0.0
+    version: 1.1.0
   eProsima/Fast-CDR:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git
@@ -130,7 +130,7 @@ repositories:
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
-    version: 0.6.1
+    version: 0.6.2
   ros2/examples:
     type: git
     url: https://github.com/ros2/examples.git
@@ -174,11 +174,11 @@ repositories:
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: 0.6.3
+    version: 0.6.4
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
-    version: 0.6.1
+    version: 0.6.2
 #  ros2/rclc:
 #    type: git
 #    url: https://github.com/ros2/rclc.git
@@ -246,31 +246,31 @@ repositories:
   ros2/rosidl_python:
     type: git
     url: https://github.com/ros2/rosidl_python.git
-    version: 0.6.1
+    version: 0.6.2
   ros2/rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git
-    version: 0.6.1
+    version: 0.6.2
   ros2/rosidl_typesupport_connext:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_connext.git
-    version: 0.6.3
+    version: 0.6.4
   ros2/rosidl_typesupport_fastrtps:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_fastrtps.git
-    version: 0.6.0
+    version: 0.6.1
   ros2/rosidl_typesupport_opensplice:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_opensplice.git
-    version: 0.6.1
+    version: 0.6.2
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 5.0.0
+    version: 5.1.0
   ros2/sros2:
     type: git
     url: https://github.com/ros2/sros2.git
-    version: 0.6.0
+    version: 0.6.1
   ros2/system_tests:
     type: git
     url: https://github.com/ros2/system_tests.git
@@ -282,7 +282,7 @@ repositories:
   ros2/tinyxml2_vendor:
     type: git
     url: https://github.com/ros2/tinyxml2_vendor.git
-    version: 0.6.0
+    version: 0.6.1
   ros2/tlsf:
     type: git
     url: https://github.com/ros2/tlsf.git

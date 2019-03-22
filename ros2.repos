@@ -151,6 +151,10 @@ repositories:
     type: git
     url: https://github.com/ros2/launch.git
     version: master
+  ros2/launch_ros:
+    type: git
+    url: https://github.com/ros2/launch_ros.git
+    version: master
   ros2/libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git

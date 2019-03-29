@@ -39,26 +39,6 @@ repositories:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
     version: master
-  ros/class_loader:
-    type: git
-    url: https://github.com/ros/class_loader.git
-    version: ros2
-  ros/pluginlib:
-    type: git
-    url: https://github.com/ros/pluginlib.git
-    version: ros2
-  ros/resource_retriever:
-    type: git
-    url: https://github.com/ros/resource_retriever.git
-    version: ros2
-  ros/ros_environment:
-    type: git
-    url: https://github.com/ros/ros_environment.git
-    version: crystal
-  ros/urdfdom_headers:
-    type: git
-    url: https://github.com/ros/urdfdom_headers.git
-    version: master
   ros-perception/laser_geometry:
     type: git
     url: https://github.com/ros-perception/laser_geometry.git
@@ -115,6 +95,26 @@ repositories:
     type: git
     url: https://github.com/ros-visualization/rqt_top.git
     version: crystal-devel
+  ros/class_loader:
+    type: git
+    url: https://github.com/ros/class_loader.git
+    version: ros2
+  ros/pluginlib:
+    type: git
+    url: https://github.com/ros/pluginlib.git
+    version: ros2
+  ros/resource_retriever:
+    type: git
+    url: https://github.com/ros/resource_retriever.git
+    version: ros2
+  ros/ros_environment:
+    type: git
+    url: https://github.com/ros/ros_environment.git
+    version: crystal
+  ros/urdfdom_headers:
+    type: git
+    url: https://github.com/ros/urdfdom_headers.git
+    version: master
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
@@ -171,10 +171,6 @@ repositories:
     type: git
     url: https://github.com/ros2/poco_vendor.git
     version: master
-  ros2/rcl_logging:
-    type: git
-    url: https://github.com/ros2/rcl_logging.git
-    version: master
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
@@ -182,6 +178,10 @@ repositories:
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
+    version: master
+  ros2/rcl_logging:
+    type: git
+    url: https://github.com/ros2/rcl_logging.git
     version: master
 #  ros2/rclc:
 #    type: git
@@ -287,13 +287,13 @@ repositories:
     type: git
     url: https://github.com/ros2/tinydir_vendor.git
     version: master
-  ros2/tinyxml_vendor:
-    type: git
-    url: https://github.com/ros2/tinyxml_vendor.git
-    version: master
   ros2/tinyxml2_vendor:
     type: git
     url: https://github.com/ros2/tinyxml2_vendor.git
+    version: master
+  ros2/tinyxml_vendor:
+    type: git
+    url: https://github.com/ros2/tinyxml_vendor.git
     version: master
   ros2/tlsf:
     type: git

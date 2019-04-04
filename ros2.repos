@@ -150,7 +150,7 @@ repositories:
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: 0.7.3
+    version: 0.7.4
   ros2/libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
@@ -190,7 +190,7 @@ repositories:
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 0.6.3
+    version: 0.6.4
   ros2/rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git

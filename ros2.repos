@@ -186,7 +186,7 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 0.6.3
+    version: 0.6.4
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git

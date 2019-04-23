@@ -8,7 +8,13 @@ See [the ROS 2 wiki](https://github.com/ros2/ros2/wiki/Windows-Development-Setup
 * Visual Studio 2019: https://github.com/ros2/ros2/releases/download/opencv-archives/opencv-3.4.6-vc16.VS2019.zip
 * Visual Studio 2017: https://github.com/ros2/ros2/releases/download/opencv-archives/opencv-3.4.6-vc15.VS2017.zip
 
-## For ROS 2 Bouncy Bolson and Crystal Clemmys
+## For ROS2 Crystal Clemmys Patch Release >= 4
+
+* Visual Studio 2017: https://github.com/ros2/ros2/releases/download/opencv-archives/opencv-3.4.6-vc15.VS2017.zip
+
+Note: This reduces number of CI configurations that OpenRobotics has to maintain.
+
+## For ROS 2 Bouncy Bolson and Crystal Clemmys Patch Release < 4
 
 * Visual Studio 2017: https://github.com/ros2/ros2/releases/download/opencv-archives/opencv-3.4.1-vc15.VS2017.zip
 

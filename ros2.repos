@@ -239,6 +239,10 @@ repositories:
     type: git
     url: https://github.com/ros2/ros2cli.git
     version: master
+  ros2/rosbag2:
+    type: git
+    url: https://github.com/ros2/rosbag2.git
+    version: master
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git

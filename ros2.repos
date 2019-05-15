@@ -275,6 +275,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_opensplice.git
     version: master
+  ros2/rostest:
+    type: git
+    url: https://github.com/ros2/rostest.git
+    version: master
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git

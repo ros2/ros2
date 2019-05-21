@@ -2,31 +2,31 @@ repositories:
   ament/ament_cmake:
     type: git
     url: https://github.com/ament/ament_cmake.git
-    version: 0.6.1
+    version: crystal
   ament/ament_index:
     type: git
     url: https://github.com/ament/ament_index.git
-    version: 0.5.1
+    version: crystal
   ament/ament_lint:
     type: git
     url: https://github.com/ament/ament_lint.git
-    version: 0.6.4
+    version: crystal
   ament/ament_package:
     type: git
     url: https://github.com/ament/ament_package.git
-    version: 0.6.0
+    version: crystal
   ament/googletest:
     type: git
     url: https://github.com/ament/googletest.git
-    version: c8b6f2be853002b9a0abfb30ea537402383bf1f4
+    version: crystal
   ament/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
-    version: 0.1.6
+    version: master
   ament/uncrustify_vendor:
     type: git
     url: https://github.com/ament/uncrustify_vendor.git
-    version: 1.1.0
+    version: crystal
   eProsima/Fast-CDR:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git
@@ -34,151 +34,151 @@ repositories:
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
-    version: v1.7.2
+    version: b48ce9d2fba6fc94e756da01c58b72f2ad848238
   osrf/osrf_testing_tools_cpp:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
-    version: 1.1.0
+    version: crystal
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git
-    version: 1.2.0
+    version: crystal
   ros/pluginlib:
     type: git
     url: https://github.com/ros/pluginlib.git
-    version: 2.2.1
+    version: crystal
   ros/resource_retriever:
     type: git
     url: https://github.com/ros/resource_retriever.git
-    version: 2.1.0
+    version: crystal
   ros/ros_environment:
     type: git
     url: https://github.com/ros/ros_environment.git
-    version: 2.2.0
+    version: crystal
   ros/urdfdom_headers:
     type: git
     url: https://github.com/ros/urdfdom_headers.git
-    version: 1.0.2
+    version: crystal
   ros-perception/laser_geometry:
     type: git
     url: https://github.com/ros-perception/laser_geometry.git
-    version: 2.0.0
+    version: ros2
   ros-planning/navigation_msgs:
     type: git
     url: https://github.com/ros-planning/navigation_msgs.git
-    version: 2.0.0
+    version: ros2
   ros-visualization/python_qt_binding:
     type: git
     url: https://github.com/ros-visualization/python_qt_binding.git
-    version: 1.0.1
+    version: crystal-devel
   ros-visualization/qt_gui_core:
     type: git
     url: https://github.com/ros-visualization/qt_gui_core.git
-    version: 1.0.4
+    version: crystal-devel
   ros-visualization/rqt:
     type: git
     url: https://github.com/ros-visualization/rqt.git
-    version: 1.0.2
+    version: crystal-devel
   ros-visualization/rqt_console:
     type: git
     url: https://github.com/ros-visualization/rqt_console.git
-    version: 1.0.1
+    version: crystal-devel
   ros-visualization/rqt_msg:
     type: git
     url: https://github.com/ros-visualization/rqt_msg.git
-    version: 1.0.1
+    version: crystal-devel
   ros-visualization/rqt_plot:
     type: git
     url: https://github.com/ros-visualization/rqt_plot.git
-    version: 1.0.2
+    version: crystal-devel
   ros-visualization/rqt_publisher:
     type: git
     url: https://github.com/ros-visualization/rqt_publisher.git
-    version: 1.0.3
+    version: crystal-devel
   ros-visualization/rqt_py_console:
     type: git
     url: https://github.com/ros-visualization/rqt_py_console.git
-    version: 1.0.0
+    version: crystal-devel
   ros-visualization/rqt_service_caller:
     type: git
     url: https://github.com/ros-visualization/rqt_service_caller.git
-    version: 1.0.1
+    version: crystal-devel
   ros-visualization/rqt_shell:
     type: git
     url: https://github.com/ros-visualization/rqt_shell.git
-    version: 1.0.0
+    version: crystal-devel
   ros-visualization/rqt_srv:
     type: git
     url: https://github.com/ros-visualization/rqt_srv.git
-    version: 1.0.1
+    version: crystal-devel
   ros-visualization/rqt_top:
     type: git
     url: https://github.com/ros-visualization/rqt_top.git
-    version: 1.0.0
+    version: crystal-devel
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
-    version: 0.5.0
+    version: crystal
   ros2/common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git
-    version: 0.6.1
+    version: crystal
   ros2/console_bridge_vendor:
     type: git
     url: https://github.com/ros2/console_bridge_vendor.git
-    version: 1.1.0
+    version: crystal
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
-    version: 0.6.2
+    version: crystal
   ros2/examples:
     type: git
     url: https://github.com/ros2/examples.git
-    version: 0.6.3
+    version: crystal
   ros2/example_interfaces:
     type: git
     url: https://github.com/ros2/example_interfaces.git
-    version: 0.6.2
+    version: crystal
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: 0.10.1
+    version: crystal
   ros2/kdl_parser:
     type: git
     url: https://github.com/ros2/kdl_parser.git
-    version: 2.2.0
+    version: crystal
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: 0.7.4
+    version: crystal
   ros2/libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
-    version: 1.0.0
+    version: crystal
   ros2/message_filters:
     type: git
     url: https://github.com/ros2/message_filters.git
-    version: 3.0.0
+    version: crystal
   ros2/orocos_kinematics_dynamics:
     type: git
     url: https://github.com/ros2/orocos_kinematics_dynamics.git
-    version: 3.1.0
+    version: crystal
   ros2/poco_vendor:
     type: git
     url: https://github.com/ros2/poco_vendor.git
-    version: 1.1.1
+    version: crystal
   ros2/rcl_logging:
     type: git
     url: https://github.com/ros2/rcl_logging.git
-    version: 0.2.0
+    version: crystal
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: 0.6.5
+    version: crystal
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
-    version: 0.6.3
+    version: crystal
 #  ros2/rclc:
 #    type: git
 #    url: https://github.com/ros2/rclc.git
@@ -186,107 +186,107 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 0.6.4
+    version: crystal
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 0.6.4
+    version: crystal
   ros2/rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git
-    version: 0.6.2
+    version: crystal
   ros2/realtime_support:
     type: git
     url: https://github.com/ros2/realtime_support.git
-    version: 0.6.0
+    version: crystal
   ros2/rmw:
     type: git
     url: https://github.com/ros2/rmw.git
-    version: 0.6.1
+    version: crystal
   ros2/rmw_connext:
     type: git
     url: https://github.com/ros2/rmw_connext.git
-    version: 0.6.1
+    version: crystal
   ros2/rmw_fastrtps:
     type: git
     url: https://github.com/ros2/rmw_fastrtps.git
-    version: 0.6.2
+    version: crystal
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
-    version: 0.6.1
+    version: crystal
   ros2/rmw_opensplice:
     type: git
     url: https://github.com/ros2/rmw_opensplice.git
-    version: 0.6.3
+    version: crystal
   ros2/robot_state_publisher:
     type: git
     url: https://github.com/ros2/robot_state_publisher.git
-    version: 2.1.0
+    version: crystal
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
-    version: 0.6.2
+    version: crystal
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: 0.6.3
+    version: crystal
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: 0.6.3
+    version: crystal
   ros2/rosidl_dds:
     type: git
     url: https://github.com/ros2/rosidl_dds.git
-    version: 0.6.0
+    version: crystal
   ros2/rosidl_defaults:
     type: git
     url: https://github.com/ros2/rosidl_defaults.git
-    version: 0.6.0
+    version: crystal
   ros2/rosidl_python:
     type: git
     url: https://github.com/ros2/rosidl_python.git
-    version: 0.6.3
+    version: crystal
   ros2/rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git
-    version: 0.6.3
+    version: crystal
   ros2/rosidl_typesupport_connext:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_connext.git
-    version: 0.6.4
+    version: crystal
   ros2/rosidl_typesupport_fastrtps:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_fastrtps.git
-    version: 0.6.1
+    version: crystal
   ros2/rosidl_typesupport_opensplice:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_opensplice.git
-    version: 0.6.2
+    version: crystal
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 5.1.0
+    version: crystal
   ros2/sros2:
     type: git
     url: https://github.com/ros2/sros2.git
-    version: 0.6.3
+    version: crystal
   ros2/system_tests:
     type: git
     url: https://github.com/ros2/system_tests.git
-    version: 0.6.1
+    version: crystal
   ros2/tinyxml_vendor:
     type: git
     url: https://github.com/ros2/tinyxml_vendor.git
-    version: 0.5.0
+    version: crystal
   ros2/tinyxml2_vendor:
     type: git
     url: https://github.com/ros2/tinyxml2_vendor.git
-    version: 0.6.1
+    version: crystal
   ros2/tlsf:
     type: git
     url: https://github.com/ros2/tlsf.git
-    version: 0.5.0
+    version: crystal
 #  ros2/tutorials:
 #    type: git
 #    url: https://github.com/ros2/tutorials.git
@@ -294,16 +294,16 @@ repositories:
   ros2/unique_identifier_msgs:
     type: git
     url: https://github.com/ros2/unique_identifier_msgs.git
-    version: 2.0.0
+    version: crystal
   ros2/urdf:
     type: git
     url: https://github.com/ros2/urdf.git
-    version: 2.2.0
+    version: crystal
   ros2/urdfdom:
     type: git
     url: https://github.com/ros2/urdfdom.git
-    version: 2.1.0
+    version: crystal
   ros2/yaml_cpp_vendor:
     type: git
     url: https://github.com/ros2/yaml_cpp_vendor.git
-    version: 5.0.0
+    version: crystal

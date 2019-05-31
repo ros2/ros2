@@ -2,47 +2,47 @@ repositories:
   ament/ament_cmake:
     type: git
     url: https://github.com/ament/ament_cmake.git
-    version: master
+    version: dashing
   ament/ament_index:
     type: git
     url: https://github.com/ament/ament_index.git
-    version: master
+    version: dashing
   ament/ament_lint:
     type: git
     url: https://github.com/ament/ament_lint.git
-    version: master
+    version: dashing
   ament/ament_package:
     type: git
     url: https://github.com/ament/ament_package.git
-    version: master
+    version: dashing
   ament/googletest:
     type: git
     url: https://github.com/ament/googletest.git
-    version: ros2
+    version: dashing
   ament/uncrustify_vendor:
     type: git
     url: https://github.com/ament/uncrustify_vendor.git
-    version: master
+    version: dashing
   eProsima/Fast-CDR:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git
-    version: master
+    version: 906c966c426f85d503baca9c2e46bead7b633dff
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
-    version: master
+    version: 6a6f79c4256a00fc13834a2aaa3c60a0aaac5e76
   osrf/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
-    version: master
+    version: dashing
   osrf/osrf_testing_tools_cpp:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
-    version: master
+    version: dashing
   ros-perception/laser_geometry:
     type: git
     url: https://github.com/ros-perception/laser_geometry.git
-    version: ros2
+    version: dashing
   ros-planning/navigation_msgs:
     type: git
     url: https://github.com/ros-planning/navigation_msgs.git
@@ -102,15 +102,15 @@ repositories:
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git
-    version: ros2
+    version: dashing
   ros/pluginlib:
     type: git
     url: https://github.com/ros/pluginlib.git
-    version: ros2
+    version: dashing
   ros/resource_retriever:
     type: git
     url: https://github.com/ros/resource_retriever.git
-    version: ros2
+    version: dashing
   ros/ros_environment:
     type: git
     url: https://github.com/ros/ros_environment.git
@@ -118,75 +118,75 @@ repositories:
   ros/urdfdom_headers:
     type: git
     url: https://github.com/ros/urdfdom_headers.git
-    version: master
+    version: dashing
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
-    version: master
+    version: dashing
   ros2/common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git
-    version: master
+    version: dashing
   ros2/console_bridge_vendor:
     type: git
     url: https://github.com/ros2/console_bridge_vendor.git
-    version: master
+    version: dashing
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
-    version: master
+    version: dashing
   ros2/examples:
     type: git
     url: https://github.com/ros2/examples.git
-    version: master
+    version: dashing
   ros2/example_interfaces:
     type: git
     url: https://github.com/ros2/example_interfaces.git
-    version: master
+    version: dashing
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: ros2
+    version: dashing
   ros2/kdl_parser:
     type: git
     url: https://github.com/ros2/kdl_parser.git
-    version: ros2
+    version: dashing
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: master
+    version: dashing
   ros2/launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
-    version: master
+    version: dashing
   ros2/libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
-    version: master
+    version: dashing
   ros2/message_filters:
     type: git
     url: https://github.com/ros2/message_filters.git
-    version: master
+    version: dashing
   ros2/orocos_kinematics_dynamics:
     type: git
     url: https://github.com/ros2/orocos_kinematics_dynamics.git
-    version: ros2
+    version: dashing
   ros2/poco_vendor:
     type: git
     url: https://github.com/ros2/poco_vendor.git
-    version: master
+    version: dashing
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: master
+    version: dashing
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
-    version: master
+    version: dashing
   ros2/rcl_logging:
     type: git
     url: https://github.com/ros2/rcl_logging.git
-    version: master
+    version: dashing
 #  ros2/rclc:
 #    type: git
 #    url: https://github.com/ros2/rclc.git
@@ -194,127 +194,127 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: master
+    version: dashing
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: master
+    version: dashing
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
-    version: master
+    version: dashing
   ros2/rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git
-    version: master
+    version: dashing
   ros2/realtime_support:
     type: git
     url: https://github.com/ros2/realtime_support.git
-    version: master
+    version: dashing
   ros2/rmw:
     type: git
     url: https://github.com/ros2/rmw.git
-    version: master
+    version: dashing
   ros2/rmw_connext:
     type: git
     url: https://github.com/ros2/rmw_connext.git
-    version: master
+    version: dashing
   ros2/rmw_fastrtps:
     type: git
     url: https://github.com/ros2/rmw_fastrtps.git
-    version: master
+    version: dashing
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
-    version: master
+    version: dashing
   ros2/rmw_opensplice:
     type: git
     url: https://github.com/ros2/rmw_opensplice.git
-    version: master
+    version: dashing
   ros2/robot_state_publisher:
     type: git
     url: https://github.com/ros2/robot_state_publisher.git
-    version: ros2
+    version: dashing
   ros2/ros_testing:
     type: git
     url: https://github.com/ros2/ros_testing.git
-    version: master
+    version: dashing
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
-    version: master
+    version: dashing
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: master
+    version: dashing
   ros2/rosbag2:
     type: git
     url: https://github.com/ros2/rosbag2.git
-    version: master
+    version: dashing
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: master
+    version: dashing
   ros2/rosidl_dds:
     type: git
     url: https://github.com/ros2/rosidl_dds.git
-    version: master
+    version: dashing
   ros2/rosidl_defaults:
     type: git
     url: https://github.com/ros2/rosidl_defaults.git
-    version: master
+    version: dashing
   ros2/rosidl_python:
     type: git
     url: https://github.com/ros2/rosidl_python.git
-    version: master
+    version: dashing
   ros2/rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git
-    version: master
+    version: dashing
   ros2/rosidl_typesupport_connext:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_connext.git
-    version: master
+    version: dashing
   ros2/rosidl_typesupport_fastrtps:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_fastrtps.git
-    version: master
+    version: dashing
   ros2/rosidl_typesupport_opensplice:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_opensplice.git
-    version: master
+    version: dashing
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: ros2
+    version: dashing
   ros2/sros2:
     type: git
     url: https://github.com/ros2/sros2.git
-    version: master
+    version: dashing
   ros2/system_tests:
     type: git
     url: https://github.com/ros2/system_tests.git
-    version: master
+    version: dashing
   ros2/test_interface_files:
     type: git
     url: https://github.com/ros2/test_interface_files.git
-    version: master
+    version: dashing
   ros2/tinydir_vendor:
     type: git
     url: https://github.com/ros2/tinydir_vendor.git
-    version: master
+    version: dashing
   ros2/tinyxml2_vendor:
     type: git
     url: https://github.com/ros2/tinyxml2_vendor.git
-    version: master
+    version: dashing
   ros2/tinyxml_vendor:
     type: git
     url: https://github.com/ros2/tinyxml_vendor.git
-    version: master
+    version: dashing
   ros2/tlsf:
     type: git
     url: https://github.com/ros2/tlsf.git
-    version: master
+    version: dashing
 #  ros2/tutorials:
 #    type: git
 #    url: https://github.com/ros2/tutorials.git
@@ -322,16 +322,16 @@ repositories:
   ros2/unique_identifier_msgs:
     type: git
     url: https://github.com/ros2/unique_identifier_msgs.git
-    version: master
+    version: dashing
   ros2/urdf:
     type: git
     url: https://github.com/ros2/urdf.git
-    version: ros2
+    version: dashing
   ros2/urdfdom:
     type: git
     url: https://github.com/ros2/urdfdom.git
-    version: ros2
+    version: dashing
   ros2/yaml_cpp_vendor:
     type: git
     url: https://github.com/ros2/yaml_cpp_vendor.git
-    version: master
+    version: dashing

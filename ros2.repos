@@ -134,7 +134,7 @@ repositories:
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
-    version: 0.7.6
+    version: 0.7.8
   ros2/examples:
     type: git
     url: https://github.com/ros2/examples.git
@@ -154,7 +154,7 @@ repositories:
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: 0.8.3
+    version: 0.8.4
   ros2/launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
@@ -178,7 +178,7 @@ repositories:
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: 0.7.4
+    version: 0.7.5
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
@@ -194,11 +194,11 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 0.7.5
+    version: 0.7.6
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 0.7.3
+    version: 0.7.4
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
@@ -214,15 +214,15 @@ repositories:
   ros2/rmw:
     type: git
     url: https://github.com/ros2/rmw.git
-    version: 0.7.1
+    version: 0.7.2
   ros2/rmw_connext:
     type: git
     url: https://github.com/ros2/rmw_connext.git
-    version: 0.7.2
+    version: 0.7.3
   ros2/rmw_fastrtps:
     type: git
     url: https://github.com/ros2/rmw_fastrtps.git
-    version: 0.7.3
+    version: 0.7.4
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
@@ -230,11 +230,11 @@ repositories:
   ros2/rmw_opensplice:
     type: git
     url: https://github.com/ros2/rmw_opensplice.git
-    version: 0.7.1
+    version: 0.7.2
   ros2/robot_state_publisher:
     type: git
     url: https://github.com/ros2/robot_state_publisher.git
-    version: 2.2.2
+    version: 2.2.3
   ros2/ros_testing:
     type: git
     url: https://github.com/ros2/ros_testing.git
@@ -250,11 +250,11 @@ repositories:
   ros2/rosbag2:
     type: git
     url: https://github.com/ros2/rosbag2.git
-    version: 0.1.2
+    version: 0.1.3
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: 0.7.3
+    version: 0.7.4
   ros2/rosidl_dds:
     type: git
     url: https://github.com/ros2/rosidl_dds.git
@@ -266,7 +266,7 @@ repositories:
   ros2/rosidl_python:
     type: git
     url: https://github.com/ros2/rosidl_python.git
-    version: 0.7.6
+    version: 0.7.7
   ros2/rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git
@@ -286,11 +286,11 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 6.1.1
+    version: 6.1.2
   ros2/sros2:
     type: git
     url: https://github.com/ros2/sros2.git
-    version: 0.7.0
+    version: 0.7.1
   ros2/system_tests:
     type: git
     url: https://github.com/ros2/system_tests.git

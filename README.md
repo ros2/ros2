@@ -4,7 +4,7 @@
 
 Prerequisites:
 
-1. [OpenSSL](https://slproweb.com/products/Win32OpenSSL.html)
+* [OpenSSL](https://slproweb.com/products/Win32OpenSSL.html)
 
 In order to build a debug wheel, we first need to build a debug wheel for its dependency [cffi](https://cffi.readthedocs.io/en/latest/).
 
@@ -44,8 +44,8 @@ Now we can build the debug wheel for `cryptography`.
 
 1. Build wheel:
 
-    python_d setup.py build --debug
-    # Skip rebuilding, otherwise it will rebuild in release (not debug)
-    python_d setup.py bdist_wheel --skip-build
+        python_d setup.py build --debug
+        # Skip rebuilding, otherwise it will rebuild in release (not debug)
+        python_d setup.py bdist_wheel --skip-build
 
 The wheel can be found at `dist\cryptography-2.7-cp37-cp37dm-win_amd64.whl`.

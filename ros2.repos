@@ -87,6 +87,10 @@ repositories:
     type: git
     url: https://github.com/ros-visualization/rqt_py_console.git
     version: crystal-devel
+  ros-visualization/rqt_reconfigure:
+    type: git
+    url: https://github.com/ros-visualization/rqt_reconfigure.git
+    version: dashing
   ros-visualization/rqt_service_caller:
     type: git
     url: https://github.com/ros-visualization/rqt_service_caller.git

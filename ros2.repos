@@ -25,8 +25,8 @@ repositories:
     version: master
   eProsima/foonathan_memory_vendor:
     type: git
-    url: https://github.com/eProsima/foonathan_memory_vendor.git
-    version: master
+    url: https://github.com/mikaelarguedas/foonathan_memory_vendor.git
+    version: nonexisting_rosdepkey
   eProsima/Fast-CDR:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git

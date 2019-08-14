@@ -23,10 +23,6 @@ repositories:
     type: git
     url: https://github.com/ament/uncrustify_vendor.git
     version: master
-  eProsima/foonathan_memory_vendor:
-    type: git
-    url: https://github.com/eProsima/foonathan_memory_vendor.git
-    version: master
   eProsima/Fast-CDR:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git
@@ -34,6 +30,10 @@ repositories:
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
+    version: master
+  eProsima/foonathan_memory_vendor:
+    type: git
+    url: https://github.com/eProsima/foonathan_memory_vendor.git
     version: master
   osrf/osrf_pycommon:
     type: git
@@ -143,13 +143,13 @@ repositories:
     type: git
     url: https://github.com/ros2/eigen3_cmake_module.git
     version: master
-  ros2/examples:
-    type: git
-    url: https://github.com/ros2/examples.git
-    version: master
   ros2/example_interfaces:
     type: git
     url: https://github.com/ros2/example_interfaces.git
+    version: master
+  ros2/examples:
+    type: git
+    url: https://github.com/ros2/examples.git
     version: master
   ros2/geometry2:
     type: git
@@ -243,10 +243,6 @@ repositories:
     type: git
     url: https://github.com/ros2/robot_state_publisher.git
     version: ros2
-  ros2/ros_testing:
-    type: git
-    url: https://github.com/ros2/ros_testing.git
-    version: master
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
@@ -258,6 +254,10 @@ repositories:
   ros2/rosbag2:
     type: git
     url: https://github.com/ros2/rosbag2.git
+    version: master
+  ros2/ros_testing:
+    type: git
+    url: https://github.com/ros2/ros_testing.git
     version: master
   ros2/rosidl:
     type: git

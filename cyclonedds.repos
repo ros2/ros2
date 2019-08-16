@@ -1,0 +1,9 @@
+repositories:
+  eclipse-cyclonedds/cyclonedds:
+    type: git
+    url: https://github.com/eclipse-cyclonedds/cyclonedds.git
+    version: master
+  atolab/rmw_cyclonedds:
+    type: git
+    url: https://github.com/atolab/rmw_cyclonedds.git
+    version: master

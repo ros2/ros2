@@ -162,7 +162,7 @@ repositories:
   ros2/ifcfg_vendor:
     type: git
     url: https://github.com/ros2/ifcfg_vendor
-    version: ros2
+    version: master
   ros2/kdl_parser:
     type: git
     url: https://github.com/ros2/kdl_parser.git

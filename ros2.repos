@@ -159,6 +159,10 @@ repositories:
     type: git
     url: https://github.com/ros2/geometry2.git
     version: ros2
+  ros2/ifcfg_vendor:
+    type: git
+    url: https://github.com/ros2/ifcfg_vendor
+    version: master
   ros2/kdl_parser:
     type: git
     url: https://github.com/ros2/kdl_parser.git

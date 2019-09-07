@@ -51,6 +51,10 @@ repositories:
     type: git
     url: https://github.com/ros-planning/navigation_msgs.git
     version: ros2
+  ros-visualization/interactive_markers:
+    type: git
+    url: https://github.com/ros-visualization/interactive_markers.git
+    version: ros2
   ros-visualization/python_qt_binding:
     type: git
     url: https://github.com/ros-visualization/python_qt_binding.git

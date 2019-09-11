@@ -127,6 +127,10 @@ repositories:
     type: git
     url: https://github.com/ros/ros_environment.git
     version: eloquent
+  ros/ros_tutorials:
+    type: git
+    url: https://github.com/ros/ros_tutorials.git
+    version: dashing-devel
   ros/urdfdom_headers:
     type: git
     url: https://github.com/ros/urdfdom_headers.git

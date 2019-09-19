@@ -287,6 +287,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rosidl_python.git
     version: master
+  ros2/rosidl_runtime_py:
+    type: git
+    url: https://github.com/ros2/rosidl_runtime_py.git
+    version: master
   ros2/rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git

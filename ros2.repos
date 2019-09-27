@@ -315,6 +315,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rviz.git
     version: ros2
+  ros2/spdlog_vendor:
+    type: git
+    url: https://github.com/clalancette/spdlog_vendor.git
+    version: master
   ros2/sros2:
     type: git
     url: https://github.com/ros2/sros2.git

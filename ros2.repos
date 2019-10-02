@@ -317,7 +317,7 @@ repositories:
     version: ros2
   ros2/spdlog_vendor:
     type: git
-    url: https://github.com/clalancette/spdlog_vendor.git
+    url: https://github.com/ros2/spdlog_vendor.git
     version: master
   ros2/sros2:
     type: git

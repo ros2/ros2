@@ -30,7 +30,7 @@ repositories:
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
-    version: b5f3fdfd711192e3d5a4af2adf24ef079f9b0c3f
+    version: fda2376460cffe987432162140494f2ddd8d68cd
   osrf/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git

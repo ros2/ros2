@@ -26,11 +26,11 @@ repositories:
   eProsima/Fast-CDR:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git
-    version: 906c966c426f85d503baca9c2e46bead7b633dff
+    version: v1.0.11
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
-    version: fda2376460cffe987432162140494f2ddd8d68cd
+    version: v1.8.2
   osrf/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git

@@ -257,7 +257,7 @@ repositories:
     version: master
   ros2/robot_state_publisher:
     type: git
-    url: https://github.com/ros2/robot_state_publisher.git
+    url: https://github.com/ros/robot_state_publisher.git
     version: ros2
   ros2/ros1_bridge:
     type: git

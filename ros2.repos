@@ -35,6 +35,10 @@ repositories:
     type: git
     url: https://github.com/eProsima/foonathan_memory_vendor.git
     version: master
+  micro-ROS/ros_tracing/ros2_tracing:
+    type: git
+    url: https://gitlab.com/micro-ROS/ros_tracing/ros2_tracing.git
+    version: 0.2.8
   osrf/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git

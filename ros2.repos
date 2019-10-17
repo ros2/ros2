@@ -106,7 +106,7 @@ repositories:
   ros/pluginlib:
     type: git
     url: https://github.com/ros/pluginlib.git
-    version: 2.3.2
+    version: 2.3.3
   ros/resource_retriever:
     type: git
     url: https://github.com/ros/resource_retriever.git

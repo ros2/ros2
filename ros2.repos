@@ -6,15 +6,15 @@ repositories:
   ament/ament_index:
     type: git
     url: https://github.com/ament/ament_index.git
-    version: 0.7.0
+    version: 0.7.2
   ament/ament_lint:
     type: git
     url: https://github.com/ament/ament_lint.git
-    version: 0.7.9
+    version: 0.7.11
   ament/ament_package:
     type: git
     url: https://github.com/ament/ament_package.git
-    version: 0.7.1
+    version: 0.7.3
   ament/googletest:
     type: git
     url: https://github.com/ament/googletest.git
@@ -26,15 +26,15 @@ repositories:
   eProsima/Fast-CDR:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git
-    version: 906c966c426f85d503baca9c2e46bead7b633dff
+    version: v1.0.11
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
-    version: 6a6f79c4256a00fc13834a2aaa3c60a0aaac5e76
+    version: v1.8.2
   osrf/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
-    version: 0.1.7
+    version: 0.1.9
   osrf/osrf_testing_tools_cpp:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
@@ -46,27 +46,27 @@ repositories:
   ros-planning/navigation_msgs:
     type: git
     url: https://github.com/ros-planning/navigation_msgs.git
-    version: 2.0.1
+    version: 2.0.2
   ros-visualization/python_qt_binding:
     type: git
     url: https://github.com/ros-visualization/python_qt_binding.git
-    version: 1.0.1
+    version: 1.0.2
   ros-visualization/qt_gui_core:
     type: git
     url: https://github.com/ros-visualization/qt_gui_core.git
-    version: 1.0.6
+    version: 1.0.7
   ros-visualization/rqt:
     type: git
     url: https://github.com/ros-visualization/rqt.git
-    version: 1.0.4
+    version: 1.0.5
   ros-visualization/rqt_console:
     type: git
     url: https://github.com/ros-visualization/rqt_console.git
-    version: 1.0.1
+    version: 1.1.0
   ros-visualization/rqt_graph:
     type: git
     url: https://github.com/ros-visualization/rqt_graph.git
-    version: 1.0.1
+    version: 1.0.2
   ros-visualization/rqt_msg:
     type: git
     url: https://github.com/ros-visualization/rqt_msg.git
@@ -74,11 +74,11 @@ repositories:
   ros-visualization/rqt_plot:
     type: git
     url: https://github.com/ros-visualization/rqt_plot.git
-    version: 1.0.6
+    version: 1.0.7
   ros-visualization/rqt_publisher:
     type: git
     url: https://github.com/ros-visualization/rqt_publisher.git
-    version: 1.0.5
+    version: 1.1.0
   ros-visualization/rqt_py_console:
     type: git
     url: https://github.com/ros-visualization/rqt_py_console.git
@@ -134,7 +134,7 @@ repositories:
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
-    version: 0.7.8
+    version: 0.7.9
   ros2/eigen3_cmake_module:
     type: git
     url: https://github.com/ros2/eigen3_cmake_module.git
@@ -158,11 +158,11 @@ repositories:
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: 0.8.6
+    version: 0.8.7
   ros2/launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
-    version: 0.8.6
+    version: 0.8.7
   ros2/libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
@@ -182,7 +182,7 @@ repositories:
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: 0.7.6
+    version: 0.7.7
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
@@ -198,11 +198,11 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 0.7.8
+    version: 0.7.11
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 0.7.7
+    version: 0.7.8
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
@@ -226,7 +226,7 @@ repositories:
   ros2/rmw_fastrtps:
     type: git
     url: https://github.com/ros2/rmw_fastrtps.git
-    version: 0.7.5
+    version: 0.7.6
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
@@ -242,7 +242,7 @@ repositories:
   ros2/ros_testing:
     type: git
     url: https://github.com/ros2/ros_testing.git
-    version: 0.1.0
+    version: 0.1.1
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
@@ -250,15 +250,15 @@ repositories:
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: 0.7.4
+    version: 0.7.6
   ros2/rosbag2:
     type: git
     url: https://github.com/ros2/rosbag2.git
-    version: 0.1.5
+    version: 0.1.8
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: 0.7.6
+    version: 0.7.7
   ros2/rosidl_dds:
     type: git
     url: https://github.com/ros2/rosidl_dds.git
@@ -270,7 +270,7 @@ repositories:
   ros2/rosidl_python:
     type: git
     url: https://github.com/ros2/rosidl_python.git
-    version: 0.7.8
+    version: 0.7.9
   ros2/rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git

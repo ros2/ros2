@@ -30,15 +30,19 @@ repositories:
   eProsima/Fast-CDR:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git
-    version: master
+    version: v1.0.11
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
-    version: master
+    version: 1.9.x
   eProsima/foonathan_memory_vendor:
     type: git
     url: https://github.com/eProsima/foonathan_memory_vendor.git
     version: master
+  micro-ROS/ros_tracing/ros2_tracing:
+    type: git
+    url: https://gitlab.com/micro-ROS/ros_tracing/ros2_tracing.git
+    version: 0.2.9
   osrf/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
@@ -74,7 +78,7 @@ repositories:
   ros-visualization/rqt_console:
     type: git
     url: https://github.com/ros-visualization/rqt_console.git
-    version: crystal-devel
+    version: dashing-devel
   ros-visualization/rqt_graph:
     type: git
     url: https://github.com/ros-visualization/rqt_graph.git
@@ -126,6 +130,10 @@ repositories:
   ros/resource_retriever:
     type: git
     url: https://github.com/ros/resource_retriever.git
+    version: ros2
+  ros/robot_state_publisher:
+    type: git
+    url: https://github.com/ros/robot_state_publisher.git
     version: ros2
   ros/ros_environment:
     type: git
@@ -215,10 +223,6 @@ repositories:
     type: git
     url: https://github.com/ros2/rcl_logging.git
     version: master
-#  ros2/rclc:
-#    type: git
-#    url: https://github.com/ros2/rclc.git
-#    version: master
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
@@ -263,10 +267,6 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_opensplice.git
     version: master
-  ros2/robot_state_publisher:
-    type: git
-    url: https://github.com/ros2/robot_state_publisher.git
-    version: ros2
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
@@ -323,6 +323,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rviz.git
     version: ros2
+  ros2/spdlog_vendor:
+    type: git
+    url: https://github.com/ros2/spdlog_vendor.git
+    version: master
   ros2/sros2:
     type: git
     url: https://github.com/ros2/sros2.git
@@ -351,10 +355,6 @@ repositories:
     type: git
     url: https://github.com/ros2/tlsf.git
     version: master
-#  ros2/tutorials:
-#    type: git
-#    url: https://github.com/ros2/tutorials.git
-#    version: master
   ros2/unique_identifier_msgs:
     type: git
     url: https://github.com/ros2/unique_identifier_msgs.git

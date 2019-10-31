@@ -191,10 +191,6 @@ repositories:
     type: git
     url: https://github.com/ros2/rcl_logging.git
     version: 0.2.1
-#  ros2/rclc:
-#    type: git
-#    url: https://github.com/ros2/rclc.git
-#    version: master
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
@@ -319,10 +315,6 @@ repositories:
     type: git
     url: https://github.com/ros2/tlsf.git
     version: 0.5.0
-#  ros2/tutorials:
-#    type: git
-#    url: https://github.com/ros2/tutorials.git
-#    version: master
   ros2/unique_identifier_msgs:
     type: git
     url: https://github.com/ros2/unique_identifier_msgs.git

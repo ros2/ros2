@@ -142,7 +142,7 @@ repositories:
   ros/ros_tutorials:
     type: git
     url: https://github.com/ros/ros_tutorials.git
-    version: eloquent
+    version: eloquent-devel
   ros/urdfdom_headers:
     type: git
     url: https://github.com/ros/urdfdom_headers.git

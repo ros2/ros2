@@ -75,6 +75,10 @@ repositories:
     type: git
     url: https://github.com/ros-visualization/rqt.git
     version: crystal-devel
+  ros-visualization/rqt_common_plugins:
+    type: git
+    url: https://github.com/ros-visualization/rqt_common_plugins.git
+    version: dashing-devel
   ros-visualization/rqt_console:
     type: git
     url: https://github.com/ros-visualization/rqt_console.git

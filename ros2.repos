@@ -75,6 +75,10 @@ repositories:
     type: git
     url: https://github.com/ros-visualization/rqt.git
     version: crystal-devel
+  ros-visualization/rqt_action:
+    type: git
+    url: https://github.com/ros-visualization/rqt_action.git
+    version: crystal-devel
   ros-visualization/rqt_console:
     type: git
     url: https://github.com/ros-visualization/rqt_console.git
@@ -119,6 +123,10 @@ repositories:
     type: git
     url: https://github.com/ros-visualization/rqt_top.git
     version: crystal-devel
+  ros-visualization/rqt_topic:
+    type: git
+    url: https://github.com/ros-visualization/rqt_topic.git
+    version: dashing-devel
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git

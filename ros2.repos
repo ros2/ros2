@@ -51,17 +51,9 @@ repositories:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
     version: master
-  ros-perception/image_common:
-    type: git
-    url: https://github.com/ros-perception/image_common.git
-    version: ros2
   ros-perception/laser_geometry:
     type: git
     url: https://github.com/ros-perception/laser_geometry.git
-    version: ros2
-  ros-perception/vision_opencv:
-    type: git
-    url: https://github.com/ros-perception/vision_opencv.git
     version: ros2
   ros-planning/navigation_msgs:
     type: git
@@ -94,10 +86,6 @@ repositories:
   ros-visualization/rqt_graph:
     type: git
     url: https://github.com/ros-visualization/rqt_graph.git
-    version: crystal-devel
-  ros-visualization/rqt_image_view:
-    type: git
-    url: https://github.com/ros-visualization/rqt_image_view.git
     version: crystal-devel
   ros-visualization/rqt_msg:
     type: git

@@ -42,7 +42,7 @@ repositories:
   micro-ROS/ros_tracing/ros2_tracing:
     type: git
     url: https://gitlab.com/micro-ROS/ros_tracing/ros2_tracing.git
-    version: 0.2.10
+    version: 0.2.12
   osrf/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git

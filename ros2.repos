@@ -271,10 +271,6 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
     version: master
-  ros2/rmw_opensplice:
-    type: git
-    url: https://github.com/ros2/rmw_opensplice.git
-    version: master
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
@@ -322,10 +318,6 @@ repositories:
   ros2/rosidl_typesupport_fastrtps:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_fastrtps.git
-    version: master
-  ros2/rosidl_typesupport_opensplice:
-    type: git
-    url: https://github.com/ros2/rosidl_typesupport_opensplice.git
     version: master
   ros2/rviz:
     type: git

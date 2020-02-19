@@ -34,7 +34,7 @@ repositories:
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
-    version: c7b6d9361c48e61d2c7117ef3fbc44812b1b6139
+    version: 1.9.x
   eProsima/foonathan_memory_vendor:
     type: git
     url: https://github.com/eProsima/foonathan_memory_vendor.git

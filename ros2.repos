@@ -33,8 +33,8 @@ repositories:
     version: v1.0.11
   eProsima/Fast-RTPS:
     type: git
-    url: https://github.com/ros2/Fast-RTPS.git
-    version: eloquent
+    url: https://github.com/eProsima/Fast-RTPS.git
+    version: ros2-eloquent
   eProsima/foonathan_memory_vendor:
     type: git
     url: https://github.com/eProsima/foonathan_memory_vendor.git

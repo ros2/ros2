@@ -234,7 +234,7 @@ repositories:
   ros2/rmw_fastrtps:
     type: git
     url: https://github.com/ros2/rmw_fastrtps.git
-    version: 0.7.6
+    version: 0.7.7
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
@@ -254,11 +254,11 @@ repositories:
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
-    version: 0.7.4
+    version: 0.7.5
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: 0.7.9
+    version: 0.7.10
   ros2/rosbag2:
     type: git
     url: https://github.com/ros2/rosbag2.git
@@ -266,7 +266,7 @@ repositories:
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: 0.7.8
+    version: 0.7.9
   ros2/rosidl_dds:
     type: git
     url: https://github.com/ros2/rosidl_dds.git
@@ -298,7 +298,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 6.1.5
+    version: 6.1.6
   ros2/sros2:
     type: git
     url: https://github.com/ros2/sros2.git

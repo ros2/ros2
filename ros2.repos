@@ -343,10 +343,6 @@ repositories:
     type: git
     url: https://github.com/ros2/test_interface_files.git
     version: master
-  ros2/tinydir_vendor:
-    type: git
-    url: https://github.com/ros2/tinydir_vendor.git
-    version: master
   ros2/tinyxml2_vendor:
     type: git
     url: https://github.com/ros2/tinyxml2_vendor.git

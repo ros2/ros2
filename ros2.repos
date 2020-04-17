@@ -26,7 +26,7 @@ repositories:
   eclipse-cyclonedds/cyclonedds:
     type: git
     url: https://github.com/eclipse-cyclonedds/cyclonedds.git
-    version: 08d9c296f1b569c18188528fd5e8f086e94dd67d 
+    version: releases/0.5.x 
   eProsima/Fast-CDR:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git
@@ -262,7 +262,7 @@ repositories:
   ros2/rmw_cyclonedds:
     type: git
     url: https://github.com/ros2/rmw_cyclonedds.git
-    version: eloquent
+    version: dashing-eloquent
   ros2/rmw_fastrtps:
     type: git
     url: https://github.com/ros2/rmw_fastrtps.git

@@ -14,7 +14,7 @@ In order to build a debug wheel, we first need to build a debug wheel for its de
 
 1. Download and extract `cffi` source (v1.12.3):
 
-        https://bitbucket.org/cffi/cffi/get/v1.12.3.zip
+        https://foss.heptapod.net/pypy/cffi/-/archive/v1.12.3/cffi-v1.12.3.zip
 
 1. Change to the root of the `cffi` repo.
 

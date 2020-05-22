@@ -325,7 +325,7 @@ repositories:
     version: master
   ros2/rpyutils:
     type: git
-    url: http://github.com/ros2/rpyutils.git
+    url: https://github.com/ros2/rpyutils.git
     version: master
   ros2/rviz:
     type: git

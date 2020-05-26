@@ -74,7 +74,7 @@ repositories:
   ros-visualization/qt_gui_core:
     type: git
     url: https://github.com/ros-visualization/qt_gui_core.git
-    version: crystal-devel
+    version: foxy-devel
   ros-visualization/rqt:
     type: git
     url: https://github.com/ros-visualization/rqt.git

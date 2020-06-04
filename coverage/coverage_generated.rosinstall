@@ -227,6 +227,10 @@
     uri: https://github.com/ros2/system_tests.git
     version: master
 - git:
+    local-name: sros2
+    uri: https://github.com/ros2/sros2.git
+    version: master
+- git:
     local-name: test_interface_files
     uri: https://github.com/ros2/test_interface_files.git
     version: master

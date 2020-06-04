@@ -1,0 +1,249 @@
+- git:
+    local-name: ament_cmake
+    uri: https://github.com/ament/ament_cmake.git
+    version: master
+- git:
+    local-name: ament_cmake_ros
+    uri: https://github.com/ros2/ament_cmake_ros.git
+    version: master
+- git:
+    local-name: ament_index
+    uri: https://github.com/ament/ament_index.git
+    version: master
+- git:
+    local-name: ament_lint
+    uri: https://github.com/ament/ament_lint.git
+    version: master
+- git:
+    local-name: ament_package
+    uri: https://github.com/ament/ament_package.git
+    version: master
+- git:
+    local-name: class_loader
+    uri: https://github.com/ros/class_loader.git
+    version: ros2
+- git:
+    local-name: common_interfaces
+    uri: https://github.com/ros2/common_interfaces.git
+    version: master
+- git:
+    local-name: console_bridge_vendor
+    uri: https://github.com/ros2/console_bridge_vendor.git
+    version: master
+- git:
+    local-name: cyclonedds
+    uri: https://github.com/eclipse-cyclonedds/cyclonedds.git
+    version: master
+- git:
+    local-name: demos
+    uri: https://github.com/ros2/demos.git
+    version: master
+- git:
+    local-name: eigen3_cmake_module
+    uri: https://github.com/ros2/eigen3_cmake_module.git
+    version: master
+- git:
+    local-name: example_interfaces
+    uri: https://github.com/ros2/example_interfaces.git
+    version: master
+- git:
+    local-name: fastcdr
+    uri: https://github.com/eProsima/Fast-CDR.git
+    version: v1.0.13
+- git:
+    local-name: fastrtps
+    uri: https://github.com/eProsima/Fast-RTPS.git
+    version: 9c28edc805863117d500ebb7aef86d509471ebd8
+- git:
+    local-name: foonathan_memory_vendor
+    uri: https://github.com/eProsima/foonathan_memory_vendor.git
+    version: master
+- git:
+    local-name: geometry2
+    uri: https://github.com/ros2/geometry2.git
+    version: ros2
+- git:
+    local-name: googletest
+    uri: https://github.com/ament/googletest.git
+    version: ros2
+- git:
+    local-name: interactive_markers
+    uri: https://github.com/ros-visualization/interactive_markers.git
+    version: ros2
+- git:
+    local-name: launch
+    uri: https://github.com/ros2/launch.git
+    version: master
+- git:
+    local-name: launch_ros
+    uri: https://github.com/ros2/launch_ros.git
+    version: master
+- git:
+    local-name: libstatistics_collector
+    uri: https://github.com/ros-tooling/libstatistics_collector.git
+    version: foxy-devel
+- git:
+    local-name: libyaml_vendor
+    uri: https://github.com/ros2/libyaml_vendor.git
+    version: master
+- git:
+    local-name: message_filters
+    uri: https://github.com/ros2/message_filters.git
+    version: master
+- git:
+    local-name: orocos_kinematics_dynamics
+    uri: https://github.com/ros2/orocos_kinematics_dynamics.git
+    version: ros2
+- git:
+    local-name: osrf_pycommon
+    uri: https://github.com/osrf/osrf_pycommon.git
+    version: master
+- git:
+    local-name: osrf_testing_tools_cpp
+    uri: https://github.com/osrf/osrf_testing_tools_cpp.git
+    version: master
+- git:
+    local-name: pluginlib
+    uri: https://github.com/ros/pluginlib.git
+    version: ros2
+- git:
+    local-name: python_cmake_module
+    uri: https://github.com/ros2/python_cmake_module.git
+    version: master
+- git:
+    local-name: rcl
+    uri: https://github.com/ros2/rcl.git
+    version: master
+- git:
+    local-name: rcl_interfaces
+    uri: https://github.com/ros2/rcl_interfaces.git
+    version: master
+- git:
+    local-name: rcl_logging
+    uri: https://github.com/ros2/rcl_logging.git
+    version: master
+- git:
+    local-name: rclcpp
+    uri: https://github.com/ros2/rclcpp.git
+    version: master
+- git:
+    local-name: rclpy
+    uri: https://github.com/ros2/rclpy.git
+    version: master
+- git:
+    local-name: rcpputils
+    uri: https://github.com/ros2/rcpputils.git
+    version: master
+- git:
+    local-name: rcutils
+    uri: https://github.com/ros2/rcutils.git
+    version: master
+- git:
+    local-name: rmw
+    uri: https://github.com/ros2/rmw.git
+    version: master
+- git:
+    local-name: rmw_connext
+    uri: https://github.com/ros2/rmw_connext.git
+    version: master
+- git:
+    local-name: rmw_cyclonedds
+    uri: https://github.com/ros2/rmw_cyclonedds.git
+    version: master
+- git:
+    local-name: rmw_dds_common
+    uri: https://github.com/ros2/rmw_dds_common.git
+    version: master
+- git:
+    local-name: rmw_fastrtps
+    uri: https://github.com/ros2/rmw_fastrtps.git
+    version: master
+- git:
+    local-name: rmw_implementation
+    uri: https://github.com/ros2/rmw_implementation.git
+    version: master
+- git:
+    local-name: ros1_bridge
+    uri: https://github.com/ros2/ros1_bridge.git
+    version: master
+- git:
+    local-name: ros2_tracing
+    uri: https://gitlab.com/micro-ROS/ros_tracing/ros2_tracing.git
+    version: foxy
+- git:
+    local-name: ros2cli
+    uri: https://github.com/ros2/ros2cli.git
+    version: master
+- git:
+    local-name: ros_testing
+    uri: https://github.com/ros2/ros_testing.git
+    version: master
+- git:
+    local-name: rosbag2
+    uri: https://github.com/ros2/rosbag2.git
+    version: master
+- git:
+    local-name: rosidl
+    uri: https://github.com/ros2/rosidl.git
+    version: master
+- git:
+    local-name: rosidl_dds
+    uri: https://github.com/ros2/rosidl_dds.git
+    version: master
+- git:
+    local-name: rosidl_defaults
+    uri: https://github.com/ros2/rosidl_defaults.git
+    version: master
+- git:
+    local-name: rosidl_python
+    uri: https://github.com/ros2/rosidl_python.git
+    version: master
+- git:
+    local-name: rosidl_runtime_py
+    uri: https://github.com/ros2/rosidl_runtime_py.git
+    version: master
+- git:
+    local-name: rosidl_typesupport
+    uri: https://github.com/ros2/rosidl_typesupport.git
+    version: master
+- git:
+    local-name: rosidl_typesupport_connext
+    uri: https://github.com/ros2/rosidl_typesupport_connext.git
+    version: master
+- git:
+    local-name: rosidl_typesupport_fastrtps
+    uri: https://github.com/ros2/rosidl_typesupport_fastrtps.git
+    version: master
+- git:
+    local-name: rpyutils
+    uri: https://github.com/ros2/rpyutils.git
+    version: master
+- git:
+    local-name: spdlog_vendor
+    uri: https://github.com/ros2/spdlog_vendor.git
+    version: master
+- git:
+    local-name: system_tests
+    uri: https://github.com/ros2/system_tests.git
+    version: master
+- git:
+    local-name: test_interface_files
+    uri: https://github.com/ros2/test_interface_files.git
+    version: master
+- git:
+    local-name: tinyxml2_vendor
+    uri: https://github.com/ros2/tinyxml2_vendor.git
+    version: master
+- git:
+    local-name: uncrustify_vendor
+    uri: https://github.com/ament/uncrustify_vendor.git
+    version: master
+- git:
+    local-name: unique_identifier_msgs
+    uri: https://github.com/ros2/unique_identifier_msgs.git
+    version: master
+- git:
+    local-name: yaml_cpp_vendor
+    uri: https://github.com/ros2/yaml_cpp_vendor.git
+    version: master
+

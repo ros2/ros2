@@ -75,9 +75,9 @@ repositories:
     type: git
     url: https://github.com/ros-visualization/qt_gui_core.git
     version: foxy-devel
-  ros-visualization/qt_gui_icons:
+  ros-visualization/tango_icons_vendor:
     type: git
-    url: https://github.com/ros-visualization/qt_gui_icons.git
+    url: https://github.com/ros-visualization/tango_icons_vendor.git
     version: master
   ros-visualization/rqt:
     type: git

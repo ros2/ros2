@@ -139,6 +139,10 @@ repositories:
     type: git
     url: https://github.com/ros/class_loader.git
     version: ros2
+  ros/kdl_parser:
+    type: git
+    url: https://github.com/ros/kdl_parser.git
+    version: ros2
   ros/pluginlib:
     type: git
     url: https://github.com/ros/pluginlib.git
@@ -194,10 +198,6 @@ repositories:
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: ros2
-  ros2/kdl_parser:
-    type: git
-    url: https://github.com/ros2/kdl_parser.git
     version: ros2
   ros2/launch:
     type: git

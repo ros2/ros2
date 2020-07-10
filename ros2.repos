@@ -139,6 +139,10 @@ repositories:
     type: git
     url: https://github.com/ros/pluginlib.git
     version: foxy
+  ros/kdl_parser:
+    type: git
+    url: https://github.com/ros/kdl_parser.git
+    version: foxy
   ros/resource_retriever:
     type: git
     url: https://github.com/ros/resource_retriever.git
@@ -190,10 +194,6 @@ repositories:
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: foxy
-  ros2/kdl_parser:
-    type: git
-    url: https://github.com/ros2/kdl_parser.git
     version: foxy
   ros2/launch:
     type: git

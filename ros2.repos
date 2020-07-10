@@ -47,6 +47,10 @@ repositories:
     type: git
     url: https://github.com/ros/console_bridge.git
     version: 0.4.0
+  ros/kdl_parser:
+    type: git
+    url: https://github.com/ros/kdl_parser.git
+    version: 2.0.0
   ros/pluginlib:
     type: git
     url: https://github.com/ros/pluginlib.git
@@ -83,10 +87,6 @@ repositories:
     type: git
     url: https://github.com/ros2/geometry2.git
     version: 0.8.0
-  ros2/kdl_parser:
-    type: git
-    url: https://github.com/ros2/kdl_parser.git
-    version: 2.0.0
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git

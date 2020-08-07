@@ -194,7 +194,7 @@ repositories:
   ros2/kdl_parser:
     type: git
     url: https://github.com/ros2/kdl_parser.git
-    version: 2.4.0
+    version: 2.4.1
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git

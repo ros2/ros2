@@ -131,6 +131,10 @@ repositories:
     type: git
     url: https://github.com/ros-visualization/rqt_topic.git
     version: 1.1.0
+  ros-visualization/tango_icons_vendor:
+    type: git
+    url: https://github.com/ros-visualization/tango_icons_vendor.git
+    version: 0.0.1
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git

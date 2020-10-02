@@ -15,6 +15,10 @@ repositories:
     type: git
     url: https://github.com/ament/ament_package.git
     version: foxy
+  ament/google_benchmark_vendor:
+    type: git
+    url: https://github.com/ament/google_benchmark_vendor.git
+    version: main
   ament/googletest:
     type: git
     url: https://github.com/ament/googletest.git

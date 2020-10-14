@@ -39,10 +39,6 @@ repositories:
     type: git
     url: https://github.com/eProsima/foonathan_memory_vendor.git
     version: master
-  micro-ROS/ros_tracing/ros2_tracing:
-    type: git
-    url: https://gitlab.com/micro-ROS/ros_tracing/ros2_tracing.git
-    version: 0.2.12
   osrf/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
@@ -59,6 +55,10 @@ repositories:
     type: git
     url: https://github.com/ros-planning/navigation_msgs.git
     version: eloquent
+  ros-tracing/ros2_tracing:
+    type: git
+    url: https://gitlab.com/ros-tracing/ros2_tracing.git
+    version: 0.2.12
   ros-visualization/interactive_markers:
     type: git
     url: https://github.com/ros-visualization/interactive_markers.git

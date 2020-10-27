@@ -171,6 +171,10 @@ repositories:
     type: git
     url: https://github.com/ros/urdfdom_headers.git
     version: foxy
+  ros/urdfdom:
+    type: git
+    url: https://github.com/ros/urdfdom.git
+    version: foxy
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
@@ -386,10 +390,6 @@ repositories:
   ros2/urdf:
     type: git
     url: https://github.com/ros2/urdf.git
-    version: foxy
-  ros2/urdfdom:
-    type: git
-    url: https://github.com/ros2/urdfdom.git
     version: foxy
   ros2/yaml_cpp_vendor:
     type: git

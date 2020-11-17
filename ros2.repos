@@ -87,6 +87,10 @@ repositories:
     type: git
     url: https://github.com/ros-visualization/rqt_action.git
     version: crystal-devel
+  ros-visualization/rqt_bag:
+    type: git
+    url: https://github.com/ros-visualization/rqt_bag.git
+    version: ros2
   ros-visualization/rqt_console:
     type: git
     url: https://github.com/ros-visualization/rqt_console.git

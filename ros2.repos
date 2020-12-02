@@ -2,7 +2,7 @@ repositories:
   ament/ament_cmake:
     type: git
     url: https://github.com/ament/ament_cmake.git
-    version: 0.7.5
+    version: 0.7.6
   ament/ament_index:
     type: git
     url: https://github.com/ament/ament_index.git
@@ -26,11 +26,11 @@ repositories:
   eclipse-cyclonedds/cyclonedds:
     type: git
     url: https://github.com/eclipse-cyclonedds/cyclonedds.git
-    version: 0.5.1
+    version: 0.7.0
   eProsima/Fast-CDR:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git
-    version: v1.0.11
+    version: v1.0.13
   eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-RTPS.git
@@ -42,7 +42,7 @@ repositories:
   osrf/osrf_testing_tools_cpp:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
-    version: 1.2.2
+    version: 1.2.3
   ros-perception/laser_geometry:
     type: git
     url: https://github.com/ros-perception/laser_geometry.git
@@ -70,7 +70,7 @@ repositories:
   ros-visualization/rqt_graph:
     type: git
     url: https://github.com/ros-visualization/rqt_graph.git
-    version: 1.0.4
+    version: 1.0.5
   ros-visualization/rqt_msg:
     type: git
     url: https://github.com/ros-visualization/rqt_msg.git
@@ -122,7 +122,7 @@ repositories:
   ros/ros_tutorials:
     type: git
     url: https://github.com/ros/ros_tutorials.git
-    version: 1.0.2
+    version: 1.0.3
   ros/urdfdom_headers:
     type: git
     url: https://github.com/ros/urdfdom_headers.git
@@ -150,7 +150,7 @@ repositories:
   ros2/examples:
     type: git
     url: https://github.com/ros2/examples.git
-    version: 0.7.4
+    version: 0.7.5
   ros2/example_interfaces:
     type: git
     url: https://github.com/ros2/example_interfaces.git
@@ -170,7 +170,7 @@ repositories:
   ros2/launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
-    version: 0.8.8
+    version: 0.8.9
   ros2/libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
@@ -186,7 +186,7 @@ repositories:
   ros2/poco_vendor:
     type: git
     url: https://github.com/ros2/poco_vendor.git
-    version: 1.2.0
+    version: 1.2.1
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
@@ -202,7 +202,7 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 0.7.14
+    version: 0.7.15
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
@@ -214,7 +214,7 @@ repositories:
   ros2/rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git
-    version: 0.7.5
+    version: 0.7.6
   ros2/realtime_support:
     type: git
     url: https://github.com/ros2/realtime_support.git
@@ -226,15 +226,15 @@ repositories:
   ros2/rmw_connext:
     type: git
     url: https://github.com/ros2/rmw_connext.git
-    version: 0.7.5
+    version: 0.7.6
   ros2/rmw_cyclonedds:
     type: git
     url: https://github.com/ros2/rmw_cyclonedds.git
-    version: 0.5.1
+    version: 0.7.0
   ros2/rmw_fastrtps:
     type: git
     url: https://github.com/ros2/rmw_fastrtps.git
-    version: 0.7.7
+    version: 0.7.8
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
@@ -254,7 +254,7 @@ repositories:
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
-    version: 0.7.6
+    version: 0.7.7
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
@@ -266,7 +266,7 @@ repositories:
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: 0.7.9
+    version: 0.7.10
   ros2/rosidl_dds:
     type: git
     url: https://github.com/ros2/rosidl_dds.git
@@ -278,7 +278,7 @@ repositories:
   ros2/rosidl_python:
     type: git
     url: https://github.com/ros2/rosidl_python.git
-    version: 0.7.10
+    version: 0.7.11
   ros2/rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git
@@ -290,7 +290,7 @@ repositories:
   ros2/rosidl_typesupport_fastrtps:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_fastrtps.git
-    version: 0.7.1
+    version: 0.7.2
   ros2/rosidl_typesupport_opensplice:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_opensplice.git
@@ -298,7 +298,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 6.1.6
+    version: 6.1.7
   ros2/sros2:
     type: git
     url: https://github.com/ros2/sros2.git

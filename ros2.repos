@@ -82,7 +82,7 @@ repositories:
   ros-visualization/qt_gui_core:
     type: git
     url: https://github.com/ros-visualization/qt_gui_core.git
-    version: foxy-devel
+    version: galactic-devel
   ros-visualization/rqt:
     type: git
     url: https://github.com/ros-visualization/rqt.git

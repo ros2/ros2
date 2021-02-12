@@ -170,7 +170,7 @@ repositories:
   ros/ros_environment:
     type: git
     url: https://github.com/ros/ros_environment.git
-    version: foxy
+    version: rolling
   ros/ros_tutorials:
     type: git
     url: https://github.com/ros/ros_tutorials.git

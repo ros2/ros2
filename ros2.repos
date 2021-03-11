@@ -287,6 +287,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw.git
     version: master
+  ros2/rmw_connext:
+    type: git
+    url: https://github.com/ros2/rmw_connext.git
+    version: master
   ros2/rmw_connextdds:
     type: git
     url: https://github.com/rticommunity/rmw_connextdds.git
@@ -350,6 +354,10 @@ repositories:
   ros2/rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git
+    version: master
+  ros2/rosidl_typesupport_connext:
+    type: git
+    url: https://github.com/ros2/rosidl_typesupport_connext.git
     version: master
   ros2/rosidl_typesupport_fastrtps:
     type: git

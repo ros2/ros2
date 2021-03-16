@@ -114,7 +114,7 @@ repositories:
   ros-visualization/rqt_publisher:
     type: git
     url: https://github.com/ros-visualization/rqt_publisher.git
-    version: dashing-devel
+    version: foxy-devel
   ros-visualization/rqt_py_console:
     type: git
     url: https://github.com/ros-visualization/rqt_py_console.git

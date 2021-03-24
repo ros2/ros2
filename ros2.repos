@@ -291,6 +291,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_connext.git
     version: master
+  ros2/rmw_connextdds:
+    type: git
+    url: https://github.com/rticommunity/rmw_connextdds.git
+    version: master
   ros2/rmw_cyclonedds:
     type: git
     url: https://github.com/ros2/rmw_cyclonedds.git

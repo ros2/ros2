@@ -1,1 +1,1 @@
-Documentation is at https://index.ros.org/doc/ros2/
+Documentation is at https://docs.ros.org

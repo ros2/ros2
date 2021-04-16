@@ -102,7 +102,7 @@ repositories:
   ros-visualization/rqt_console:
     type: git
     url: https://github.com/ros-visualization/rqt_console.git
-    version: dashing-devel
+    version: ros2
   ros-visualization/rqt_graph:
     type: git
     url: https://github.com/ros-visualization/rqt_graph.git

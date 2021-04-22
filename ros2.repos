@@ -30,7 +30,7 @@ repositories:
   eclipse-cyclonedds/cyclonedds:
     type: git
     url: https://github.com/eclipse-cyclonedds/cyclonedds.git
-    version: iceoryx
+    version: 45a9ac292a1863df7d79f7d1919d19b09f1f9807
   eclipse-iceoryx/iceoryx:
     type: git
     url: https://github.com/eclipse-iceoryx/iceoryx.git

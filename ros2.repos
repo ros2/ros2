@@ -2,19 +2,19 @@ repositories:
   ament/ament_cmake:
     type: git
     url: https://github.com/ament/ament_cmake.git
-    version: master
+    version: galactic
   ament/ament_index:
     type: git
     url: https://github.com/ament/ament_index.git
-    version: master
+    version: galactic
   ament/ament_lint:
     type: git
     url: https://github.com/ament/ament_lint.git
-    version: master
+    version: galactic
   ament/ament_package:
     type: git
     url: https://github.com/ament/ament_package.git
-    version: master
+    version: galactic
   ament/google_benchmark_vendor:
     type: git
     url: https://github.com/ament/google_benchmark_vendor.git
@@ -22,19 +22,11 @@ repositories:
   ament/googletest:
     type: git
     url: https://github.com/ament/googletest.git
-    version: ros2
+    version: galactic
   ament/uncrustify_vendor:
     type: git
     url: https://github.com/ament/uncrustify_vendor.git
-    version: master
-  eclipse-cyclonedds/cyclonedds:
-    type: git
-    url: https://github.com/eclipse-cyclonedds/cyclonedds.git
-    version: iceoryx
-  eclipse-iceoryx/iceoryx:
-    type: git
-    url: https://github.com/eclipse-iceoryx/iceoryx.git
-    version: release_1.0
+    version: galactic
   eProsima/Fast-CDR:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git
@@ -47,6 +39,14 @@ repositories:
     type: git
     url: https://github.com/eProsima/foonathan_memory_vendor.git
     version: master
+  eclipse-cyclonedds/cyclonedds:
+    type: git
+    url: https://github.com/eclipse-cyclonedds/cyclonedds.git
+    version: iceoryx
+  eclipse-iceoryx/iceoryx:
+    type: git
+    url: https://github.com/eclipse-iceoryx/iceoryx.git
+    version: release_1.0
   osrf/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
@@ -55,13 +55,13 @@ repositories:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
     version: master
-  ros-perception/laser_geometry:
-    type: git
-    url: https://github.com/ros-perception/laser_geometry.git
-    version: ros2
   ros-perception/image_common:
     type: git
     url: https://github.com/ros-perception/image_common.git
+    version: ros2
+  ros-perception/laser_geometry:
+    type: git
+    url: https://github.com/ros-perception/laser_geometry.git
     version: ros2
   ros-planning/navigation_msgs:
     type: git
@@ -74,7 +74,7 @@ repositories:
   ros-tracing/ros2_tracing:
     type: git
     url: https://gitlab.com/ros-tracing/ros2_tracing.git
-    version: master
+    version: galactic
   ros-visualization/interactive_markers:
     type: git
     url: https://github.com/ros-visualization/interactive_markers.git
@@ -154,95 +154,95 @@ repositories:
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git
-    version: ros2
+    version: galactic
   ros/kdl_parser:
     type: git
     url: https://github.com/ros/kdl_parser.git
-    version: ros2
+    version: galactic
   ros/pluginlib:
     type: git
     url: https://github.com/ros/pluginlib.git
-    version: ros2
+    version: galactic
   ros/resource_retriever:
     type: git
     url: https://github.com/ros/resource_retriever.git
-    version: ros2
+    version: galactic
   ros/robot_state_publisher:
     type: git
     url: https://github.com/ros/robot_state_publisher.git
-    version: ros2
+    version: galactic
   ros/ros_environment:
     type: git
     url: https://github.com/ros/ros_environment.git
-    version: rolling
+    version: galactic
   ros/ros_tutorials:
     type: git
     url: https://github.com/ros/ros_tutorials.git
     version: galactic-devel
-  ros/urdfdom_headers:
-    type: git
-    url: https://github.com/ros/urdfdom_headers.git
-    version: master
   ros/urdfdom:
     type: git
     url: https://github.com/ros/urdfdom.git
-    version: ros2
+    version: galactic
+  ros/urdfdom_headers:
+    type: git
+    url: https://github.com/ros/urdfdom_headers.git
+    version: galactic
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
-    version: master
+    version: galactic
   ros2/common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git
-    version: master
+    version: galactic
   ros2/console_bridge_vendor:
     type: git
     url: https://github.com/ros2/console_bridge_vendor.git
-    version: master
+    version: galactic
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
-    version: master
+    version: galactic
   ros2/eigen3_cmake_module:
     type: git
     url: https://github.com/ros2/eigen3_cmake_module.git
-    version: master
+    version: galactic
   ros2/example_interfaces:
     type: git
     url: https://github.com/ros2/example_interfaces.git
-    version: master
+    version: galactic
   ros2/examples:
     type: git
     url: https://github.com/ros2/examples.git
-    version: master
+    version: galactic
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: ros2
+    version: galactic
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: master
+    version: galactic
   ros2/launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
-    version: master
+    version: galactic
   ros2/libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
-    version: master
+    version: galactic
   ros2/message_filters:
     type: git
     url: https://github.com/ros2/message_filters.git
-    version: master
+    version: galactic
   ros2/mimick_vendor:
     type: git
     url: https://github.com/ros2/mimick_vendor.git
-    version: master
+    version: galactic
   ros2/orocos_kinematics_dynamics:
     type: git
     url: https://github.com/ros2/orocos_kinematics_dynamics.git
-    version: ros2
+    version: galactic
   ros2/performance_test_fixture:
     type: git
     url: https://github.com/ros2/performance_test_fixture.git
@@ -250,83 +250,83 @@ repositories:
   ros2/pybind11_vendor:
     type: git
     url: https://github.com/ros2/pybind11_vendor.git
-    version: master
+    version: foxy
   ros2/python_cmake_module:
     type: git
     url: https://github.com/ros2/python_cmake_module.git
-    version: master
+    version: galactic
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: master
+    version: galactic
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
-    version: master
+    version: galactic
   ros2/rcl_logging:
     type: git
     url: https://github.com/ros2/rcl_logging.git
-    version: master
+    version: galactic
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: master
+    version: galactic
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: master
+    version: galactic
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
-    version: master
+    version: galactic
   ros2/rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git
-    version: master
+    version: galactic
   ros2/realtime_support:
     type: git
     url: https://github.com/ros2/realtime_support.git
-    version: master
+    version: galactic
   ros2/rmw:
     type: git
     url: https://github.com/ros2/rmw.git
-    version: master
+    version: galactic
   ros2/rmw_connextdds:
     type: git
     url: https://github.com/ros2/rmw_connextdds.git
-    version: master
+    version: galactic
   ros2/rmw_cyclonedds:
     type: git
     url: https://github.com/ros2/rmw_cyclonedds.git
-    version: master
+    version: galactic
   ros2/rmw_dds_common:
     type: git
     url: https://github.com/ros2/rmw_dds_common.git
-    version: master
+    version: galactic
   ros2/rmw_fastrtps:
     type: git
     url: https://github.com/ros2/rmw_fastrtps.git
-    version: master
+    version: galactic
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
-    version: master
+    version: galactic
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
-    version: master
+    version: galactic
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: master
+    version: galactic
   ros2/ros2cli_common_extensions:
     type: git
     url: https://github.com/ros2/ros2cli_common_extensions.git
-    version: master
+    version: galactic
   ros2/ros_testing:
     type: git
     url: https://github.com/ros2/ros_testing.git
-    version: master
+    version: galactic
   ros2/rosbag2:
     type: git
     url: https://github.com/ros2/rosbag2.git
@@ -334,71 +334,71 @@ repositories:
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: master
+    version: galactic
   ros2/rosidl_dds:
     type: git
     url: https://github.com/ros2/rosidl_dds.git
-    version: master
+    version: galactic
   ros2/rosidl_defaults:
     type: git
     url: https://github.com/ros2/rosidl_defaults.git
-    version: master
+    version: galactic
   ros2/rosidl_python:
     type: git
     url: https://github.com/ros2/rosidl_python.git
-    version: master
+    version: galactic
   ros2/rosidl_runtime_py:
     type: git
     url: https://github.com/ros2/rosidl_runtime_py.git
-    version: master
+    version: galactic
   ros2/rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git
-    version: master
+    version: galactic
   ros2/rosidl_typesupport_fastrtps:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_fastrtps.git
-    version: master
+    version: galactic
   ros2/rpyutils:
     type: git
     url: https://github.com/ros2/rpyutils.git
-    version: master
+    version: galactic
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: ros2
+    version: galactic
   ros2/spdlog_vendor:
     type: git
     url: https://github.com/ros2/spdlog_vendor.git
-    version: master
+    version: galactic
   ros2/sros2:
     type: git
     url: https://github.com/ros2/sros2.git
-    version: master
+    version: galactic
   ros2/system_tests:
     type: git
     url: https://github.com/ros2/system_tests.git
-    version: master
+    version: galactic
   ros2/test_interface_files:
     type: git
     url: https://github.com/ros2/test_interface_files.git
-    version: master
+    version: galactic
   ros2/tinyxml2_vendor:
     type: git
     url: https://github.com/ros2/tinyxml2_vendor.git
-    version: master
+    version: galactic
   ros2/tinyxml_vendor:
     type: git
     url: https://github.com/ros2/tinyxml_vendor.git
-    version: master
+    version: galactic
   ros2/tlsf:
     type: git
     url: https://github.com/ros2/tlsf.git
-    version: master
+    version: galactic
   ros2/unique_identifier_msgs:
     type: git
     url: https://github.com/ros2/unique_identifier_msgs.git
-    version: master
+    version: galactic
   ros2/urdf:
     type: git
     url: https://github.com/ros2/urdf.git
@@ -406,4 +406,4 @@ repositories:
   ros2/yaml_cpp_vendor:
     type: git
     url: https://github.com/ros2/yaml_cpp_vendor.git
-    version: master
+    version: galactic

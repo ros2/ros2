@@ -311,6 +311,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
     version: master
+  ros2/rmw_gurumdds:
+    type: git
+    url: https://github.com/ros2/rmw_gurumdds.git
+    version: master
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
@@ -358,6 +362,10 @@ repositories:
   ros2/rosidl_typesupport_fastrtps:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_fastrtps.git
+    version: master
+  ros2/rosidl_typesupport_gurumdds:
+    type: git
+    url: https://github.com/ros2/rosidl_typesupport_gurumdds.git
     version: master
   ros2/rpyutils:
     type: git

@@ -31,7 +31,7 @@ repositories:
     type: git
     url: https://github.com/eProsima/Fast-CDR.git
     version: v1.0.13
-  eProsima/Fast-DDS:
+  eProsima/Fast-RTPS:
     type: git
     url: https://github.com/eProsima/Fast-DDS.git
     version: v1.8.4
@@ -243,7 +243,7 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_opensplice.git
     version: 0.7.3
-  ros/robot_state_publisher:
+  ros2/robot_state_publisher:
     type: git
     url: https://github.com/ros/robot_state_publisher.git
     version: 2.2.5
@@ -335,7 +335,7 @@ repositories:
     type: git
     url: https://github.com/ros2/urdf.git
     version: 2.2.0
-  ros/urdfdom:
+  ros2/urdfdom:
     type: git
     url: https://github.com/ros/urdfdom.git
     version: 2.2.0

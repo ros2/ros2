@@ -55,18 +55,6 @@ repositories:
     type: git
     url: https://github.com/ros2/examples.git
     version: master
-  fastcdr:
-    type: git
-    url: https://github.com/eProsima/Fast-CDR.git
-    version: v1.0.13
-  fastrtps:
-    type: git
-    url: https://github.com/eProsima/Fast-DDS.git
-    version: 2.3.x
-  foonathan_memory_vendor:
-    type: git
-    url: https://github.com/eProsima/foonathan_memory_vendor.git
-    version: master
   geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
@@ -187,10 +175,6 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_dds_common.git
     version: master
-  rmw_fastrtps:
-    type: git
-    url: https://github.com/ros2/rmw_fastrtps.git
-    version: master
   rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
@@ -238,10 +222,6 @@ repositories:
   rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git
-    version: master
-  rosidl_typesupport_fastrtps:
-    type: git
-    url: https://github.com/ros2/rosidl_typesupport_fastrtps.git
     version: master
   rpyutils:
     type: git

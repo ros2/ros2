@@ -70,7 +70,7 @@ repositories:
   ros-tooling/libstatistics_collector:
     type: git
     url: https://github.com/ros-tooling/libstatistics_collector.git
-    version: master
+    version: galactic
   ros-tracing/ros2_tracing:
     type: git
     url: https://gitlab.com/ros-tracing/ros2_tracing.git

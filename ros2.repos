@@ -219,6 +219,14 @@ repositories:
     type: git
     url: https://github.com/ros2/geometry2.git
     version: ros2
+  ros2/ignition_cmake2_vendor:
+    type: git
+    url: https://github.com/ignition-release/ignition_cmake2_vendor.git
+    version: main
+  ros2/ignition_math6_vendor:
+    type: git
+    url: https://github.com/ignition-release/ignition_math6_vendor.git
+    version: main
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git

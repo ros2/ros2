@@ -38,7 +38,7 @@ repositories:
   cyclonedds:
     type: git
     url: https://github.com/eclipse-cyclonedds/cyclonedds.git
-    version: release/0.8.x
+    version: releases/0.8.x
   demos:
     type: git
     url: https://github.com/ros2/demos.git

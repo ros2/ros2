@@ -255,4 +255,3 @@ repositories:
     type: git
     url: https://github.com/ros/urdfdom_headers.git
     version: master
-

@@ -31,29 +31,25 @@ repositories:
     type: git
     url: https://github.com/ros2/console_bridge_vendor.git
     version: master
-  control_msgs:
-    type: git
-    url: https://github.com/ros-controls/control_msgs.git
-    version: foxy-devel
   cyclonedds:
     type: git
     url: https://github.com/eclipse-cyclonedds/cyclonedds.git
     version: releases/0.8.x
-  demos:
-    type: git
-    url: https://github.com/ros2/demos.git
-    version: master
   eigen3_cmake_module:
     type: git
     url: https://github.com/ros2/eigen3_cmake_module.git
     version: master
-  example_interfaces:
+  fastcdr:
     type: git
-    url: https://github.com/ros2/example_interfaces.git
-    version: master
-  examples:
+    url: https://github.com/eProsima/Fast-CDR.git
+    version: v1.0.13
+  fastrtps:
     type: git
-    url: https://github.com/ros2/examples.git
+    url: https://github.com/eProsima/Fast-DDS.git
+    version: 2.3.x
+  foonathan_memory_vendor:
+    type: git
+    url: https://github.com/eProsima/foonathan_memory_vendor.git
     version: master
   geometry2:
     type: git
@@ -155,13 +151,13 @@ repositories:
     type: git
     url: https://github.com/ros2/rcutils.git
     version: master
-  realtime_support:
-    type: git
-    url: https://github.com/ros2/realtime_support.git
-    version: master
   rmw:
     type: git
     url: https://github.com/ros2/rmw.git
+    version: master
+  rmw_connextdds:
+    type: git
+    url: https://github.com/ros2/rmw_connextdds.git
     version: master
   rmw_cyclonedds:
     type: git
@@ -170,6 +166,10 @@ repositories:
   rmw_dds_common:
     type: git
     url: https://github.com/ros2/rmw_dds_common.git
+    version: master
+  rmw_fastrtps:
+    type: git
+    url: https://github.com/ros2/rmw_fastrtps.git
     version: master
   rmw_implementation:
     type: git
@@ -191,17 +191,9 @@ repositories:
     type: git
     url: https://github.com/ros/ros_environment.git
     version: rolling
-  ros_testing:
-    type: git
-    url: https://github.com/ros2/ros_testing.git
-    version: master
   rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: master
-  rosidl_dds:
-    type: git
-    url: https://github.com/ros2/rosidl_dds.git
     version: master
   rosidl_defaults:
     type: git
@@ -218,6 +210,10 @@ repositories:
   rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git
+    version: master
+  rosidl_typesupport_fastrtps:
+    type: git
+    url: https://github.com/ros2/rosidl_typesupport_fastrtps.git
     version: master
   rpyutils:
     type: git
@@ -239,10 +235,6 @@ repositories:
     type: git
     url: https://github.com/ros2/tinyxml_vendor.git
     version: master
-  tlsf:
-    type: git
-    url: https://github.com/ros2/tlsf.git
-    version: master
   uncrustify_vendor:
     type: git
     url: https://github.com/ament/uncrustify_vendor.git
@@ -263,7 +255,4 @@ repositories:
     type: git
     url: https://github.com/ros/urdfdom_headers.git
     version: master
-  yaml_cpp_vendor:
-    type: git
-    url: https://github.com/ros2/yaml_cpp_vendor.git
-    version: master
+

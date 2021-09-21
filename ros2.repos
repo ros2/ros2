@@ -7,6 +7,10 @@ repositories:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
     version: master
+  ament_ikos:
+    type: git
+    url: https://github.com/ament/ament_ikos.git
+    version: main
   ament_index:
     type: git
     url: https://github.com/ament/ament_index.git

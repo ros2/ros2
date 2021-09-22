@@ -175,6 +175,10 @@ repositories:
     type: git
     url: https://github.com/ros/ros_environment.git
     version: rolling
+  ros_testing:
+    type: git
+    url: https://github.com/ros2/ros_testing.git
+    version: master
   rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git

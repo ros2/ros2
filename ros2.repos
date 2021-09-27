@@ -75,6 +75,10 @@ repositories:
     type: git
     url: https://github.com/ros-planning/navigation_msgs.git
     version: ros2
+  ros-tooling/keyboard_handler:
+    type: git
+    url: https://github.com/ros-tooling/keyboard_handler.git
+    version: main
   ros-tooling/libstatistics_collector:
     type: git
     url: https://github.com/ros-tooling/libstatistics_collector.git

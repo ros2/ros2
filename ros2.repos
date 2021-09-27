@@ -194,7 +194,7 @@ repositories:
   ros/urdfdom:
     type: git
     url: https://github.com/ros/urdfdom.git
-    version: ros2
+    version: master
   ros/urdfdom_headers:
     type: git
     url: https://github.com/ros/urdfdom_headers.git

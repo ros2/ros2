@@ -206,7 +206,7 @@ repositories:
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: 0.13.11
+    version: 0.13.12
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
@@ -214,7 +214,7 @@ repositories:
   ros2/launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
-    version: 0.11.3
+    version: 0.11.4
   ros2/libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
@@ -258,7 +258,7 @@ repositories:
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 1.0.6
+    version: 1.0.7
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
@@ -302,7 +302,7 @@ repositories:
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: 0.9.9
+    version: 0.9.10
   ros2/ros2cli_common_extensions:
     type: git
     url: https://github.com/ros2/ros2cli_common_extensions.git
@@ -354,7 +354,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 8.2.3
+    version: 8.2.4
   ros2/spdlog_vendor:
     type: git
     url: https://github.com/ros2/spdlog_vendor.git

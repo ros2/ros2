@@ -18,7 +18,7 @@ repositories:
   ament_lint:
     type: git
     url: https://github.com/ament/ament_lint.git
-    version: spaceros
+    version: mjeronimo/ament-cobra
   ament_package:
     type: git
     url: https://github.com/ament/ament_package.git

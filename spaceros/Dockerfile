@@ -130,6 +130,12 @@ RUN mkdir ikos/build && cd ikos/build && cmake .. -DLLVM_CONFIG_EXECUTABLE=/usr/
 ENV PATH "$PATH:/usr/local/src/ikos/install/bin"
 ENV IKOS_SCAN_NOTIFIER_FILES "yes"
 
+# Get the Cobra source and build it
+RUN git clone https://github.com/nimble-code/Cobra.git
+RUN cd Cobra/src && make install_linux
+RUN /usr/local/src/Cobra/bin_linux/cobra -configure /usr/local/src/Cobra/rules
+ENV PATH "$PATH:/usr/local/src/Cobra/bin_linux"
+
 # Set up the entrypoint
 COPY ./ros_entrypoint.sh /
 ENTRYPOINT ["/ros_entrypoint.sh"]

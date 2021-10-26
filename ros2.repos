@@ -7,13 +7,13 @@ repositories:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
     version: master
+  ament_cobra:
+    type: git
+    url: https://github.com/ament/ament_cobra.git
   ament_ikos:
     type: git
     url: https://github.com/ament/ament_ikos.git
     version: main
-  ament_cobra:
-    type: git
-    url: https://github.com/ament/ament_cobra.git
   ament_index:
     type: git
     url: https://github.com/ament/ament_index.git
@@ -30,6 +30,10 @@ repositories:
     type: git
     url: https://github.com/ros/class_loader.git
     version: ros2
+  cobra_vendor:
+    type: git
+    url: https://github.com/nuclearsandwich/cobra_vendor
+    version: latest
   common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git

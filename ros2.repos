@@ -11,6 +11,9 @@ repositories:
     type: git
     url: https://github.com/ament/ament_ikos.git
     version: main
+  ament_cobra:
+    type: git
+    url: https://github.com/ament/ament_cobra.git
   ament_index:
     type: git
     url: https://github.com/ament/ament_index.git

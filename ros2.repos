@@ -30,10 +30,6 @@ repositories:
     type: git
     url: https://github.com/ros/class_loader.git
     version: ros2
-  cobra_vendor:
-    type: git
-    url: https://github.com/nuclearsandwich/cobra_vendor
-    version: latest
   common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git

@@ -18,13 +18,13 @@
 #
 #   VCS_REF     - The git revision of the Space ROS source code (no default value).
 #   VERSION     - The version of Space ROS (default: "preview")
-#   WORKSPACE   - The location for the Space ROS source code in the container (default: /usr/local/src/spaceros_ws)
+#   WORKSPACE   - The location for the Space ROS source code in the container (default: /root/src/spaceros_ws)
 
 FROM nvidia/cudagl:11.4.1-devel-ubuntu20.04
 
 ARG VCS_REF
 ARG VERSION="preview"
-ARG WORKSPACE=/usr/local/src/spaceros_ws
+ARG WORKSPACE=/root/src/spaceros_ws
 
 # LABEL the image
 LABEL org.label-schema.schema-version="1.0"
@@ -124,17 +124,11 @@ RUN apt-get install -y \
   zlib1g-dev
 
 # Get the IKOS source and build it
-WORKDIR /usr/local/src
+WORKDIR /root/src
 RUN git clone https://github.com/nuclearsandwich/ikos && cd ikos && git checkout nuclearsandwich/log-executables-to-file
 RUN mkdir ikos/build && cd ikos/build && cmake .. -DLLVM_CONFIG_EXECUTABLE=/usr/bin/llvm-config-9 --no-warn-unused-cli && make && make install
-ENV PATH "$PATH:/usr/local/src/ikos/install/bin"
+ENV PATH "$PATH:/root/src/ikos/install/bin"
 ENV IKOS_SCAN_NOTIFIER_FILES "yes"
-
-# Get the Cobra source and build it
-RUN git clone https://github.com/nimble-code/Cobra.git
-RUN cd Cobra/src && make install_linux
-RUN /usr/local/src/Cobra/bin_linux/cobra -configure /usr/local/src/Cobra/rules
-ENV PATH "$PATH:/usr/local/src/Cobra/bin_linux"
 
 # Set up the entrypoint
 COPY ./ros_entrypoint.sh /

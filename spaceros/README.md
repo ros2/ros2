@@ -48,13 +48,13 @@ $ docker run -it 629b13cf7b74
 Upon startup, the container automatically runs the ros_entrypoint.sh script, which sources the Space ROS environment file (setup.bash). You'll now be running inside the container and should see a prompt similar to this:
 
 ```
-root@d10d85c68f0e:/usr/local/src/spaceros_ws# 
+root@d10d85c68f0e:/root/src/spaceros_ws# 
 ```
 
 At this point, you can run the 'ros2' command line utility to make sure everything is working OK:
 
 ```
-root@d10d85c68f0e:/usr/local/src/spaceros_ws# ros2
+root@d10d85c68f0e:/root/src/spaceros_ws# ros2
 usage: ros2 [-h] [--use-python-default-buffering] Call `ros2 <command> -h` for more detailed usage. ...
 
 ros2 is an extensible command-line tool for ROS 2.
@@ -90,7 +90,7 @@ Commands:
 The Space ROS unit tests are not built as part of the Docker image build. To run the unit tests in the container, execute the following command from the top of the Space ROS workspace:
 
 ```
-root@d10d85c68f0e:/usr/local/src/spaceros_ws# colcon test
+root@d10d85c68f0e:/root/src/spaceros_ws# colcon test
 ```
 
 The tests include running the static analysis tools clang_tidy and cppcheck (which has the MISRA 2012 add-on enabled).
@@ -98,7 +98,7 @@ The tests include running the static analysis tools clang_tidy and cppcheck (whi
 You can use colcon's --packages-select option to run a subset of packages. For example, to run tests only for the rcpputils package and display the output directly to the console (as well as saving it to a log file), you can run:
 
 ```
-root@d10d85c68f0e:/usr/local/src/spaceros_ws# colcon test --event-handlers console_direct+ --packages-select rcpputils
+root@d10d85c68f0e:/root/src/spaceros_ws# colcon test --event-handlers console_direct+ --packages-select rcpputils
 ```
 
 ## Viewing Test Output
@@ -117,34 +117,34 @@ root@d10d85c68f0e:/usr/local/src/spaceros_ws# colcon test --event-handlers conso
   time="1.248"
 >
   <testcase
-    name="/usr/local/src/spaceros_ws/src/rmw/rmw/src/allocators.c"
+    name="/root/src/spaceros_ws/src/rmw/rmw/src/allocators.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/usr/local/src/spaceros_ws/src/rmw/rmw/src/convert_rcutils_ret_to_rmw_ret.c"
+    name="/root/src/spaceros_ws/src/rmw/rmw/src/convert_rcutils_ret_to_rmw_ret.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/usr/local/src/spaceros_ws/src/rmw/rmw/src/event.c"
+    name="/root/src/spaceros_ws/src/rmw/rmw/src/event.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/usr/local/src/spaceros_ws/src/rmw/rmw/src/init.c"
+    name="/root/src/spaceros_ws/src/rmw/rmw/src/init.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/usr/local/src/spaceros_ws/src/rmw/rmw/src/init_options.c"
+    name="/root/src/spaceros_ws/src/rmw/rmw/src/init_options.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/usr/local/src/spaceros_ws/src/rmw/rmw/src/message_sequence.c"
+    name="/root/src/spaceros_ws/src/rmw/rmw/src/message_sequence.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/usr/local/src/spaceros_ws/src/rmw/rmw/src/names_and_types.c"
+    name="/root/src/spaceros_ws/src/rmw/rmw/src/names_and_types.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/usr/local/src/spaceros_ws/src/rmw/rmw/src/network_flow_endpoint.c"
+    name="/root/src/spaceros_ws/src/rmw/rmw/src/network_flow_endpoint.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/usr/local/src/spaceros_ws/src/rmw/rmw/src/network_flow_endpoint_array.c"
+    name="/root/src/spaceros_ws/src/rmw/rmw/src/network_flow_endpoint_array.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/usr/local/src/spaceros_ws/src/rmw/rmw/src/publisher_options.c"
+    name="/root/src/spaceros_ws/src/rmw/rmw/src/publisher_options.c"
     classname="rmw.clang_tidy"/>
 
 <etc>    
@@ -181,17 +181,17 @@ In place of the container ID, you can also use the automatically-generated conta
 
 ## Running an IKOS Scan
 
-In the docker container, the IKOS executables are provided on the PATH at /usr/local/src/ikos/install/bin.
+In the docker container, the IKOS executables are provided on the PATH at /root/src/ikos/install/bin.
 To run an IKOS scan on all of the Space ROS source (which will take a very long time), run the following command at the root of the Space ROS workspace:
 
 ```
-root@d10d85c68f0e:/usr/local/src/spaceros_ws# CC="ikos-scan-cc" CXX="ikos-scan-c++" LD="ikos-scan-cc" colcon build --build-base build_ikos --install-base install_ikos --cmake-args -DSECURITY=ON -DINSTALL_EXAMPLES=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
+root@d10d85c68f0e:/root/src/spaceros_ws# CC="ikos-scan-cc" CXX="ikos-scan-c++" LD="ikos-scan-cc" colcon build --build-base build_ikos --install-base install_ikos --cmake-args -DSECURITY=ON -DINSTALL_EXAMPLES=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
 ```
 
 To run an IKOS scan on a specific package, such as rcpputils in this case, use the *--packages-select* option, as follows:
 
 ```
-root@d10d85c68f0e:/usr/local/src/spaceros_ws# CC="ikos-scan-cc" CXX="ikos-scan-c++" LD="ikos-scan-cc" colcon build --build-base build_ikos --install-base install_ikos --packages-select rcpputils --cmake-args -DSECURITY=ON -DINSTALL_EXAMPLES=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
+root@d10d85c68f0e:/root/src/spaceros_ws# CC="ikos-scan-cc" CXX="ikos-scan-c++" LD="ikos-scan-cc" colcon build --build-base build_ikos --install-base install_ikos --packages-select rcpputils --cmake-args -DSECURITY=ON -DINSTALL_EXAMPLES=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
 ```
 
 The build output is put in the **build_ikos** subdirectory, per the *--build-base* option.
@@ -203,5 +203,5 @@ The utility takes one argument which is the directory to scan recursively for th
 For example, to generate results for all of the IKOS analysis files in the build_ikos subdirectory, execute the following command:
 
 ```
-root@d10d85c68f0e:/usr/local/src/spaceros_ws# ament_ikos build_ikos
+root@d10d85c68f0e:/root/src/spaceros_ws# ament_ikos build_ikos
 ```

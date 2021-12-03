@@ -125,7 +125,8 @@ RUN apt-get install -y \
 
 # Get the IKOS source and build it
 WORKDIR /root/src
-RUN git clone https://github.com/nuclearsandwich/ikos && cd ikos && git checkout nuclearsandwich/log-executables-to-file
+RUN git clone https://github.com/NASA-SW-VnV/ikos.git && cd ikos && git checkout 8b0bab34846b72777cca2a60d473282971806cfc
+
 RUN mkdir ikos/build && cd ikos/build && cmake .. -DLLVM_CONFIG_EXECUTABLE=/usr/bin/llvm-config-9 --no-warn-unused-cli && make && make install
 ENV PATH "$PATH:/root/src/ikos/install/bin"
 ENV IKOS_SCAN_NOTIFIER_FILES "yes"

@@ -69,7 +69,10 @@ repositories:
   launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: master
+    # Avoid an issue that breaks the MoveIt2 build: https://github.com/ros2/launch/issues/588
+    # TODO: Revert to 'master' when this issue is fixed
+    #version: master
+    version: edcca09e4f80278d1a76e9c30eefbeeece5b33fd
   launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git

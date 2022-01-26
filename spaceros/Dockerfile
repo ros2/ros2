@@ -32,8 +32,8 @@ LABEL org.label-schema.name="Space ROS"
 LABEL org.label-schema.description="Preview version of the Space ROS platform"
 LABEL org.label-schema.vendor="Open Robotics"
 LABEL org.label-schema.version=${VERSION}
-LABEL org.label-schema.url="https://openrobotics.org"
-LABEL org.label-schema.vcs-url="https://github.com/ros2/ros2/tree/spaceros"
+LABEL org.label-schema.url="https://github.com/space-ros"
+LABEL org.label-schema.vcs-url="https://github.com/space-ros/docker-images"
 LABEL org.label-schema.vcs-ref=${VCS_REF}
 
 # Disable prompting during package installation
@@ -92,7 +92,7 @@ RUN python3 -m pip install -U \
 # Get the Space ROS source code
 RUN mkdir -p ${WORKSPACE}/src
 WORKDIR ${WORKSPACE}
-RUN wget https://raw.githubusercontent.com/ros2/ros2/spaceros/ros2.repos
+RUN wget https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos
 RUN vcs import src < ros2.repos
 
 # Install system dependencies
@@ -126,12 +126,16 @@ RUN apt-get install -y \
 # Get the IKOS source and build it
 WORKDIR /root/src
 RUN git clone https://github.com/NASA-SW-VnV/ikos.git && cd ikos && git checkout 8b0bab34846b72777cca2a60d473282971806cfc
-
+ENV PYTHONPATH "$PYTHONPATH:/root/src/ikos/install/lib/python3.8/site-packages"
 RUN mkdir ikos/build && cd ikos/build && cmake .. -DLLVM_CONFIG_EXECUTABLE=/usr/bin/llvm-config-9 --no-warn-unused-cli && make && make install
 ENV PATH "$PATH:/root/src/ikos/install/bin"
 ENV IKOS_SCAN_NOTIFIER_FILES "yes"
 
+# The above installation doesn't properly install the IKOS egg file, so do it manually
+RUN cd /root/src/ikos/install/lib/python3.8/site-packages && python3 /usr/lib/python3/dist-packages/easy_install.py ./ikos-3.0-py3.8.egg
+
 # Set up the entrypoint
+WORKDIR ${WORKSPACE}
 COPY ./ros_entrypoint.sh /
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]

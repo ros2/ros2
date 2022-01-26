@@ -172,7 +172,7 @@ d10d85c68f0e   openrobotics/spaceros   "/ros_entrypoint.sh …"   28 minutes ago
 The container ID in this case, is *d10d85c68f0e*. So, run the following command in the host terminal:
 
 ```
-docker exec -it d10d85c68f0e /bin/bash /ros_entrypoint.sh
+docker exec -it d10d85c68f0e /bin/bash --init-file "install/setup.bash"
 ```
 
 You will then be at a prompt in the same running container.

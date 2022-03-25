@@ -41,7 +41,7 @@ repositories:
   cyclonedds:
     type: git
     url: https://github.com/eclipse-cyclonedds/cyclonedds.git
-    version: releases/0.8.x
+    version: releases/0.9.x
   eigen3_cmake_module:
     type: git
     url: https://github.com/ros2/eigen3_cmake_module.git
@@ -61,7 +61,7 @@ repositories:
   iceoryx:
     type: git
     url: https://github.com/eclipse-iceoryx/iceoryx.git
-    version: release_1.0
+    version: release_2.0
   kdl_parser:
     type: git
     url: https://github.com/ros/kdl_parser.git

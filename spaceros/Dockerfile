@@ -98,7 +98,7 @@ RUN vcs import src < ros2.repos
 
 # Install system dependencies
 RUN rosdep init && rosdep update
-RUN rosdep install --from-paths src --ignore-src --rosdistro rolling -y --skip-keys "console_bridge fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_c ikos"
+RUN rosdep install --from-paths src --ignore-src --rosdistro rolling -y --skip-keys "console_bridge fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos"
 
 # Build the code in the workspace
 RUN colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
@@ -122,7 +122,6 @@ RUN apt-get install -y \
   llvm-9-tools \
   python3 \
   python3-pygments \
-  zip \
   zlib1g-dev
 
 # Get the IKOS source and build it
@@ -133,8 +132,8 @@ RUN mkdir ikos/build && cd ikos/build && cmake .. -DLLVM_CONFIG_EXECUTABLE=/usr/
 ENV PATH "$PATH:/root/src/ikos/install/bin"
 ENV IKOS_SCAN_NOTIFIER_FILES "yes"
 
-# The above installation doesn't properly install the IKOS egg file, so do it manually https://github.com/NASA-SW-VnV/ikos/issues/185
-RUN cd /root/src/ikos/install/lib/python3.8/site-packages && zip ikos-3.0-py3.8.egg ikos-3.0-py3.8.egg-info/* && python3 /usr/lib/python3/dist-packages/easy_install.py ./ikos-3.0-py3.8.egg
+# The above installation doesn't install the IKOS egg file, so do it manually (https://github.com/NASA-SW-VnV/ikos/issues/185)
+RUN cd /root/src/ikos/install/lib/python3.8/site-packages && python3 /usr/lib/python3/dist-packages/easy_install.py ./ikos-3.0-py3.8.egg
 
 # Set up the entrypoint
 WORKDIR ${WORKSPACE}

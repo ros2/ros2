@@ -93,10 +93,10 @@ repositories:
     type: git
     url: https://github.com/ros2/mimick_vendor.git
     version: master
-  orocos_kinematics_dynamics:
+  orocos_kdl_vendor:
     type: git
-    url: https://github.com/ros2/orocos_kinematics_dynamics.git
-    version: ros2
+    url: https://github.com/ros2/orocos_kdl_vendor.git
+    version: main
   osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git

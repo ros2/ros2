@@ -48,7 +48,7 @@ $ docker run -it 629b13cf7b74
 Upon startup, the container automatically runs the ros_entrypoint.sh script, which sources the Space ROS environment file (setup.bash). You'll now be running inside the container and should see a prompt similar to this:
 
 ```
-root@d10d85c68f0e:/root/src/spaceros_ws# 
+root@d10d85c68f0e:/root/src/spaceros_ws#
 ```
 
 At this point, you can run the 'ros2' command line utility to make sure everything is working OK:
@@ -147,7 +147,7 @@ root@d10d85c68f0e:/root/src/spaceros_ws# colcon test --event-handlers console_di
     name="/root/src/spaceros_ws/src/rmw/rmw/src/publisher_options.c"
     classname="rmw.clang_tidy"/>
 
-<etc>    
+<etc>
 ...
 
 ```
@@ -181,12 +181,14 @@ In place of the container ID, you can also use the automatically-generated conta
 
 ## Running an IKOS Scan
 
-In the docker container, the IKOS executables are provided on the PATH at /root/src/ikos/install/bin.
-To run an IKOS scan on all of the Space ROS source (which will take a very long time), run the following command at the root of the Space ROS workspace:
+IKOS uses special compiler and linker settings in order to instrument and analyze binaries.
+To run an IKOS scan on all of the Space ROS test binaries (which will take a very long time), run the following command at the root of the Space ROS workspace:
 
 ```
 root@d10d85c68f0e:/root/src/spaceros_ws# CC="ikos-scan-cc" CXX="ikos-scan-c++" LD="ikos-scan-cc" colcon build --build-base build_ikos --install-base install_ikos --cmake-args -DSECURITY=ON -DINSTALL_EXAMPLES=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
 ```
+
+The previous command generates the instrumented binaries and the associated output in a separate directory from the normal Space ROS build; the command uses *--build-base* option to specify **build_ikos** as the build output directory instead of the default **build** directory.
 
 To run an IKOS scan on a specific package, such as rcpputils in this case, use the *--packages-select* option, as follows:
 
@@ -194,14 +196,25 @@ To run an IKOS scan on a specific package, such as rcpputils in this case, use t
 root@d10d85c68f0e:/root/src/spaceros_ws# CC="ikos-scan-cc" CXX="ikos-scan-c++" LD="ikos-scan-cc" colcon build --build-base build_ikos --install-base install_ikos --packages-select rcpputils --cmake-args -DSECURITY=ON -DINSTALL_EXAMPLES=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
 ```
 
-The build output is put in the **build_ikos** subdirectory, per the *--build-base* option.
-
 ## Generating IKOS Results
 
-To generate results for IKOS you can use the **ament_ikos** utility, which performs an IKOS analysis on the files previously compiled in the previous step. 
-The utility takes one argument which is the directory to scan recursively for the generated IKOS marker files. 
-For example, to generate results for all of the IKOS analysis files in the build_ikos subdirectory, execute the following command:
+To generate JUnit XML files for all of the binaries resulting from the build command in the previous step, you can use **colcon test**, as follows:
 
 ```
-root@d10d85c68f0e:/root/src/spaceros_ws# ament_ikos build_ikos
+root@d10d85c68f0e:/root/src/spaceros_ws# colcon test --build-base build_ikos --install-base install_ikos
 ```
+
+To generate a JUnit XML file for a specific package only, you can add the *--packages-select* option, as follows:
+
+```
+root@d10d85c68f0e:/root/src/spaceros_ws# colcon test --build-base build_ikos --install-base install_ikos --packages-select rcpputils
+```
+
+The 'colcon test' command runs various tests, including IKOS report generation, which reads the IKOS database generated in the previous analysis step and generates a JUnit XML report file. After running 'colcon test', you can view the JUnit XML files. For example, to view the JUnit XML file for IKOS scan of the rcpputils binaries you can use the following command:
+
+```
+root@d10d85c68f0e:/root/src/spaceros_ws# more build_ikos/rcpputils/test_results/rcpputils/ikos.xunit.xml
+
+```
+
+

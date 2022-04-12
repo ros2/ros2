@@ -25,6 +25,7 @@ FROM nvidia/cudagl:11.4.1-devel-ubuntu20.04
 ARG VCS_REF
 ARG VERSION="preview"
 ARG WORKSPACE=/root/src/spaceros_ws
+ARG REPOS_FILE_URL="https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos"
 
 # LABEL the image
 LABEL org.label-schema.schema-version="1.0"
@@ -93,7 +94,7 @@ RUN python3 -m pip install -U \
 # Get the Space ROS source code
 RUN mkdir -p ${WORKSPACE}/src
 WORKDIR ${WORKSPACE}
-RUN wget https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos
+ADD ${REPOS_FILE_URL} ros2.repos
 RUN vcs import src < ros2.repos
 
 # Install system dependencies

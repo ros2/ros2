@@ -323,10 +323,6 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
     version: master
-  ros2/ros1_bridge:
-    type: git
-    url: https://github.com/ros2/ros1_bridge.git
-    version: master
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git

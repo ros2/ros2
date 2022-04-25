@@ -50,11 +50,11 @@ repositories:
   ignition/ignition_cmake2_vendor:
     type: git
     url: https://github.com/ignition-release/ignition_cmake2_vendor.git
-    version: main
+    version: humble
   ignition/ignition_math6_vendor:
     type: git
     url: https://github.com/ignition-release/ignition_math6_vendor.git
-    version: main
+    version: humble
   osrf/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git

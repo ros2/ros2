@@ -21,6 +21,10 @@
 #   WORKSPACE   - The location for the Space ROS source code in the container (default: /root/src/spaceros_ws)
 
 FROM nvidia/cudagl:11.4.1-devel-ubuntu20.04
+# https://github.com/NVIDIA/cuda-repo-management/issues/1
+# Use new GPG keys for nvidia apt repositories that have not yet propagated to base images.
+RUN apt-key del 7fa2af80
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/3bf863cc.pub
 
 ARG VCS_REF
 ARG VERSION="preview"

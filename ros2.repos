@@ -151,10 +151,6 @@ repositories:
     type: git
     url: https://github.com/ros-visualization/rqt_srv.git
     version: crystal-devel
-  ros-visualization/rqt_top:
-    type: git
-    url: https://github.com/ros-visualization/rqt_top.git
-    version: crystal-devel
   ros-visualization/rqt_topic:
     type: git
     url: https://github.com/ros-visualization/rqt_topic.git

@@ -1,0 +1,1 @@
+rosinstall_generator # for update-repos.sh

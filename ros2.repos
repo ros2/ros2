@@ -34,7 +34,7 @@ repositories:
   eProsima/Fast-DDS:
     type: git
     url: https://github.com/eProsima/Fast-DDS.git
-    version: e6e7eac5a642f606fdaa40a0a2a16617ae9384da
+    version: 2.6.x
   eProsima/foonathan_memory_vendor:
     type: git
     url: https://github.com/eProsima/foonathan_memory_vendor.git
@@ -42,11 +42,11 @@ repositories:
   eclipse-cyclonedds/cyclonedds:
     type: git
     url: https://github.com/eclipse-cyclonedds/cyclonedds.git
-    version: 0e2cd3e303be2171dd0e4fc685cc5031f70b0f52
+    version: releases/0.9.x
   eclipse-iceoryx/iceoryx:
     type: git
     url: https://github.com/eclipse-iceoryx/iceoryx.git
-    version: v2.0.2
+    version: release_2.0
   ignition/ignition_cmake2_vendor:
     type: git
     url: https://github.com/ignition-release/ignition_cmake2_vendor.git
@@ -62,7 +62,7 @@ repositories:
   osrf/osrf_testing_tools_cpp:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
-    version: 869da204dd829308380df5a33e432670e474e54a
+    version: 1.5.1
   ros-perception/image_common:
     type: git
     url: https://github.com/ros-perception/image_common.git
@@ -78,15 +78,15 @@ repositories:
   ros-tooling/keyboard_handler:
     type: git
     url: https://github.com/ros-tooling/keyboard_handler.git
-    version: 53bccc93ef25d1c54aaa4fa262ef097afee282aa
+    version: 0.0.4
   ros-tooling/libstatistics_collector:
     type: git
     url: https://github.com/ros-tooling/libstatistics_collector.git
-    version: ed40c1825fb17c244ddf69fb6c7927060dff812b
+    version: 1.2.0
   ros-tracing/ros2_tracing:
     type: git
     url: https://gitlab.com/ros-tracing/ros2_tracing.git
-    version: 590a512db73d53398d8e4bcb1faa827484617eb2
+    version: 4.1.0
   ros-visualization/interactive_markers:
     type: git
     url: https://github.com/ros-visualization/interactive_markers.git
@@ -114,7 +114,7 @@ repositories:
   ros-visualization/rqt_console:
     type: git
     url: https://github.com/ros-visualization/rqt_console.git
-    version: d293cc3423c23547dfc430dde293cc15304da88b
+    version: 2.0.2
   ros-visualization/rqt_graph:
     type: git
     url: https://github.com/ros-visualization/rqt_graph.git
@@ -254,7 +254,7 @@ repositories:
   ros2/performance_test_fixture:
     type: git
     url: https://github.com/ros2/performance_test_fixture.git
-    version: d736c276d292a78f9750aba39108d5222bf9629e
+    version: 0.0.8
   ros2/pybind11_vendor:
     type: git
     url: https://github.com/ros2/pybind11_vendor.git
@@ -334,7 +334,7 @@ repositories:
   ros2/rosbag2:
     type: git
     url: https://github.com/ros2/rosbag2.git
-    version: b32981ca35e468d927d313c8a06f6160dadb55b8
+    version: 0.15.2
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git

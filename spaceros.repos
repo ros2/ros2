@@ -12,6 +12,7 @@ repositories:
   ament_lint:
     type: git
     url: https://github.com/ament/ament_lint.git
+    version: spaceros
   launch:
     type: git
     url: https://github.com/ros2/launch.git

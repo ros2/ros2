@@ -1,3 +1,4 @@
+---
 repositories:
   ament_cmake:
     type: git
@@ -10,6 +11,7 @@ repositories:
   ament_cobra:
     type: git
     url: https://github.com/ament/ament_cobra.git
+    version: main
   ament_ikos:
     type: git
     url: https://github.com/ament/ament_ikos.git
@@ -69,9 +71,6 @@ repositories:
   launch:
     type: git
     url: https://github.com/ros2/launch.git
-    # Avoid an issue that breaks the MoveIt2 build: https://github.com/ros2/launch/issues/588
-    # TODO: Revert to 'master' when this issue is fixed
-    #version: master
     version: edcca09e4f80278d1a76e9c30eefbeeece5b33fd
   launch_ros:
     type: git
@@ -240,7 +239,7 @@ repositories:
   urdfdom:
     type: git
     url: https://github.com/ros/urdfdom.git
-    version: ros2
+    version: master
   urdfdom_headers:
     type: git
     url: https://github.com/ros/urdfdom_headers.git

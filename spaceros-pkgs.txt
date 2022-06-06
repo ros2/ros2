@@ -51,6 +51,7 @@ ros2run
 ros2service
 ros2topic
 ros_environment
+ros_testing
 rosgraph_msgs
 rosidl_cli
 sensor_msgs

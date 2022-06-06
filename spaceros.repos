@@ -1,0 +1,16 @@
+# This repos file should contain _overrides_ for ros2.repos only.
+# It is used by a repository merge tool and direct use is not recommended.
+repositories:
+  ament_cobra:
+    type: git
+    url: https://github.com/ament/ament_cobra.git
+    version: main
+  ament_ikos:
+    type: git
+    url: https://github.com/ament/ament_ikos.git
+    version: main
+  ament_lint:
+    type: git
+    url: https://github.com/ament/ament_lint.git
+    version: spaceros
+

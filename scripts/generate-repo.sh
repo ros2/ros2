@@ -1,5 +1,15 @@
 #!/bin/sh
 
+usage() {
+  echo "$0 [OUTPUT_FILENAME]"
+
+  echo "	Generate a spaceros repos file containing packages listed in spaceros-pkgs.txt"
+  echo "	and their dependencies excluding packages in excluded-pkgs.txt"
+  echo "	Set the ROSDISTRO environment variable to change the target ROS distribution."
+  echo "	By default it is 'rolling'."
+  exit 0
+}
+
 OUTFILE=${1:-ros2.repos}
 ROSDISTRO=${ROSDISTRO:-rolling}
 

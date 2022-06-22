@@ -4,7 +4,7 @@ repositories:
   ament_cobra:
     type: git
     url: https://github.com/ament/ament_cobra.git
-    version: main
+    version: master
   ament_ikos:
     type: git
     url: https://github.com/ament/ament_ikos.git

@@ -1,0 +1,13 @@
+name: Mirror rolling to master
+
+on:
+  push:
+    branches: [ rolling ]
+
+jobs:
+  mirror-to-master:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: zofrex/mirror-branch@v1
+      with:
+        target-branch: master

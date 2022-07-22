@@ -55,10 +55,6 @@ repositories:
     type: git
     url: https://github.com/ros-planning/navigation_msgs.git
     version: eloquent
-  ros-tracing/ros2_tracing:
-    type: git
-    url: https://gitlab.com/ros-tracing/ros2_tracing.git
-    version: 0.2.12
   ros-visualization/interactive_markers:
     type: git
     url: https://github.com/ros-visualization/interactive_markers.git
@@ -283,6 +279,10 @@ repositories:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
     version: eloquent
+  ros2/ros2_tracing:
+    type: git
+    url: https://github.com/ros2/ros2_tracing.git
+    version: 0.2.12
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git

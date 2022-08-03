@@ -118,7 +118,7 @@ repositories:
   ros-visualization/rqt_publisher:
     type: git
     url: https://github.com/ros-visualization/rqt_publisher.git
-    version: foxy-devel
+    version: galactic
   ros-visualization/rqt_py_console:
     type: git
     url: https://github.com/ros-visualization/rqt_py_console.git

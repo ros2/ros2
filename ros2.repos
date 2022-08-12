@@ -83,10 +83,6 @@ repositories:
     type: git
     url: https://github.com/ros-tooling/libstatistics_collector.git
     version: humble
-  ros-tracing/ros2_tracing:
-    type: git
-    url: https://gitlab.com/ros-tracing/ros2_tracing.git
-    version: humble
   ros-visualization/interactive_markers:
     type: git
     url: https://github.com/ros-visualization/interactive_markers.git
@@ -318,6 +314,10 @@ repositories:
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
+    version: humble
+  ros2/ros2_tracing:
+    type: git
+    url: https://github.com/ros2/ros2_tracing.git
     version: humble
   ros2/ros2cli:
     type: git

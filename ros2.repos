@@ -71,10 +71,6 @@ repositories:
     type: git
     url: https://github.com/ros-tooling/libstatistics_collector.git
     version: galactic
-  ros-tracing/ros2_tracing:
-    type: git
-    url: https://gitlab.com/ros-tracing/ros2_tracing.git
-    version: galactic
   ros-visualization/interactive_markers:
     type: git
     url: https://github.com/ros-visualization/interactive_markers.git
@@ -314,6 +310,10 @@ repositories:
   ros2/ros1_bridge:
     type: git
     url: https://github.com/ros2/ros1_bridge.git
+    version: galactic
+  ros2/ros2_tracing:
+    type: git
+    url: https://github.com/ros2/ros2_tracing.git
     version: galactic
   ros2/ros2cli:
     type: git

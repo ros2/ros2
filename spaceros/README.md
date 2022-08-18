@@ -8,7 +8,7 @@ To include drivers for NVIDIA GPUs, the Space ROS docker image is based on the N
 To build the docker image, run:
 
 ```
-$ ./build-image.sh
+$ ./build.sh
 ```
 
 The build process will take about 20 or 30 minutes, depending on the host computer.

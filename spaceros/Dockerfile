@@ -145,6 +145,6 @@ RUN cd /root/src/ikos/install/lib/python3.8/site-packages && python3 /usr/lib/py
 
 # Set up the entrypoint
 WORKDIR ${WORKSPACE}
-COPY ./ros_entrypoint.sh /
-ENTRYPOINT ["/ros_entrypoint.sh"]
+COPY ./entrypoint.sh /
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["bash"]

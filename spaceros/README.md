@@ -1,10 +1,9 @@
 # Space ROS Docker Image
 
-The Dockerfile in this directory builds Space ROS from source code.
+The Dockerfile in this directory builds Space ROS from source code. 
+To include drivers for NVIDIA GPUs, the Space ROS docker image is based on the NVIDIA CudaGL development image, version 11.4.1, which is, in turn, based on Ubuntu 20.04.
 
 ## Building the Docker Image
-
-To include drivers for NVIDIA GPUs, the Space ROS docker image is based on the NVIDIA CudaGL development image, version 11.4.1, which is, in turn, based on Ubuntu 20.04.
 
 To build the docker image, run:
 
@@ -33,16 +32,10 @@ nvidia/cudagl           11.4.1-devel-ubuntu20.04   336416dfcbba   1 day ago     
 
 The new image is named **openrobotics/spaceros:latest**.
 
-To run the resulting image in a container, run:
+There is a run.sh script provided for convenience that will run the spaceros image in a container.
 
 ```
-$ docker run -it openrobotics/spaceros
-```
-
-You can also run using the image ID. In this case, the image ID is *629b13cf7b74* (each build will result in a different image ID), so the following command will run the same image:
-
-```
-$ docker run -it 629b13cf7b74
+$ ./run.sh
 ```
 
 Upon startup, the container automatically runs the ros_entrypoint.sh script, which sources the Space ROS environment file (setup.bash). You'll now be running inside the container and should see a prompt similar to this:

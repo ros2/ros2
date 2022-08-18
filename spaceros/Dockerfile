@@ -18,20 +18,14 @@
 #
 #   VCS_REF     - The git revision of the Space ROS source code (no default value).
 #   VERSION     - The version of Space ROS (default: "preview")
-#   WORKSPACE   - The location for the Space ROS source code in the container (default: /root/src/spaceros_ws)
 
 FROM nvidia/cudagl:11.4.1-devel-ubuntu20.04
-# https://github.com/NVIDIA/cuda-repo-management/issues/1
-# Use new GPG keys for nvidia apt repositories that have not yet propagated to base images.
-RUN apt-key del 7fa2af80
-RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/3bf863cc.pub
 
+# Define arguments used in the metadata definition
 ARG VCS_REF
 ARG VERSION="preview"
-ARG WORKSPACE=/root/src/spaceros_ws
-ARG REPOS_FILE_URL="https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos"
 
-# LABEL the image
+# Specify the docker image metadata
 LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.name="Space ROS"
 LABEL org.label-schema.description="Preview version of the Space ROS platform"
@@ -43,6 +37,15 @@ LABEL org.label-schema.vcs-ref=${VCS_REF}
 
 # Disable prompting during package installation
 ARG DEBIAN_FRONTEND=noninteractive
+
+# Define a few key variables
+ARG WORKSPACE=/root/src/spaceros_ws
+ARG REPOS_FILE_URL="https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos"
+
+# https://github.com/NVIDIA/cuda-repo-management/issues/1
+# Use new GPG keys for nvidia apt repositories that have not yet propagated to base images.
+RUN apt-key del 7fa2af80
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/3bf863cc.pub
 
 # The following commands are based on the source install for ROS 2 Rolling Ridley.
 # See: https://docs.ros.org/en/ros2_documentation/rolling/Installation/Ubuntu-Development-Setup.html

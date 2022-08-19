@@ -39,7 +39,7 @@ LABEL org.label-schema.vcs-ref=${VCS_REF}
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Define a few key variables
-ARG WORKSPACE=/root/src/spaceros_ws
+ARG WORKSPACE=/root/src/spaceros
 ARG REPOS_FILE_URL="https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos"
 
 # https://github.com/NVIDIA/cuda-repo-management/issues/1

@@ -71,7 +71,7 @@ repositories:
   launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: edcca09e4f80278d1a76e9c30eefbeeece5b33fd
+    version: master
   launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git

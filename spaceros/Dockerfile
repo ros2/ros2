@@ -38,18 +38,17 @@ LABEL org.label-schema.vcs-ref=${VCS_REF}
 # Disable prompting during package installation
 ARG DEBIAN_FRONTEND=noninteractive
 
-# Define a few key variables
-ARG WORKSPACE=/root/src/spaceros
+# Define the username and key locations
+ENV USERNAME spaceros-user
+ENV SRC_DIR=/home/${USERNAME}/src
+ENV SPACEROS_DIR=${SRC_DIR}/spaceros
+ARG IKOS_DIR=${SRC_DIR}/ikos
 ARG REPOS_FILE_URL="https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos"
 
 # https://github.com/NVIDIA/cuda-repo-management/issues/1
 # Use new GPG keys for nvidia apt repositories that have not yet propagated to base images.
 RUN apt-key del 7fa2af80
 RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/3bf863cc.pub
-
-# The following commands are based on the source install for ROS 2 Rolling Ridley.
-# See: https://docs.ros.org/en/ros2_documentation/rolling/Installation/Ubuntu-Development-Setup.html
-# The main variation is getting Space ROS sources instead of the Rolling sources.
 
 # Update the Ubuntu software repository
 RUN apt-get update
@@ -67,7 +66,7 @@ RUN apt-get update && apt-get install -y curl gnupg lsb-release
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
-# Install required software development tools and ROS tools (and vim included for convenience)
+# Install required software development tools and ROS tools (and vim, included for convenience)
 RUN apt-get update && apt-get install -y \
   bison \
   build-essential \
@@ -98,21 +97,32 @@ RUN python3 -m pip install -U \
   pytest \
   setuptools
 
-# Get the Space ROS source code
-RUN mkdir -p ${WORKSPACE}/src
-WORKDIR ${WORKSPACE}
-ADD ${REPOS_FILE_URL} ros2.repos
+# Create a spaceros user
+RUN useradd -m $USERNAME && \
+  echo "$USERNAME:$USERNAME" | chpasswd && \
+  usermod --shell /bin/bash $USERNAME && \
+  usermod -aG sudo $USERNAME && \
+  mkdir -p /etc/sudoers.d && \
+  echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME && \
+  chmod 0440 /etc/sudoers.d/$USERNAME
+USER ${USERNAME}
+
+## Get the Space ROS source code
+RUN mkdir -p ${SPACEROS_DIR}/src
+WORKDIR ${SPACEROS_DIR}
+ADD --chown=${USERNAME}:${USERNAME} ${REPOS_FILE_URL} ros2.repos
 RUN vcs import src < ros2.repos
 
 # Install system dependencies
-RUN rosdep init && rosdep update
-RUN rosdep install --from-paths src --ignore-src --rosdistro rolling -y --skip-keys "console_bridge fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos"
+RUN sudo rosdep init && \
+  rosdep update && \
+  rosdep install --from-paths src --ignore-src --rosdistro rolling -y --skip-keys "console_bridge fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos"
 
-# Build the code in the workspace
-RUN colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+# Build the Space ROS source code
+RUN colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-# Install dependencies needed by IKOS
-RUN apt-get install -y \
+# Install dependencies needed by the IKOS static analyzer
+RUN sudo apt-get install -y \
   clang-9 \
   cmake \
   g++ \
@@ -133,15 +143,16 @@ RUN apt-get install -y \
   zlib1g-dev
 
 # Get the IKOS source and build it
-WORKDIR /root/src
+WORKDIR ${SRC_DIR}
 RUN git clone https://github.com/NASA-SW-VnV/ikos.git && cd ikos && git checkout 8b0bab34846b72777cca2a60d473282971806cfc
-ENV PYTHONPATH "$PYTHONPATH:/root/src/ikos/install/lib/python3.8/site-packages"
-RUN mkdir ikos/build && cd ikos/build && cmake .. -DLLVM_CONFIG_EXECUTABLE=/usr/bin/llvm-config-9 --no-warn-unused-cli && make && make install
-ENV PATH "$PATH:/root/src/ikos/install/bin"
+ENV PYTHONPATH "$PYTHONPATH:${IKOS_DIR}/install/lib/python3.8/site-packages"
+WORKDIR ${IKOS_DIR}
+RUN mkdir build && cd build && cmake .. -DLLVM_CONFIG_EXECUTABLE=/usr/bin/llvm-config-9 --no-warn-unused-cli && make && sudo make install
+ENV PATH "$PATH:${IKOS_DIR}/install/bin"
 ENV IKOS_SCAN_NOTIFIER_FILES "yes"
 
-# The above installation doesn't install the IKOS egg file, so do it manually (https://github.com/NASA-SW-VnV/ikos/issues/185)
-RUN cd /root/src/ikos/install/lib/python3.8/site-packages && python3 /usr/lib/python3/dist-packages/easy_install.py ./ikos-3.0-py3.8.egg
+# The IKOS installation doesn't install the IKOS egg file, so do it manually (https://github.com/NASA-SW-VnV/ikos/issues/185)
+RUN cd ${IKOS_DIR}/install/lib/python3.8/site-packages && sudo python3 /usr/lib/python3/dist-packages/easy_install.py ./ikos-3.0-py3.8.egg
 
 # Set up the entrypoint
 WORKDIR ${SPACEROS_DIR}

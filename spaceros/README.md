@@ -41,13 +41,13 @@ $ ./run.sh
 Upon startup, the container automatically runs the entrypoint.sh script, which sources the Space ROS environment file (setup.bash). You'll now be running inside the container and should see a prompt similar to this:
 
 ```
-root@d10d85c68f0e:/root/src/spaceros#
+spaceros-user@d10d85c68f0e:~/src/spaceros#
 ```
 
 At this point, you can run the 'ros2' command line utility to make sure everything is working OK:
 
 ```
-root@d10d85c68f0e:/root/src/spaceros# ros2
+spaceros-user@d10d85c68f0e:~/src/spaceros# ros2
 usage: ros2 [-h] [--use-python-default-buffering] Call `ros2 <command> -h` for more detailed usage. ...
 
 ros2 is an extensible command-line tool for ROS 2.
@@ -83,7 +83,7 @@ Commands:
 The Space ROS unit tests are not built as part of the Docker image build. To run the unit tests in the container, execute the following command from the top of the Space ROS workspace:
 
 ```
-root@d10d85c68f0e:/root/src/spaceros# colcon test
+spaceros-user@d10d85c68f0e:~/src/spaceros# colcon test
 ```
 
 The tests include running the static analysis tools clang_tidy and cppcheck (which has the MISRA 2012 add-on enabled).
@@ -91,7 +91,7 @@ The tests include running the static analysis tools clang_tidy and cppcheck (whi
 You can use colcon's --packages-select option to run a subset of packages. For example, to run tests only for the rcpputils package and display the output directly to the console (as well as saving it to a log file), you can run:
 
 ```
-root@d10d85c68f0e:/root/src/spaceros# colcon test --event-handlers console_direct+ --packages-select rcpputils
+spaceros-user@d10d85c68f0e:~/src/spaceros# colcon test --event-handlers console_direct+ --packages-select rcpputils
 ```
 
 ## Viewing Test Output
@@ -110,34 +110,34 @@ root@d10d85c68f0e:/root/src/spaceros# colcon test --event-handlers console_direc
   time="1.248"
 >
   <testcase
-    name="/root/src/spaceros/src/rmw/rmw/src/allocators.c"
+    name="/home/spaceros-user/src/spaceros/src/rmw/rmw/src/allocators.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/root/src/spaceros/src/rmw/rmw/src/convert_rcutils_ret_to_rmw_ret.c"
+    name="/home/spaceros-user/src/spaceros/src/rmw/rmw/src/convert_rcutils_ret_to_rmw_ret.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/root/src/spaceros/src/rmw/rmw/src/event.c"
+    name="/home/spaceros-user/src/spaceros/src/rmw/rmw/src/event.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/root/src/spaceros/src/rmw/rmw/src/init.c"
+    name="/home/spaceros-user/src/spaceros/src/rmw/rmw/src/init.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/root/src/spaceros/src/rmw/rmw/src/init_options.c"
+    name="/home/spaceros-user/src/spaceros/src/rmw/rmw/src/init_options.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/root/src/spaceros/src/rmw/rmw/src/message_sequence.c"
+    name="/home/spaceros-user/src/spaceros/src/rmw/rmw/src/message_sequence.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/root/src/spaceros/src/rmw/rmw/src/names_and_types.c"
+    name="/home/spaceros-user/src/spaceros/src/rmw/rmw/src/names_and_types.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/root/src/spaceros/src/rmw/rmw/src/network_flow_endpoint.c"
+    name="/home/spaceros-user/src/spaceros/src/rmw/rmw/src/network_flow_endpoint.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/root/src/spaceros/src/rmw/rmw/src/network_flow_endpoint_array.c"
+    name="/home/spaceros-user/src/spaceros/src/rmw/rmw/src/network_flow_endpoint_array.c"
     classname="rmw.clang_tidy"/>
   <testcase
-    name="/root/src/spaceros/src/rmw/rmw/src/publisher_options.c"
+    name="/home/spaceros-user/src/spaceros/src/rmw/rmw/src/publisher_options.c"
     classname="rmw.clang_tidy"/>
 
 <etc>
@@ -178,7 +178,7 @@ IKOS uses special compiler and linker settings in order to instrument and analyz
 To run an IKOS scan on all of the Space ROS test binaries (which will take a very long time), run the following command at the root of the Space ROS workspace:
 
 ```
-root@d10d85c68f0e:/root/src/spaceros# CC="ikos-scan-cc" CXX="ikos-scan-c++" LD="ikos-scan-cc" colcon build --build-base build_ikos --install-base install_ikos --cmake-args -DSECURITY=ON -DINSTALL_EXAMPLES=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
+spaceros-user@d10d85c68f0e:~/src/spaceros# CC="ikos-scan-cc" CXX="ikos-scan-c++" LD="ikos-scan-cc" colcon build --build-base build_ikos --install-base install_ikos --cmake-args -DSECURITY=ON -DINSTALL_EXAMPLES=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
 ```
 
 The previous command generates the instrumented binaries and the associated output in a separate directory from the normal Space ROS build; the command uses *--build-base* option to specify **build_ikos** as the build output directory instead of the default **build** directory.
@@ -186,7 +186,7 @@ The previous command generates the instrumented binaries and the associated outp
 To run an IKOS scan on a specific package, such as rcpputils in this case, use the *--packages-select* option, as follows:
 
 ```
-root@d10d85c68f0e:/root/src/spaceros# CC="ikos-scan-cc" CXX="ikos-scan-c++" LD="ikos-scan-cc" colcon build --build-base build_ikos --install-base install_ikos --packages-select rcpputils --cmake-args -DSECURITY=ON -DINSTALL_EXAMPLES=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
+spaceros-user@d10d85c68f0e:~/src/spaceros# CC="ikos-scan-cc" CXX="ikos-scan-c++" LD="ikos-scan-cc" colcon build --build-base build_ikos --install-base install_ikos --packages-select rcpputils --cmake-args -DSECURITY=ON -DINSTALL_EXAMPLES=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
 ```
 
 ## Generating IKOS Results
@@ -194,20 +194,19 @@ root@d10d85c68f0e:/root/src/spaceros# CC="ikos-scan-cc" CXX="ikos-scan-c++" LD="
 To generate JUnit XML files for all of the binaries resulting from the build command in the previous step, you can use **colcon test**, as follows:
 
 ```
-root@d10d85c68f0e:/root/src/spaceros# colcon test --build-base build_ikos --install-base install_ikos
+spaceros-user@d10d85c68f0e:~/src/spaceros# colcon test --build-base build_ikos --install-base install_ikos
 ```
 
 To generate a JUnit XML file for a specific package only, you can add the *--packages-select* option, as follows:
 
 ```
-root@d10d85c68f0e:/root/src/spaceros# colcon test --build-base build_ikos --install-base install_ikos --packages-select rcpputils
+spaceros-user@d10d85c68f0e:~/src/spaceros# colcon test --build-base build_ikos --install-base install_ikos --packages-select rcpputils
 ```
 
 The 'colcon test' command runs various tests, including IKOS report generation, which reads the IKOS database generated in the previous analysis step and generates a JUnit XML report file. After running 'colcon test', you can view the JUnit XML files. For example, to view the JUnit XML file for IKOS scan of the rcpputils binaries you can use the following command:
 
 ```
-root@d10d85c68f0e:/root/src/spaceros# more build_ikos/rcpputils/test_results/rcpputils/ikos.xunit.xml
+spaceros-user@d10d85c68f0e:~/src/spaceros# more build_ikos/rcpputils/test_results/rcpputils/ikos.xunit.xml
 
 ```
-
 

@@ -339,6 +339,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rosidl.git
     version: rolling
+  ros2/rosidl_core:
+    type: git
+    url: https://github.com/ros2/rosidl_core.git
+    version: rolling
   ros2/rosidl_dds:
     type: git
     url: https://github.com/ros2/rosidl_dds.git

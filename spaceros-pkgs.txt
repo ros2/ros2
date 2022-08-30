@@ -13,8 +13,8 @@ gmock_vendor
 google_benchmark_vendor
 gtest_vendor
 iceoryx_binding_c
+iceoryx_hoofs
 iceoryx_posh
-iceoryx_utils
 launch
 launch_ros
 rcl

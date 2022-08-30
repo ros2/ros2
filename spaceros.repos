@@ -13,3 +13,7 @@ repositories:
     type: git
     url: https://github.com/ament/ament_lint.git
     version: spaceros
+  iceoryx:
+    type: git
+    url: https://github.com/eclipse-iceoryx/iceoryx.git
+    version: v2.0.2

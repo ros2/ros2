@@ -24,7 +24,7 @@ GENERATE_CMD="$GENERATE_CMD --deps"
 
 # Use upstream repositories rather than release repositories and
 # use development branches rather than tags.
-GENERATE_CMD="$GENERATE_CMD --upstream-development"
+GENERATE_CMD="$GENERATE_CMD --upstream"
 
 # Exclude packages which we don't incorporate into Space ROS
 excluded_pkgs=$(cat excluded-pkgs.txt)

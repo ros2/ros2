@@ -11,7 +11,7 @@ usage() {
 }
 
 OUTFILE=${1:-ros2.repos}
-ROSDISTRO=${ROSDISTRO:-rolling}
+ROSDISTRO=${ROSDISTRO:-humble}
 
 GENERATE_CMD=rosinstall_generator
 # Use the repos file format rather than rosinstall format.

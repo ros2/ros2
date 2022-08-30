@@ -63,7 +63,7 @@ repositories:
   iceoryx:
     type: git
     url: https://github.com/eclipse-iceoryx/iceoryx.git
-    version: 2.0.2
+    version: v2.0.2
   kdl_parser:
     type: git
     url: https://github.com/ros/kdl_parser.git

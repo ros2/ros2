@@ -38,12 +38,13 @@ LABEL org.label-schema.vcs-ref=${VCS_REF}
 # Disable prompting during package installation
 ARG DEBIAN_FRONTEND=noninteractive
 
-# Define the username and key locations
+# Define the username and key variables
 ENV USERNAME spaceros-user
 ENV SRC_DIR=/home/${USERNAME}/src
 ENV SPACEROS_DIR=${SRC_DIR}/spaceros
 ARG IKOS_DIR=${SRC_DIR}/ikos
 ARG REPOS_FILE_URL="https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos"
+ENV ROSDISTRO=humble
 
 # https://github.com/NVIDIA/cuda-repo-management/issues/1
 # Use new GPG keys for nvidia apt repositories that have not yet propagated to base images.
@@ -116,7 +117,7 @@ RUN vcs import src < ros2.repos
 # Install system dependencies
 RUN sudo rosdep init && \
   rosdep update && \
-  rosdep install --from-paths src --ignore-src --rosdistro rolling -y --skip-keys "console_bridge fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos"
+  rosdep install --from-paths src --ignore-src --rosdistro ${ROSDISTRO} -y --skip-keys "console_bridge fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos"
 
 # Build the Space ROS source code
 RUN colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON

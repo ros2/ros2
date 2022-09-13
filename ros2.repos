@@ -106,7 +106,7 @@ repositories:
   ros-visualization/rqt_msg:
     type: git
     url: https://github.com/ros-visualization/rqt_msg.git
-    version: foxy-devel
+    version: galactic
   ros-visualization/rqt_plot:
     type: git
     url: https://github.com/ros-visualization/rqt_plot.git
@@ -142,7 +142,7 @@ repositories:
   ros-visualization/rqt_topic:
     type: git
     url: https://github.com/ros-visualization/rqt_topic.git
-    version: foxy-devel
+    version: galactic
   ros-visualization/tango_icons_vendor:
     type: git
     url: https://github.com/ros-visualization/tango_icons_vendor.git

@@ -86,7 +86,7 @@ repositories:
   ros-visualization/rqt_console:
     type: git
     url: https://github.com/ros-visualization/rqt_console.git
-    version: dashing-devel
+    version: foxy-devel
   ros-visualization/rqt_graph:
     type: git
     url: https://github.com/ros-visualization/rqt_graph.git
@@ -134,7 +134,7 @@ repositories:
   ros-visualization/tango_icons_vendor:
     type: git
     url: https://github.com/ros-visualization/tango_icons_vendor.git
-    version: master
+    version: foxy
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git

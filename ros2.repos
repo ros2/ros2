@@ -134,7 +134,7 @@ repositories:
   ros-visualization/tango_icons_vendor:
     type: git
     url: https://github.com/ros-visualization/tango_icons_vendor.git
-    version: humble
+    version: foxy
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git

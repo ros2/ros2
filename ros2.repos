@@ -90,7 +90,7 @@ repositories:
   ros-visualization/rqt_action:
     type: git
     url: https://github.com/ros-visualization/rqt_action.git
-    version: ros2
+    version: galactic
   ros-visualization/rqt_bag:
     type: git
     url: https://github.com/ros-visualization/rqt_bag.git
@@ -98,7 +98,7 @@ repositories:
   ros-visualization/rqt_console:
     type: git
     url: https://github.com/ros-visualization/rqt_console.git
-    version: ros2
+    version: galactic
   ros-visualization/rqt_graph:
     type: git
     url: https://github.com/ros-visualization/rqt_graph.git
@@ -146,7 +146,7 @@ repositories:
   ros-visualization/tango_icons_vendor:
     type: git
     url: https://github.com/ros-visualization/tango_icons_vendor.git
-    version: master
+    version: galactic
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git

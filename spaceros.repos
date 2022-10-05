@@ -17,3 +17,7 @@ repositories:
     type: git
     url: https://github.com/eclipse-iceoryx/iceoryx.git
     version: v2.0.2
+process_sarif:
+    type: git
+    url: https://github.com/space-ros/process_sarif.git
+    version: main

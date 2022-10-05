@@ -112,6 +112,10 @@ repositories:
     type: git
     url: https://github.com/ros/pluginlib.git
     version: 5.1.0
+  process_sarif:
+    type: git
+    url: https://github.com/space-ros/process_sarif.git
+    version: build-results-archive
   pybind11_vendor:
     type: git
     url: https://github.com/ros2/pybind11_vendor.git
@@ -123,7 +127,7 @@ repositories:
   rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: 5.3.1
+    version: 5.3.2
   rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git

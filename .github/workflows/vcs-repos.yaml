@@ -30,7 +30,7 @@ jobs:
             echo "::set-output name=updated::true"
           fi
       - name: Commit updated ros2.repos file
-        if: steps.diff.outputs.updated == true
+        if: ${{ steps.diff.outputs.updated == 'true' }}
         uses: EndBug/add-and-commit@v9
         with:
           add: ros2.repos

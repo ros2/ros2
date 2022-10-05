@@ -22,4 +22,15 @@ jobs:
       - name: Check for changes
         run: earthly +repos-file
       - name: Diff ros2.repos to determine if there have been changes
-        run: git diff ros2.repos
+        id: diff
+        run: |
+          if git diff --exit-code ros2.repos; then
+            echo "::set-output name=updated::false"
+          else
+            echo "::set-output name=updated::true"
+          fi
+      - name: Commit updated ros2.repos file
+        if: steps.diff.outputs.updated == true
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: ros2.repos

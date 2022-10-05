@@ -1,0 +1,25 @@
+---
+name: Generate vcstool repos file.
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  update_ros2_repos:
+    name: Update ros2.repos file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v2
+      - name: Install Earthly
+        run: |
+          sudo wget 'https://github.com/earthly/earthly/releases/latest/download/earthly-linux-amd64' -O /usr/local/bin/earthly
+          sudo chmod 755 /usr/local/bin/earthly
+      - name: Regenerate ros2.repos
+        run: earthly +repos-file
+      - name: Check for changes
+        run: earthly +repos-file
+      - name: Diff ros2.repos to determine if there have been changes
+        run: git diff ros2.repos

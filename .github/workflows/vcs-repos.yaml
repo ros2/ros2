@@ -19,8 +19,6 @@ jobs:
           sudo chmod 755 /usr/local/bin/earthly
       - name: Regenerate ros2.repos
         run: earthly +repos-file
-      - name: Check for changes
-        run: earthly +repos-file
       - name: Diff ros2.repos to determine if there have been changes
         id: diff
         run: |

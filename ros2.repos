@@ -115,7 +115,7 @@ repositories:
   process_sarif:
     type: git
     url: https://github.com/space-ros/process_sarif.git
-    version: build-results-archive
+    version: main
   pybind11_vendor:
     type: git
     url: https://github.com/ros2/pybind11_vendor.git

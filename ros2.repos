@@ -206,7 +206,7 @@ repositories:
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: 0.10.9
+    version: 0.10.10
   ros2/launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
@@ -254,7 +254,7 @@ repositories:
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 1.0.10
+    version: 1.0.11
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git

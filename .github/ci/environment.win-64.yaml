@@ -1,0 +1,7 @@
+name: ros-rolling-ws
+
+channels:
+  - conda-forge
+
+dependencies:
+  - vs2019_win-64

@@ -1,0 +1,12 @@
+name: ros-rolling-ws
+
+channels:
+  - conda-forge
+
+dependencies:
+  - cmake
+  - compilers
+  - git
+  - ninja
+  - pkg-config
+  - vcstool

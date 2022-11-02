@@ -1,0 +1,28 @@
+{
+  "build": {
+    "merge-install": true,
+    "event-handlers": [
+      "console_package_list+",
+      "console_cohesion+",
+      "console_start_end-",
+      "actions_start_end+",
+    ],
+    "cmake-args": [
+      "-GNinja",
+      "--no-warn-unused-cli",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DCMAKE_C_COMPILER_LAUNCHER=buildcache",
+      "-DCMAKE_CXX_COMPILER_LAUNCHER=buildcache",
+    ],
+    "executor": "sequential",
+  },
+  "test": {
+    "merge-install": true,
+    "event-handlers": [
+      "console_cohesion+",
+      "console_start_end-",
+      "actions_start_end+",
+    ],
+    "executor": "sequential",
+  }
+}

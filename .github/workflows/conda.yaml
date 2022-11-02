@@ -1,0 +1,135 @@
+name: CI with conda-forge dependencies
+
+on:
+  push:
+  pull_request:
+
+env:
+  CACHE_NUMBER: 0
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            label: linux-64
+            conda_envs: /usr/share/miniconda/envs/ros-rolling-ws
+          - os: macos-latest
+            label: macos-64
+            conda_envs: /usr/local/miniconda/envs/ros-rolling-ws
+          - os: windows-2019
+            label: win-64
+            conda_envs: C:\Miniconda\envs\ros-rolling-ws
+      fail-fast: false
+
+    name: '[${{ matrix.label }}@conda]'
+    runs-on: ${{ matrix.os }}
+    env:
+      # Workspace file to use for the build
+      VCS_WORKSPACE_FILE: ros2.repos
+      COLCON_BUILD_ARGS: ""
+      COLCON_TEST_ARGS: ""
+
+      # Things that control build
+      COLCON_DEFAULTS_FILE: ${{ github.workspace }}/.github/ci/colcon_defaults.yaml
+      BUILDCACHE_MAX_CACHE_SIZE: 2000000000                      # optional: Need a bigger cache?
+      # BUILDCACHE_LOG_FILE: ${{ matrix.label }}.buildcache.log    # optional: include log output
+      # BUILDCACHE_DEBUG: 2                                        # optional: debug level, less is more
+      BUILDCACHE_DIRECT_MODE: true                               # optional: Allow direct caching
+    steps:
+    - uses: actions/checkout@v2
+    - uses: conda-incubator/setup-miniconda@v2
+      with:
+        mamba-version: "*"
+        channels: conda-forge
+        channel-priority: true
+        activate-environment: ros-rolling-ws
+
+    - name: Get Date
+      id: get-date
+      run: echo "::set-output name=today::$(/bin/date -u '+%Y%m%d')"
+      shell: bash
+
+    - name: Cache conda
+      uses: actions/cache@v2
+      with:
+        path: ${{ matrix.conda_envs }}
+        key: ${{ runner.os }}-conda-${{ hashFiles('.github/ci/environment*.yaml') }}-${{ steps.get-date.outputs.today }}-${{ env.CACHE_NUMBER }}
+      id: cache
+
+    - uses: mikehardy/buildcache-action@v1
+      with:
+        cache_key: ${{ matrix.label }}-${{ steps.get-date.outputs.today }}-${{ env.CACHE_NUMBER }}
+        upload_buildcache_log: true # optional: 100% cache misses? Find out why
+        zero_buildcache_stats: true # optional: lifetime vs per-run stats?
+
+    - name: Dependencies
+      run: |
+        # Workaround for https://github.com/conda-incubator/setup-miniconda/issues/186
+        conda config --remove channels defaults
+        mamba env update -n ros-rolling-ws -f .github/ci/environment.yaml
+      if: steps.cache.outputs.cache-hit != 'true'
+
+    - name: Windows-only Dependencies [Windows]
+      run: |
+        mamba env update -n ros-rolling-ws -f .github/ci/environment.win-64.yaml
+      if: contains(matrix.os, 'windows') && steps.cache.outputs.cache-hit != 'true'
+
+    - name: Colcon dependencies [Linux and macOS]
+      run: |
+        echo "::group::Install colcon extensions"
+        # Make output prettier for github
+        python -m pip install --upgrade --force https://github.com/mjcarroll/colcon-github-actions/archive/refs/heads/master.zip
+        echo "::endgroup::"
+
+    - name: Export compiler variables [Linux]
+      if: contains(matrix.os, 'ubuntu')
+      shell: bash -l {0}
+      run: |
+        echo "BUILDCACHE_CC=x86_64-conda-linux-gnu-gcc" >> $GITHUB_ENV
+        echo "BUILDCACHE_CXX=x86_64-conda-linux-gnu-g++" >> $GITHUB_ENV
+
+    - name: Export compiler variables [macOS]
+      if: contains(matrix.os, 'macos')
+      shell: bash -l {0}
+      run: |
+        echo "BUILDCACHE_CC=x86_64-apple-darwin13.4.0-clang" >> $GITHUB_ENV
+        echo "BUILDCACHE_CXX=x86_64-apple-darwin13.4.0-clang++" >> $GITHUB_ENV
+
+    - name: Checkout Workspace [Linux&macOS]
+      if: contains(matrix.os, 'macos') || contains(matrix.os, 'ubuntu')
+      shell: bash -l {0}
+      run: |
+        mkdir -p workspace/src
+        echo "::group::vcs import"
+        vcs import --input ${{ env.VCS_WORKSPACE_FILE }} --shallow workspace/src
+        echo "::endgroup::"
+
+    - name: Build Workspace [Linux&macOS]
+      if: (contains(matrix.os, 'macos') || contains(matrix.os, 'ubuntu')) && success()
+      shell: bash -l {0}
+      run: |
+        export CC=${{ env.BUILDCACHE_CC }}
+        export CXX=${{ env.BUILDCACHE_CXX }}
+        cd workspace
+        echo "::group::Workspace Branches"
+        vcs branch
+        echo "::endgroup::"
+        colcon build ${{ env.COLCON_BUILD_ARGS }}
+
+    - name: Checkout Workspace [Windows]
+      if: contains(matrix.os, 'windows')
+      shell: cmd /C call {0}
+      run: |
+        mkdir workspace\src
+        echo "::group::vcs import"
+        vcs import --input ${{ env.VCS_WORKSPACE_FILE }} --shallow workspace\src
+        echo "::endgroup::"
+
+    - name: Build Workspace [Windows]
+      if: contains(matrix.os, 'windows') && success()
+      shell: cmd /C call {0}
+      run: |
+        cd workspace
+        colcon build ${{ env.COLCON_BUILD_ARGS }}

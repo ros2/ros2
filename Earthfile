@@ -18,17 +18,13 @@ FROM ubuntu:jammy
 repos-file:
   # Disable prompting during package installation
   ARG DEBIAN_FRONTEND=noninteractive
-  
-  # The following commands are based on the source install for ROS 2 Rolling Ridley.
-  # See: https://docs.ros.org/en/ros2_documentation/rolling/Installation/Ubuntu-Development-Setup.html
-  # The main variation is getting Space ROS sources instead of the Rolling sources.
-  
+
   # Set the locale
   RUN apt-get update && apt-get install -y locales
   RUN locale-gen en_US en_US.UTF-8
   RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
   ENV LANG=en_US.UTF-8
-  
+
   # Add the ROS 2 apt repository
   RUN apt-get install -y software-properties-common
   RUN add-apt-repository universe
@@ -46,5 +42,3 @@ repos-file:
   RUN sh scripts/generate-repos.sh
   RUN ruby scripts/merge-repos.rb
   SAVE ARTIFACT ros2.repos AS LOCAL ros2.repos
-
-

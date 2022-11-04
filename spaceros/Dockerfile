@@ -40,9 +40,9 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # Define the username and key variables
 ENV USERNAME spaceros-user
-ENV SRC_DIR=/home/${USERNAME}/src
-ENV SPACEROS_DIR=${SRC_DIR}/spaceros
-ARG IKOS_DIR=${SRC_DIR}/ikos
+ENV HOME_DIR=/home/${USERNAME}
+ENV SPACEROS_DIR=${HOME_DIR}/spaceros
+ARG IKOS_DIR=${HOME_DIR}/ikos
 ARG REPOS_FILE_URL="https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos"
 ENV ROSDISTRO=humble
 
@@ -144,7 +144,7 @@ RUN sudo apt-get install -y \
   zlib1g-dev
 
 # Get the IKOS source and build it
-WORKDIR ${SRC_DIR}
+WORKDIR ${HOME_DIR}
 RUN git clone https://github.com/NASA-SW-VnV/ikos.git && cd ikos && git checkout 8b0bab34846b72777cca2a60d473282971806cfc
 ENV PYTHONPATH "$PYTHONPATH:${IKOS_DIR}/install/lib/python3.8/site-packages"
 WORKDIR ${IKOS_DIR}

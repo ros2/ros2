@@ -1,0 +1,150 @@
+# Copyright 2021 Open Source Robotics Foundation, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+VERSION 0.6
+FROM ubuntu:jammy
+
+earthfile:
+  COPY Earthfile Earthfile
+  SAVE ARTIFACT Earthfile
+
+setup:
+  # Disable prompting during package installation
+  ARG DEBIAN_FRONTEND=noninteractive
+  
+  # The following commands are based on the source install for ROS 2 Rolling Ridley.
+  # See: https://docs.ros.org/en/ros2_documentation/rolling/Installation/Ubuntu-Development-Setup.html
+  # The main variation is getting Space ROS sources instead of the Rolling sources.
+  
+  # Update the Ubuntu software repository
+  RUN apt-get update
+  
+  # Set the locale
+  RUN apt-get install -y locales
+  RUN locale-gen en_US en_US.UTF-8
+  RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+  ENV LANG=en_US.UTF-8
+  
+  # Add the ROS 2 apt repository
+  RUN apt-get install -y software-properties-common
+  RUN add-apt-repository universe
+  RUN apt-get update && apt-get install -y curl gnupg lsb-release
+  RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+  RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+  
+  # Install required software development tools and ROS tools (and vim included for convenience)
+  RUN apt-get update && apt-get install -y \
+    bison \
+    build-essential \
+    cmake \
+    git \
+    python3-colcon-common-extensions \
+    python3-flake8 \
+    python3-flake8-blind-except \
+    python3-flake8-builtins \
+    python3-flake8-class-newline \
+    python3-flake8-comprehensions \
+    python3-flake8-deprecated \
+    python3-flake8-docstrings \
+    python3-flake8-import-order \
+    python3-flake8-quotes \
+    python3-pip \
+    python3-pytest \
+    python3-pytest-cov \
+    python3-pytest-repeat \
+    python3-pytest-rerunfailures \
+    python3-rosdep \
+    python3-setuptools \
+    python3-vcstool \
+    wget \
+    vim
+
+  # Define the username and key variables
+  ENV USERNAME spaceros-user
+  ENV SRC_DIR=/home/${USERNAME}/src
+  ENV SPACEROS_DIR=${SRC_DIR}/spaceros
+  ARG IKOS_DIR=${SRC_DIR}/ikos
+  ARG REPOS_FILE_URL="https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos"
+  ENV ROSDISTRO=humble
+
+  # Create a spaceros user
+  RUN useradd -m $USERNAME && \
+    echo "$USERNAME:$USERNAME" | chpasswd && \
+    usermod --shell /bin/bash $USERNAME && \
+    usermod -aG sudo $USERNAME && \
+    mkdir -p /etc/sudoers.d && \
+    echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME && \
+    chmod 0440 /etc/sudoers.d/$USERNAME
+  USER ${USERNAME}
+
+  WORKDIR $SPACEROS_DIR
+
+
+sources:
+  FROM +setup
+  COPY github.com/space-ros/space-ros:earthly-wrapper+repos-file/ros2.repos ros2.repos
+  RUN mkdir src
+  RUN vcs import src < ros2.repos
+  SAVE ARTIFACT src AS LOCAL src
+
+workspace:
+  FROM +setup
+  COPY src src/
+
+vcs-exact:
+  FROM +workspace
+  RUN vcs export --exact src > exact.repos
+  SAVE ARTIFACT exact.repos AS LOCAL exact.repos
+
+rosdep:
+  FROM +workspace
+  # Install system package dependencies using rosdep
+  RUN sudo rosdep init && rosdep update
+  RUN rosdep install --from-paths src --ignore-src --rosdistro rolling -y --skip-keys "console_bridge fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos"
+
+build:
+  FROM +rosdep
+  RUN colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
+  COPY +vcs-exact/exact.repos install/exact.repos
+  SAVE ARTIFACT install AS LOCAL install
+
+build-testing:
+  FROM +rosdep
+  RUN colcon build --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
+  RUN colcon test --retest-until-pass 2 --ctest-args -LE "(ikos|xfail)" --pytest-args -m "not xfail"
+  RUN . install/setup.sh && ros2 run process_sarif make_build_archive
+  COPY +vcs-exact/exact.repos install/exact.repos
+  SAVE ARTIFACT log/build_results_archives/build_results*.tar.bz2 AS LOCAL spaceros_ws/log/build_results_archives/
+  SAVE ARTIFACT install AS LOCAL install
+
+image:
+  FROM +rosdep
+
+  ARG VCS_REF
+
+  # Specify the docker image metadata
+  LABEL org.label-schema.schema-version="1.0"
+  LABEL org.label-schema.name="Space ROS"
+  LABEL org.label-schema.description="Preview version of the Space ROS platform"
+  LABEL org.label-schema.vendor="Open Robotics"
+  LABEL org.label-schema.url="https://github.com/space-ros"
+  LABEL org.label-schema.vcs-url="https://github.com/space-ros/docker-images"
+  LABEL org.label-schema.vcs-ref=${VCS_REF}
+
+  COPY +build/install ${SPACEROS_DIR}/install
+  COPY +vcs-exact/exact.repos ${SPACEROS_DIR}/exact.repos
+  RUN rm -r src
+  COPY entrypoint.sh /ros_entrypoint.sh
+  ENTRYPOINT ["/ros_entrypoint.sh"]
+  CMD ["bash"]
+  SAVE IMAGE osrf/space-ros:latest

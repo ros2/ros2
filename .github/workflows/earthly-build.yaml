@@ -1,0 +1,50 @@
+name: Earthly build
+on:
+  push:
+    branches: ['main']
+  pull_request:
+  schedule:
+    - cron: '0 11 * * *'
+jobs:
+  build-testing-results:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up earthly
+        run: |
+          sudo wget https://github.com/earthly/earthly/releases/latest/download/earthly-linux-amd64 -O /usr/local/bin/earthly
+          sudo chmod 755 /usr/local/bin/earthly
+      - name: Build Space ROS
+        id: build
+        run: |
+          cd spaceros
+          earthly --ci --output +sources
+          earthly --ci +build-testing
+          printf "::set-output name=archivename::%s\n" $(basename log/build_results_archives/build_results_*.tar.bz2)
+      - name: Upload build results archive
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{steps.build.outputs.archivename}}
+          path: spaceros/log/build_results_archives/${{steps.build.outputs.archivename}}
+  space-ros-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up earthly
+        run: |
+          sudo wget https://github.com/earthly/earthly/releases/latest/download/earthly-linux-amd64 -O /usr/local/bin/earthly
+          sudo chmod 755 /usr/local/bin/earthly
+      - name: Build spaceros image
+        run: |
+          cd spaceros
+          earthly --ci --output +sources
+          earthly --ci +image
+      - name: Push spaceros image
+        env:
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_RW_TOKEN }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        run: |
+          echo $DOCKER_HUB_TOKEN | docker login --username osrfbot --password-stdin
+          earthly --ci --push +image

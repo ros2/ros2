@@ -1,11 +1,13 @@
-# Space ROS Docker Image
+# Space ROS Docker Image and Earthly configuration
 
-The Dockerfile in this directory builds Space ROS from source code.
-To include drivers for NVIDIA GPUs, the Space ROS docker image is based on the NVIDIA CudaGL development image, version 11.4.1, which is, in turn, based on Ubuntu 20.04.
+The Earthfile configuration in this directory facilitates builds of Space ROS from source code.
+The generated container image is based on Ubuntu 22.04 (Jammy) and can be used with [`rocker`](https://github.com/osrf/rocker) to add X11 and GPU passthrough.
 
 ## Building the Docker Image
 
-To build the docker image, run:
+The [Earthly](https://earthly.dev/get-earthly) utility is required to build this image.
+
+To build the image, run:
 
 ```
 $ ./build.sh
@@ -26,11 +28,11 @@ The output will look something like this:
 ```
 $ docker image list
 REPOSITORY              TAG                        IMAGE ID       CREATED        SIZE
-openrobotics/spaceros   latest                     629b13cf7b74   1 hour ago     7.8GB
-nvidia/cudagl           11.4.1-devel-ubuntu20.04   336416dfcbba   1 day ago      5.35GB
+osrf/space-ros        latest                     109ad8fb7460   4 days ago      2.45GB
+ubuntu                jammy                      a8780b506fa4   5 days ago      77.8MB
 ```
 
-The new image is named **openrobotics/spaceros:latest**.
+The new image is named **osrf/space-ros:latest**.
 
 There is a run.sh script provided for convenience that will run the spaceros image in a container.
 
@@ -78,12 +80,21 @@ Commands:
   Call `ros2 <command> -h` for more detailed usage.
 ```
 
-## Running the Space ROS Unit Tests
+## Rebuilding Space ROS and running unit tests
 
-The Space ROS unit tests are not built as part of the Docker image build. To run the unit tests in the container, execute the following command from the top of the Space ROS workspace:
+Space ROS sources and intermediate build artifacts are not included in the docker image.
 
+A manifest of the exact sources used to produce the current image is saved as `exact.repos` in the spaceros directory.
+To clone all sources from this manifest you can use the command sequence
 ```
-spaceros-user@d10d85c68f0e:~/spaceros$ colcon test
+spaceros-user@d10d85c68f0e:~/spaceros$ mkdir src
+spaceros-user@d10d85c68f0e:~/spaceros$ vcs import src < exact.repos
+```
+
+From there you can run a new build and any additional tests.
+```
+spaceros-user@d10d85c68f0e:~/spaceros$ colcon build --cmake-args -DCMAKE_BUILD_TYPE=Debug --DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
+spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --ctest-args -LE "(ikos|xfail)" --pytest-args -m "not xfail"
 ```
 
 The tests include running the static analysis tools clang_tidy and cppcheck (which has the MISRA 2012 add-on enabled).

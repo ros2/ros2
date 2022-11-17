@@ -93,7 +93,7 @@ spaceros-user@d10d85c68f0e:~/spaceros$ vcs import src < exact.repos
 
 From there you can run a new build and any additional tests.
 ```
-spaceros-user@d10d85c68f0e:~/spaceros$ colcon build --cmake-args -DCMAKE_BUILD_TYPE=Debug --DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
+spaceros-user@d10d85c68f0e:~/spaceros$ colcon build --cmake-args -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
 spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --ctest-args -LE "(ikos|xfail)" --pytest-args -m "not xfail"
 ```
 

@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-ORG=openrobotics
-IMAGE=spaceros
-TAG=latest
-
 VCS_REF="$(git rev-parse HEAD)"
 VERSION=preview
 

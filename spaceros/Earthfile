@@ -71,9 +71,9 @@ setup:
 
   # Define the username and key variables
   ENV USERNAME spaceros-user
-  ENV SRC_DIR=/home/${USERNAME}/src
-  ENV SPACEROS_DIR=${SRC_DIR}/spaceros
-  ARG IKOS_DIR=${SRC_DIR}/ikos
+  ENV HOME_DIR=/home/${USERNAME}
+  ENV SPACEROS_DIR=${HOME_DIR}/spaceros
+  ARG IKOS_DIR=${HOME_DIR}/ikos
   ARG REPOS_FILE_URL="https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos"
   ENV ROSDISTRO=humble
 

@@ -34,7 +34,7 @@ repositories:
   eProsima/Fast-DDS:
     type: git
     url: https://github.com/eProsima/Fast-DDS.git
-    version: 7ee600093d3f603d7dabb19078c409ba6bb018eb
+    version: v2.6.0
   eProsima/foonathan_memory_vendor:
     type: git
     url: https://github.com/eProsima/foonathan_memory_vendor.git
@@ -42,7 +42,7 @@ repositories:
   eclipse-cyclonedds/cyclonedds:
     type: git
     url: https://github.com/eclipse-cyclonedds/cyclonedds.git
-    version: 0e2cd3e303be2171dd0e4fc685cc5031f70b0f52
+    version: 0.9.0
   eclipse-iceoryx/iceoryx:
     type: git
     url: https://github.com/eclipse-iceoryx/iceoryx.git
@@ -58,7 +58,7 @@ repositories:
   osrf/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
-    version: 709f8312b71b6d2f732afebae2605bf964fe9596
+    version: 2.1.1
   osrf/osrf_testing_tools_cpp:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
@@ -110,7 +110,7 @@ repositories:
   ros-visualization/rqt_console:
     type: git
     url: https://github.com/ros-visualization/rqt_console.git
-    version: d293cc3423c23547dfc430dde293cc15304da88b
+    version: 2.0.2
   ros-visualization/rqt_graph:
     type: git
     url: https://github.com/ros-visualization/rqt_graph.git
@@ -250,7 +250,7 @@ repositories:
   ros2/performance_test_fixture:
     type: git
     url: https://github.com/ros2/performance_test_fixture.git
-    version: ec8ae54e557c7f7ef3978c0197c289320c5ddf47
+    version: 0.0.9
   ros2/pybind11_vendor:
     type: git
     url: https://github.com/ros2/pybind11_vendor.git
@@ -274,7 +274,7 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 33cbd76c07dc9a30e8dbeecd5f5e70057122a369
+    version: 16.0.2
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git

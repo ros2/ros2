@@ -44,7 +44,7 @@ jobs:
       - name: Push spaceros image
         env:
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_RW_TOKEN }}
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        if: ${{ (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main' }}
         run: |
           echo $DOCKER_HUB_TOKEN | docker login --username osrfbot --password-stdin
           cd spaceros

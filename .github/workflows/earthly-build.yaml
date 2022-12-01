@@ -20,13 +20,14 @@ jobs:
         run: |
           cd spaceros
           earthly --ci --output +sources
-          earthly --ci +build-testing
-          printf "::set-output name=archivename::%s\n" $(basename log/build_results_archives/build_results_*.tar.bz2)
+          earthly --ci --output +build-testing
+          echo "archivename=$(basename log/build_results_archives/build_results_*.tar.bz2)" >> $GITHUB_ENV
       - name: Upload build results archive
         uses: actions/upload-artifact@v3
         with:
-          name: ${{steps.build.outputs.archivename}}
-          path: spaceros/log/build_results_archives/${{steps.build.outputs.archivename}}
+          name: ${{env.archivename}}
+          path: spaceros/log/build_results_archives/${{env.archivename}}
+          if-no-files-found: error
   space-ros-image:
     runs-on: ubuntu-latest
     steps:

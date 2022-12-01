@@ -124,7 +124,7 @@ build-testing:
   RUN colcon test --retest-until-pass 2 --ctest-args -LE "(ikos|xfail)" --pytest-args -m "not xfail"
   RUN . install/setup.sh && ros2 run process_sarif make_build_archive
   COPY +vcs-exact/exact.repos install/exact.repos
-  SAVE ARTIFACT log/build_results_archives/build_results*.tar.bz2 AS LOCAL spaceros_ws/log/build_results_archives/
+  SAVE ARTIFACT log/build_results_archives/build_results_*.tar.bz2 AS LOCAL log/build_results_archives/
   SAVE ARTIFACT install AS LOCAL install
 
 image:
@@ -147,4 +147,4 @@ image:
   COPY entrypoint.sh /ros_entrypoint.sh
   ENTRYPOINT ["/ros_entrypoint.sh"]
   CMD ["bash"]
-  SAVE IMAGE osrf/space-ros:latest
+  SAVE IMAGE --push osrf/space-ros:latest

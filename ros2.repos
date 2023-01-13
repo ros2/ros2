@@ -278,7 +278,7 @@ repositories:
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 3.3.6
+    version: 3.3.7
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git

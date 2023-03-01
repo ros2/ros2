@@ -34,6 +34,7 @@ ubuntu                jammy                      a8780b506fa4   5 days ago      
 
 The new image is named **osrf/space-ros:latest**.
 
+The `rocker` library is required to run the built image, install it by `sudo apt-get install python3-rocker`.
 There is a run.sh script provided for convenience that will run the spaceros image in a container.
 
 ```

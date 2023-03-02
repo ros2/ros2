@@ -98,7 +98,7 @@ sources:
   SAVE ARTIFACT src AS LOCAL src
 
 workspace:
-  FROM +setup
+  FROM +sources
   COPY src src/
 
 vcs-exact:

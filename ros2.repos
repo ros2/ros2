@@ -35,11 +35,11 @@ repositories:
   common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git
-    version: 4.2.2
+    version: 4.2.3
   console_bridge_vendor:
     type: git
     url: https://github.com/ros2/console_bridge_vendor.git
-    version: 1.4.0
+    version: 1.4.1
   cyclonedds:
     type: git
     url: https://github.com/eclipse-cyclonedds/cyclonedds.git
@@ -51,7 +51,7 @@ repositories:
   geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: 0.25.1
+    version: 0.25.2
   google_benchmark_vendor:
     type: git
     url: https://github.com/ament/google_benchmark_vendor.git
@@ -67,19 +67,19 @@ repositories:
   kdl_parser:
     type: git
     url: https://github.com/ros/kdl_parser.git
-    version: 2.6.3
+    version: 2.6.4
   launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: 1.0.3
+    version: 1.0.4
   launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
-    version: 0.19.3
+    version: 0.19.4
   libstatistics_collector:
     type: git
     url: https://github.com/ros-tooling/libstatistics_collector.git
-    version: 1.3.0
+    version: 1.3.1
   libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
@@ -95,7 +95,7 @@ repositories:
   orocos_kdl_vendor:
     type: git
     url: https://github.com/ros2/orocos_kdl_vendor.git
-    version: 0.2.4
+    version: 0.2.5
   osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
@@ -119,7 +119,7 @@ repositories:
   pybind11_vendor:
     type: git
     url: https://github.com/ros2/pybind11_vendor.git
-    version: 2.4.1
+    version: 2.4.2
   python_cmake_module:
     type: git
     url: https://github.com/ros2/python_cmake_module.git
@@ -139,11 +139,11 @@ repositories:
   rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 16.0.2
+    version: 16.0.3
   rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 3.3.5
+    version: 3.3.7
   rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
@@ -167,7 +167,7 @@ repositories:
   rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
-    version: 2.8.1
+    version: 2.8.2
   robot_state_publisher:
     type: git
     url: https://github.com/ros/robot_state_publisher.git
@@ -179,7 +179,7 @@ repositories:
   ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: 0.18.4
+    version: 0.18.5
   ros_environment:
     type: git
     url: https://github.com/ros/ros_environment.git
@@ -215,7 +215,7 @@ repositories:
   spdlog_vendor:
     type: git
     url: https://github.com/ros2/spdlog_vendor.git
-    version: 1.3.0
+    version: 1.3.1
   test_interface_files:
     type: git
     url: https://github.com/ros2/test_interface_files.git

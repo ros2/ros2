@@ -34,11 +34,11 @@ repositories:
   eProsima/Fast-DDS:
     type: git
     url: https://github.com/eProsima/Fast-DDS.git
-    version: v2.1.2
+    version: v2.1.3
   eProsima/foonathan_memory_vendor:
     type: git
     url: https://github.com/eProsima/foonathan_memory_vendor.git
-    version: v1.3.0
+    version: v1.2.0
   eclipse-cyclonedds/cyclonedds:
     type: git
     url: https://github.com/eclipse-cyclonedds/cyclonedds.git
@@ -134,7 +134,7 @@ repositories:
   ros-visualization/tango_icons_vendor:
     type: git
     url: https://github.com/ros-visualization/tango_icons_vendor.git
-    version: 0.1.1
+    version: 0.1.0
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git
@@ -230,7 +230,7 @@ repositories:
   ros2/performance_test_fixture:
     type: git
     url: https://github.com/ros2/performance_test_fixture.git
-    version: 0.1.0
+    version: 0.0.9
   ros2/python_cmake_module:
     type: git
     url: https://github.com/ros2/python_cmake_module.git

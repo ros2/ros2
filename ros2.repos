@@ -355,6 +355,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rosidl_dynamic_typesupport
     version: rolling
+  ros2/rosidl_dynamic_typesupport_fastrtps:
+    type: git
+    url: https://github.com/ros2/rosidl_dynamic_typesupport_fastrtps
+    version: rolling
   ros2/rosidl_python:
     type: git
     url: https://github.com/ros2/rosidl_python.git

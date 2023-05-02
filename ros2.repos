@@ -34,15 +34,15 @@ repositories:
   eProsima/Fast-DDS:
     type: git
     url: https://github.com/eProsima/Fast-DDS.git
-    version: 6c9cd512d843792e718131db9a20fe86ae946a12
+    version: 2.10.1
   eProsima/foonathan_memory_vendor:
     type: git
     url: https://github.com/eProsima/foonathan_memory_vendor.git
-    version: fd6ac25119d2f66e89d77c18c454267f4915059d
+    version: v1.3.0
   eclipse-cyclonedds/cyclonedds:
     type: git
     url: https://github.com/eclipse-cyclonedds/cyclonedds.git
-    version: 1d528dec7357b7cde18336fe935a64287dcf8dc8
+    version: 0.10.3
   eclipse-iceoryx/iceoryx:
     type: git
     url: https://github.com/eclipse-iceoryx/iceoryx.git
@@ -58,7 +58,7 @@ repositories:
   osrf/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
-    version: 944277347f91843d4684bc310d42f6f14fab3c83
+    version: 2.1.2
   osrf/osrf_testing_tools_cpp:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
@@ -78,11 +78,11 @@ repositories:
   ros-tooling/keyboard_handler:
     type: git
     url: https://github.com/ros-tooling/keyboard_handler.git
-    version: 9cf8a9aef770e151200ee800c9f9f8d0fcc06f62
+    version: 0.1.0
   ros-tooling/libstatistics_collector:
     type: git
     url: https://github.com/ros-tooling/libstatistics_collector.git
-    version: 8a101f3474a258056024f14ba92b54f84d8958d7
+    version: 1.5.1
   ros-visualization/interactive_markers:
     type: git
     url: https://github.com/ros-visualization/interactive_markers.git

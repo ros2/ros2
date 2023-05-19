@@ -86,9 +86,11 @@ setup:
     echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME
   USER ${USERNAME}
-
   WORKDIR $SPACEROS_DIR
 
+  # Update the OpenGL version
+  RUN sudo add-apt-repository ppa:kisak/kisak-mesa
+  RUN sudo apt update && sudo apt upgrade -y
 
 sources:
   FROM +setup
@@ -129,7 +131,6 @@ build-testing:
 
 image:
   FROM +rosdep
-
   ARG VCS_REF
 
   # Specify the docker image metadata

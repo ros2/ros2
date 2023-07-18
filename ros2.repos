@@ -2,7 +2,7 @@ repositories:
   ament/ament_cmake:
     type: git
     url: https://github.com/ament/ament_cmake.git
-    version: 1.3.4
+    version: 1.3.5
   ament/ament_index:
     type: git
     url: https://github.com/ament/ament_index.git
@@ -10,7 +10,7 @@ repositories:
   ament/ament_lint:
     type: git
     url: https://github.com/ament/ament_lint.git
-    version: 0.12.6
+    version: 0.12.7
   ament/ament_package:
     type: git
     url: https://github.com/ament/ament_package.git
@@ -38,7 +38,7 @@ repositories:
   eProsima/foonathan_memory_vendor:
     type: git
     url: https://github.com/eProsima/foonathan_memory_vendor.git
-    version: v1.2.0
+    version: v1.3.1
   eclipse-cyclonedds/cyclonedds:
     type: git
     url: https://github.com/eclipse-cyclonedds/cyclonedds.git
@@ -58,7 +58,7 @@ repositories:
   osrf/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
-    version: 2.1.1
+    version: 2.1.3
   osrf/osrf_testing_tools_cpp:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
@@ -222,7 +222,7 @@ repositories:
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: 0.25.2
+    version: 0.25.3
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
@@ -230,7 +230,7 @@ repositories:
   ros2/launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
-    version: 0.19.4
+    version: 0.19.5
   ros2/libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
@@ -262,7 +262,7 @@ repositories:
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: 5.3.3
+    version: 5.3.4
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
@@ -274,11 +274,11 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 16.0.4
+    version: 16.0.5
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 3.3.8
+    version: 3.3.9
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
@@ -298,7 +298,7 @@ repositories:
   ros2/rmw_connextdds:
     type: git
     url: https://github.com/ros2/rmw_connextdds.git
-    version: 0.11.1
+    version: 0.11.2
   ros2/rmw_cyclonedds:
     type: git
     url: https://github.com/ros2/rmw_cyclonedds.git
@@ -310,7 +310,7 @@ repositories:
   ros2/rmw_fastrtps:
     type: git
     url: https://github.com/ros2/rmw_fastrtps.git
-    version: 6.2.2
+    version: 6.2.3
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
@@ -338,7 +338,7 @@ repositories:
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: 3.1.4
+    version: 3.1.5
   ros2/rosidl_dds:
     type: git
     url: https://github.com/ros2/rosidl_dds.git
@@ -358,11 +358,11 @@ repositories:
   ros2/rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git
-    version: 2.0.0
+    version: 2.0.1
   ros2/rosidl_typesupport_fastrtps:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_fastrtps.git
-    version: 2.2.0
+    version: 2.2.1
   ros2/rpyutils:
     type: git
     url: https://github.com/ros2/rpyutils.git
@@ -370,7 +370,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 11.2.5
+    version: 11.2.6
   ros2/spdlog_vendor:
     type: git
     url: https://github.com/ros2/spdlog_vendor.git

@@ -14,7 +14,6 @@ Looking to get started with ROS? Our [installation guide is here](https://www.ro
 * [Official ROS Videos](https://vimeo.com/osrfoundation)
 * [ROSCon](https://roscon.ros.org), our yearly developer conference. 
 * Cite ROS 2 in academic work using [DOI: 10.1126/scirobotics.abm6074](https://www.science.org/doi/10.1126/scirobotics.abm6074) 
-* [ROS 1 Wiki](https://wiki.ros.org/)
 
 ## Developer Resources
 * [ROS 2 Documentation](https://docs.ros.org/)

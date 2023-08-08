@@ -18,8 +18,7 @@ Looking to get started with ROS? Our [installation guide is here](https://www.ro
 
 ## Developer Resources
 * [ROS 2 Documentation](https://docs.ros.org/)
-* [ROS Package Python APIs](https://docs.ros.org/en/rolling/p/)
-* [ROS Package C++ APIs](https://docs.ros.org/en/api/)
+* [ROS Package API reference](https://docs.ros.org/en/rolling/p/)
 * [ROS Package Index](https://index.ros.org/)
 * [ROS on Docker Hub](https://hub.docker.com/_/ros/)
 * [ROS Resource Status Page](https://status.openrobotics.org/)

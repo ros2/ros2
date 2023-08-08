@@ -32,4 +32,3 @@ Looking to get started with ROS? Our [installation guide is here](https://www.ro
   * [ROS.org on Twitter](https://twitter.com/ROSOrg)
 
 ROS is made possible through the generous support of open source contributors and the non-profit [Open Source Robotics Foundation (OSRF)](https://www.openrobotics.org/). Tax deductible donations to the OSRF can be [made here.](https://donorbox.org/support-open-robotics?utm_medium=qrcode&utm_source=qrcode)
-

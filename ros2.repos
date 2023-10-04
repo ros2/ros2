@@ -3,7 +3,7 @@ repositories:
   ament_cmake:
     type: git
     url: https://github.com/ament/ament_cmake.git
-    version: 1.3.4
+    version: 1.3.5
   ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
@@ -43,7 +43,7 @@ repositories:
   cyclonedds:
     type: git
     url: https://github.com/eclipse-cyclonedds/cyclonedds.git
-    version: 0.9.1
+    version: 0.10.3
   eigen3_cmake_module:
     type: git
     url: https://github.com/ros2/eigen3_cmake_module.git
@@ -51,11 +51,11 @@ repositories:
   geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: 0.25.2
+    version: 0.25.4
   google_benchmark_vendor:
     type: git
     url: https://github.com/ament/google_benchmark_vendor.git
-    version: 0.1.1
+    version: 0.1.2
   googletest:
     type: git
     url: https://github.com/ament/googletest.git
@@ -75,7 +75,7 @@ repositories:
   launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
-    version: 0.19.4
+    version: 0.19.6
   libstatistics_collector:
     type: git
     url: https://github.com/ros-tooling/libstatistics_collector.git
@@ -127,7 +127,7 @@ repositories:
   rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: 5.3.3
+    version: 5.3.5
   rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
@@ -139,11 +139,11 @@ repositories:
   rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 16.0.4
+    version: 16.0.6
   rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 3.3.8
+    version: 3.3.10
   rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
@@ -179,7 +179,7 @@ repositories:
   ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: 0.18.6
+    version: 0.18.7
   ros_environment:
     type: git
     url: https://github.com/ros/ros_environment.git
@@ -191,7 +191,7 @@ repositories:
   rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: 3.1.4
+    version: 3.1.5
   rosidl_defaults:
     type: git
     url: https://github.com/ros2/rosidl_defaults.git
@@ -207,7 +207,7 @@ repositories:
   rosidl_typesupport:
     type: git
     url: https://github.com/ros2/rosidl_typesupport.git
-    version: 2.0.0
+    version: 2.0.1
   rpyutils:
     type: git
     url: https://github.com/ros2/rpyutils.git

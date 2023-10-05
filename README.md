@@ -4,5 +4,5 @@ Documentation is at https://space.ros.org
 
 # Contribution rules
 
-See the [contributing guide](Contributing.md) for details on how to contribute
+See the [contributing guide](CONTRIBUTING.md) for details on how to contribute
 to the Space ROS project.

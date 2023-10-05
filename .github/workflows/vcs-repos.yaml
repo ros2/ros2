@@ -2,9 +2,7 @@
 name: Generate vcstool repos file.
 
 on:
-  push:
-    branches:
-      - '*'
+  workflow_dispatch:
 
 jobs:
   update_ros2_repos:

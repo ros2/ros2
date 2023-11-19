@@ -334,7 +334,7 @@ repositories:
   ros2/rosbag2:
     type: git
     url: https://github.com/ros2/rosbag2.git
-    version: 0.22.4
+    version: 0.22.5
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git

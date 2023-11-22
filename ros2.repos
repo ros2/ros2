@@ -2,7 +2,7 @@ repositories:
   ament/ament_cmake:
     type: git
     url: https://github.com/ament/ament_cmake.git
-    version: 1.3.5
+    version: 1.3.6
   ament/ament_index:
     type: git
     url: https://github.com/ament/ament_index.git
@@ -10,7 +10,7 @@ repositories:
   ament/ament_lint:
     type: git
     url: https://github.com/ament/ament_lint.git
-    version: 0.12.8
+    version: 0.12.9
   ament/ament_package:
     type: git
     url: https://github.com/ament/ament_package.git
@@ -90,7 +90,7 @@ repositories:
   ros-visualization/python_qt_binding:
     type: git
     url: https://github.com/ros-visualization/python_qt_binding.git
-    version: 1.1.1
+    version: 1.1.2
   ros-visualization/qt_gui_core:
     type: git
     url: https://github.com/ros-visualization/qt_gui_core.git
@@ -134,7 +134,7 @@ repositories:
   ros-visualization/rqt_reconfigure:
     type: git
     url: https://github.com/ros-visualization/rqt_reconfigure.git
-    version: 1.1.1
+    version: 1.1.2
   ros-visualization/rqt_service_caller:
     type: git
     url: https://github.com/ros-visualization/rqt_service_caller.git
@@ -222,7 +222,7 @@ repositories:
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: 0.25.4
+    version: 0.25.5
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
@@ -262,7 +262,7 @@ repositories:
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: 5.3.5
+    version: 5.3.6
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
@@ -274,11 +274,11 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 16.0.6
+    version: 16.0.7
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 3.3.10
+    version: 3.3.11
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
@@ -286,7 +286,7 @@ repositories:
   ros2/rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git
-    version: 5.1.3
+    version: 5.1.4
   ros2/realtime_support:
     type: git
     url: https://github.com/ros2/realtime_support.git
@@ -310,7 +310,7 @@ repositories:
   ros2/rmw_fastrtps:
     type: git
     url: https://github.com/ros2/rmw_fastrtps.git
-    version: 6.2.4
+    version: 6.2.5
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
@@ -362,7 +362,7 @@ repositories:
   ros2/rosidl_typesupport_fastrtps:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_fastrtps.git
-    version: 2.2.1
+    version: 2.2.2
   ros2/rpyutils:
     type: git
     url: https://github.com/ros2/rpyutils.git
@@ -370,7 +370,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 11.2.8
+    version: 11.2.9
   ros2/spdlog_vendor:
     type: git
     url: https://github.com/ros2/spdlog_vendor.git
@@ -382,7 +382,7 @@ repositories:
   ros2/system_tests:
     type: git
     url: https://github.com/ros2/system_tests.git
-    version: 0.12.3
+    version: 0.12.4
   ros2/test_interface_files:
     type: git
     url: https://github.com/ros2/test_interface_files.git
@@ -390,7 +390,7 @@ repositories:
   ros2/tinyxml2_vendor:
     type: git
     url: https://github.com/ros2/tinyxml2_vendor.git
-    version: 0.7.5
+    version: 0.7.6
   ros2/tinyxml_vendor:
     type: git
     url: https://github.com/ros2/tinyxml_vendor.git

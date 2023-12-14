@@ -9,8 +9,8 @@ The [Earthly](https://earthly.dev/get-earthly) utility is required to build this
 
 To build the image, run:
 
-```
-$ ./build.sh
+```bash
+./build.sh
 ```
 
 The build process will take about 20 or 30 minutes, depending on the host computer.
@@ -25,8 +25,8 @@ earthly +image --SPACEROS_REPO_URL="https://github.com/my-org/my-spaceros-fork.g
 
 After building the image, you can see the newly-built image by running:
 
-```
-$ docker image list
+```bash
+docker image list
 ```
 
 The output will look something like this:
@@ -43,8 +43,8 @@ The new image is named **osrf/space-ros:latest**.
 The `rocker` library is required to run the built image, install it by `sudo apt-get install python3-rocker`.
 There is a run.sh script provided for convenience that will run the spaceros image in a container.
 
-```
-$ ./run.sh
+```bash
+./run.sh
 ```
 
 Upon startup, the container automatically runs the entrypoint.sh script, which sources the Space ROS environment file (setup.bash). You'll now be running inside the container and should see a prompt similar to this:
@@ -169,8 +169,8 @@ Sometimes it may be convenient to attach additional terminals to a running Docke
 
 With the Space ROS Docker container running, open a second host terminal and then run the following command to determine the container ID:
 
-```
-$ docker container list
+```bash
+docker container list
 ```
 
 The output will look something like this:
@@ -182,7 +182,7 @@ d10d85c68f0e   openrobotics/spaceros   "/entrypoint.sh …"   28 minutes ago   U
 
 The container ID in this case, is *d10d85c68f0e*. So, run the following command in the host terminal:
 
-```
+```bash
 docker exec -it d10d85c68f0e /bin/bash --init-file "install/setup.bash"
 ```
 

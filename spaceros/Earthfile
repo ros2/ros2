@@ -18,8 +18,8 @@ FROM ubuntu:jammy
 # https://docs.earthly.dev/docs/earthfile/builtin-args
 ARG EARTHLY_GIT_BRANCH
 
-# these can be overriden from cli
-# example -> `earthly +image --SPACEROS_REPO_URL=https://...
+# these can be overriden from cli. Example:
+# `earthly +image --SPACEROS_REPO_URL=https://...`
 ARG SPACEROS_REPO_URL="https://github.com/space-ros/space-ros.git"
 ARG GIT_BRANCH=${EARTHLY_GIT_BRANCH}
 

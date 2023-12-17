@@ -11,6 +11,7 @@ echo "##### Building Space ROS Docker Image #####"
 echo ""
 
 rm -rf src
+earthly +sources
 earthly +image \
     --VCS_REF="$VCS_REF"
 

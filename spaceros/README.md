@@ -15,6 +15,12 @@ $ ./build.sh
 
 The build process will take about 20 or 30 minutes, depending on the host computer.
 
+The build process defaults to cloning the `ros2.repos` file from [spaceros](https://github.com/space-ros/space-ros) repository. It looks for a branch with the same name as the current local branch; if it doesn't find one, it falls back to cloning from the main branch. For testing purposes, you can customize both the spaceros repository URL and the branch name by modifying arguments defined in the [Earthfile](./Earthfile).
+Example:
+```bash
+earthly +image --SPACEROS_REPO_URL="https://github.com/my-org/my-spaceros-fork.git"
+``` 
+
 ## Running the Space ROS Docker Image in a Container
 
 After building the image, you can see the newly-built image by running:

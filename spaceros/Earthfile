@@ -14,6 +14,15 @@
 VERSION 0.6
 FROM ubuntu:jammy
 
+# current git branch, prefilled by earthly
+# https://docs.earthly.dev/docs/earthfile/builtin-args
+ARG EARTHLY_GIT_BRANCH
+
+# can be overriden from cli by passing --GIT_BRANCH=... as an argument
+# example -> `earthly +image --SPACEROS_REPO_URL=https://...
+ARG GIT_BRANCH=${EARTHLY_GIT_BRANCH}
+ARG SPACEROS_REPO_URL="https://github.com/space-ros/space-ros.git"
+
 earthfile:
   COPY Earthfile Earthfile
   SAVE ARTIFACT Earthfile
@@ -21,7 +30,7 @@ earthfile:
 setup:
   # Disable prompting during package installation
   ARG DEBIAN_FRONTEND=noninteractive
-  
+
   # The following commands are based on the source install for ROS 2 Rolling Ridley.
   # See: https://docs.ros.org/en/ros2_documentation/rolling/Installation/Ubuntu-Development-Setup.html
   # The main variation is getting Space ROS sources instead of the Rolling sources.
@@ -74,7 +83,6 @@ setup:
   ENV HOME_DIR=/home/${USERNAME}
   ENV SPACEROS_DIR=${HOME_DIR}/spaceros
   ARG IKOS_DIR=${HOME_DIR}/ikos
-  ARG REPOS_FILE_URL="https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos"
   ENV ROSDISTRO=humble
 
   # Create a spaceros user
@@ -94,9 +102,18 @@ setup:
 
 sources:
   FROM +setup
-  COPY github.com/space-ros/space-ros:earthly-wrapper+repos-file/ros2.repos ros2.repos
+  RUN mkdir spaceros_repo_dir
+
+  IF[ -z "$(git -C spaceros_repo_dir ls-remote ${SPACEROS_REPO_URL} ${GIT_BRANCH})" ]
+    RUN echo "branch '${GIT_BRANCH}' does not exist in spaceros repo, cloning main branch"
+    GIT CLONE ${SPACEROS_REPO_URL} spaceros_repo_dir/
+  ELSE
+    RUN echo "cloning branch '${GIT_BRANCH}' from spaceros repo"
+    GIT CLONE --branch ${GIT_BRANCH} ${SPACEROS_REPO_URL} spaceros_repo_dir/
+  END
+
   RUN mkdir src
-  RUN vcs import src < ros2.repos
+  RUN vcs import src < spaceros_repo_dir/ros2.repos
   SAVE ARTIFACT src AS LOCAL src
 
 workspace:

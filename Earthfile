@@ -39,6 +39,6 @@ repos-file:
   COPY excluded-pkgs.txt ./
   COPY spaceros-pkgs.txt ./
   COPY spaceros.repos ./
-  RUN sh scripts/generate-repos.sh
-  RUN ruby scripts/merge-repos.rb
+  RUN --no-cache sh scripts/generate-repos.sh
+  RUN --no-cache ruby scripts/merge-repos.rb
   SAVE ARTIFACT ros2.repos AS LOCAL ros2.repos

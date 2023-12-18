@@ -21,7 +21,7 @@ ARG EARTHLY_GIT_BRANCH
 # these can be overriden from cli. Example:
 # `earthly +image --SPACEROS_REPO_URL=https://...`
 ARG SPACEROS_REPO_URL="https://github.com/space-ros/space-ros.git"
-ARG GIT_BRANCH=${EARTHLY_GIT_BRANCH}
+ARG SPACEROS_GIT_REF=${EARTHLY_GIT_BRANCH}
 
 earthfile:
   COPY Earthfile Earthfile
@@ -104,12 +104,12 @@ sources:
   FROM +setup
   RUN mkdir spaceros_repo_dir
 
-  IF[ -z "$(git ls-remote ${SPACEROS_REPO_URL} ${GIT_BRANCH})" ]
-    RUN echo "branch '${GIT_BRANCH}' does not exist in spaceros repo, cloning main branch"
+  IF[ -z "$(git ls-remote ${SPACEROS_REPO_URL} ${SPACEROS_GIT_REF})" ]
+    # branch '${SPACEROS_GIT_REF}' does not exist in spaceros repo, cloning main branch
     GIT CLONE ${SPACEROS_REPO_URL} spaceros_repo_dir/
   ELSE
-    RUN echo "cloning branch '${GIT_BRANCH}' from spaceros repo"
-    GIT CLONE --branch ${GIT_BRANCH} ${SPACEROS_REPO_URL} spaceros_repo_dir/
+    # branch with the same name exists, cloning from it
+    GIT CLONE --branch ${SPACEROS_GIT_REF} ${SPACEROS_REPO_URL} spaceros_repo_dir/
   END
 
   RUN mkdir src

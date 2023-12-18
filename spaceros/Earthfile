@@ -104,7 +104,7 @@ sources:
   FROM +setup
   RUN mkdir spaceros_repo_dir
 
-  IF[ -z "$(git -C spaceros_repo_dir ls-remote ${SPACEROS_REPO_URL} ${GIT_BRANCH})" ]
+  IF[ -z "$(git ls-remote ${SPACEROS_REPO_URL} ${GIT_BRANCH})" ]
     RUN echo "branch '${GIT_BRANCH}' does not exist in spaceros repo, cloning main branch"
     GIT CLONE ${SPACEROS_REPO_URL} spaceros_repo_dir/
   ELSE

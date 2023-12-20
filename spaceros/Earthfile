@@ -14,10 +14,6 @@
 VERSION 0.6
 FROM ubuntu:jammy
 
-# current git branch, prefilled by earthly
-# https://docs.earthly.dev/docs/earthfile/builtin-args
-ARG EARTHLY_GIT_BRANCH
-
 earthfile:
   COPY Earthfile Earthfile
   SAVE ARTIFACT Earthfile
@@ -95,73 +91,38 @@ setup:
   RUN sudo add-apt-repository ppa:kisak/kisak-mesa
   RUN sudo apt update && sudo apt upgrade -y
 
-clone-spaceros-artifacts:
+spaceros-artifacts:
   # we must run it in a separate container, so that downstream tasks can be cached if vcs file does not change
   FROM ubuntu:jammy
   RUN apt-get update && apt-get install -y git wget
 
   # main purpose of this command is to make sure that the git ls-remote results are not cached
   RUN --no-cache echo "Cloning spaceros repo artifacts"
-  
+
+  # current git branch, prefilled by earthly: https://docs.earthly.dev/docs/earthfile/builtin-args
+  ARG EARTHLY_GIT_BRANCH
+
   ARG SPACEROS_REPO_URL="https://github.com/space-ros/space-ros.git"
-  # set default spaceros git ref to current branch in local repo
-  ARG SPACEROS_GIT_REF=${EARTHLY_GIT_BRANCH} # EARTHLY_GIT_BRANCH is populated by earthly
+  # if current local branch does not exist in target repo then use main. note that branch supplied from CLI overrides this behavior.
+  ARG SPACEROS_GIT_REF="$( [ -n \"$(git ls-remote $SPACEROS_REPO_URL $EARTHLY_GIT_BRANCH)\" ] && echo $EARTHLY_GIT_BRANCH || echo 'main' )"
+  # get exact commit hash. this makes sure that build will be re-triggered when new commit is pushed 
+  ARG _GIT_COMMIT_HASH = "$(git ls-remote $SPACEROS_REPO_URL $SPACEROS_GIT_REF | cut -f 1)"
 
-  # if SPACEROS_GIT_REF branch does not exist, artifacts will be cloned from fallback branch
-  ARG _FALLBACK_BRANCH = "main"
-
-  ARG _GIT_REF_EXISTS = $([ -z $(git ls-remote ${SPACEROS_REPO_URL} ${SPACEROS_GIT_REF}) ] && echo false || echo true)
-  ARG _MAIN_SPACEROS_REPO_IS_USED = $([ ${SPACEROS_REPO_URL} = "https://github.com/space-ros/space-ros.git" ] && echo true || echo false)
-  ARG _GIT_REF_OVERRIDEN_BY_USER = $([ ${SPACEROS_GIT_REF} != ${EARTHLY_GIT_BRANCH} ] && echo true || echo false)
-
-  # If main spaceros repo is used then do it using wget to avoid unneccessary file copies
-  IF [ ${_MAIN_SPACEROS_REPO_IS_USED} ] && [ ${_GIT_REF_EXISTS} ]
-    RUN wget https://raw.githubusercontent.com/space-ros/space-ros/${SPACEROS_GIT_REF}/ros2.repos
-  ELSE IF [ $_MAIN_SPACEROS_REPO_IS_USED ] && [ !$_GIT_REF_EXISTS ] && [ !$_GIT_REF_OVERRIDEN_BY_USER ]
-    RUN wget https://raw.githubusercontent.com/space-ros/space-ros/${_FALLBACK_BRANCH}/ros2.repos
-  ELSE IF [ !$_MAIN_SPACEROS_REPO_IS_USED ] && [ $_GIT_REF_EXISTS ]
-    GIT CLONE --branch ${SPACEROS_GIT_REF} ${SPACEROS_REPO_URL}
-  ELSE IF [ !$_MAIN_SPACEROS_REPO_IS_USED ] && [ !$_GIT_REF_EXISTS ] && [ !$_GIT_REF_OVERRIDEN_BY_USER ]
-    GIT CLONE --branch ${_FALLBACK_BRANCH} ${SPACEROS_REPO_URL}
-  ELSE 
-    RUN exit 1;
+  # this means that branch specified by user from CLI does not exist
+  IF [ -z ${_GIT_COMMIT_HASH} ] 
+    RUN echo "Specified branch ${SPACEROS_GIT_REF} does not exist" && exit 1
   END
 
-
-
-  # ARG _
-
-  # if branch with the same name does not exist in the spaceros repo, clone from main
-  # ARG _SPACEROS_GIT_REF_SUBSTITUTED="$(
-  #   if 
-  #   then 
-  #     echo 'main'
-  #   else 
-  #     echo '${SPACEROS_GIT_REF}'
-  #   fi
-  # )
-  # "
-
-  # RUN --no-cache echo $_SPACEROS_GIT_REF_SUBSTITUTED
-    # $( then echo 'main'; else echo)"
-
-  # we run this command primarily to call `git ls-remote` without caching
-
-  # if branch ${SPACEROS_GIT_REF} does not exist in `spaceros` repo, default to main branch 
-
-  # download latest commit.
-  IF [ ${SPACEROS_REPO_URL} = "https://github.com/space-ros/space-ros.git" ]
-    
-    RUN 
+  IF [ $SPACEROS_REPO_URL = "https://github.com/space-ros/space-ros.git" ] 
+    RUN wget https://raw.githubusercontent.com/space-ros/space-ros/${_GIT_COMMIT_HASH}/ros2.repos
   ELSE
-    # otherwise clone whole commit (git clone handles authentication etc)
-    GIT CLONE --branch ${LATEST_GIT_REF} ${SPACEROS_REPO_URL} .
+    GIT CLONE --branch ${_GIT_COMMIT_HASH} ${SPACEROS_REPO_URL} .
   END
   SAVE ARTIFACT ros2.repos
 
 sources:
   FROM +setup
-  COPY +clone-spaceros-artifacts/ros2.repos ros2.repos
+  COPY +spaceros-artifacts/ros2.repos ros2.repos
 
   RUN mkdir src
   RUN vcs import src < ros2.repos

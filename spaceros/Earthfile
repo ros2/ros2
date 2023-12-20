@@ -114,6 +114,7 @@ spaceros-artifacts:
   END
 
   IF [ $SPACEROS_REPO_URL = "https://github.com/space-ros/space-ros.git" ] 
+    # run wget because main repo's host is known + it is public 
     RUN wget https://raw.githubusercontent.com/space-ros/space-ros/${_GIT_COMMIT_HASH}/ros2.repos
   ELSE
     GIT CLONE --branch ${_GIT_COMMIT_HASH} ${SPACEROS_REPO_URL} .

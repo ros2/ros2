@@ -106,7 +106,7 @@ spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --ctest-args -LE "(ikos|xfail
 
 The tests include running the static analysis tools clang_tidy and cppcheck (which has the MISRA 2012 add-on enabled).
 
-You can use colcon's --packages-select option to run a subset of packages. For example, to run tests only for the rcpputils package and display the output directly to the console (as well as saving it to a log file), you can run:
+You can use colcon's `--packages-select` option to run a subset of packages. For example, to run tests only for the rcpputils package and display the output directly to the console (as well as saving it to a log file), you can run:
 
 ```
 spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --event-handlers console_direct+ --packages-select rcpputils
@@ -221,10 +221,8 @@ To generate a JUnit XML file for a specific package only, you can add the *--pac
 spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --build-base build_ikos --install-base install_ikos --packages-select rcpputils
 ```
 
-The 'colcon test' command runs various tests, including IKOS report generation, which reads the IKOS database generated in the previous analysis step and generates a JUnit XML report file. After running 'colcon test', you can view the JUnit XML files. For example, to view the JUnit XML file for IKOS scan of the rcpputils binaries you can use the following command:
+The `colcon test` command runs various tests, including IKOS report generation, which reads the IKOS database generated in the previous analysis step and generates a JUnit XML report file. After running `colcon test`, you can view the JUnit XML files. For example, to view the JUnit XML file for IKOS scan of the rcpputils binaries you can use the following command:
 
 ```
 spaceros-user@d10d85c68f0e:~/spaceros$ more build_ikos/rcpputils/test_results/rcpputils/ikos.xunit.xml
-
 ```
-

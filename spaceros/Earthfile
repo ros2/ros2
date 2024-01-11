@@ -21,7 +21,7 @@ earthfile:
 setup:
   # Disable prompting during package installation
   ARG DEBIAN_FRONTEND=noninteractive
-  
+
   # The following commands are based on the source install for ROS 2 Rolling Ridley.
   # See: https://docs.ros.org/en/ros2_documentation/rolling/Installation/Ubuntu-Development-Setup.html
   # The main variation is getting Space ROS sources instead of the Rolling sources.
@@ -74,7 +74,6 @@ setup:
   ENV HOME_DIR=/home/${USERNAME}
   ENV SPACEROS_DIR=${HOME_DIR}/spaceros
   ARG IKOS_DIR=${HOME_DIR}/ikos
-  ARG REPOS_FILE_URL="https://raw.githubusercontent.com/space-ros/space-ros/main/ros2.repos"
   ENV ROSDISTRO=humble
 
   # Create a spaceros user
@@ -92,9 +91,40 @@ setup:
   RUN sudo add-apt-repository ppa:kisak/kisak-mesa
   RUN sudo apt update && sudo apt upgrade -y
 
+spaceros-artifacts:
+  # we must run it in a separate container, so that downstream tasks can be cached if vcs file does not change
+  FROM ubuntu:jammy
+  RUN apt-get update && apt-get install -y git wget
+
+  # main purpose of this command is to make sure that the git ls-remote results are not cached
+  RUN --no-cache echo "Cloning spaceros repo artifacts"
+
+  # current git branch, prefilled by earthly: https://docs.earthly.dev/docs/earthfile/builtin-args
+  ARG EARTHLY_GIT_BRANCH
+
+  ARG SPACEROS_REPO_URL="https://github.com/space-ros/space-ros.git"
+  # if current local branch does not exist in target repo then use main. note that branch supplied from CLI overrides this behavior.
+  ARG SPACEROS_GIT_REF="$( [ -n \"$(git ls-remote $SPACEROS_REPO_URL $EARTHLY_GIT_BRANCH)\" ] && echo $EARTHLY_GIT_BRANCH || echo 'main' )"
+  # get exact commit hash. this makes sure that build will be re-triggered when new commit is pushed 
+  ARG _GIT_COMMIT_HASH = "$(git ls-remote $SPACEROS_REPO_URL $SPACEROS_GIT_REF | cut -f 1)"
+
+  # this means that branch specified by user from CLI does not exist
+  IF [ -z ${_GIT_COMMIT_HASH} ] 
+    RUN echo "Specified branch ${SPACEROS_GIT_REF} does not exist" && exit 1
+  END
+
+  IF [ $SPACEROS_REPO_URL = "https://github.com/space-ros/space-ros.git" ] 
+    # run wget because main repo's host is known + it is public 
+    RUN wget https://raw.githubusercontent.com/space-ros/space-ros/${_GIT_COMMIT_HASH}/ros2.repos
+  ELSE
+    GIT CLONE --branch ${_GIT_COMMIT_HASH} ${SPACEROS_REPO_URL} .
+  END
+  SAVE ARTIFACT ros2.repos
+
 sources:
   FROM +setup
-  COPY github.com/space-ros/space-ros:earthly-wrapper+repos-file/ros2.repos ros2.repos
+  COPY +spaceros-artifacts/ros2.repos ros2.repos
+
   RUN mkdir src
   RUN vcs import src < ros2.repos
   SAVE ARTIFACT src AS LOCAL src

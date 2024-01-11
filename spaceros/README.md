@@ -19,7 +19,7 @@ The build process defaults to cloning the `ros2.repos` file from [spaceros](http
 Example:
 ```bash
 earthly +image --SPACEROS_REPO_URL="https://github.com/my-org/my-spaceros-fork.git" --SPACEROS_GIT_REF="my-branch-name"
-``` 
+```
 
 ## Running the Space ROS Docker Image in a Container
 
@@ -47,7 +47,8 @@ There is a run.sh script provided for convenience that will run the spaceros ima
 ./run.sh
 ```
 
-Upon startup, the container automatically runs the entrypoint.sh script, which sources the Space ROS environment file (setup.bash). You'll now be running inside the container and should see a prompt similar to this:
+Upon startup, the container automatically runs the entrypoint.sh script, which sources the Space ROS environment file (setup.bash).
+You'll now be running inside the container and should see a prompt similar to this:
 
 ```
 spaceros-user@d10d85c68f0e:~/spaceros$
@@ -221,7 +222,8 @@ To generate a JUnit XML file for a specific package only, you can add the *--pac
 spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --build-base build_ikos --install-base install_ikos --packages-select rcpputils
 ```
 
-The `colcon test` command runs various tests, including IKOS report generation, which reads the IKOS database generated in the previous analysis step and generates a JUnit XML report file. After running `colcon test`, you can view the JUnit XML files. For example, to view the JUnit XML file for IKOS scan of the rcpputils binaries you can use the following command:
+The `colcon test` command runs various tests, including IKOS report generation, which reads the IKOS database generated in the previous analysis step and generates a JUnit XML report file.
+After running `colcon test`, you can view the JUnit XML files. For example, to view the JUnit XML file for IKOS scan of the rcpputils binaries you can use the following command:
 
 ```
 spaceros-user@d10d85c68f0e:~/spaceros$ more build_ikos/rcpputils/test_results/rcpputils/ikos.xunit.xml

@@ -53,7 +53,7 @@ Upon startup, the container automatically runs the entrypoint.sh script, which s
 spaceros-user@d10d85c68f0e:~/spaceros$
 ```
 
-At this point, you can run the 'ros2' command line utility to make sure everything is working OK:
+At this point, you can run the `ros2` command line utility to make sure everything is working OK:
 
 ```
 spaceros-user@d10d85c68f0e:~/spaceros$ ros2

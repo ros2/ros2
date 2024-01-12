@@ -1,8 +1,13 @@
 # About 
-The Robot Operating System (ROS) is a set of software libraries and tools that help you build robot applications. From drivers to state-of-the-art algorithms, and with powerful developer tools, ROS has what you need for your next robotics project. And it's all open source. Full project details on [ROS.org](https://ros.org/)
+The Robot Operating System (ROS) is a set of software libraries and tools that help you build robot applications.
+From drivers to state-of-the-art algorithms, and with powerful developer tools, ROS has what you need for your next robotics project.
+And it's all open source.
+Full project details on [ROS.org](https://ros.org/)
 
 # Getting Started 
-Looking to get started with ROS? Our [installation guide is here](https://www.ros.org/blog/getting-started/). Once you've installed ROS start by learning some [basic concepts](https://docs.ros.org/en/rolling/Concepts/Basic.html) and take a look at our [beginner tutorials](https://docs.ros.org/en/rolling/Tutorials/Beginner-CLI-Tools.html).
+Looking to get started with ROS?
+Our [installation guide is here](https://www.ros.org/blog/getting-started/).
+Once you've installed ROS start by learning some [basic concepts](https://docs.ros.org/en/rolling/Concepts/Basic.html) and take a look at our [beginner tutorials](https://docs.ros.org/en/rolling/Tutorials/Beginner-CLI-Tools.html).
 
 # Join the ROS Community
 
@@ -31,4 +36,5 @@ Looking to get started with ROS? Our [installation guide is here](https://www.ro
   * [Open Robotics on Twitter](https://twitter.com/OpenRoboticsOrg)
   * [ROS.org on Twitter](https://twitter.com/ROSOrg)
 
-ROS is made possible through the generous support of open source contributors and the non-profit [Open Source Robotics Foundation (OSRF)](https://www.openrobotics.org/). Tax deductible donations to the OSRF can be [made here.](https://donorbox.org/support-open-robotics?utm_medium=qrcode&utm_source=qrcode)
+ROS is made possible through the generous support of open source contributors and the non-profit [Open Source Robotics Foundation (OSRF)](https://www.openrobotics.org/).
+Tax deductible donations to the OSRF can be [made here.](https://donorbox.org/support-open-robotics?utm_medium=qrcode&utm_source=qrcode)

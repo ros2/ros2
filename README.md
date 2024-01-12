@@ -4,7 +4,7 @@ The Robot Operating System (ROS) is a set of software libraries and tools that h
 # Getting Started 
 Looking to get started with ROS? Our [installation guide is here](https://www.ros.org/blog/getting-started/). Once you've installed ROS start by learning some [basic concepts](https://docs.ros.org/en/rolling/Concepts/Basic.html) and take a look at our [beginner tutorials](https://docs.ros.org/en/rolling/Tutorials/Beginner-CLI-Tools.html).
 
-# Join the [ROS](https://ros.org/) Community
+# Join the ROS Community
 
 ## Community Resources
 

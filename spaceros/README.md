@@ -15,11 +15,13 @@ To build the image, run:
 
 The build process will take about 20 or 30 minutes, depending on the host computer.
 
-The build process defaults to cloning the `ros2.repos` file from [spaceros](https://github.com/space-ros/space-ros) repository. It looks for a branch with the same name as the current local branch; if it doesn't find one, it falls back to cloning from the main branch. For testing purposes, you can customize both the spaceros repository URL and the branch name by modifying arguments defined in the [Earthfile](./Earthfile).
+The build process defaults to cloning the `ros2.repos` file from [spaceros](https://github.com/space-ros/space-ros) repository.
+It looks for a branch with the same name as the current local branch; if it doesn't find one, it falls back to cloning from the main branch.
+For testing purposes, you can customize both the spaceros repository URL and the branch name by modifying arguments defined in the [Earthfile](./Earthfile).
 Example:
 ```bash
 earthly +image --SPACEROS_REPO_URL="https://github.com/my-org/my-spaceros-fork.git" --SPACEROS_GIT_REF="my-branch-name"
-``` 
+```
 
 ## Running the Space ROS Docker Image in a Container
 
@@ -47,7 +49,8 @@ There is a run.sh script provided for convenience that will run the spaceros ima
 ./run.sh
 ```
 
-Upon startup, the container automatically runs the entrypoint.sh script, which sources the Space ROS environment file (setup.bash). You'll now be running inside the container and should see a prompt similar to this:
+Upon startup, the container automatically runs the entrypoint.sh script, which sources the Space ROS environment file (setup.bash).
+You'll now be running inside the container and should see a prompt similar to this:
 
 ```
 spaceros-user@d10d85c68f0e:~/spaceros$
@@ -106,7 +109,8 @@ spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --ctest-args -LE "(ikos|xfail
 
 The tests include running the static analysis tools clang_tidy and cppcheck (which has the MISRA 2012 add-on enabled).
 
-You can use colcon's `--packages-select` option to run a subset of packages. For example, to run tests only for the rcpputils package and display the output directly to the console (as well as saving it to a log file), you can run:
+You can use colcon's `--packages-select` option to run a subset of packages.
+For example, to run tests only for the rcpputils package and display the output directly to the console (as well as saving it to a log file), you can run:
 
 ```
 spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --event-handlers console_direct+ --packages-select rcpputils
@@ -114,7 +118,8 @@ spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --event-handlers console_dire
 
 ## Viewing Test Output
 
- The output from the tests are stored in XUnit XML files, named *\<tool-name\>*.xunit.xml. After running the unit tests, you can scan the build directory for the various *\*.xunit.xml* files.
+ The output from the tests are stored in XUnit XML files, named *\<tool-name\>*.xunit.xml.
+After running the unit tests, you can scan the build directory for the various *\*.xunit.xml* files.
 
  For example, a clang_tidy.xunit.xml file looks like this:
 
@@ -180,7 +185,8 @@ CONTAINER ID   IMAGE                   COMMAND                  CREATED         
 d10d85c68f0e   openrobotics/spaceros   "/entrypoint.sh …"   28 minutes ago   Up 28 minutes             inspiring_moser
 ```
 
-The container ID in this case, is *d10d85c68f0e*. So, run the following command in the host terminal:
+The container ID in this case, is *d10d85c68f0e*.
+So, run the following command in the host terminal:
 
 ```bash
 docker exec -it d10d85c68f0e /bin/bash --init-file "install/setup.bash"
@@ -221,7 +227,9 @@ To generate a JUnit XML file for a specific package only, you can add the *--pac
 spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --build-base build_ikos --install-base install_ikos --packages-select rcpputils
 ```
 
-The `colcon test` command runs various tests, including IKOS report generation, which reads the IKOS database generated in the previous analysis step and generates a JUnit XML report file. After running `colcon test`, you can view the JUnit XML files. For example, to view the JUnit XML file for IKOS scan of the rcpputils binaries you can use the following command:
+The `colcon test` command runs various tests, including IKOS report generation, which reads the IKOS database generated in the previous analysis step and generates a JUnit XML report file.
+After running `colcon test`, you can view the JUnit XML files.
+For example, to view the JUnit XML file for IKOS scan of the rcpputils binaries you can use the following command:
 
 ```
 spaceros-user@d10d85c68f0e:~/spaceros$ more build_ikos/rcpputils/test_results/rcpputils/ikos.xunit.xml

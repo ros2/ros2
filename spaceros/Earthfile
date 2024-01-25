@@ -73,7 +73,6 @@ setup:
   ENV USERNAME spaceros-user
   ENV HOME_DIR=/home/${USERNAME}
   ENV SPACEROS_DIR=${HOME_DIR}/spaceros
-  ARG IKOS_DIR=${HOME_DIR}/ikos
   ENV ROSDISTRO=humble
 
   # Create a spaceros user
@@ -143,6 +142,28 @@ rosdep:
   # Install system package dependencies using rosdep
   RUN sudo rosdep init && rosdep update
   RUN rosdep install --from-paths src --ignore-src --rosdistro rolling -y --skip-keys "console_bridge fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos"
+
+  RUN sudo apt-get install --yes \
+           gcc g++ cmake libgmp-dev libboost-dev libboost-filesystem-dev \
+           libboost-thread-dev libboost-test-dev \
+           libsqlite3-dev libtbb-dev libz-dev libedit-dev \
+           python3 python3-pip python3-venv \
+           llvm-14 llvm-14-dev llvm-14-tools clang-14
+
+  WORKDIR $SPACEROS_DIR
+  RUN git clone -b v3.2 --depth 1 https://github.com/NASA-SW-VnV/ikos.git
+  WORKDIR $SPACEROS_DIR/ikos
+  RUN mkdir build
+  WORKDIR $SPACEROS_DIR/ikos/build
+  RUN cmake \
+        -DCMAKE_INSTALL_PREFIX="/opt/ikos" \
+        -DCMAKE_BUILD_TYPE="Debug" \
+        -DLLVM_CONFIG_EXECUTABLE="/usr/lib/llvm-14/bin/llvm-config" \
+        ..
+  RUN make
+  RUN sudo make install
+  WORKDIR $SPACEROS_DIR
+  RUN sudo rm -rf ikos/
 
 build:
   FROM +rosdep

@@ -115,14 +115,17 @@ spaceros-artifacts:
   IF [ $SPACEROS_REPO_URL = "https://github.com/space-ros/space-ros.git" ] 
     # run wget because main repo's host is known + it is public 
     RUN wget https://raw.githubusercontent.com/space-ros/space-ros/${_GIT_COMMIT_HASH}/ros2.repos
+    RUN wget https://raw.githubusercontent.com/space-ros/space-ros/${_GIT_COMMIT_HASH}/excluded-pkgs.txt
   ELSE
     GIT CLONE --branch ${_GIT_COMMIT_HASH} ${SPACEROS_REPO_URL} .
   END
   SAVE ARTIFACT ros2.repos
+  SAVE ARTIFACT excluded-pkgs.txt
 
 sources:
   FROM +setup
   COPY +spaceros-artifacts/ros2.repos ros2.repos
+  COPY +spaceros-artifacts/excluded-pkgs.txt excluded-pkgs.txt
 
   RUN mkdir src
   RUN vcs import src < ros2.repos
@@ -141,7 +144,14 @@ rosdep:
   FROM +workspace
   # Install system package dependencies using rosdep
   RUN sudo rosdep init && rosdep update
-  RUN rosdep install --from-paths src --ignore-src --rosdistro rolling -y --skip-keys "console_bridge fastcdr fastrtps rti-connext-dds-5.3.1 urdfdom_headers rmw_connextdds ros_testing rmw_connextdds rmw_fastrtps_cpp rmw_fastrtps_dynamic_cpp composition demo_nodes_py lifecycle rosidl_typesupport_fastrtps_cpp rosidl_typesupport_fastrtps_c ikos"
+  RUN rosdep install -y \
+      --from-paths src --ignore-src \
+      --rosdistro ${ROSDISTRO} \
+      # `urdfdom_headers` is cloned from source, however rosdep can't find it.
+      # It is because package.xml manifest is missing. See: https://github.com/ros/urdfdom_headers
+      # Additionally, IKOS must be excluded as per: https://github.com/space-ros/docker/issues/99
+      --skip-keys "$(tr '\n' ' ' < 'excluded-pkgs.txt') urdfdom_headers ikos"
+  RUN rm excluded-pkgs.txt
 
   RUN sudo apt-get install --yes \
            gcc g++ cmake libgmp-dev libboost-dev libboost-filesystem-dev \

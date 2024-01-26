@@ -7,3 +7,6 @@ rmw_connextdds
 rosidl_typesupport_fastrtps_c
 rosidl_typesupport_fastrtps_cpp
 fastrtps_cmake_module
+demo_nodes_py
+composition
+lifecycle

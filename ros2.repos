@@ -3,7 +3,7 @@ repositories:
   ament_cmake:
     type: git
     url: https://github.com/ament/ament_cmake.git
-    version: 1.3.5
+    version: 1.3.6
   ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
@@ -51,7 +51,7 @@ repositories:
   geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: 0.25.4
+    version: 0.25.5
   google_benchmark_vendor:
     type: git
     url: https://github.com/ament/google_benchmark_vendor.git
@@ -63,7 +63,7 @@ repositories:
   iceoryx:
     type: git
     url: https://github.com/eclipse-iceoryx/iceoryx.git
-    version: v2.0.2
+    version: v2.0.3
   kdl_parser:
     type: git
     url: https://github.com/ros/kdl_parser.git
@@ -127,7 +127,7 @@ repositories:
   rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: 5.3.5
+    version: 5.3.6
   rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
@@ -139,11 +139,11 @@ repositories:
   rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 16.0.6
+    version: 16.0.7
   rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 3.3.10
+    version: 3.3.11
   rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
@@ -151,7 +151,7 @@ repositories:
   rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git
-    version: 5.1.3
+    version: 5.1.4
   rmw:
     type: git
     url: https://github.com/ros2/rmw.git
@@ -223,7 +223,7 @@ repositories:
   tinyxml2_vendor:
     type: git
     url: https://github.com/ros2/tinyxml2_vendor.git
-    version: 0.7.5
+    version: 0.7.6
   tinyxml_vendor:
     type: git
     url: https://github.com/ros2/tinyxml_vendor.git

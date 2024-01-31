@@ -71,6 +71,10 @@ repositories:
     type: git
     url: https://github.com/ros-perception/laser_geometry.git
     version: rolling
+  ros2/point_cloud_transport:
+    type: git
+    url: https://github.com/ros-perception/point_cloud_transport.git
+    version: rolling
   ros-planning/navigation_msgs:
     type: git
     url: https://github.com/ros-planning/navigation_msgs.git

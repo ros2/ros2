@@ -1,7 +1,9 @@
 name: Earthly build
 on:
+  workflow_dispatch:
   push:
     branches: ['main']
+    tags: ['*']
   pull_request:
   schedule:
     - cron: '0 11 * * *'
@@ -45,7 +47,7 @@ jobs:
       - name: Push spaceros image
         env:
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_RW_TOKEN }}
-        if: ${{ (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref_type == 'tag' }}
         run: |
           echo $DOCKER_HUB_TOKEN | docker login --username osrfbot --password-stdin
           cd spaceros

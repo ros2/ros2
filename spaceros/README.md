@@ -234,3 +234,20 @@ For example, to view the JUnit XML file for IKOS scan of the rcpputils binaries 
 ```
 spaceros-user@d10d85c68f0e:~/spaceros$ more build_ikos/rcpputils/test_results/rcpputils/ikos.xunit.xml
 ```
+
+## Saving build artifacts locally
+`./build.sh` script executes the Earthly `build` task defined in `Earthfile`, which copies specified artifacts from the container to the host. Additional tasks defined in the Earthfile enable the preservation of intermediate artifacts generated during the build process.
+
+For instance, the `vcs-exact` task can be utilized to copy the exact version of ROS packages pulled during the spaceros build.
+
+To invoke a task, use the following syntax:
+```bash
+earthly +TASK_NAME
+```
+
+Example:
+```
+earthly +vcs-exact
+```
+
+Refer to the [Earthfile](./Earthfile) for tasks that save artifacts locally on the host. Such tasks end with the `SAVE ARTIFACT .. AS LOCAL` syntax.

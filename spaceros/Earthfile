@@ -92,8 +92,7 @@ setup:
 
 spaceros-artifacts:
   # we must run it in a separate container, so that downstream tasks can be cached if vcs file does not change
-  FROM ubuntu:jammy
-  RUN apt-get update && apt-get install -y git wget
+  FROM +setup
 
   # main purpose of this command is to make sure that the git ls-remote results are not cached
   RUN --no-cache echo "Cloning spaceros repo artifacts"
@@ -113,22 +112,30 @@ spaceros-artifacts:
   END
 
   IF [ $SPACEROS_REPO_URL = "https://github.com/space-ros/space-ros.git" ] 
-    # run wget because main repo's host is known + it is public 
+    # run wget instead of `GIT CLONE`, because main repo's host is known + it is public 
     RUN wget https://raw.githubusercontent.com/space-ros/space-ros/${_GIT_COMMIT_HASH}/ros2.repos
     RUN wget https://raw.githubusercontent.com/space-ros/space-ros/${_GIT_COMMIT_HASH}/excluded-pkgs.txt
   ELSE
-    GIT CLONE --branch ${_GIT_COMMIT_HASH} ${SPACEROS_REPO_URL} .
+    GIT CLONE --branch ${SPACEROS_GIT_REF} ${SPACEROS_REPO_URL} .
   END
-  SAVE ARTIFACT ros2.repos
+
+  RUN mkdir src
+  # we run vcstool inside this task, because some packages in `ros2.repos` are not pinned and otherwise earthly won't pull latest changes
+  RUN vcs import src < ros2.repos
+  RUN vcs export --exact src > exact.repos
+  RUN rm -rf src
+
+  SAVE ARTIFACT ros2.repos # vcs pulled from `spaceros` repo as-is
+  SAVE ARTIFACT exact.repos # `ros2.repos`, but with pinned versions (e.g. SHAs instead of branches)
   SAVE ARTIFACT excluded-pkgs.txt
 
 sources:
   FROM +setup
   COPY +spaceros-artifacts/ros2.repos ros2.repos
   COPY +spaceros-artifacts/excluded-pkgs.txt excluded-pkgs.txt
-
+  COPY +spaceros-artifacts/exact.repos exact.repos
   RUN mkdir src
-  RUN vcs import src < ros2.repos
+  RUN vcs import src < exact.repos
   SAVE ARTIFACT src AS LOCAL src
 
 workspace:
@@ -136,8 +143,7 @@ workspace:
   COPY src src/
 
 vcs-exact:
-  FROM +workspace
-  RUN vcs export --exact src > exact.repos
+  COPY +spaceros-artifacts/exact.repos exact.repos
   SAVE ARTIFACT exact.repos AS LOCAL exact.repos
 
 rosdep:
@@ -178,7 +184,7 @@ rosdep:
 build:
   FROM +rosdep
   RUN colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
-  COPY +vcs-exact/exact.repos install/exact.repos
+  COPY +spaceros-artifacts/exact.repos install/exact.repos
   SAVE ARTIFACT install AS LOCAL install
 
 build-testing:
@@ -186,7 +192,7 @@ build-testing:
   RUN colcon build --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --no-warn-unused-cli
   RUN . install/setup.sh && colcon test --retest-until-pass 2 --ctest-args -LE "(ikos|xfail)" --pytest-args -m "not xfail"
   RUN . install/setup.sh && ros2 run process_sarif make_build_archive
-  COPY +vcs-exact/exact.repos install/exact.repos
+  COPY +spaceros-artifacts/exact.repos install/exact.repos
   SAVE ARTIFACT log/build_results_archives/build_results_*.tar.bz2 AS LOCAL log/build_results_archives/
   SAVE ARTIFACT install AS LOCAL install
 
@@ -204,7 +210,7 @@ image:
   LABEL org.label-schema.vcs-ref=${VCS_REF}
 
   COPY +build/install ${SPACEROS_DIR}/install
-  COPY +vcs-exact/exact.repos ${SPACEROS_DIR}/exact.repos
+  COPY +spaceros-artifacts/exact.repos ${SPACEROS_DIR}/exact.repos
   RUN rm -r src
   COPY entrypoint.sh /ros_entrypoint.sh
   ENTRYPOINT ["/ros_entrypoint.sh"]

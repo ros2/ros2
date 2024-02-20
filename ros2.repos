@@ -98,7 +98,7 @@ repositories:
   ros-visualization/rqt:
     type: git
     url: https://github.com/ros-visualization/rqt.git
-    version: 1.1.6
+    version: 1.1.7
   ros-visualization/rqt_action:
     type: git
     url: https://github.com/ros-visualization/rqt_action.git
@@ -110,7 +110,7 @@ repositories:
   ros-visualization/rqt_console:
     type: git
     url: https://github.com/ros-visualization/rqt_console.git
-    version: 2.0.2
+    version: 2.0.3
   ros-visualization/rqt_graph:
     type: git
     url: https://github.com/ros-visualization/rqt_graph.git
@@ -226,7 +226,7 @@ repositories:
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: 1.0.4
+    version: 1.0.5
   ros2/launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
@@ -278,15 +278,15 @@ repositories:
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 3.3.11
+    version: 3.3.12
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
-    version: 2.4.1
+    version: 2.4.2
   ros2/rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git
-    version: 5.1.4
+    version: 5.1.5
   ros2/realtime_support:
     type: git
     url: https://github.com/ros2/realtime_support.git
@@ -370,7 +370,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 11.2.10
+    version: 11.2.11
   ros2/spdlog_vendor:
     type: git
     url: https://github.com/ros2/spdlog_vendor.git

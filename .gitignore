@@ -1,0 +1,8 @@
+# Ignore default names for colcon created folders
+build
+install
+log
+
+# Ignore everything in src except a .gitkeep file
+src/*
+!src/.gitkeep

@@ -2,7 +2,7 @@ repositories:
   ament/ament_cmake:
     type: git
     url: https://github.com/ament/ament_cmake.git
-    version: 2.0.4
+    version: 2.0.5
   ament/ament_index:
     type: git
     url: https://github.com/ament/ament_index.git
@@ -66,7 +66,7 @@ repositories:
   ros-perception/image_common:
     type: git
     url: https://github.com/ros-perception/image_common.git
-    version: 4.2.3
+    version: 4.2.4
   ros-perception/laser_geometry:
     type: git
     url: https://github.com/ros-perception/laser_geometry.git
@@ -98,7 +98,7 @@ repositories:
   ros-visualization/rqt:
     type: git
     url: https://github.com/ros-visualization/rqt.git
-    version: 1.3.3
+    version: 1.3.4
   ros-visualization/rqt_action:
     type: git
     url: https://github.com/ros-visualization/rqt_action.git
@@ -222,11 +222,11 @@ repositories:
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: 0.31.5
+    version: 0.31.6
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: 2.0.2
+    version: 2.0.3
   ros2/launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
@@ -274,19 +274,19 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 21.0.5
+    version: 21.0.6
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 4.1.4
+    version: 4.1.5
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
-    version: 2.6.2
+    version: 2.6.3
   ros2/rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git
-    version: 6.2.2
+    version: 6.2.3
   ros2/realtime_support:
     type: git
     url: https://github.com/ros2/realtime_support.git
@@ -322,7 +322,7 @@ repositories:
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: 0.25.5
+    version: 0.25.6
   ros2/ros2cli_common_extensions:
     type: git
     url: https://github.com/ros2/ros2cli_common_extensions.git
@@ -382,7 +382,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 12.4.6
+    version: 12.4.7
   ros2/spdlog_vendor:
     type: git
     url: https://github.com/ros2/spdlog_vendor.git

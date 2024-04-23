@@ -215,24 +215,29 @@ spaceros-user@d10d85c68f0e:~/spaceros$ CC="ikos-scan-cc" CXX="ikos-scan-c++" LD=
 
 ## Generating IKOS Results
 
-To generate JUnit XML files for all of the binaries resulting from the build command in the previous step, you can use **colcon test**, as follows:
+To generate JUnit XML/SARIF files for all of the binaries resulting from the build command in the previous step, you can use **colcon test**, as follows:
 
 ```
-spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --build-base build_ikos --install-base install_ikos
+spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --build-base build_ikos --install-base install_ikos --ctest-args -L "ikos"
 ```
 
 To generate a JUnit XML file for a specific package only, you can add the *--packages-select* option, as follows:
 
 ```
-spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --build-base build_ikos --install-base install_ikos --packages-select rcpputils
+spaceros-user@d10d85c68f0e:~/spaceros$ colcon test --build-base build_ikos --install-base install_ikos --ctest-args -L "ikos" --packages-select rcpputils
 ```
 
-The `colcon test` command runs various tests, including IKOS report generation, which reads the IKOS database generated in the previous analysis step and generates a JUnit XML report file.
+The `colcon test` command with the `-L "ikos"` flag runs IKOS report generation, which reads the IKOS database generated in the previous analysis step and generates a JUnit XML report file.
 After running `colcon test`, you can view the JUnit XML files.
 For example, to view the JUnit XML file for IKOS scan of the rcpputils binaries you can use the following command:
 
 ```
 spaceros-user@d10d85c68f0e:~/spaceros$ more build_ikos/rcpputils/test_results/rcpputils/ikos.xunit.xml
+```
+
+SARIF files are also available in the same path:
+```
+spaceros-user@d10d85c68f0e:~/spaceros$ more build_ikos/rcpputils/test_results/rcpputils/ikos.sarif
 ```
 
 ## Saving build artifacts locally

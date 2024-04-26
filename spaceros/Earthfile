@@ -178,6 +178,7 @@ rosdep:
         ..
   RUN make
   RUN sudo make install
+  ENV PATH="/opt/ikos/bin/:$PATH"
   WORKDIR $SPACEROS_DIR
   RUN sudo rm -rf ikos/
 

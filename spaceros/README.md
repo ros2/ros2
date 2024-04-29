@@ -1,7 +1,7 @@
 # Space ROS Docker Image and Earthly configuration
 
 The Earthfile configuration in this directory facilitates builds of Space ROS from source code.
-The generated container image is based on Ubuntu 22.04 (Jammy) and can be used with [`rocker`](https://github.com/osrf/rocker) to add X11 and GPU passthrough.
+The generated container image is based on Ubuntu 22.04 (Jammy)
 
 ## Building the Docker Image
 
@@ -42,7 +42,6 @@ ubuntu                jammy                      a8780b506fa4   5 days ago      
 
 The new image is named **osrf/space-ros:latest**.
 
-The `rocker` library is required to run the built image, install it by `sudo apt-get install python3-rocker`.
 There is a run.sh script provided for convenience that will run the spaceros image in a container.
 
 ```bash

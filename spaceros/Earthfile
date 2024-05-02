@@ -217,4 +217,4 @@ image:
   COPY entrypoint.sh /ros_entrypoint.sh
   ENTRYPOINT ["/ros_entrypoint.sh"]
   CMD ["bash"]
-  SAVE IMAGE --push osrf/space-ros:$tag
+  SAVE IMAGE --push osrf/space-ros:latest osrf/space-ros:$tag

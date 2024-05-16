@@ -51,4 +51,4 @@ jobs:
         run: |
           echo $DOCKER_HUB_TOKEN | docker login --username osrfbot --password-stdin
           cd spaceros
-          earthly --ci --push +image
+          earthly --ci --push +image --tag=${{ github.ref_name }}

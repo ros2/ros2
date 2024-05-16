@@ -200,6 +200,7 @@ build-testing:
 image:
   FROM +rosdep
   ARG VCS_REF
+  ARG tag='latest'
 
   # Specify the docker image metadata
   LABEL org.label-schema.schema-version="1.0"
@@ -216,4 +217,4 @@ image:
   COPY entrypoint.sh /ros_entrypoint.sh
   ENTRYPOINT ["/ros_entrypoint.sh"]
   CMD ["bash"]
-  SAVE IMAGE --push osrf/space-ros:latest
+  SAVE IMAGE --push osrf/space-ros:latest osrf/space-ros:$tag

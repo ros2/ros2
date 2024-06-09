@@ -33,7 +33,7 @@ setup:
   RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
   # Install repos file generator script requirements.
-  RUN apt-get install -y python3-rosinstall-generator ruby
+  RUN apt-get install -y python3-rosinstall-generator
 
 repos-file:
   FROM +setup
@@ -48,7 +48,7 @@ repos-file:
                  --outfile ros2.repos \
                  --packages spaceros-pkgs.txt \
                  --excluded-packages excluded-pkgs.txt
-  RUN --no-cache ruby scripts/merge-repos.rb
+  RUN --no-cache python3 scripts/merge-repos.py
 
   # Save the generated .repos file
   SAVE ARTIFACT ros2.repos AS LOCAL ros2.repos

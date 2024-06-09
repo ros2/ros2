@@ -44,7 +44,10 @@ repos-file:
   COPY excluded-pkgs.txt ./
   COPY spaceros-pkgs.txt ./
   COPY spaceros.repos ./
-  RUN --no-cache sh scripts/generate-repos.sh
+  RUN --no-cache sh scripts/generate-repos.sh \
+                 --outfile ros2.repos \
+                 --packages spaceros-pkgs.txt \
+                 --excluded-packages excluded-pkgs.txt
   RUN --no-cache ruby scripts/merge-repos.rb
 
   # Save the generated .repos file

@@ -48,10 +48,10 @@ repos-file:
                  --outfile ros2.repos \
                  --packages spaceros-pkgs.txt \
                  --excluded-packages excluded-pkgs.txt
-  RUN --no-cache python3 scripts/merge-repos.py
+  RUN --no-cache python3 scripts/merge-repos.py ros2.repos spaceros.repos -o output.repos
 
   # Save the generated .repos file
-  SAVE ARTIFACT ros2.repos AS LOCAL ros2.repos
+  SAVE ARTIFACT output.repos AS LOCAL ros2.repos
 
 repos-test:
   FROM +setup

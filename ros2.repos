@@ -263,10 +263,6 @@ repositories:
     type: git
     url: https://github.com/ros2/pybind11_vendor.git
     version: rolling
-  ros2/python_cmake_module:
-    type: git
-    url: https://github.com/ros2/python_cmake_module.git
-    version: rolling
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git

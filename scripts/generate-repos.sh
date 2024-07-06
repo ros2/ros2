@@ -4,7 +4,7 @@ set -e
 
 # Function to display usage information
 usage() {
-	echo "Generate .repos file with list of SpaceROS repositories to clone"
+    echo "Generate .repos file with list of SpaceROS repositories to clone"
     echo "Usage: $0 --packages PACKAGES --outfile OUTFILE [--excluded-packages EXCLUDED_PACKAGES] [--repos REPOS] [--rosdistro ROSDISTRO] [--upstream UPSTREAM] [--exclude-installed EXCLUDE_INSTALLED]"
     echo "  --outfile                   The output file"
     echo "  --packages                  File containing a list of ROS packages to include"
@@ -37,47 +37,47 @@ while true; do
     case "$1" in
         -h|--help )
             usage
-            ;;
+        ;;
         --packages )
-			# change newlines to whitespaces
+            # change newlines to whitespaces
             packages=$(echo $2 | tr "\n" " ")
             shift 2
-            ;;
+        ;;
         --outfile )
             outfile=$2
             shift 2
-            ;;
+        ;;
         --excluded-packages )
-			# change newlines to whitespaces
+            # change newlines to whitespaces
             excluded_packages=$(echo $2 | tr "\n" " ")
             shift 2
-            ;;
+        ;;
         --repos )
-			# change newlines to whitespaces
+            # change newlines to whitespaces
             repos=$(echo $2 | tr "\n" " ")
             shift 2
-            ;;
+        ;;
         --rosdistro )
             rosdistro=$2
             shift 2
-            ;;
+        ;;
         --upstream )
             upstream=$2
             shift 2
-            ;;
+        ;;
         --exclude-installed )
             exclude_installed=$2
             shift 2
-            ;;
+        ;;
         -- )
             shift
             break
-            ;;
+        ;;
         * )
             echo "Invalid argument!"
             usage
             exit 1
-            ;;
+        ;;
     esac
 done
 
@@ -115,20 +115,20 @@ if [ "$exclude_installed" = "true" ]; then
     # paths to packages are stored in AMENT_PREFIX_PATH,
     # however rosinstall_generator expects ROS_PACKAGE_PATH variable to be set
     export ROS_PACKAGE_PATH=${AMENT_PREFIX_PATH}
-    GENERATE_CMD="${GENERATE_CMD} --exclude ${excluded_pkgs} --"
+    GENERATE_CMD="${GENERATE_CMD} --exclude ${excluded_pkgs} RPP"
 else
-    GENERATE_CMD="${GENERATE_CMD} --exclude ${excluded_pkgs} --"
+    GENERATE_CMD="${GENERATE_CMD} --exclude ${excluded_pkgs}"
 fi
 
 # include additional repos along specified packages'
 if [ ! -z "${repos}" ]; then
-  space_ros_repos=$(cat ${repos})
-  GENERATE_CMD="${GENERATE_CMD} --repos ${repos} --"
+    space_ros_repos=$(cat ${repos})
+    GENERATE_CMD="${GENERATE_CMD} --repos ${space_ros_repos}"
 fi
 
 if [ ! -z "${packages}" ]; then
-  spaceros_pkgs=$(cat ${packages})
-  GENERATE_CMD="${GENERATE_CMD} -- ${spaceros_pkgs}"
+    spaceros_pkgs=$(cat ${packages})
+    GENERATE_CMD="${GENERATE_CMD} -- ${spaceros_pkgs}"
 fi
 
 echo "Generating .repos file with command:"

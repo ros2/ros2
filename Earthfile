@@ -24,6 +24,10 @@ setup:
   RUN locale-gen en_US en_US.UTF-8
   RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
   ENV LANG=en_US.UTF-8
+  
+  # TODO - the `setup` step will be merged with the `setup` step in spaceros docker Earthfile
+  # This variable will then act as a single source of truth.
+  ENV ROSDISTRO="humble" 
 
   # Add the ROS 2 apt repository
   RUN apt-get install -y software-properties-common
@@ -47,7 +51,8 @@ repos-file:
   RUN --no-cache sh scripts/generate-repos.sh \
                  --outfile ros2.repos \
                  --packages spaceros-pkgs.txt \
-                 --excluded-packages excluded-pkgs.txt
+                 --excluded-packages excluded-pkgs.txt \
+                 --rosdistro $ROSDISTRO
   RUN --no-cache python3 scripts/merge-repos.py ros2.repos spaceros.repos -o output.repos
 
   # Save the generated .repos file

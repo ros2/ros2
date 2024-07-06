@@ -18,13 +18,3 @@ earthly build +repos-file
 git add ros2.repos
 git commit -m "Update repos file for <release-id> release"
 ```
-
-### Testing
-
-We include a target and run command for testing the release process and repo generation scripts.
-To build and attach to the container:
-
-```
-earthly build +repos-test
-docker run -it -v .:/root/user_ws:rw space-ros-release-test:latest
-```

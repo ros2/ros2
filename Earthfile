@@ -57,9 +57,3 @@ repos-file:
 
   # Save the generated .repos file
   SAVE ARTIFACT output.repos AS LOCAL ros2.repos
-
-repos-test:
-  FROM +setup
-  CMD ["bash"]
-  WORKDIR /root/user_ws
-  SAVE IMAGE space-ros-release-test:latest

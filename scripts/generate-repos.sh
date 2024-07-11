@@ -26,8 +26,7 @@ excluded_packages=""
 repos=""
 upstream="true"
 exclude_installed="true"
-ARGS=$(getopt -o h -l help,packages:,outfile:,excluded-packages:,repos:,rosdistro:,upstream:,exclude-installed: -n "$0" -- "$@")
-if [ $? -ne 0 ]; then
+if ! ARGS=$(getopt -o h -l help,packages:,outfile:,excluded-packages:,repos:,rosdistro:,upstream:,exclude-installed: -n "$0" -- "$@"); then
     usage
 fi
 eval set -- "$ARGS"
@@ -39,8 +38,8 @@ while true; do
             usage
         ;;
         --packages )
-            # change newlines to whitespaces
-            packages=$(echo $2 | tr "\n" " ")
+            # remove whitespace
+            packages=$(echo "$2" | xargs)
             shift 2
         ;;
         --outfile )
@@ -48,13 +47,13 @@ while true; do
             shift 2
         ;;
         --excluded-packages )
-            # change newlines to whitespaces
-            excluded_packages=$(echo $2 | tr "\n" " ")
+            # remove whitespace
+            excluded_packages=$(echo "$2" | xargs)
             shift 2
         ;;
         --repos )
-            # change newlines to whitespaces
-            repos=$(echo $2 | tr "\n" " ")
+            # remove whitespace
+            repos=$(echo "$2" | xargs)
             shift 2
         ;;
         --rosdistro )
@@ -76,7 +75,6 @@ while true; do
         * )
             echo "Invalid argument!"
             usage
-            exit 1
         ;;
     esac
 done
@@ -110,7 +108,7 @@ if [ "$upstream" = "true" ]; then
 fi
 
 # Exclude packages which we do not want to incorporate into Space ROS
-excluded_pkgs=$(cat ${excluded_packages})
+excluded_pkgs=$(cat "${excluded_packages}")
 if [ "$exclude_installed" = "true" ]; then
     # paths to packages are stored in AMENT_PREFIX_PATH,
     # however rosinstall_generator expects ROS_PACKAGE_PATH variable to be set
@@ -121,20 +119,20 @@ else
 fi
 
 # include additional repos along specified packages'
-if [ ! -z "${repos}" ]; then
-    space_ros_repos=$(cat ${repos})
+if [ -n "${repos}" ]; then
+    space_ros_repos=$(cat "${repos}")
     GENERATE_CMD="${GENERATE_CMD} --repos ${space_ros_repos}"
 fi
 
-if [ ! -z "${packages}" ]; then
-    spaceros_pkgs=$(cat ${packages})
+if [ -n "${packages}" ]; then
+    spaceros_pkgs=$(cat "${packages}")
     GENERATE_CMD="${GENERATE_CMD} -- ${spaceros_pkgs}"
 fi
 
 echo "Generating .repos file with command:"
-echo ${GENERATE_CMD}
+echo "${GENERATE_CMD}"
 
 # Generate rosinstall file
-${GENERATE_CMD} > ${outfile}
+${GENERATE_CMD} > "${outfile}"
 
 echo "rosinstall file generated: ${outfile}"

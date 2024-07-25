@@ -14,13 +14,17 @@
 VERSION 0.6
 FROM ubuntu:jammy
 
-earthfile:
-  COPY Earthfile Earthfile
-  SAVE ARTIFACT Earthfile
+# Defaulting to ROS 2 humble
+ARG ROS_DISTRO="humble"
 
 setup:
   # Disable prompting during package installation
   ARG DEBIAN_FRONTEND=noninteractive
+  ARG ROS_DISTRO
+
+  # TODO - the `setup` step will be merged with the `setup` step in spaceros docker Earthfile
+  # This variable will then act as a single source of truth.
+  ENV ROS_DISTRO ${ROS_DISTRO}
 
   # The following commands are based on the source install for ROS 2 Rolling Ridley.
   # See: https://docs.ros.org/en/ros2_documentation/rolling/Installation/Ubuntu-Development-Setup.html
@@ -34,10 +38,6 @@ setup:
   RUN locale-gen en_US en_US.UTF-8
   RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
   ENV LANG=en_US.UTF-8
-  
-  # TODO - the `setup` step will be merged with the `setup` step in spaceros docker Earthfile
-  # This variable will then act as a single source of truth.
-  ENV ROSDISTRO="humble" 
 
   # Add the ROS 2 apt repository
   RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
@@ -87,7 +87,6 @@ setup:
   ENV USERNAME spaceros-user
   ENV HOME_DIR=/home/${USERNAME}
   ENV SPACEROS_DIR=/opt/spaceros
-  ENV ROSDISTRO=humble
 
   # Create the spaceros directory
   RUN mkdir --mode=777 -p ${SPACEROS_DIR}
@@ -121,7 +120,7 @@ repos-file:
                  --outfile ros2.repos \
                  --packages spaceros-pkgs.txt \
                  --excluded-packages excluded-pkgs.txt \
-                 --rosdistro $ROSDISTRO
+                 --rosdistro ${ROS_DISTRO}
   RUN --no-cache python3 scripts/merge-repos.py ros2.repos spaceros.repos -o output.repos
   SAVE ARTIFACT output.repos AS LOCAL ros2.repos
 
@@ -169,7 +168,7 @@ rosdep:
       rosdep update && \
       rosdep install -y \
         --from-paths src --ignore-src \
-        --rosdistro ${ROSDISTRO} \
+        --rosdistro ${ROS_DISTRO} \
         # `urdfdom_headers` is cloned from source, however rosdep can't find it.
         # It is because package.xml manifest is missing. See: https://github.com/ros/urdfdom_headers
         # Additionally, IKOS must be excluded as per: https://github.com/space-ros/docker/issues/99

@@ -225,13 +225,19 @@ build:
   COPY +spaceros-artifacts/exact.repos install/exact.repos
   SAVE ARTIFACT install AS LOCAL install
 
-build-testing:
+build-dev:
   FROM +rosdep
   RUN colcon build \
       --cmake-args \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
       -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
       --no-warn-unused-cli
+
+  # TODO: Consider pushing pre-built dev images to the registry.
+  # SAVE IMAGE --push osrf/space-ros-dev:latest osrf/space-ros-dev:$tag
+
+build-testing:
+  FROM +build-dev
   RUN . install/setup.sh && \
       colcon test \
         --retest-until-pass 2 \

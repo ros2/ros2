@@ -31,8 +31,8 @@ setup:
   # The main variation is getting Space ROS sources instead of the Rolling sources.
 
   # Set the locale
-  RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
-      --mount=type=cache,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
+  RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
+      --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
       apt-get update && \
       apt-get install -y locales
   RUN locale-gen en_US en_US.UTF-8
@@ -40,8 +40,8 @@ setup:
   ENV LANG=en_US.UTF-8
 
   # Add the ROS 2 apt repository
-  RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
-      --mount=type=cache,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
+  RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
+      --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
       apt-get update && \
       apt-get install -y \
         curl \
@@ -53,8 +53,8 @@ setup:
   RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
   # Install required software development tools and ROS tools (and vim included for convenience)
-  RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
-      --mount=type=cache,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
+  RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
+      --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
       apt-get update && \
       apt-get install -y \
         bison \
@@ -104,8 +104,8 @@ setup:
 
   # Update the OpenGL version
   RUN sudo add-apt-repository ppa:kisak/kisak-mesa
-  RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
-      --mount=type=cache,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
+  RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
+      --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
       sudo apt update && sudo apt upgrade -y
 
   # Create install location and copy in relevant scripts
@@ -162,8 +162,8 @@ rosdep:
 
   # Install system package dependencies using rosdep
   RUN sudo rosdep init && rosdep update
-  RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
-      --mount=type=cache,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
+  RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
+      --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
       sudo apt-get update && \
       rosdep update && \
       rosdep install -y \
@@ -175,8 +175,8 @@ rosdep:
         --skip-keys "$(tr '\n' ' ' < 'excluded-pkgs.txt') urdfdom_headers ikos"
   RUN rm excluded-pkgs.txt
 
-  RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
-      --mount=type=cache,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
+  RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
+      --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
       sudo apt-get update && \
       sudo apt-get install --yes \
         gcc \

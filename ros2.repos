@@ -3,7 +3,7 @@ repositories:
   ament_cmake:
     type: git
     url: https://github.com/ament/ament_cmake.git
-    version: 1.3.8
+    version: 1.3.10
   ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
@@ -35,7 +35,7 @@ repositories:
   common_interfaces:
     type: git
     url: https://github.com/ros2/common_interfaces.git
-    version: 4.2.3
+    version: 4.2.4
   console_bridge_vendor:
     type: git
     url: https://github.com/ros2/console_bridge_vendor.git
@@ -51,7 +51,7 @@ repositories:
   geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: 0.25.6
+    version: 0.25.7
   google_benchmark_vendor:
     type: git
     url: https://github.com/ament/google_benchmark_vendor.git
@@ -59,7 +59,7 @@ repositories:
   googletest:
     type: git
     url: https://github.com/ament/googletest.git
-    version: 1.10.9004
+    version: 1.10.9006
   iceoryx:
     type: git
     url: https://github.com/eclipse-iceoryx/iceoryx.git
@@ -71,7 +71,7 @@ repositories:
   launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: 1.0.5
+    version: 1.0.6
   launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
@@ -79,7 +79,7 @@ repositories:
   libstatistics_collector:
     type: git
     url: https://github.com/ros-tooling/libstatistics_collector.git
-    version: 1.3.1
+    version: 1.3.2
   libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
@@ -87,7 +87,7 @@ repositories:
   message_filters:
     type: git
     url: https://github.com/ros2/message_filters.git
-    version: 4.3.3
+    version: 4.3.4
   mimick_vendor:
     type: git
     url: https://github.com/ros2/mimick_vendor.git
@@ -127,7 +127,7 @@ repositories:
   rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: 5.3.7
+    version: 5.3.9
   rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
@@ -139,23 +139,23 @@ repositories:
   rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 16.0.8
+    version: 16.0.10
   rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 3.3.12
+    version: 3.3.14
   rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
-    version: 2.4.2
+    version: 2.4.3
   rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git
-    version: 5.1.5
+    version: 5.1.6
   rmw:
     type: git
     url: https://github.com/ros2/rmw.git
-    version: 6.1.1
+    version: 6.1.2
   rmw_cyclonedds:
     type: git
     url: https://github.com/ros2/rmw_cyclonedds.git
@@ -167,7 +167,7 @@ repositories:
   rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
-    version: 2.8.2
+    version: 2.8.4
   robot_state_publisher:
     type: git
     url: https://github.com/ros/robot_state_publisher.git
@@ -179,7 +179,7 @@ repositories:
   ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: 0.18.9
+    version: 0.18.11
   ros_environment:
     type: git
     url: https://github.com/ros/ros_environment.git

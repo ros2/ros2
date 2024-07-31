@@ -48,10 +48,17 @@ There is a run.sh script provided for convenience that will run the spaceros ima
 ```
 
 Upon startup, the container automatically runs the entrypoint.sh script, which sources the Space ROS environment file (setup.bash).
+
 You'll now be running inside the container and should see a prompt similar to this:
 
 ```
 spaceros-user@d10d85c68f0e:~/$
+```
+
+Space ROS is installed to the `${SPACEROS_DIR}` in `/opt/spaceros`, if required, the ROS environment file can be manually sourced with:
+
+```bash
+source "${SPACEROS_DIR}"/install/setup.bash
 ```
 
 At this point, you can run the `ros2` command line utility to make sure everything is working OK:

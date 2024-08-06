@@ -116,10 +116,12 @@ repos-file:
   COPY excluded-pkgs.txt ./
   COPY spaceros-pkgs.txt ./
   COPY spaceros.repos ./
+  # This is a fresh image, so we do not need to exclude installed packages.
   RUN --no-cache sh scripts/generate-repos.sh \
                  --outfile ros2.repos \
                  --packages spaceros-pkgs.txt \
                  --excluded-packages excluded-pkgs.txt \
+                 --exclude-installed false \
                  --rosdistro ${ROS_DISTRO}
   RUN --no-cache python3 scripts/merge-repos.py ros2.repos spaceros.repos -o output.repos
   SAVE ARTIFACT output.repos AS LOCAL ros2.repos

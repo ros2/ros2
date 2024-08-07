@@ -135,6 +135,9 @@ spaceros-artifacts:
   COPY ros2.repos ./
   COPY excluded-pkgs.txt ./
 
+  # this ensure the vcs import and export results are not cached
+  RUN --no-cache echo "Cloning spaceros repo artifacts"
+
   # we run vcstool inside this task, because some packages in `ros2.repos` are not pinned and otherwise
   # earthly won't pull latest changes
   RUN mkdir src

@@ -20,7 +20,6 @@ jobs:
       - name: Build Space ROS
         id: build
         run: |
-          cd spaceros
           earthly --ci --output +sources
           earthly --ci --output +build-testing
           echo "archivename=$(basename log/build_results_archives/build_results_*.tar.bz2)" >> $GITHUB_ENV
@@ -28,7 +27,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{env.archivename}}
-          path: spaceros/log/build_results_archives/${{env.archivename}}
+          path: log/build_results_archives/${{env.archivename}}
           if-no-files-found: error
   space-ros-image:
     runs-on: ubuntu-latest
@@ -41,7 +40,6 @@ jobs:
           sudo chmod 755 /usr/local/bin/earthly
       - name: Build spaceros image
         run: |
-          cd spaceros
           earthly --ci --output +sources
           earthly --ci +image
       - name: Push spaceros image
@@ -50,5 +48,4 @@ jobs:
         if: ${{ github.ref_type == 'tag' }}
         run: |
           echo $DOCKER_HUB_TOKEN | docker login --username osrfbot --password-stdin
-          cd spaceros
           earthly --ci --push +image --tag=${{ github.ref_name }}

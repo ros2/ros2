@@ -55,4 +55,4 @@ jobs:
         if: ${{ github.ref_name == '212/merge' }}
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          earthly --ci --push +push-image --TAGS="ghcr.io/space-ros/space-ros:push-main-image" --LATEST=""
+          earthly --ci --push +push-image --TAG="ghcr.io/space-ros/space-ros:push-main-image" --LATEST=""

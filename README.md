@@ -8,5 +8,5 @@ For information on the release process refere to the [release docs](./docs/RELEA
 
 # Contribution rules
 
-See the [contributing guide](CONTRIBUTING.md) for details on how to contribute
+See the [contributing guide](https://github.com/space-ros/.github/blob/master/CONTRIBUTING.md) for details on how to contribute
 to the Space ROS project.

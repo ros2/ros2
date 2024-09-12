@@ -22,3 +22,10 @@ jobs:
           -d "{extends: default, rules: {document-start: {present: false}, key-ordering: {}}}"
       - name: Validate repositories
         run: vcs validate --input ros2.repos
+
+  commit_message_standards:
+    name: Space ROS Commit Message Standards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: space-ros/check-commit-message-action@main

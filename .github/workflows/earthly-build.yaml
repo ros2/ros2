@@ -44,11 +44,10 @@ jobs:
         run: |
           sudo wget https://github.com/earthly/earthly/releases/latest/download/earthly-linux-amd64 -O /usr/local/bin/earthly
           sudo chmod 755 /usr/local/bin/earthly
-      # TODO: Set cache source to main before merging
       - name: Build spaceros image
         run: |
           earthly --ci --output +sources
-          earthly --ci --remote-cache=ghcr.io/space-ros/space-ros:push-main-image +image
+          earthly --ci +image
       - name: Push tagged spaceros images to Dockerhub
         env:
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_RW_TOKEN }}
@@ -56,8 +55,7 @@ jobs:
         run: |
           echo $DOCKER_HUB_TOKEN | docker login --username osrfbot --password-stdin
           earthly --ci --push +push-image --TAG="osrf/space-ros:${{ github.ref_name }}" --LATEST="osrf/space-ros:latest"
-      # TODO: Set branch names to main before merging
       - name: Push the main spaceros image to GHCR
-        if: ${{ github.ref_name == '212/merge' }}
+        if: ${{ github.ref_name == 'main' }}
         run: |
-          earthly --ci --push +push-image --TAG="ghcr.io/space-ros/space-ros:push-main-image" --LATEST=""
+          earthly --ci --push +push-image --TAG="ghcr.io/space-ros/space-ros:main" --LATEST=""

@@ -257,7 +257,7 @@ build-testing:
 image:
   FROM +rosdep
   ARG VCS_REF
-  ARG tag='latest'
+  ARG VERSION="latest"
 
   # Specify the docker image metadata
   LABEL org.label-schema.schema-version="1.0"
@@ -276,4 +276,13 @@ image:
   COPY docker/entrypoint.sh /ros_entrypoint.sh
   ENTRYPOINT ["/ros_entrypoint.sh"]
   CMD ["bash"]
-  SAVE IMAGE --push osrf/space-ros:latest osrf/space-ros:$tag
+  SAVE IMAGE osrf/space-ros:${VERSION}
+
+# Target for prepping image(s) to be pushed to remote registries.
+push-image:
+  FROM +image
+
+  # This can be overridden with a blank string to prevent pushing to the registry.
+  ARG LATEST="osrf/space-ros:latest"
+  ARG TAG
+  SAVE IMAGE --push ${LATEST} ${TAG}

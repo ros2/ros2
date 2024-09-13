@@ -34,6 +34,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Login to ghcr
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up earthly
         run: |
           sudo wget https://github.com/earthly/earthly/releases/latest/download/earthly-linux-amd64 -O /usr/local/bin/earthly
@@ -42,10 +48,14 @@ jobs:
         run: |
           earthly --ci --output +sources
           earthly --ci +image
-      - name: Push spaceros image
+      - name: Push tagged spaceros images to Dockerhub
         env:
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_RW_TOKEN }}
         if: ${{ github.ref_type == 'tag' }}
         run: |
           echo $DOCKER_HUB_TOKEN | docker login --username osrfbot --password-stdin
-          earthly --ci --push +image --tag=${{ github.ref_name }}
+          earthly --ci --push +push-image --TAG="osrf/space-ros:${{ github.ref_name }}" --LATEST="osrf/space-ros:latest"
+      - name: Push the main spaceros image to GHCR
+        if: ${{ github.ref_name == 'main' }}
+        run: |
+          earthly --ci --push +push-image --TAG="ghcr.io/space-ros/space-ros:main" --LATEST=""

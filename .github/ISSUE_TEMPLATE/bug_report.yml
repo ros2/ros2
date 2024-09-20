@@ -1,0 +1,86 @@
+name: Bug Report
+description: File a Bug report.
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: "**Required Info:**"
+  - type: input
+    id: os
+    attributes:
+      label: "Operating System:"
+      description: |
+        OS and version (e.g. Windows 10, Ubuntu 16.04, ...)
+        please, try to be as specific as possible.
+    validations:
+      required: true
+  - type: input
+    id: installation
+    attributes:
+      label: "Installation type:"
+      description: |
+        How did you installed ROS? (e.g. binaries, source, ...)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: "ROS version or commit hash:"
+      description: |
+        **Examples:**  *humble*, *iron*, *jazzy*, ...
+        For the commit hash, is the output of git rev-parse HEAD,
+        release version, or repos file.
+    validations:
+      required: true
+  - type: input
+    id: dds
+    attributes:
+      label: "RMW implementation:"
+      description: |
+        **Examples:** *rmw_fastrtps_cpp*, *rmw_connextdds*, *rmw_cyclonedds_cpp*, ...
+        You can check the ROS Middleware (RMW) implementation with the command: `ros2 doctor --report`
+        Find the line starting with `middleware name` in the report.
+    validations:
+      required: true
+  - type: input
+    id: clientlib
+    attributes:
+      label: "Client library (if applicable):"
+      description: |
+        **Examples:** *rclcpp*, *rclpy*, ...
+        Client libraries are the APIs that allow users to implement their ROS 2 code.
+    validations:
+      required: false
+  - type: textarea
+    id: repro
+    attributes:
+      label: "Steps to reproduce issue"
+      description: |
+        How do you trigger this bug? Please walk us through it step by step.
+        Include all the commands you ran in the exact order you ran them so that anyone can reproduce the bug.
+        Code that can be copy-pasted is preferred.
+      placeholder: |
+        1.
+        2.
+        3.
+        ...
+    validations:
+      required: true
+  - type: textarea
+    id:  expected
+    attributes:
+      label: "Expected behavior"
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Actual behavior"
+    validations:
+      required: true
+  - type: textarea
+    id: addinfo
+    attributes:
+      label: "Additional information"
+    validations:
+      required: false

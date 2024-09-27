@@ -323,6 +323,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
     version: b103174ff42ac382fa0e3e3fef32145721fcfd63
+  ros2/rmw_zenoh:
+    type: git
+    url: https://github.com/ZettaScaleLabs/rmw_zenoh.git
+    version: dev/1.0.0
   ros2/ros2_tracing:
     type: git
     url: https://github.com/ros2/ros2_tracing.git

@@ -1,10 +1,60 @@
-# About 
+This repository contains a Dockerfile to compile and test the rmw_zenoh_cpp implementation.
+
+you can execute some commands to compile and run test
+
+### Create the base image
+
+This will create the base image to compile and test the code
+
+```bash
+make local
+```
+
+### Compile the code
+
+This command will create a `build` and `install` folders in your host, to keep the compilation and install files available
+
+```bash
+make local-compile
+```
+
+### Run test
+
+Now you can run the tests
+
+One terminal
+```bash
+make run-daemon
+```
+
+Another terminal:
+```bash
+make local-test
+```
+
+### Just in case you need to enter in the docker
+
+This will create a new container and open a terminal
+
+```bash
+make local-run
+```
+
+This other command will join the current docker
+
+```bash
+make local-join-run
+```
+
+
+
+# About
 The Robot Operating System (ROS) is a set of software libraries and tools that help you build robot applications.
 From drivers to state-of-the-art algorithms, and with powerful developer tools, ROS has what you need for your next robotics project.
 And it's all open source.
 Full project details on [ROS.org](https://ros.org/)
 
-# Getting Started 
+# Getting Started
 Looking to get started with ROS?
 Our [installation guide is here](https://www.ros.org/blog/getting-started/).
 Once you've installed ROS start by learning some [basic concepts](https://docs.ros.org/en/rolling/Concepts/Basic.html) and take a look at our [beginner tutorials](https://docs.ros.org/en/rolling/Tutorials/Beginner-CLI-Tools.html).
@@ -17,8 +67,8 @@ Once you've installed ROS start by learning some [basic concepts](https://docs.r
 * [ROS Discord Server](https://discord.com/servers/open-robotics-1077825543698927656)
 * [Robotics Stack Exchange](https://robotics.stackexchange.com/) (preferred ROS support forum).
 * [Official ROS Videos](https://vimeo.com/osrfoundation)
-* [ROSCon](https://roscon.ros.org), our yearly developer conference. 
-* Cite ROS 2 in academic work using [DOI: 10.1126/scirobotics.abm6074](https://www.science.org/doi/10.1126/scirobotics.abm6074) 
+* [ROSCon](https://roscon.ros.org), our yearly developer conference.
+* Cite ROS 2 in academic work using [DOI: 10.1126/scirobotics.abm6074](https://www.science.org/doi/10.1126/scirobotics.abm6074)
 
 ## Developer Resources
 * [ROS 2 Documentation](https://docs.ros.org/)

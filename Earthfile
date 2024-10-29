@@ -207,7 +207,7 @@ rosdep:
         clang-14
 
   WORKDIR ${SPACEROS_DIR}
-  RUN git clone -b v3.2 --depth 1 https://github.com/NASA-SW-VnV/ikos.git
+  RUN git clone --branch v3.4 --depth 1 https://github.com/NASA-SW-VnV/ikos.git
   WORKDIR ${SPACEROS_DIR}/ikos
   RUN mkdir build
   WORKDIR ${SPACEROS_DIR}/ikos/build
@@ -216,7 +216,7 @@ rosdep:
         -DCMAKE_BUILD_TYPE="Debug" \
         -DLLVM_CONFIG_EXECUTABLE="/usr/lib/llvm-14/bin/llvm-config" \
         ..
-  RUN make
+  RUN make -j`nproc`
   RUN sudo make install
   ENV PATH="/opt/ikos/bin/:$PATH"
   WORKDIR ${SPACEROS_DIR}

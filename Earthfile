@@ -234,6 +234,8 @@ build:
 
 build-dev:
   FROM +rosdep
+  ARG tag='jazzy'
+
   RUN colcon build \
       --cmake-args \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
@@ -245,9 +247,11 @@ build-dev:
 
 build-testing:
   FROM +build-dev
+  # exclude ament_lint tests as they give error on Jazzy due to python 'unittest' requiring at least one test recently
   RUN . install/setup.sh && \
       colcon test \
         --retest-until-pass 2 \
+        --packages-skip ament_lint \
         --ctest-args -LE "(ikos|xfail)" \
         --pytest-args -m "not xfail"
   RUN . install/setup.sh && \

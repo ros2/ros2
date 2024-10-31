@@ -51,7 +51,7 @@ repositories:
   geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: 0.25.7
+    version: 0.25.8
   google_benchmark_vendor:
     type: git
     url: https://github.com/ament/google_benchmark_vendor.git
@@ -87,7 +87,7 @@ repositories:
   message_filters:
     type: git
     url: https://github.com/ros2/message_filters.git
-    version: 4.3.4
+    version: 4.3.5
   mimick_vendor:
     type: git
     url: https://github.com/ros2/mimick_vendor.git
@@ -239,7 +239,7 @@ repositories:
   urdf:
     type: git
     url: https://github.com/ros2/urdf.git
-    version: 2.6.0
+    version: 2.6.1
   urdfdom:
     type: git
     url: https://github.com/ros/urdfdom.git

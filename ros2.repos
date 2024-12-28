@@ -46,7 +46,7 @@ repositories:
   eclipse-iceoryx/iceoryx:
     type: git
     url: https://github.com/eclipse-iceoryx/iceoryx.git
-    version: v2.0.5
+    version: v2.0.6
   gazebo-release/gz_cmake_vendor:
     type: git
     url: https://github.com/gazebo-release/gz_cmake_vendor.git
@@ -230,7 +230,7 @@ repositories:
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: 0.36.6
+    version: 0.36.7
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
@@ -382,7 +382,7 @@ repositories:
   ros2/rosidl_typesupport_fastrtps:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_fastrtps.git
-    version: 3.6.0
+    version: 3.6.1
   ros2/rpyutils:
     type: git
     url: https://github.com/ros2/rpyutils.git

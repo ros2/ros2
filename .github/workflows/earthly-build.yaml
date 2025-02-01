@@ -24,7 +24,7 @@ jobs:
           earthly --ci --output +build-testing
           echo "archivename=$(basename log/build_results_archives/build_results_*.tar.bz2)" >> $GITHUB_ENV
       - name: Upload build results archive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{env.archivename}}
           path: log/build_results_archives/${{env.archivename}}

@@ -1,5 +1,0 @@
-repositories:
-  ikos:
-    type: git
-    url: https://github.com/NASA-SW-VnV/ikos.git
-    version: v3.2

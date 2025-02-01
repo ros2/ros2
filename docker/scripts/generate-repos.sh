@@ -11,7 +11,7 @@ usage() {
     echo "  --repos                     File containing a list of ROS repos to use."
     echo "                              Use as alternative to 'packages', rosinstall can generate .repos file from list of repos instead of list of packages"
     echo "  --excluded-packages         File containing a list of packages to exclude [optional] "
-    echo "  --rosdistro                 ROS2 distribution (default: humble)"
+    echo "  --rosdistro                 ROS2 distribution (default: jazzy)"
     echo "  --upstream                  Specify whether to use version tags of upstream repositories (default: true)"
     echo "  --exclude-installed         Whether to exclude already installed packages from .repos file. Installed workspaces must be sourced to make it work (default: true)"
     echo "  -h, --help                  Display this help and exit"
@@ -19,7 +19,7 @@ usage() {
 }
 
 # Initialize variables with default values
-rosdistro="humble"
+rosdistro="jazzy"
 packages=""
 outfile=""
 excluded_packages=""

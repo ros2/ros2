@@ -11,20 +11,19 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-VERSION 0.6
-FROM ubuntu:jammy
+VERSION 0.8
+FROM ubuntu:noble
 
-# Defaulting to ROS 2 humble
-ARG ROS_DISTRO="humble"
+# Defaulting to ROS 2 jazzy
+ARG ROS_DISTRO="jazzy"
+
+# TODO - the `setup` step will be merged with the `setup` step in spaceros docker Earthfile
+# This variable will then act as a single source of truth.
+ENV ROS_DISTRO ${ROS_DISTRO}
 
 setup:
   # Disable prompting during package installation
   ARG DEBIAN_FRONTEND=noninteractive
-  ARG ROS_DISTRO
-
-  # TODO - the `setup` step will be merged with the `setup` step in spaceros docker Earthfile
-  # This variable will then act as a single source of truth.
-  ENV ROS_DISTRO ${ROS_DISTRO}
 
   # The following commands are based on the source install for ROS 2 Rolling Ridley.
   # See: https://docs.ros.org/en/ros2_documentation/rolling/Installation/Ubuntu-Development-Setup.html
@@ -171,13 +170,16 @@ rosdep:
       --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
       sudo apt-get update && \
       rosdep update && \
-      rosdep install -y \
+      rosdep install -s -y \
         --from-paths src --ignore-src \
         --rosdistro ${ROS_DISTRO} \
         # `urdfdom_headers` is cloned from source, however rosdep can't find it.
         # It is because package.xml manifest is missing. See: https://github.com/ros/urdfdom_headers
         # Additionally, IKOS must be excluded as per: https://github.com/space-ros/docker/issues/99
-        --skip-keys "$(tr '\n' ' ' < 'excluded-pkgs.txt') urdfdom_headers ikos"
+        --skip-keys "$(tr '\n' ' ' < 'excluded-pkgs.txt') urdfdom_headers ikos" > rosdep-commands.sh && \
+      chmod u+x rosdep-commands.sh && \
+      ./rosdep-commands.sh
+        
   RUN rm excluded-pkgs.txt
 
   RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
@@ -205,7 +207,7 @@ rosdep:
         clang-14
 
   WORKDIR ${SPACEROS_DIR}
-  RUN git clone -b v3.2 --depth 1 https://github.com/NASA-SW-VnV/ikos.git
+  RUN git clone --branch v3.4 --depth 1 https://github.com/NASA-SW-VnV/ikos.git
   WORKDIR ${SPACEROS_DIR}/ikos
   RUN mkdir build
   WORKDIR ${SPACEROS_DIR}/ikos/build
@@ -214,7 +216,7 @@ rosdep:
         -DCMAKE_BUILD_TYPE="Debug" \
         -DLLVM_CONFIG_EXECUTABLE="/usr/lib/llvm-14/bin/llvm-config" \
         ..
-  RUN make
+  RUN make -j`nproc`
   RUN sudo make install
   ENV PATH="/opt/ikos/bin/:$PATH"
   WORKDIR ${SPACEROS_DIR}
@@ -232,6 +234,8 @@ build:
 
 build-dev:
   FROM +rosdep
+  ARG tag='jazzy'
+
   RUN colcon build \
       --cmake-args \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
@@ -243,9 +247,11 @@ build-dev:
 
 build-testing:
   FROM +build-dev
+  # exclude ament_lint tests as they give error on Jazzy due to python 'unittest' requiring at least one test recently
   RUN . install/setup.sh && \
       colcon test \
         --retest-until-pass 2 \
+        --packages-skip ament_lint \
         --ctest-args -LE "(ikos|xfail)" \
         --pytest-args -m "not xfail"
   RUN . install/setup.sh && \
@@ -257,7 +263,7 @@ build-testing:
 image:
   FROM +rosdep
   ARG VCS_REF
-  ARG VERSION="latest"
+  ARG VERSION='jazzy'
 
   # Specify the docker image metadata
   LABEL org.label-schema.schema-version="1.0"

@@ -6,8 +6,8 @@ authors = ["Chris Lalancette <clalancette@gmail.com>"]
 channels = ["conda-forge"]
 platforms = ["win-64"]
 
-[target.win-64.activation]
-env = {QT_QPA_PLATFORM_PLUGIN_PATH="%cd%\\.pixi\\envs\\default\\Library\\plugins\\platforms"}
+[target.win-64.activation.env]
+QT_QPA_PLATFORM_PLUGIN_PATH="%cd%\\.pixi\\envs\\default\\Library\\plugins\\platforms"
 
 [dependencies]
 # The following are "tooling" dependencies, used to install or initiate builds.

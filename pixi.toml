@@ -109,7 +109,7 @@ spdlog = "==1.12.0"
 sqlite = "==3.45.2"  # TODO: Conda has 3.45.1, but it is not installable with Python 3.12
 tinyxml2 = "==10.0.0"
 typing_extensions = "==4.10.0"
-# TODO: Conda is missing uncrustify==0.78.1
+uncrustify = "==0.78.1"
 vcstool = "==0.3.0"
 yaml-cpp = "==0.8.0"
 yamllint = "==1.33.0"

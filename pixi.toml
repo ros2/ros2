@@ -1,0 +1,118 @@
+[project]
+name = "pixi_ros2_jazzy"
+version = "0.1.0"
+description = "Dependencies to build ROS 2 on Windows"
+authors = ["Chris Lalancette <clalancette@gmail.com>"]
+channels = ["conda-forge"]
+platforms = ["win-64"]
+
+[target.win-64.activation.env]
+QT_QPA_PLATFORM_PLUGIN_PATH="%cd%\\.pixi\\envs\\default\\Library\\plugins\\platforms"
+
+[dependencies]
+# The following are "tooling" dependencies, used to install or initiate builds.
+# We pin them less aggressively since they will presumably continue to their job,
+# and we don't rely on any particular API or ABI for them to be stable.
+7zip = ">=23.1,<24"
+colcon-cmake = ">=0.2.28,<0.3"
+colcon-core = ">=0.17.1,<0.18"
+colcon-defaults = ">=0.2.8,<0.3"
+colcon-library-path = ">=0.2.1,<0.3"
+colcon-metadata = ">=0.2.5,<0.3"
+colcon-mixin = ">=0.2.3,<0.3"
+colcon-output = ">=0.2.13,<0.3"
+colcon-package-information = ">=0.4.0,<0.5"
+colcon-package-selection = ">=0.2.10,<0.3"
+colcon-parallel-executor = ">=0.2.4,<0.3"
+colcon-pkg-config = ">=0.1.0,<0.2"
+colcon-powershell = ">=0.4.0,<0.5"
+colcon-python-setup-py = ">=0.2.7,<0.3"
+colcon-recursive-crawl = ">=0.2.3,<0.3"
+colcon-ros = ">=0.5.0,<0.6"
+colcon-ros-domain-id-coordinator = ">=0.2.1,<0.3"
+colcon-test-result = ">=0.3.8,<0.4"
+
+# The rest of the dependencies here are used by one or more ROS packages.  We aggressively
+# pin them to particular versions that are as close as possible to their counterparts in Ubuntu.
+argcomplete = "==3.1.4"
+asio = "==1.28.1"
+assimp = "==5.3.1"
+benchmark = "==1.8.3"
+bullet = "==3.25"  # TODO: Conda has 3.24, but it is not installable with Python 3.12
+catkin_pkg = "==1.0.0"
+cmake = "==3.28.3"
+console_bridge = "==1.0.1"
+coverage = "==7.4.4"
+cppcheck = "==2.15.0"  # TODO: This version doesn't actually work, so we should just remove ament_cppcheck
+cryptography = "==41.0.7"
+cunit = "==2.1.3"
+curl = "==8.5.0"
+distlib = "==0.3.8"
+docutils = "==0.20.1"
+eigen = "==3.4.0"
+empy = "==3.3.4"
+flake8 = "==7.0.0"
+flake8-blind-except = "==0.2.1"
+flake8-builtins = "==2.1.0"
+flake8-class-newline = "==1.6.0"
+flake8-comprehensions = "==3.14.0"
+flake8-deprecated = "==2.2.1"
+flake8-docstrings = "==1.6.0"
+flake8-import-order = "==0.18.2"
+flake8-quotes = "==3.4.0"
+git = "==2.43.0"
+graphviz = "==9.0.0"  # TODO: pygraphviz 1.11 needs at least graphviz 9.0.0
+importlib-metadata = "==4.13.0"  # TODO: Conda doesn't have 4.12.0
+iniconfig = "==1.1.1"
+lark = "==1.1.9"
+libcurl = "==8.5.0"
+lxml = "==5.2.1"
+lz4-c = "==1.9.4"
+mccabe = "==0.7.0"
+mypy = "==1.9.0"
+mypy_extensions = "==1.0.0"
+numpy = "==1.26.4"
+opencv = "==4.9.0"  # TODO: Conda has 4.6.0, but it is not installable with Python 3.12
+openssl = "==3.3.2"  # TODO: Conda has 3.0.13, but it is not installable with Python 3.12
+orocos-kdl = "==1.5.1"
+packaging = "==24.0"
+pathspec = "==0.12.1"
+pip = "==24.0"
+pluggy = "==1.4.0"
+psutil = "==5.9.8"
+pybind11 = "==2.11.1"
+pycodestyle = "==2.11.1"
+pydocstyle = "==6.3.0"
+pydot = "==1.4.2"
+pyflakes = "==3.2.0"
+pygraphviz = "==1.11"  # TODO: conda doesn't have pygraphviz 1.7 built for Python 3.12
+pyparsing = "==3.1.1"
+pyqt = "==5.15.9"  # TODO: Conda doesn't have 5.15.10
+pyqt5-sip = "==12.12.2"  # TODO: Conda doesn't have pyqt5-sip 12.13.0
+pytest = "==7.4.4"
+pytest-cov = "==4.1.0"
+pytest-mock = "==3.12.0"
+pytest-repeat = "==0.9.3"
+pytest-rerunfailures = "==12.0"
+pytest-runner = "==6.0.0"  # TODO: Conda has 2.11.1, but it is not installable with Python 3.12
+pytest-timeout = "==2.2.0"
+python = "==3.12.3"
+python-dateutil = "==2.8.2"
+python-fastjsonschema = "==2.19.0"
+python-orocos-kdl = "==1.5.1"
+pyyaml = "==6.0.1"
+qt = "==5.15.8"  # TODO: Conda doesn't have 5.15.13
+setuptools = "==68.1.2"
+six = "==1.16.0"
+snowballstemmer = "==2.2.0"
+spdlog = "==1.12.0"
+sqlite = "==3.45.2"  # TODO: Conda has 3.45.1, but it is not installable with Python 3.12
+tinyxml2 = "==10.0.0"
+typing_extensions = "==4.10.0"
+uncrustify = "==0.78.1"
+vcstool = "==0.3.0"
+yaml-cpp = "==0.8.0"
+yamllint = "==1.33.0"
+yaml = "==0.2.5"
+zipp = "==1.0.0"
+zstd = "==1.5.5"

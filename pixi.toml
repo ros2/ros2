@@ -1,0 +1,124 @@
+[project]
+name = "pixi_ros2_humble"
+version = "0.1.0"
+description = "Dependencies to build ROS 2 on Windows"
+authors = ["Chris Lalancette <clalancette@gmail.com>"]
+channels = ["conda-forge"]
+platforms = ["win-64"]
+
+[target.win-64.activation.env]
+PYTHONPATH="%cd%\\.pixi\\envs\\default\\Lib"
+QT_QPA_PLATFORM_PLUGIN_PATH="%cd%\\.pixi\\envs\\default\\Library\\plugins\\platforms"
+
+[dependencies]
+# The following are "tooling" dependencies, used to install or initiate builds.
+# We pin them less aggressively since they will presumably continue to their job,
+# and we don't rely on any particular API or ABI for them to be stable.
+7zip = ">=23.1,<24"
+colcon-cmake = ">=0.2.28,<0.3"
+colcon-core = ">=0.17.1,<0.18"
+colcon-defaults = ">=0.2.8,<0.3"
+colcon-library-path = ">=0.2.1,<0.3"
+colcon-metadata = ">=0.2.5,<0.3"
+colcon-mixin = ">=0.2.3,<0.3"
+colcon-output = ">=0.2.13,<0.3"
+colcon-package-information = ">=0.4.0,<0.5"
+colcon-package-selection = ">=0.2.10,<0.3"
+colcon-parallel-executor = ">=0.2.4,<0.3"
+colcon-pkg-config = ">=0.1.0,<0.2"
+colcon-powershell = ">=0.4.0,<0.5"
+colcon-python-setup-py = ">=0.2.7,<0.3"
+colcon-recursive-crawl = ">=0.2.3,<0.3"
+colcon-ros = ">=0.5.0,<0.6"
+colcon-ros-domain-id-coordinator = ">=0.2.1,<0.3"
+colcon-test-result = ">=0.3.8,<0.4"
+
+# The rest of the dependencies here are used by one or more ROS packages.  We aggressively
+# pin them to particular versions that are as close as possible to their counterparts in Ubuntu.
+argcomplete = "==1.9.4"  # TODO: conda doesn't have argcomplete 1.8.1
+asio = "==1.22.1"  # TODO: conda doesn't have asio 1.18.1
+assimp = "==5.2.3"  # TODO: conda doesn't have assimp 5.2.2
+benchmark = "==1.6.1"
+bullet = "==3.21"  # TODO: conda doesn't have bullet 3.06 and previous versions are incompatible with python 3.10
+catkin_pkg = "==1.0.0"
+cmake = "==3.22.2"  # TODO: conda doesn't have cmake 3.22.1
+console_bridge = "==1.0.1"
+coverage = "==6.2"
+cppcheck = "==2.10.1"  # TODO: This version doesn't actually work, so we should just remove ament_cppcheck
+cryptography = "==3.4.8"
+cunit = "==2.1.3"  # TODO: conda doesn't have cunit 2.1
+curl = "==7.81.0"
+distlib = "==0.3.4"
+docutils = "==0.17.1"
+eigen = "==3.4.0"
+empy = "==3.3.4"
+flake8 = "==4.0.1"
+flake8-blind-except = "==0.2.1"  # TODO: conda doesn't have flake8-blind-except 0.2.0
+flake8-builtins = "==1.5.3"
+flake8-class-newline = "==1.6.0"
+flake8-comprehensions = "==3.8.0"
+flake8-deprecated = "==2.2.1"  # TODO: conda doesn't have flake8-deprecated 1.3
+flake8-docstrings = "==1.6.0"
+flake8-import-order = "==0.18.1"
+flake8-quotes = "==3.3.1"
+git = "==2.34.1"
+graphviz = "==2.46.1"  # TODO: conda doesn't have graphviz 2.42.2
+importlib-metadata = "==4.8.1"  # TODO: conda doesn't have importlib-metadata 4.6.4
+iniconfig = "==1.1.1"
+lark = "==1.1.1"
+libcurl = "==7.81.0"
+lxml = "==4.9.2"  # TODO: lxml 4.8.0, 4.9.0, and 4.9.1 crash during import with conda
+lz4-c = "==1.9.3"
+mccabe = "==0.6.1"
+mypy = "==0.942"
+mypy_extensions = "==0.4.3"
+netifaces = "==0.11.0"
+numpy = "==1.21.5"
+opencv = "==4.5.5"  # TODO: conda doesn't have opencv 4.5.4
+openssl = "==1.1.1w"  # TODO: conda has openssl 3.0.2, but it is incompatible with cryptography 3.4.8
+orocos-kdl = "==1.5.1"
+packaging = "==21.3"
+pathspec = "==0.9.0"
+pip = "==22.0.2"
+pluggy = "==1.0.0"  # TODO: conda doesn't have pluggy 0.13.0 built for Python 3.10
+psutil = "==5.9.0"
+py = "==1.10.0"
+pybind11 = "==2.10.0"  # TODO: pybind11 2.9.1 crashes on tests
+pycodestyle = "==2.8.0"
+pydocstyle = "==6.1.1"
+pydot = "==1.4.2"
+pyflakes = "==2.4.0"
+pygments = "==2.11.2"
+pygraphviz = "==1.7"
+pyparsing = "==2.4.7"
+pyqt = "==5.12.3"  # TODO: conda doesn't have pyqt 5.15.6
+pyqt5-sip = "==4.19.18"  # TODO: Conda doesn't have pyqt5-sip 12.9.1
+pytest = "==6.2.5"
+pytest-cov = "==3.0.0"
+pytest-mock = "==3.6.1"
+pytest-repeat = "==0.9.1"
+pytest-rerunfailures = "==10.2"
+pytest-runner = "==3.0"  # TODO: conda doesn't have pytest-runner 2.11.1
+pytest-timeout = "==2.1.0"
+python = "==3.10.6"
+python-dateutil = "==2.8.1"
+python-orocos-kdl = "==1.5.1"
+pyyaml = "==5.4.1"
+qt = "==5.12.9"  # TODO: conda doesn't have qt 5.15.3
+setuptools = "==59.6.0"
+six = "==1.16.0"
+snowballstemmer = "==2.2.0"
+spdlog = "==1.9.2"
+sqlite = "==3.37.1"  # TODO: conda doesn't have sqlite 3.37.2
+tinyxml = "==2.6.2"
+tinyxml2 = "==9.0.0"
+toml = "==0.10.2"
+tomli = "==1.2.2"
+typing_extensions = "==3.10.0.2"
+uncrustify = "==0.72.0"
+vcstool = "==0.3.0"
+wheel = "==0.37.1"
+yaml-cpp = "==0.7.0"
+yamllint = "==1.26.3"
+yaml = "==0.2.5"  # TODO: conda doesn't have yaml 0.2.2
+zstd = "==1.5.0"  # TODO: conda doesn't have zstd 1.4.8

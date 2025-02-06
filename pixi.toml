@@ -39,7 +39,7 @@ argcomplete = "==1.9.4"  # TODO: conda doesn't have argcomplete 1.8.1
 asio = "==1.22.1"  # TODO: conda doesn't have asio 1.18.1
 assimp = "==5.2.3"  # TODO: conda doesn't have assimp 5.2.2
 benchmark = "==1.6.1"
-bullet = "==3.21"  # TODO: conda doesn't have bullet 3.06
+bullet = "==3.21"  # TODO: conda doesn't have bullet 3.06 and previous versions are incompatible with python 3.10
 catkin_pkg = "==1.0.0"
 cmake = "==3.22.2"  # TODO: conda doesn't have cmake 3.22.1
 console_bridge = "==1.0.1"
@@ -75,7 +75,7 @@ mypy_extensions = "==0.4.3"
 netifaces = "==0.11.0"
 numpy = "==1.21.5"
 opencv = "==4.5.5"  # TODO: conda doesn't have opencv 4.5.4
-openssl = "==1.1.1w"  # TODO: conda doesn't have openssl 3.0.2
+openssl = "==1.1.1w"  # TODO: conda has openssl 3.0.2, but it is incompatible with cryptography 3.4.8
 orocos-kdl = "==1.5.1"
 packaging = "==21.3"
 pathspec = "==0.9.0"

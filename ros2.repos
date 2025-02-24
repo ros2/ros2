@@ -319,6 +319,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
     version: rolling
+  ros2/rmw_zenoh:
+    type: git
+    url: https://github.com/ros2/rmw_zenoh.git
+    version: rolling
   ros2/ros2_tracing:
     type: git
     url: https://github.com/ros2/ros2_tracing.git

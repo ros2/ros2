@@ -39,6 +39,7 @@ asio = "==1.28.1"
 assimp = "==5.3.1"
 benchmark = "==1.8.3"
 bullet = "==3.25"  # TODO: Conda has 3.24, but it is not installable with Python 3.12
+cargo = "1.75.0"
 catkin_pkg = "==1.0.0"
 cmake = "==3.28.3"
 console_bridge = "==1.0.1"

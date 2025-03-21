@@ -278,7 +278,7 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: rolling
+    version: ahcorde/rolling/test_zenoh_multicast
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git

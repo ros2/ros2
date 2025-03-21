@@ -214,7 +214,7 @@ repositories:
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
-    version: rolling
+    version: ahcorde/rolling/test_zenoh_multicast
   ros2/eigen3_cmake_module:
     type: git
     url: https://github.com/ros2/eigen3_cmake_module.git
@@ -266,7 +266,7 @@ repositories:
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: rolling
+    version: yadu/test_zenoh_multicast
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
@@ -278,7 +278,7 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: rolling
+    version: ahcorde/rolling/test_zenoh_multicast
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
@@ -319,6 +319,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
     version: rolling
+  ros2/rmw_zenoh:
+    type: git
+    url: https://github.com/ros2/rmw_zenoh.git
+    version: rolling
   ros2/ros2_tracing:
     type: git
     url: https://github.com/ros2/ros2_tracing.git
@@ -326,7 +330,7 @@ repositories:
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: rolling
+    version: mjcarroll/zenoh_multicast
   ros2/ros2cli_common_extensions:
     type: git
     url: https://github.com/ros2/ros2cli_common_extensions.git
@@ -338,7 +342,7 @@ repositories:
   ros2/rosbag2:
     type: git
     url: https://github.com/ros2/rosbag2.git
-    version: rolling
+    version: ahcorde/rolling/test_zenoh_multicast
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
@@ -398,7 +402,7 @@ repositories:
   ros2/system_tests:
     type: git
     url: https://github.com/ros2/system_tests.git
-    version: rolling
+    version: ahcorde/rolling/test_zenoh_multicast
   ros2/test_interface_files:
     type: git
     url: https://github.com/ros2/test_interface_files.git

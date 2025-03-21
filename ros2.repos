@@ -402,7 +402,7 @@ repositories:
   ros2/system_tests:
     type: git
     url: https://github.com/ros2/system_tests.git
-    version: rolling
+    version: ahcorde/rolling/test_zenoh_multicast
   ros2/test_interface_files:
     type: git
     url: https://github.com/ros2/test_interface_files.git

@@ -398,7 +398,7 @@ repositories:
   ros2/sros2:
     type: git
     url: https://github.com/ros2/sros2.git
-    version: rolling
+    version: yadu/get_rmw_additional_env
   ros2/system_tests:
     type: git
     url: https://github.com/ros2/system_tests.git

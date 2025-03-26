@@ -214,7 +214,7 @@ repositories:
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
-    version: ahcorde/rolling/test_zenoh_multicast
+    version: rolling
   ros2/eigen3_cmake_module:
     type: git
     url: https://github.com/ros2/eigen3_cmake_module.git

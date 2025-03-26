@@ -342,7 +342,7 @@ repositories:
   ros2/rosbag2:
     type: git
     url: https://github.com/ros2/rosbag2.git
-    version: ahcorde/rolling/test_zenoh_multicast
+    version: rolling
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git

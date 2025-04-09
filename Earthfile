@@ -123,11 +123,13 @@ ikos-install:
   python3 python3-pip python3-venv \
   llvm-14 llvm-14-dev llvm-14-tools clang-14 ros-dev-tools
 
-  RUN git clone -b v3.2 --depth 1 https://github.com/NASA-SW-VnV/ikos.git
+  RUN git clone -b v3.5 --depth 1 https://github.com/NASA-SW-VnV/ikos.git
   RUN cd ikos \
       && mkdir build \
       && cd build \
       && cmake \
+      -DCMAKE_CXX_STANDARD=17 \
+      -DCMAKE_CXX_STANDARD_REQUIRED=ON \
       -DCMAKE_INSTALL_PREFIX="/opt/ikos" \
       -DCMAKE_BUILD_TYPE="Release" \
       -DLLVM_CONFIG_EXECUTABLE="/usr/lib/llvm-14/bin/llvm-config" \

@@ -12,22 +12,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 VERSION 0.8
-FROM ubuntu:noble
 
-# Defaulting to ROS 2 jazzy
-ARG ROS_DISTRO="jazzy"
+ARG --global IMAGE_NAME="osrf/space-ros"
+ARG --global IMAGE_TAG="latest"
+ARG --global USERNAME="spaceros-user"
+ARG --global HOME="/home/${USERNAME}"
+ARG --global WORKSPACE_DIR="/workspace"
+ARG --global SKIP_BUILD_TEST=false
 
-# TODO - the `setup` step will be merged with the `setup` step in spaceros docker Earthfile
-# This variable will then act as a single source of truth.
-ENV ROS_DISTRO ${ROS_DISTRO}
+###############################################################################
+### Target Configurations
+# Targets are the main entry points for the Earthfile. They are the commands
+# that can be run by the user. The `all` target is the default target that is
+# run when no target is specified.
+###############################################################################
+all:
+  # Order preserved for build
+  BUILD +main-image
+  BUILD +dev-image
 
-setup:
-  # Disable prompting during package installation
-  ARG DEBIAN_FRONTEND=noninteractive
+main-image:
+  BUILD +image --IMAGE_VARIANT=${IMAGE_TAG}
 
-  # The following commands are based on the source install for ROS 2 Rolling Ridley.
-  # See: https://docs.ros.org/en/ros2_documentation/rolling/Installation/Ubuntu-Development-Setup.html
-  # The main variation is getting Space ROS sources instead of the Rolling sources.
+dev-image:
+  BUILD +image --IMAGE_VARIANT=dev
+
+###############################################################################
+### PreInstallation Stage
+# This stage is responsible for setting up the base image with the necessary
+# dependencies required for the subsequent stages.
+###############################################################################
+pre-installation:
+  FROM ubuntu:jammy
+
+  ENV DEBIAN_FRONTEND=noninteractive
+  ENV ROS_DISTRO="humble"
+  ENV SPACEROS_DIR="/opt/spaceros"
+  ENV HOME=${HOME}
+  WORKDIR ${WORKSPACE_DIR}
 
   # Set the locale
   RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
@@ -38,264 +60,371 @@ setup:
   RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
   ENV LANG=en_US.UTF-8
 
+  # The following commands are based on the source install for ROS 2 Rolling Ridley.
+  # See: https://docs.ros.org/en/ros2_documentation/rolling/Installation/Ubuntu-Development-Setup.html
+  # The main variation is getting Space ROS sources instead of the Rolling sources.
+
   # Add the ROS 2 apt repository
   RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
       --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
-      apt-get update && \
       apt-get install -y \
         curl \
+        git \
+        cmake \
+        build-essential \
+        bison \
+        wget \
         gnupg \
         lsb-release \
+        python3-pip \
+        python3-setuptools \
         software-properties-common
   RUN add-apt-repository universe
   RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-  RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
+  RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
+    && apt update
 
+###############################################################################
+### Setup Stage
+# This stage is responsible for setting up the ROS 2 workspace and the required
+# dependencies for the workspace.
+###############################################################################
+setup:
+  FROM +pre-installation
   # Install required software development tools and ROS tools (and vim included for convenience)
-  RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
-      --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
-      apt-get update && \
-      apt-get install -y \
-        bison \
-        build-essential \
-        cmake \
-        git \
-        python3-colcon-common-extensions \
-        python3-flake8 \
-        python3-flake8-blind-except \
-        python3-flake8-builtins \
-        python3-flake8-class-newline \
-        python3-flake8-comprehensions \
-        python3-flake8-deprecated \
-        python3-flake8-docstrings \
-        python3-flake8-import-order \
-        python3-flake8-quotes \
-        python3-pip \
-        python3-pytest \
-        python3-pytest-cov \
-        python3-pytest-repeat \
-        python3-pytest-rerunfailures \
-        python3-rosdep \
-        python3-rosinstall-generator \
-        python3-setuptools \
-        python3-vcstool \
-        wget \
-        vim
+  RUN apt-get install -y python3-rosinstall-generator
 
-  # Define the username and key variables
-  ENV USERNAME spaceros-user
-  ENV HOME_DIR=/home/${USERNAME}
-  ENV SPACEROS_DIR=/opt/spaceros
+  COPY scripts ./
+  COPY excluded-pkgs.txt spaceros-pkgs.txt spaceros.repos ./
 
-  # Create the spaceros directory
-  RUN mkdir --mode=777 -p ${SPACEROS_DIR}
-
-  # Create a spaceros user
-  RUN useradd -m ${USERNAME} && \
-    echo "${USERNAME}:${USERNAME}" | chpasswd && \
-    usermod --shell /bin/bash ${USERNAME} && \
-    usermod -aG sudo ${USERNAME} && \
-    mkdir -p /etc/sudoers.d && \
-    echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/${USERNAME} && \
-    chmod 0440 /etc/sudoers.d/${USERNAME}
-  USER ${USERNAME}
-  WORKDIR ${SPACEROS_DIR}
-
-  # Update the OpenGL version
-  RUN sudo add-apt-repository ppa:kisak/kisak-mesa
-  RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
-      --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
-      sudo apt update && sudo apt upgrade -y
-
-  # Create install location and copy in relevant scripts
-  COPY --chown ${USERNAME}:${USERNAME} --dir docker/scripts/ ${SPACEROS_DIR}
-
-repos-file:
-  FROM +setup
-  COPY excluded-pkgs.txt ./
-  COPY spaceros-pkgs.txt ./
-  COPY spaceros.repos ./
   # This is a fresh image, so we do not need to exclude installed packages.
-  RUN --no-cache sh scripts/generate-repos.sh \
+  ENV AMENT_PREFIX_PATH=${SPACEROS_DIR}
+  RUN sh generate-repos.sh \
                  --outfile ros2.repos \
                  --packages spaceros-pkgs.txt \
                  --excluded-packages excluded-pkgs.txt \
-                 --exclude-installed false \
                  --rosdistro ${ROS_DISTRO}
-  RUN --no-cache python3 scripts/merge-repos.py ros2.repos spaceros.repos -o output.repos
+  RUN  python3 merge-repos.py ros2.repos spaceros.repos -o output.repos
   SAVE ARTIFACT output.repos AS LOCAL ros2.repos
 
-spaceros-artifacts:
-  # we must run it in a separate container, so that downstream tasks can be cached if vcs file does not change
-  FROM +setup
-  USER ${USERNAME}
-  WORKDIR ${SPACEROS_DIR}
+###############################################################################
+### IKOS Installation
+# This stage is responsible for installing IKOS and its dependencies.
+# This will be used for static analysis of the ROS 2 workspace during build
+# test and development.
+###############################################################################
+ikos-install:
+  FROM +pre-installation
 
-  COPY ros2.repos ./
-  COPY excluded-pkgs.txt ./
-  COPY colcon_ws_config colcon_ws_config
+  RUN apt-get install --yes \
+  gcc g++ cmake libgmp-dev libboost-dev libboost-filesystem-dev \
+  libboost-thread-dev libboost-test-dev \
+  libsqlite3-dev libtbb-dev libz-dev libedit-dev \
+  python3 python3-pip python3-venv \
+  llvm-14 llvm-14-dev llvm-14-tools clang-14 ros-dev-tools
 
-  # this ensure the vcs import and export results are not cached
-  RUN --no-cache echo "Cloning spaceros repo artifacts"
+  RUN git clone -b v3.2 --depth 1 https://github.com/NASA-SW-VnV/ikos.git
+  RUN cd ikos \
+      && mkdir build \
+      && cd build \
+      && cmake \
+      -DCMAKE_INSTALL_PREFIX="/opt/ikos" \
+      -DCMAKE_BUILD_TYPE="Release" \
+      -DLLVM_CONFIG_EXECUTABLE="/usr/lib/llvm-14/bin/llvm-config" \
+      .. \
+      && make -j$(nproc) \
+      && make install
+  ENV PATH="/opt/ikos/bin/:$PATH"
+  RUN rm -rf ikos
 
-  # we run vcstool inside this task, because some packages in `ros2.repos` are not pinned and otherwise
-  # earthly won't pull latest changes
-  RUN mkdir src
-  RUN vcs import --shallow --retry 3 --input ros2.repos src
-  RUN vcs export --exact src > exact.repos
+  SAVE ARTIFACT /opt/ikos AS LOCAL ikos
 
-  SAVE ARTIFACT ros2.repos
-  SAVE ARTIFACT exact.repos # `ros2.repos`, but with pinned versions (e.g. SHAs instead of branches)
-  SAVE ARTIFACT excluded-pkgs.txt
-  SAVE ARTIFACT colcon_ws_config
+ADD_IKOS:
+  FUNCTION
+    RUN apt-get install --yes gcc \
+      g++ \
+      cmake \
+      libgmp-dev \
+      libboost-dev \
+      libboost-filesystem-dev \
+      libboost-thread-dev \
+      libboost-test-dev \
+      libsqlite3-dev \
+      libtbb-dev \
+      libz-dev \
+      libedit-dev \
+      python3 \
+      python3-pip \
+      python3-venv \
+      llvm-14 \
+      llvm-14-dev \
+      llvm-14-tools \
+      clang-14 \
+      ros-dev-tools
 
+    COPY +ikos-install/ikos /opt/ikos
+    ENV PATH="/opt/ikos/bin/:$PATH"
+
+###############################################################################
+### Sources Stage
+# This stage is responsible for fetching the ROS 2 workspace sources.
+###############################################################################
 sources:
   FROM +setup
-  COPY +spaceros-artifacts/ros2.repos ros2.repos
-  COPY +spaceros-artifacts/excluded-pkgs.txt excluded-pkgs.txt
-  COPY +spaceros-artifacts/exact.repos exact.repos
-  RUN mkdir src
-  RUN vcs import --shallow --retry 3 --input exact.repos src
-  SAVE ARTIFACT src AS LOCAL src
 
-vcs-exact:
-  COPY +spaceros-artifacts/${SPACEROS_DIR}/exact.repos exact.repos
-  SAVE ARTIFACT exact.repos AS LOCAL exact.repos
+  RUN apt install -y python3-vcstool \
+    && mkdir src -p \
+    && vcs import --retry 3 src < output.repos \
+    && vcs export --exact src > exact.repos
 
+  # Save artifacts to be  used
+  SAVE ARTIFACT exact.repos
+  SAVE ARTIFACT src
+
+###############################################################################
+### Rosdep Stage
+# This stage is responsible for installing the system dependencies required
+# for the ROS 2 workspace.
+###############################################################################
 rosdep:
-  FROM +sources
-  COPY src src/
+  FROM +pre-installation
+
+  # Rosdep updates
+  RUN apt-get install -y python3-rosdep \
+    && rosdep init \
+    && rosdep update
+
+  # Copy Repos file
+  COPY +sources/src ./src
+  COPY excluded-pkgs.txt excluded-deps.txt ./
 
   # Install system package dependencies using rosdep
-  RUN sudo rosdep init && rosdep update
-  RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
-      --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
-      sudo apt-get update && \
-      rosdep update && \
-      rosdep install -s -y \
+  RUN rosdep install -y \
         --from-paths src --ignore-src \
+        --simulate \
         --rosdistro ${ROS_DISTRO} \
         # `urdfdom_headers` is cloned from source, however rosdep can't find it.
         # It is because package.xml manifest is missing. See: https://github.com/ros/urdfdom_headers
         # Additionally, IKOS must be excluded as per: https://github.com/space-ros/docker/issues/99
-        --skip-keys "$(tr '\n' ' ' < 'excluded-pkgs.txt') urdfdom_headers ikos" > rosdep-commands.sh && \
-      chmod u+x rosdep-commands.sh && \
-      ./rosdep-commands.sh
-        
-  RUN rm excluded-pkgs.txt
+        --skip-keys "$(tr '\n' ' ' < 'excluded-pkgs.txt') urdfdom_headers ikos" > rosdeps.txt
 
-  RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
-      --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
-      sudo apt-get update && \
-      sudo apt-get install --yes \
-        gcc \
-        g++ \
-        cmake \
-        libgmp-dev \
-        libboost-dev \
-        libboost-filesystem-dev \
-        libboost-thread-dev \
-        libboost-test-dev \
-        libsqlite3-dev \
-        libtbb-dev \
-        libz-dev \
-        libedit-dev \
-        python3 \
-        python3-pip \
-        python3-venv \
-        llvm-14 \
-        llvm-14-dev \
-        llvm-14-tools \
-        clang-14
+  # Process rosdeps.txt to a shell script
+  RUN touch rosdeps.sh \
+        && echo "#!/bin/bash" > rosdeps.sh \
+        && echo "apt-get update" >> rosdeps.sh \
+        && echo "apt-get install -y \\" >> rosdeps.sh \
+        && grep -v -F -f excluded-deps.txt rosdeps.txt | sed 's/^/  /' >> rosdeps.sh \
+        && chmod +x rosdeps.sh
 
-  WORKDIR ${SPACEROS_DIR}
-  RUN git clone --branch v3.4 --depth 1 https://github.com/NASA-SW-VnV/ikos.git
-  WORKDIR ${SPACEROS_DIR}/ikos
-  RUN mkdir build
-  WORKDIR ${SPACEROS_DIR}/ikos/build
-  RUN cmake \
-        -DCMAKE_INSTALL_PREFIX="/opt/ikos" \
-        -DCMAKE_BUILD_TYPE="Debug" \
-        -DLLVM_CONFIG_EXECUTABLE="/usr/lib/llvm-14/bin/llvm-config" \
-        ..
-  RUN make -j`nproc`
-  RUN sudo make install
-  ENV PATH="/opt/ikos/bin/:$PATH"
-  WORKDIR ${SPACEROS_DIR}
-  RUN sudo rm -rf ikos/
+  # The generated shell script is used by the prepare-image stage prior to building the image
+  # saving build time by not having to install dependencies again.
+  SAVE ARTIFACT rosdeps.sh
 
+###############################################################################
+### Build Stage
+# This stage is responsible for building the ROS 2 workspace.
+###############################################################################
 build:
   FROM +rosdep
-  RUN colcon build \
-        --cmake-args \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-        --no-warn-unused-cli
-  COPY +spaceros-artifacts/exact.repos install/exact.repos
-  SAVE ARTIFACT install AS LOCAL install
 
-build-dev:
-  FROM +rosdep
-  ARG tag='jazzy'
+  RUN bash rosdeps.sh
+  RUN mkdir -p ${SPACEROS_DIR} \
+    && apt install -y python3-colcon-common-extensions \
+    && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+        -DCMAKE_CXX_FLAGS="--param ggc-min-expand=20" \
+        --no-warn-unused-cli --install-base ${SPACEROS_DIR}  --merge-install
 
-  # Prepare static analysers.
-  COPY +spaceros-artifacts/colcon_ws_config colcon_ws_config
-  RUN python3 colcon_ws_config/prepare_workspace.py # outputs spaceros-linters.meta
+  SAVE ARTIFACT ${SPACEROS_DIR}
 
-  RUN colcon build \
-      --metas ./spaceros-linters.meta \
-      --cmake-args \
-      -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-      -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-      --no-warn-unused-cli
+###############################################################################
+### Build Test Stage
+# This stage is responsible for running the tests on the ROS 2 workspace.
+###############################################################################
+build-test:
+  FROM +build
 
-  # TODO: Consider pushing pre-built dev images to the registry.
-  # SAVE IMAGE --push osrf/space-ros-dev:latest osrf/space-ros-dev:$tag
+  # Add IKOS
+  DO +ADD_IKOS
 
-build-testing:
-  FROM +build-dev
-  # exclude ament_lint tests as they give error on Jazzy due to python 'unittest' requiring at least one test recently
-  RUN . install/setup.sh && \
+  # Install dependencies for testing
+  RUN apt install -y python3-flake8 \
+      python3-pydocstyle \
+      clang-tidy \
+      graphviz \
+      uncrustify \
+      python3-pycodestyle \
+      cppcheck \
+      python3-nose \
+      google-mock \
+      pydocstyle \
+      python3-pytest \
+      python3-pytest-timeout \
+      python3-pytest-mock \
+      python3-pytest-cov \
+      python3-matplotlib \
+      pyflakes3 \
+      python3-mypy \
+      python3-argcomplete \
+    && pip3 install pytest-rerunfailures \
+      pytest-cov \
+      pytest-repeat \
+      mypy \
+      argcomplete
+
+  RUN . ${SPACEROS_DIR}/setup.sh && \
       colcon test \
+        --merge-install \
         --retest-until-pass 2 \
         --packages-skip ament_lint \
         --ctest-args -LE "(ikos|xfail)" \
-        --pytest-args -m "not xfail"
-  RUN . install/setup.sh && \
-      ros2 run process_sarif make_build_archive
-  COPY +spaceros-artifacts/exact.repos install/exact.repos
-  SAVE ARTIFACT log/build_results_archives/build_results_*.tar.bz2 AS LOCAL log/build_results_archives/
-  SAVE ARTIFACT install AS LOCAL install
+        --ctest-args "--output-on-failure" \
+        --pytest-args -m "not xfail" \
+        --pytest-args "--disable-warnings" \
+        --install-base ${SPACEROS_DIR}
 
-image:
-  FROM +rosdep
-  ARG VCS_REF
-  ARG VERSION='jazzy'
+  # Create tar ball of the logs directory
+  RUN tar -cjf build_test_results.tar.bz2 log
 
-  # Specify the docker image metadata
+  SAVE ARTIFACT /workspace/build_test_results.tar.bz2 AS LOCAL build_test_results.tar.bz2
+
+###############################################################################
+### Image Stage
+# This stage is responsible for creating the final image with the ROS 2
+# workspace. The image is saved only if the build-test stage is successful.
+###############################################################################
+prepare-image:
+  ARG --required VCS_REF
+
+  FROM +pre-installation
+
   LABEL org.label-schema.schema-version="1.0"
   LABEL org.label-schema.name="Space ROS"
   LABEL org.label-schema.description="Preview version of the Space ROS platform"
   LABEL org.label-schema.vendor="Open Robotics"
   LABEL org.label-schema.url="https://github.com/space-ros"
-  LABEL org.label-schema.vcs-url="https://github.com/space-ros/docker-images"
+  LABEL org.label-schema.vcs-url="https://github.com/space-ros/space-ros"
   LABEL org.label-schema.vcs-ref=${VCS_REF}
 
-  COPY +build/install ${SPACEROS_DIR}/install
-  COPY +spaceros-artifacts/exact.repos ${SPACEROS_DIR}/exact.repos
-  RUN rm -r src
+  # Add missing dependencies
+  RUN apt update \
+    && apt install -y libspdlog-dev \
+      python3-numpy \
+      python3-rosdistro \
+      tzdata \
+      sudo \
+      python3-colcon-common-extensions \
+      python3-rosdep \
+    && pip3 install pyyaml \
+      lark \
+      packaging \
+      netifaces \
+      catkin_pkg \
+      psutil
 
-  WORKDIR ${HOME_DIR}
-  COPY docker/entrypoint.sh /ros_entrypoint.sh
-  ENTRYPOINT ["/ros_entrypoint.sh"]
-  CMD ["bash"]
-  SAVE IMAGE osrf/space-ros:${VERSION}
+  # Prepare the image
+  RUN mkdir -p ${SPACEROS_DIR}
+  COPY +rosdep/rosdeps.sh ${SPACEROS_DIR}/rosdeps.sh
+  RUN bash ${SPACEROS_DIR}/rosdeps.sh
 
-# Target for prepping image(s) to be pushed to remote registries.
-push-image:
-  FROM +image
+###############################################################################
+### Prepare Image Stage
+# This stage is responsible for preparing the image with the ROS 2 workspace.
+# The image is saved only if the build-test stage is successful.
+###############################################################################
+image:
+  ARG --required IMAGE_VARIANT
+  FROM +prepare-image
 
+  COPY +build/spaceros ${SPACEROS_DIR}
+  COPY +sources/exact.repos ${SPACEROS_DIR}/scripts/spaceros.repos
+  COPY scripts/generate-repos.sh scripts/merge-repos.py ${SPACEROS_DIR}/scripts/
+  RUN chmod +x ${SPACEROS_DIR}/scripts/generate-repos.sh ${SPACEROS_DIR}/scripts/merge-repos.py \
+    && mv ${SPACEROS_DIR}/rosdeps.sh ${SPACEROS_DIR}/scripts/rosdeps.sh
+
+  # Post Installation
+  DO +POST_INSTALLATION --IMAGE_VARIANT=${IMAGE_VARIANT}
+
+  # Clear Apt and Pip cache
+  RUN rm -rf /var/lib/apt/lists/* /tmp/pip-reqs /var/cache/apt/archives \
+    && apt-get clean \
+    && pip cache purge
+
+  # Add user and group
+  RUN useradd -m -s /bin/bash ${USERNAME} \
+    && chown -R ${USERNAME}:${USERNAME} ${SPACEROS_DIR}/scripts \
+    && echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME}
+  RUN echo "source ${SPACEROS_DIR}/setup.bash" >> ${HOME}/.bashrc
+
+  RUN chown -R ${USERNAME}:${USERNAME} ${HOME}
+
+  USER ${USERNAME}
+  WORKDIR ${HOME}
+
+  # Only save image if build-test is successful
+  IF [ "${SKIP_BUILD_TEST}" = "true" ]
+    SAVE IMAGE ${IMAGE_NAME}:${IMAGE_VARIANT}
+  ELSE
+    BUILD +build-test
+    SAVE IMAGE ${IMAGE_NAME}:${IMAGE_VARIANT}
+  END
+
+###############################################################################
+### Post Installation Stage
+# This stage is responsible for cleaning up the workspace and installing
+# additional dependencies based on the image variant.
+###############################################################################
+POST_INSTALLATION:
+  FUNCTION
+  ARG --required IMAGE_VARIANT
+
+  # Remove workspace if image variant is core or dev
+  RUN rm -rf ${WORKSPACE_DIR}
+
+  # If Dev, install IKOS and excluded dependencies
+  IF [ "${IMAGE_VARIANT}" = "dev" ]
+    DO +ADD_IKOS
+
+    COPY excluded-deps.txt ./
+    RUN apt install -y $(grep -v '^#' excluded-deps.txt) \
+      && rm -rf excluded-deps.txt
+  END
+
+###############################################################################
+### Push Image Stage for main image
+# This stage is responsible for pushing the core image to the registry.
+###############################################################################
+push-main-image:
   # This can be overridden with a blank string to prevent pushing to the registry.
-  ARG LATEST="osrf/space-ros:latest"
-  ARG TAG
-  SAVE IMAGE --push ${LATEST} ${TAG}
+  ARG --required VCS_REF
+
+  FROM +image --IMAGE_VARIANT=${IMAGE_TAG}
+
+  LABEL org.label-schema.schema-version="1.0"
+  LABEL org.label-schema.name="Space ROS - Core/Main"
+  LABEL org.label-schema.description="Core version of the Space ROS platform"
+  LABEL org.label-schema.vendor="Open Robotics"
+  LABEL org.label-schema.url="https://github.com/space-ros"
+  LABEL org.label-schema.vcs-url="https://github.com/space-ros/space-ros"
+  LABEL org.label-schema.vcs-ref=${VCS_REF}
+
+  SAVE IMAGE --push ${IMAGE_NAME}:${IMAGE_TAG}
+
+###############################################################################
+### Push Image Stage for dev image
+# This stage is responsible for pushing the dev image to the registry.
+###############################################################################
+push-dev-image:
+  # This can be overridden with a blank string to prevent pushing to the registry.
+  ARG --required VCS_REF
+
+  FROM +image --IMAGE_VARIANT=dev
+
+  LABEL org.label-schema.schema-version="1.0"
+  LABEL org.label-schema.name="Space ROS - Dev"
+  LABEL org.label-schema.description="Dev version of the Space ROS platform"
+  LABEL org.label-schema.vendor="Open Robotics"
+  LABEL org.label-schema.url="https://github.com/space-ros"
+  LABEL org.label-schema.vcs-url="https://github.com/space-ros/space-ros"
+  LABEL org.label-schema.vcs-ref=${VCS_REF}
+
+  SAVE IMAGE --push ${IMAGE_NAME}:dev

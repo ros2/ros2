@@ -43,10 +43,10 @@ dev-image:
 # dependencies required for the subsequent stages.
 ###############################################################################
 pre-installation:
-  FROM ubuntu:jammy
+  FROM ubuntu:noble
 
   ENV DEBIAN_FRONTEND=noninteractive
-  ENV ROS_DISTRO="humble"
+  ENV ROS_DISTRO="jazzy"
   ENV SPACEROS_DIR="/opt/spaceros"
   ENV HOME=${HOME}
   WORKDIR ${WORKSPACE_DIR}
@@ -227,6 +227,8 @@ rosdep:
 build:
   FROM +rosdep
 
+  # Uncrustify Vendor has vcstool as a dependency
+  RUN apt install -y python3-vcstool
   RUN bash rosdeps.sh
   RUN mkdir -p ${SPACEROS_DIR} \
     && apt install -y python3-colcon-common-extensions \
@@ -309,17 +311,15 @@ prepare-image:
   RUN apt update \
     && apt install -y libspdlog-dev \
       python3-numpy \
-      python3-rosdistro \
       tzdata \
       sudo \
-      python3-colcon-common-extensions \
-      python3-rosdep \
-    && pip3 install pyyaml \
+      ros-dev-tools
+  RUN pip3 install pyyaml \
       lark \
       packaging \
       netifaces \
       catkin_pkg \
-      psutil
+      psutil --break-system-packages
 
   # Prepare the image
   RUN mkdir -p ${SPACEROS_DIR}

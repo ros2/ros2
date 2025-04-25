@@ -47,13 +47,13 @@ repositories:
     type: git
     url: https://github.com/eclipse-iceoryx/iceoryx.git
     version: release_2.0
-  ignition/ignition_cmake2_vendor:
+  gazebo-release/gz_cmake2_vendor:
     type: git
-    url: https://github.com/ignition-release/ignition_cmake2_vendor.git
+    url: https://github.com/gazebo-release/gz_cmake2_vendor.git
     version: humble
-  ignition/ignition_math6_vendor:
+  gazebo-release/gz_math6_vendor:
     type: git
-    url: https://github.com/ignition-release/ignition_math6_vendor.git
+    url: https://github.com/gazebo-release/gz_math6_vendor.git
     version: humble
   osrf/osrf_pycommon:
     type: git

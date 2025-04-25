@@ -199,10 +199,6 @@ repositories:
     type: git
     url: https://github.com/ros/urdfdom_headers.git
     version: master
-  ros2-rust/rosidl_rust:
-    type: git
-    url: https://github.com/ros2-rust/rosidl_rust.git
-    version: main
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git

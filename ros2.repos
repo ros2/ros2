@@ -98,71 +98,71 @@ repositories:
   ros-visualization/python_qt_binding:
     type: git
     url: https://github.com/ros-visualization/python_qt_binding.git
-    version: rolling
+    version: kilted
   ros-visualization/qt_gui_core:
     type: git
     url: https://github.com/ros-visualization/qt_gui_core.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt:
     type: git
     url: https://github.com/ros-visualization/rqt.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt_action:
     type: git
     url: https://github.com/ros-visualization/rqt_action.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt_bag:
     type: git
     url: https://github.com/ros-visualization/rqt_bag.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt_console:
     type: git
     url: https://github.com/ros-visualization/rqt_console.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt_graph:
     type: git
     url: https://github.com/ros-visualization/rqt_graph.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt_msg:
     type: git
     url: https://github.com/ros-visualization/rqt_msg.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt_plot:
     type: git
     url: https://github.com/ros-visualization/rqt_plot.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt_publisher:
     type: git
     url: https://github.com/ros-visualization/rqt_publisher.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt_py_console:
     type: git
     url: https://github.com/ros-visualization/rqt_py_console.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt_reconfigure:
     type: git
     url: https://github.com/ros-visualization/rqt_reconfigure.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt_service_caller:
     type: git
     url: https://github.com/ros-visualization/rqt_service_caller.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt_shell:
     type: git
     url: https://github.com/ros-visualization/rqt_shell.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt_srv:
     type: git
     url: https://github.com/ros-visualization/rqt_srv.git
-    version: rolling
+    version: kilted
   ros-visualization/rqt_topic:
     type: git
     url: https://github.com/ros-visualization/rqt_topic.git
-    version: rolling
+    version: kilted
   ros-visualization/tango_icons_vendor:
     type: git
     url: https://github.com/ros-visualization/tango_icons_vendor.git
-    version: rolling
+    version: kilted
   ros/class_loader:
     type: git
     url: https://github.com/ros/class_loader.git

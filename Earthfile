@@ -268,12 +268,12 @@ build-test:
       python3-matplotlib \
       pyflakes3 \
       python3-mypy \
-      python3-argcomplete \
-    && pip3 install pytest-rerunfailures \
+      python3-argcomplete
+  RUN pip3 install pytest-rerunfailures \
       pytest-cov \
       pytest-repeat \
       mypy \
-      argcomplete
+      argcomplete --break-system-packages
 
   RUN . ${SPACEROS_DIR}/setup.sh && \
       colcon test \

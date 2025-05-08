@@ -1,5 +1,5 @@
 [project]
-name = "pixi_ros2_rolling"
+name = "pixi_ros2_kilted"
 version = "0.1.0"
 description = "Dependencies to build ROS 2 on Windows"
 authors = ["Chris Lalancette <clalancette@gmail.com>"]

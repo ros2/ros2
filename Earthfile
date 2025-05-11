@@ -18,7 +18,7 @@ ARG --global IMAGE_TAG="latest"
 ARG --global USERNAME="spaceros-user"
 ARG --global HOME="/home/${USERNAME}"
 ARG --global WORKSPACE_DIR="/workspace"
-ARG --global SKIP_BUILD_TEST=false
+ARG --global SKIP_BUILD_TEST=true
 
 ###############################################################################
 ### Target Configurations
@@ -116,12 +116,29 @@ setup:
 ikos-install:
   FROM +pre-installation
 
-  RUN apt-get install --yes \
-  gcc g++ cmake libgmp-dev libboost-dev libboost-filesystem-dev \
-  libboost-thread-dev libboost-test-dev \
-  libsqlite3-dev libtbb-dev libz-dev libedit-dev \
-  python3 python3-pip python3-venv \
-  llvm-14 llvm-14-dev llvm-14-tools clang-14 ros-dev-tools
+  RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
+      --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
+      apt-get update && apt-get install --yes \
+      gcc \
+      g++ \
+      cmake \
+      libgmp-dev \
+      libboost-dev \
+      libboost-filesystem-dev \
+      libboost-thread-dev \
+      libboost-test-dev \
+      libsqlite3-dev \
+      libtbb-dev \
+      libz-dev \
+      libedit-dev \
+      python3 \
+      python3-pip \
+      python3-venv \
+      llvm-14 \
+      llvm-14-dev \
+      llvm-14-tools \
+      clang-14 \
+      ros-dev-tools
 
   RUN git clone -b v3.5 --depth 1 https://github.com/NASA-SW-VnV/ikos.git
   RUN cd ikos \
@@ -143,7 +160,9 @@ ikos-install:
 
 ADD_IKOS:
   FUNCTION
-    RUN apt-get install --yes gcc \
+    RUN --mount=type=cache,mode=0777,target=/var/cache/apt,sharing=locked,id=cache_apt_cache \
+      --mount=type=cache,mode=0777,target=/var/lib/apt,sharing=locked,id=lib_apt_cache \
+      apt-get install --yes gcc \
       g++ \
       cmake \
       libgmp-dev \
@@ -247,9 +266,6 @@ build:
 build-test:
   FROM +build
 
-  # Add IKOS
-  DO +ADD_IKOS
-
   # Install dependencies for testing
   RUN apt install -y python3-flake8 \
       python3-pydocstyle \
@@ -297,17 +313,7 @@ build-test:
 # workspace. The image is saved only if the build-test stage is successful.
 ###############################################################################
 prepare-image:
-  ARG --required VCS_REF
-
   FROM +pre-installation
-
-  LABEL org.label-schema.schema-version="1.0"
-  LABEL org.label-schema.name="Space ROS"
-  LABEL org.label-schema.description="Preview version of the Space ROS platform"
-  LABEL org.label-schema.vendor="Open Robotics"
-  LABEL org.label-schema.url="https://github.com/space-ros"
-  LABEL org.label-schema.vcs-url="https://github.com/space-ros/space-ros"
-  LABEL org.label-schema.vcs-ref=${VCS_REF}
 
   # Add missing dependencies
   RUN apt update \

@@ -23,13 +23,14 @@ jobs:
       - name: Build Test Space ROS
         id: build
         run: |
-          earthly --ci --output +build-test --VCS_REF="$VCS_REF"
+          earthly --ci --output +build-test --SKIP_BUILD_TEST=false
       - name: Upload build results archive
         uses: actions/upload-artifact@v4
         with:
           name: build_results.tar.bz2
           path: build_test_results.tar.bz2
           if-no-files-found: error
+
   space-ros-main-image:
     runs-on: ubuntu-latest
     env:
@@ -48,7 +49,7 @@ jobs:
 
       - name: Build spaceros image
         run: |
-          earthly --ci --output +main-image --VCS_REF="$VCS_REF" --IMAGE_TAG="$IMAGE_TAG" --SKIP_BUILD_TEST=true
+          earthly --ci --output +main-image --VCS_REF="$VCS_REF" --IMAGE_TAG="$IMAGE_TAG"
 
       - name: Login to GHCR
         uses: docker/login-action@v3
@@ -88,7 +89,7 @@ jobs:
 
       - name: Build spaceros image
         run: |
-          earthly --ci --output +dev-image --VCS_REF="$VCS_REF" --IMAGE_TAG="$IMAGE_TAG" --SKIP_BUILD_TEST=true
+          earthly --ci --output +dev-image --VCS_REF="$VCS_REF" --IMAGE_TAG="$IMAGE_TAG"
 
       - name: Login to GHCR
         uses: docker/login-action@v3

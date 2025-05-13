@@ -46,7 +46,7 @@ repositories:
   eclipse-iceoryx/iceoryx:
     type: git
     url: https://github.com/eclipse-iceoryx/iceoryx.git
-    version: v2.0.6
+    version: v2.0.5
   gazebo-release/gz_cmake_vendor:
     type: git
     url: https://github.com/gazebo-release/gz_cmake_vendor.git
@@ -78,7 +78,7 @@ repositories:
   ros-perception/point_cloud_transport:
     type: git
     url: https://github.com/ros-perception/point_cloud_transport.git
-    version: 5.1.2
+    version: 5.1.3
   ros-planning/navigation_msgs:
     type: git
     url: https://github.com/ros-planning/navigation_msgs.git

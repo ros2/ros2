@@ -118,3 +118,6 @@ yamllint = "==1.33.0"
 yaml = "==0.2.5"
 zipp = "==1.0.0"
 zstd = "==1.5.5"
+
+[pypi-dependencies]
+rosdistro = "==1.0.0"

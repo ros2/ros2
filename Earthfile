@@ -133,6 +133,7 @@ spaceros-artifacts:
 
   COPY ros2.repos ./
   COPY excluded-pkgs.txt ./
+  COPY colcon_ws_config colcon_ws_config
 
   # this ensure the vcs import and export results are not cached
   RUN --no-cache echo "Cloning spaceros repo artifacts"
@@ -146,6 +147,7 @@ spaceros-artifacts:
   SAVE ARTIFACT ros2.repos
   SAVE ARTIFACT exact.repos # `ros2.repos`, but with pinned versions (e.g. SHAs instead of branches)
   SAVE ARTIFACT excluded-pkgs.txt
+  SAVE ARTIFACT colcon_ws_config
 
 sources:
   FROM +setup
@@ -236,7 +238,12 @@ build-dev:
   FROM +rosdep
   ARG tag='jazzy'
 
+  # Prepare static analysers.
+  COPY +spaceros-artifacts/colcon_ws_config colcon_ws_config
+  RUN python3 colcon_ws_config/prepare_workspace.py # outputs spaceros-linters.meta
+
   RUN colcon build \
+      --metas ./spaceros-linters.meta \
       --cmake-args \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
       -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \

@@ -47,7 +47,7 @@ pre-installation:
 
   ENV DEBIAN_FRONTEND=noninteractive
   ENV ROS_DISTRO="jazzy"
-  ENV SPACEROS_DIR="/opt/spaceros"
+  ENV SPACEROS_DIR="/opt/ros/spaceros"
   ENV HOME=${HOME}
   WORKDIR ${WORKSPACE_DIR}
 
@@ -165,6 +165,7 @@ ADD_IKOS:
       apt-get install --yes gcc \
       g++ \
       cmake \
+      file \
       libgmp-dev \
       libboost-dev \
       libboost-filesystem-dev \
@@ -185,6 +186,7 @@ ADD_IKOS:
 
     COPY +ikos-install/ikos /opt/ikos
     ENV PATH="/opt/ikos/bin/:$PATH"
+    ENV IKOS_SCAN_NOTIFIER_FILES=""
 
 ###############################################################################
 ### Sources Stage
@@ -358,23 +360,22 @@ image:
     && pip cache purge
 
   # Add user and group
-  RUN useradd -m -s /bin/bash ${USERNAME} \
-    && chown -R ${USERNAME}:${USERNAME} ${SPACEROS_DIR}/scripts \
-    && echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME}
-  RUN echo "source ${SPACEROS_DIR}/setup.bash" >> ${HOME}/.bashrc
+  RUN useradd  --create-home -m -s /bin/bash ${USERNAME} && \
+      echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} && \
+      cp -r /etc/skel/. ${HOME}
 
-  RUN chown -R ${USERNAME}:${USERNAME} ${HOME}
+  # Ensure the user has access to the home and install directories
+  RUN chown -R ${USERNAME}:${USERNAME} ${HOME} ${SPACEROS_DIR}
 
   USER ${USERNAME}
   WORKDIR ${HOME}
 
-  # Only save image if build-test is successful
-  IF [ "${SKIP_BUILD_TEST}" = "true" ]
-    SAVE IMAGE ${IMAGE_NAME}:${IMAGE_VARIANT}
-  ELSE
-    BUILD +build-test
-    SAVE IMAGE ${IMAGE_NAME}:${IMAGE_VARIANT}
-  END
+  # Add the entrypoint
+  COPY ./docker/entrypoint.sh /entrypoint.sh
+  RUN echo "source /entrypoint.sh" >> ${HOME}/.bashrc
+  ENTRYPOINT ["/entrypoint.sh"]
+
+  SAVE IMAGE ${IMAGE_NAME}:${IMAGE_VARIANT}
 
 ###############################################################################
 ### Post Installation Stage
@@ -385,16 +386,17 @@ POST_INSTALLATION:
   FUNCTION
   ARG --required IMAGE_VARIANT
 
-  # Remove workspace if image variant is core or dev
-  RUN rm -rf ${WORKSPACE_DIR}
-
-  # If Dev, install IKOS and excluded dependencies
+  # If Dev, preserve the source and install IKOS and excluded dependencies
   IF [ "${IMAGE_VARIANT}" = "dev" ]
     DO +ADD_IKOS
 
+    COPY --chown=${USERNAME}:${USERNAME} +sources/src ${HOME}/spaceros_ws/src
     COPY excluded-deps.txt ./
     RUN apt install -y $(grep -v '^#' excluded-deps.txt) \
       && rm -rf excluded-deps.txt
+  # If Core, clean up with workspace directory
+  ELSE
+    RUN rm -rf ${WORKSPACE_DIR}
   END
 
 ###############################################################################

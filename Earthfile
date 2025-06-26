@@ -200,7 +200,7 @@ sources:
     && vcs import --retry 3 src < output.repos \
     && vcs export --exact src > exact.repos
 
-  # Save artifacts to be  used
+  # Save artifacts to be used
   SAVE ARTIFACT exact.repos
   SAVE ARTIFACT src
 
@@ -248,25 +248,54 @@ rosdep:
 # This stage is responsible for building the ROS 2 workspace.
 ###############################################################################
 build:
+  ARG --required IMAGE_VARIANT
   FROM +rosdep
 
   # Uncrustify Vendor has vcstool as a dependency
   RUN apt install -y python3-vcstool
   RUN bash rosdeps.sh
-  RUN mkdir -p ${SPACEROS_DIR} \
-    && apt install -y python3-colcon-common-extensions \
-    && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-        -DCMAKE_CXX_FLAGS="--param ggc-min-expand=20" \
-        --no-warn-unused-cli --install-base ${SPACEROS_DIR}  --merge-install
+  RUN mkdir -p ${SPACEROS_DIR}
+  RUN apt install -y python3-colcon-common-extensions
+
+  DO +BUILD_WORKSPACE --IMAGE_VARIANT=${IMAGE_VARIANT}
 
   SAVE ARTIFACT ${SPACEROS_DIR}
+
+BUILD_WORKSPACE:
+  FUNCTION
+  ARG --required IMAGE_VARIANT
+
+  # If Dev, add linters and build with debug info and tests
+  IF [ "${IMAGE_VARIANT}" = "dev" ]
+    COPY colcon_ws_config colcon_ws_config
+    RUN python3 colcon_ws_config/prepare_workspace.py # outputs spaceros-linters.meta
+    RUN colcon build \
+        --install-base ${SPACEROS_DIR} \
+        --merge-install \
+        --metas ./spaceros-linters.meta \
+        --cmake-args \
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+        -DCMAKE_CXX_FLAGS="--param ggc-min-expand=20" \
+        --no-warn-unused-cli
+  # Otherwise, compile the release image
+  ELSE
+    RUN colcon build \
+        --install-base ${SPACEROS_DIR} \
+        --merge-install \
+        --cmake-args \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+        -DCMAKE_CXX_FLAGS="--param ggc-min-expand=20" \
+        --no-warn-unused-cli
+  END
 
 ###############################################################################
 ### Build Test Stage
 # This stage is responsible for running the tests on the ROS 2 workspace.
 ###############################################################################
 build-test:
-  FROM +build
+  FROM +build --IMAGE_VARIANT=dev
 
   # Install dependencies for testing
   RUN apt install -y python3-flake8 \

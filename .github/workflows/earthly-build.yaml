@@ -23,7 +23,7 @@ jobs:
       - name: Build Test Space ROS
         id: build
         run: |
-          earthly --ci --output +build-test --SKIP_BUILD_TEST=false
+          earthly --ci --output +build-test
       - name: Upload build results archive
         uses: actions/upload-artifact@v4
         with:
@@ -34,9 +34,12 @@ jobs:
   space-ros-main-image:
     runs-on: ubuntu-latest
     env:
-      IMAGE_TAG: "latest"
+      IMAGE_TAG: "${{ github.head_ref || github.ref_name }}"
       VCS_REF: ${{ github.sha }}
+      GHCR_IMAGE_NAME: "ghcr.io/space-ros/space-ros"
+      DOCKER_HUB_USERNAME: osrfbot
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_RW_TOKEN }}
+      DOCKER_HUB_IMAGE_NAME: "osrf/space-ros"
 
     steps:
       - name: Checkout
@@ -47,36 +50,57 @@ jobs:
           sudo wget https://github.com/earthly/earthly/releases/latest/download/earthly-linux-amd64 -O /usr/local/bin/earthly
           sudo chmod 755 /usr/local/bin/earthly
 
-      - name: Build spaceros image
+      - name: Build spaceros image without pushing
         run: |
-          earthly --ci --output +main-image --VCS_REF="$VCS_REF" --IMAGE_TAG="$IMAGE_TAG"
+          earthly --ci --output +push-main-image \
+            --VCS_REF="$VCS_REF" \
+            --IMAGE_TAG="$IMAGE_TAG" \
+            --IMAGE_NAME="$DOCKER_HUB_IMAGE_NAME"
 
+      # Login and push the main builds to GHCR
       - name: Login to GHCR
         uses: docker/login-action@v3
+        if: ${{ github.ref_name == 'main' }}
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Only push the main builds to GHCR
       - name: Push the main spaceros image to GHCR
-        if: ${{ github.ref_type == 'tag' || github.ref_name == 'main' }}
+        if: ${{ github.ref_name == 'main' }}
         run: |
-          earthly --ci --push +push-main-image --IMAGE_TAG="$IMAGE_TAG" --VCS_REF="$VCS_REF"
+          docker tag "$DOCKER_HUB_IMAGE_NAME:$IMAGE_TAG" "$GHCR_IMAGE_NAME:$IMAGE_TAG"
+          docker push "$GHCR_IMAGE_NAME:$IMAGE_TAG"
 
       # Push both tagged releases and the latest main builds to Dockerhub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        if: ${{ github.ref_type == 'tag' || github.ref_name == 'main' }}
+        with:
+          username: $DOCKER_HUB_USERNAME
+          password: $DOCKER_HUB_TOKEN
+
       - name: Push spaceros images to Dockerhub
         if: ${{ github.ref_type == 'tag' || github.ref_name == 'main' }}
         run: |
-          echo $DOCKER_HUB_TOKEN | docker login --username osrfbot --password-stdin
-          earthly --ci --push +push-main-image --IMAGE_TAG="$IMAGE_TAG" --VCS_REF="$VCS_REF"
+          docker push "$DOCKER_HUB_IMAGE_NAME:$IMAGE_TAG"
+
+      # Any tagged image should also be marked as "latest"
+      - name: Push spaceros latest images to Dockerhub
+        if: ${{ github.ref_type == 'tag' }}
+        run: |
+          docker tag "$DOCKER_HUB_IMAGE_NAME:$IMAGE_TAG" "$DOCKER_HUB_IMAGE_NAME:latest"
+          docker push "$DOCKER_HUB_IMAGE_NAME:latest"
 
   space-ros-dev-image:
     runs-on: ubuntu-latest
     env:
-      IMAGE_TAG: "dev"
+      IMAGE_TAG: "${{ github.head_ref || github.ref_name }}-dev"
       VCS_REF: ${{ github.sha }}
+      GHCR_IMAGE_NAME: "ghcr.io/space-ros/space-ros"
+      DOCKER_HUB_USERNAME: osrfbot
       DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_RW_TOKEN }}
+      DOCKER_HUB_IMAGE_NAME: "osrf/space-ros"
 
     steps:
       - name: Checkout
@@ -87,26 +111,37 @@ jobs:
           sudo wget https://github.com/earthly/earthly/releases/latest/download/earthly-linux-amd64 -O /usr/local/bin/earthly
           sudo chmod 755 /usr/local/bin/earthly
 
-      - name: Build spaceros image
+      - name: Build spaceros dev image without pushing
         run: |
-          earthly --ci --output +dev-image --VCS_REF="$VCS_REF" --IMAGE_TAG="$IMAGE_TAG"
+          earthly --ci --output +push-dev-image \
+            --VCS_REF="$VCS_REF" \
+            --IMAGE_TAG="$IMAGE_TAG" \
+            --IMAGE_NAME="$DOCKER_HUB_IMAGE_NAME"
 
+      # Only push the main dev builds to GHCR
       - name: Login to GHCR
         uses: docker/login-action@v3
+        if: ${{ github.ref_name == 'main' }}
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Only push the dev builds to GHCR
       - name: Push the dev spaceros image to GHCR
-        if: ${{ github.ref_type == 'tag' || github.ref_name == 'main' }}
+        if: ${{ github.ref_name == 'main' }}
         run: |
-          earthly --ci --push +push-dev-image --IMAGE_TAG="$IMAGE_TAG" --VCS_REF="$VCS_REF"
+          docker tag "$DOCKER_HUB_IMAGE_NAME:$IMAGE_TAG" "$GHCR_IMAGE_NAME:$IMAGE_TAG"
+          docker push "$GHCR_IMAGE_NAME:$IMAGE_TAG"
 
-      # Push both tagged releases and the latest main builds to Dockerhub
+      # Push both tagged releases and the main dev builds to Dockerhub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        if: ${{ github.ref_type == 'tag' || github.ref_name == 'main' }}
+        with:
+          username: $DOCKER_HUB_USERNAME
+          password: $DOCKER_HUB_TOKEN
+
       - name: Push spaceros images to Dockerhub
         if: ${{ github.ref_type == 'tag' || github.ref_name == 'main' }}
         run: |
-          echo $DOCKER_HUB_TOKEN | docker login --username osrfbot --password-stdin
-          earthly --ci --push +push-dev-image --IMAGE_TAG="$IMAGE_TAG" --VCS_REF="$VCS_REF"
+          docker push "$DOCKER_HUB_IMAGE_NAME:$IMAGE_TAG"

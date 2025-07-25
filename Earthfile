@@ -37,7 +37,7 @@ main-image:
 # The dev-image persists the entire Space ROS workspace, as well as additional
 # dev tooling and packages for working with Space ROS packages.
 dev-image:
-  BUILD +image --IMAGE_VARIANT=dev
+  BUILD +image --IMAGE_VARIANT=dev --IMAGE_TAG=dev
 
 ###############################################################################
 ### PreInstallation Stage
@@ -464,4 +464,4 @@ push-dev-image:
   LABEL org.label-schema.vcs-url="https://github.com/space-ros/space-ros"
   LABEL org.label-schema.vcs-ref=${VCS_REF}
 
-  SAVE IMAGE --push ${IMAGE_NAME}:dev
+  SAVE IMAGE --push ${IMAGE_NAME}:${IMAGE_TAG}

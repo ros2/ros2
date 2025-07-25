@@ -70,11 +70,11 @@ repositories:
   ros-perception/image_common:
     type: git
     url: https://github.com/ros-perception/image_common.git
-    version: 6.1.1
+    version: 6.1.2
   ros-perception/laser_geometry:
     type: git
     url: https://github.com/ros-perception/laser_geometry.git
-    version: 2.10.0
+    version: 2.10.1
   ros-perception/point_cloud_transport:
     type: git
     url: https://github.com/ros-perception/point_cloud_transport.git
@@ -214,7 +214,7 @@ repositories:
   ros2/demos:
     type: git
     url: https://github.com/ros2/demos.git
-    version: 0.36.0
+    version: 0.36.1
   ros2/eigen3_cmake_module:
     type: git
     url: https://github.com/ros2/eigen3_cmake_module.git
@@ -230,15 +230,15 @@ repositories:
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: 0.41.0
+    version: 0.41.1
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
-    version: 3.8.1
+    version: 3.8.2
   ros2/launch_ros:
     type: git
     url: https://github.com/ros2/launch_ros.git
-    version: 0.28.1
+    version: 0.28.2
   ros2/libyaml_vendor:
     type: git
     url: https://github.com/ros2/libyaml_vendor.git
@@ -246,7 +246,7 @@ repositories:
   ros2/message_filters:
     type: git
     url: https://github.com/ros2/message_filters.git
-    version: 7.1.0
+    version: 7.1.1
   ros2/mimick_vendor:
     type: git
     url: https://github.com/ros2/mimick_vendor.git
@@ -266,7 +266,7 @@ repositories:
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: 10.1.0
+    version: 10.1.1
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
@@ -278,11 +278,11 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 29.5.0
+    version: 29.5.2
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 9.1.0
+    version: 9.1.1
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
@@ -290,7 +290,7 @@ repositories:
   ros2/rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git
-    version: 6.9.5
+    version: 6.9.7
   ros2/realtime_support:
     type: git
     url: https://github.com/ros2/realtime_support.git
@@ -322,7 +322,7 @@ repositories:
   ros2/rmw_zenoh:
     type: git
     url: https://github.com/ros2/rmw_zenoh.git
-    version: 0.6.1
+    version: 0.6.2
   ros2/ros2_tracing:
     type: git
     url: https://github.com/ros2/ros2_tracing.git
@@ -346,7 +346,7 @@ repositories:
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
-    version: 4.9.4
+    version: 4.9.5
   ros2/rosidl_core:
     type: git
     url: https://github.com/ros2/rosidl_core.git
@@ -390,7 +390,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 15.0.2
+    version: 15.0.4
   ros2/spdlog_vendor:
     type: git
     url: https://github.com/ros2/spdlog_vendor.git

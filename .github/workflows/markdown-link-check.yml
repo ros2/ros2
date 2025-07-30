@@ -12,4 +12,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - uses: gaurav-nelson/github-action-markdown-link-check@v1
+    - uses: tcort/github-action-markdown-link-check@v1

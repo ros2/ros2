@@ -70,7 +70,7 @@ repositories:
   ros-perception/image_common:
     type: git
     url: https://github.com/ros-perception/image_common.git
-    version: rolling
+    version: ahcorde/rolling/pybind11_vendor
   ros-perception/laser_geometry:
     type: git
     url: https://github.com/ros-perception/laser_geometry.git
@@ -78,7 +78,7 @@ repositories:
   ros-perception/point_cloud_transport:
     type: git
     url: https://github.com/ros-perception/point_cloud_transport.git
-    version: rolling
+    version: ahcorde/rolling/pybind11_vendor
   ros-planning/navigation_msgs:
     type: git
     url: https://github.com/ros-planning/navigation_msgs.git
@@ -258,14 +258,10 @@ repositories:
   ros2/orocos_kdl_vendor:
     type: git
     url: https://github.com/ros2/orocos_kdl_vendor.git
-    version: rolling
+    version: ahcorde/rolling/pybind11_vendor
   ros2/performance_test_fixture:
     type: git
     url: https://github.com/ros2/performance_test_fixture.git
-    version: rolling
-  ros2/pybind11_vendor:
-    type: git
-    url: https://github.com/ros2/pybind11_vendor.git
     version: rolling
   ros2/rcl:
     type: git
@@ -286,7 +282,7 @@ repositories:
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: rolling
+    version: ahcorde/rolling/pybind11_vendor
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
@@ -330,7 +326,7 @@ repositories:
   ros2/ros2_tracing:
     type: git
     url: https://github.com/ros2/ros2_tracing.git
-    version: rolling
+    version: ahcorde/rolling/pybind11_vendor
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
@@ -346,7 +342,7 @@ repositories:
   ros2/rosbag2:
     type: git
     url: https://github.com/ros2/rosbag2.git
-    version: rolling
+    version: ahcorde/rolling/pybind11_vendor
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git

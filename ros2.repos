@@ -239,9 +239,9 @@ repositories:
     type: git
     url: https://github.com/ros2/launch_ros.git
     version: rolling
-  ros2/libyaml_vendor:
+  ros2/libyaml_cmake_module:
     type: git
-    url: https://github.com/ros2/libyaml_vendor.git
+    url: https://github.com/ahcorde/libyaml_cmake_module.git
     version: rolling
   ros2/message_filters:
     type: git

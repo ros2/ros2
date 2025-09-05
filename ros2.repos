@@ -166,7 +166,7 @@ repositories:
   ros/kdl_parser:
     type: git
     url: https://github.com/ros/kdl_parser.git
-    version: rolling
+    version: ahcorde/rolling/remove_orocos_vendor
   ros/pluginlib:
     type: git
     url: https://github.com/ros/pluginlib.git
@@ -178,7 +178,7 @@ repositories:
   ros/robot_state_publisher:
     type: git
     url: https://github.com/ros/robot_state_publisher.git
-    version: rolling
+    version: ahcorde/rolling/remove_orocos_vendor
   ros/ros_environment:
     type: git
     url: https://github.com/ros/ros_environment.git
@@ -230,7 +230,7 @@ repositories:
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: rolling
+    version: ahcorde/rolling/remove_orocos_vendor
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
@@ -250,10 +250,6 @@ repositories:
   ros2/mimick_vendor:
     type: git
     url: https://github.com/ros2/mimick_vendor.git
-    version: rolling
-  ros2/orocos_kdl_vendor:
-    type: git
-    url: https://github.com/ros2/orocos_kdl_vendor.git
     version: rolling
   ros2/performance_test_fixture:
     type: git

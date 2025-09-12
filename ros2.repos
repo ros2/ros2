@@ -70,7 +70,7 @@ repositories:
   ros-perception/image_common:
     type: git
     url: https://github.com/ros-perception/image_common.git
-    version: rolling
+    version: ahcorde/rolling/removed_yamlcpp_vendor
   ros-perception/laser_geometry:
     type: git
     url: https://github.com/ros-perception/laser_geometry.git
@@ -346,7 +346,7 @@ repositories:
   ros2/rosbag2:
     type: git
     url: https://github.com/ros2/rosbag2.git
-    version: rolling
+    version: ahcorde/rolling/removed_yamlcpp_vendor
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
@@ -394,7 +394,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: rolling
+    version: ahcorde/rolling/removed_yamlcpp_vendor
   ros2/spdlog_vendor:
     type: git
     url: https://github.com/ros2/spdlog_vendor.git
@@ -426,8 +426,4 @@ repositories:
   ros2/urdf:
     type: git
     url: https://github.com/ros2/urdf.git
-    version: rolling
-  ros2/yaml_cpp_vendor:
-    type: git
-    url: https://github.com/ros2/yaml_cpp_vendor.git
     version: rolling

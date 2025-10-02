@@ -112,6 +112,7 @@ snowballstemmer = "==2.2.0"
 spdlog = "==1.12.0"
 sqlite = "==3.45.2"  # TODO: Conda has 3.45.1, but it is not installable with Python 3.12
 tinyxml2 = "==10.0.0"
+types-pyyaml = "==6.0.1"
 typing_extensions = "==4.10.0"
 uncrustify = "==0.78.1"
 vcstool = "==0.3.0"

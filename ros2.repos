@@ -59,10 +59,6 @@ repositories:
     type: git
     url: https://github.com/gazebo-release/gz_utils_vendor.git
     version: rolling
-  osrf/osrf_pycommon:
-    type: git
-    url: https://github.com/osrf/osrf_pycommon.git
-    version: master
   osrf/osrf_testing_tools_cpp:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git

@@ -174,7 +174,7 @@ repositories:
   ros/pluginlib:
     type: git
     url: https://github.com/ros/pluginlib.git
-    version: ahcorde/rolling/remove_tinyxml2_vendor
+    version: rolling
   ros/resource_retriever:
     type: git
     url: https://github.com/ros/resource_retriever.git
@@ -326,7 +326,7 @@ repositories:
   ros2/rmw_zenoh:
     type: git
     url: https://github.com/ros2/rmw_zenoh.git
-    version: ahcorde/rolling/remove_tinyxml2_vendor
+    version: rolling
   ros2/ros2_tracing:
     type: git
     url: https://github.com/ros2/ros2_tracing.git

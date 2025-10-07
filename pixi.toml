@@ -76,6 +76,7 @@ numpy = "==1.26.4"
 opencv = "==4.9.0"  # TODO: Conda has 4.6.0, but it is not installable with Python 3.12
 openssl = "==3.3.2"  # TODO: Conda has 3.0.13, but it is not installable with Python 3.12
 orocos-kdl = "==1.5.1"
+osrf_pycommon = "==0.2.1"
 packaging = "==24.0"
 pathspec = "==0.12.1"
 pip = "==24.0"

@@ -102,7 +102,7 @@ repositories:
   ros-visualization/qt_gui_core:
     type: git
     url: https://github.com/ros-visualization/qt_gui_core.git
-    version: ahcorde/rolling/remove_tinyxml2_vendor
+    version: rolling
   ros-visualization/rqt:
     type: git
     url: https://github.com/ros-visualization/rqt.git
@@ -194,7 +194,7 @@ repositories:
   ros/urdfdom:
     type: git
     url: https://github.com/ros/urdfdom.git
-    version: ahcorde/rolling/remove_tinyxml2_vendor
+    version: rolling
   ros/urdfdom_headers:
     type: git
     url: https://github.com/ros/urdfdom_headers.git
@@ -394,7 +394,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: ahcorde/rolling/remove_tinyxml2_vendor
+    version: rolling
   ros2/spdlog_vendor:
     type: git
     url: https://github.com/ros2/spdlog_vendor.git
@@ -422,7 +422,7 @@ repositories:
   ros2/urdf:
     type: git
     url: https://github.com/ros2/urdf.git
-    version: ahcorde/rolling/remove_tinyxml2_vendor
+    version: rolling
   ros2/yaml_cpp_vendor:
     type: git
     url: https://github.com/ros2/yaml_cpp_vendor.git

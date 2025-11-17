@@ -92,6 +92,7 @@ pygraphviz = "==1.11"  # TODO: conda doesn't have pygraphviz 1.7 built for Pytho
 pyparsing = "==3.1.1"
 pyqt = "==5.15.9"  # TODO: Conda doesn't have 5.15.10
 pyqt5-sip = "==12.12.2"  # TODO: Conda doesn't have pyqt5-sip 12.13.0
+pynput = "==1.8.1"
 pytest = "==7.4.4"
 pytest-cov = "==4.1.0"
 pytest-mock = "==3.12.0"

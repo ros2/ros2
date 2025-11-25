@@ -1,4 +1,4 @@
-[project]
+[workspace]
 name = "pixi_ros2_jazzy"
 version = "0.1.0"
 description = "Dependencies to build ROS 2 on Windows"

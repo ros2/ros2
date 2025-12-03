@@ -28,6 +28,7 @@ asio = ">=1.29.0,<2"
 tinyxml2 = ">=11.0.0,<12"
 pybind11 = ">=3.0.1,<4"
 lz4 = ">=4.4.5,<5"
+yaml-cpp = ">=0.8.0,<0.9"
 
 [feature.dev.pypi-dependencies]
 vcs2l = "*"
@@ -54,5 +55,4 @@ cmake = ">=4.2.0,<5"
 ninja = ">=1.13.2,<2"
 compilers = ">=1.11.0,<2"
 uncrustify = ">=0.81.0,<0.82"
-yaml-cpp = ">=0.8.0,<0.9"
 rust = ">=1.91.1,<1.92"

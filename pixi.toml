@@ -8,7 +8,7 @@ version = "0.1.0"
 [feature.dev.target.win-64.activation.env]
 COLCON_DEFAULTS_FILE= "%PIXI_PROJECT_ROOT%\\colcon_defaults.yaml"
 BUILDCACHE_ACCURACY = "SLOPPY"
-BUILDCACHE_DIR = "C:\\ProgramData\\buildcache"
+#BUILDCACHE_DIR = "C:\\ProgramData\\buildcache"
 BUILDCACHE_DEBUG = "0"
 BUILDCACHE_MAX_CACHE_SIZE = "10737418240"
 

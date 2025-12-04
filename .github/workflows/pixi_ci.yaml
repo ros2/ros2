@@ -1,0 +1,27 @@
+name: Pixi-based CI
+on: [push, pull_request]
+
+jobs:
+  default:
+    strategy:
+      matrix:
+        os: [windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: prefix-dev/setup-pixi@v0.9.3
+        with:
+          environments: dev
+          pixi-version: v0.60.0
+          cache: true
+          cache-key: ${{ runner.os }}-${{ hashFiles('pixi.lock') }}
+          frozen: true
+      - uses: mjcarroll/buildcache-action@v2
+        with:
+          cache_key: ${{ matrix.label }}
+          upload_buildcache_log: 'false'
+          zero_buildcache_stats: 'true'
+      - name: Install sources
+        run: pixi run import
+      - name: Build something
+        run: pixi run build --packages-up-to rmw

@@ -7,6 +7,7 @@ version = "0.1.0"
 
 [feature.dev.target.win-64.activation.env]
 COLCON_DEFAULTS_FILE= "%PIXI_PROJECT_ROOT%\\colcon_defaults.yaml"
+BUILDCACHE_ACCURACY = "SLOPPY"
 BUILDCACHE_DIR = "C:\\ProgramData\\buildcache"
 BUILDCACHE_DEBUG = "0"
 BUILDCACHE_MAX_CACHE_SIZE = "10737418240"
@@ -15,6 +16,8 @@ BUILDCACHE_MAX_CACHE_SIZE = "10737418240"
 import = {cmd = "vcs import --input ros2.repos src"}
 build = {cmd = "colcon build"}
 test = {cmd = "colcon test"}
+
+[tasks]
 clean = {cmd = "rm -rf build && rm -rf install && rm -rf log"}
 
 [environments]
@@ -56,3 +59,4 @@ ninja = ">=1.13.2,<2"
 compilers = ">=1.11.0,<2"
 uncrustify = ">=0.81.0,<0.82"
 rust = ">=1.91.1,<1.92"
+nlohmann_json = ">=3.12.0,<4"

@@ -60,6 +60,7 @@ flake8-comprehensions = "==3.14.0"
 flake8-deprecated = "==2.2.1"
 flake8-import-order = "==0.18.2"
 flake8-quotes = "==3.4.0"
+freetype = "==2.13.3"
 git = "==2.43.0"
 graphviz = "==9.0.0"  # TODO: pygraphviz 1.11 needs at least graphviz 9.0.0
 importlib-metadata = "==4.13.0"  # TODO: Conda doesn't have 4.12.0

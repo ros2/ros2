@@ -16,8 +16,8 @@
       #"-DSTACK_DETAILS_BFD:bool=FALSE"
     ],
     "event-handlers": [
-      #"console_direct+",
-      #"console_package_list+",
+      "console_direct+",
+      "console_package_list+",
     ]
   },
   "test": {

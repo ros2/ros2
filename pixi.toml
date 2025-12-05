@@ -41,6 +41,7 @@ benchmark = "==1.8.3"
 bullet = "==3.25"  # TODO: Conda has 3.24, but it is not installable with Python 3.12
 catkin_pkg = "==1.0.0"
 cli11 = "==2.4.1"
+clang-format = "==18.1.8"
 cmake = "==3.28.3"
 console_bridge = "==1.0.1"
 coverage = "==7.4.4"

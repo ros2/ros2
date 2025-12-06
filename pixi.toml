@@ -5,12 +5,14 @@ name = "ros2"
 platforms = ["win-64"]
 version = "0.1.0"
 
+[activation.env]
+ROS_DISTRO="rolling"
+
 [feature.dev.target.win-64.activation.env]
-COLCON_DEFAULTS_FILE= "%PIXI_PROJECT_ROOT%\\colcon_defaults.yaml"
-BUILDCACHE_ACCURACY = "SLOPPY"
-#BUILDCACHE_DIR = "C:\\ProgramData\\buildcache"
-BUILDCACHE_DEBUG = "0"
-BUILDCACHE_MAX_CACHE_SIZE = "10737418240"
+COLCON_DEFAULTS_FILE="%PIXI_PROJECT_ROOT%\\colcon_defaults.yaml"
+CMAKE_C_COMPILER_LAUNCHER="ccache"
+CMAKE_CXX_COMPILER_LAUNCHER="ccache"
+CCACHE_BASEDIR="%PIXI_PROJECT_ROOT%\\src"
 
 [feature.dev.tasks]
 import = {cmd = "vcs import --input ros2.repos src"}
@@ -32,6 +34,10 @@ tinyxml2 = ">=11.0.0,<12"
 pybind11 = ">=3.0.1,<4"
 lz4 = ">=4.4.5,<5"
 yaml-cpp = ">=0.8.0,<0.9"
+numpy = ">=2.3.5,<3"
+lark = ">=1.3.1,<2"
+eigen = ">=3.4.0,<4"
+console_bridge = ">=1.0.2,<2"
 
 [feature.dev.pypi-dependencies]
 vcs2l = "*"
@@ -60,3 +66,4 @@ compilers = ">=1.11.0,<2"
 uncrustify = ">=0.81.0,<0.82"
 rust = ">=1.91.1,<1.92"
 nlohmann_json = ">=3.12.0,<4"
+ccache = ">=4.11.3,<5"

@@ -14,13 +14,11 @@ jobs:
           environments: dev
           pixi-version: v0.60.0
           cache: true
-          cache-key: ${{ runner.os }}-${{ hashFiles('pixi.lock') }}
+          cache-key: ${{ matrix.os }}-${{ hashFiles('pixi.lock') }}
           frozen: true
-      - uses: mjcarroll/buildcache-action@v2
+      - uses: hendrikmuhs/ccache-action@v1.2
         with:
-          cache_key: ${{ matrix.label }}
-          upload_buildcache_log: 'false'
-          zero_buildcache_stats: 'true'
+          key: ${{ matrix.os }}
       - name: Install sources
         run: pixi run import
       - name: Build something

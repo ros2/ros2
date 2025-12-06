@@ -6,11 +6,8 @@
       "--no-warn-unused-cli",
       "-DCMAKE_BUILD_TYPE:string=RelWithDebInfo",
       "-DCMAKE_BUILD_WITH_INSTALL_RPATH:bool=TRUE",
-      "-DCMAKE_C_COMPILER_LAUNCHER:string=buildcache",
-      "-DCMAKE_CXX_COMPILER_LAUNCHER:string=buildcache",
       "-DCMAKE_POLICY_DEFAULT_CMP0141=NEW",
       "-DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded",
-      "-DCMAKE_EXPORT_COMPILE_COMMANDS:bool=TRUE",
       # There are issues with BFD in conda
       #"-DSTACK_DETAILS_AUTO_DETECT:bool=FALSE",
       #"-DSTACK_DETAILS_BFD:bool=FALSE"

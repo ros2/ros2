@@ -307,6 +307,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_fastrtps.git
     version: rolling
+  ros2/rmw_swiftdds:
+    type: git
+    url: https://github.com/greenstonesoft/rmw_swiftdds.git
+    version: rolling
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git

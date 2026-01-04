@@ -1,0 +1,256 @@
+Start testing: Jan 05 03:02 CST
+----------------------------------------------------------
+1/3 Testing: test_level1_init_node
+1/3 Test: test_level1_init_node
+Command: "/home/jiusi/M-DDS/rmw_mock/build/test_init_node"
+Directory: /home/jiusi/M-DDS/rmw_mock/build
+"test_level1_init_node" start time: Jan 05 03:02 CST
+Output:
+----------------------------------------------------------
+=== rmw_mock Level 1 Acceptance Test ===
+[PASS] test_identifier
+[PASS] test_init_options
+[PASS] test_context
+[PASS] test_node
+[PASS] test_multiple_nodes
+[PASS] test_graph_stubs
+[PASS] test_context_isolation
+=========================================
+[SUCCESS] All Level 1 tests passed!
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test_level1_init_node" end time: Jan 05 03:02 CST
+"test_level1_init_node" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/3 Testing: test_level2_pubsub
+2/3 Test: test_level2_pubsub
+Command: "/home/jiusi/M-DDS/rmw_mock/build/test_pubsub"
+Directory: /home/jiusi/M-DDS/rmw_mock/build
+"test_level2_pubsub" start time: Jan 05 03:02 CST
+Output:
+----------------------------------------------------------
+=== rmw_mock Level 2 Acceptance Test ===
+Implementation: rmw_mock
+
+--- test_publisher_lifecycle ---
+[PASS] test_publisher_lifecycle: init_options_init
+[PASS] test_publisher_lifecycle: rmw_init
+[PASS] test_publisher_lifecycle: rmw_create_node
+[PASS] test_publisher_lifecycle: rmw_create_publisher
+[PASS] test_publisher_lifecycle: publisher has topic_name
+[PASS] test_publisher_lifecycle: topic_name matches
+[PASS] test_publisher_lifecycle: rmw_get_gid_for_publisher
+[PASS] test_publisher_lifecycle: rmw_publisher_get_actual_qos
+[PASS] test_publisher_lifecycle: rmw_destroy_publisher
+[PASS] test_publisher_lifecycle: rmw_destroy_node
+[PASS] test_publisher_lifecycle: rmw_shutdown
+[PASS] test_publisher_lifecycle: rmw_context_fini
+[PASS] test_publisher_lifecycle: rmw_init_options_fini
+
+--- test_subscription_lifecycle ---
+[PASS] test_subscription_lifecycle: init_options_init
+[PASS] test_subscription_lifecycle: rmw_init
+[PASS] test_subscription_lifecycle: rmw_create_node
+[PASS] test_subscription_lifecycle: rmw_create_subscription
+[PASS] test_subscription_lifecycle: subscription has topic_name
+[PASS] test_subscription_lifecycle: topic_name matches
+[PASS] test_subscription_lifecycle: rmw_subscription_get_actual_qos
+[PASS] test_subscription_lifecycle: rmw_destroy_subscription
+
+--- test_serialized_pubsub ---
+[PASS] test_serialized_pubsub: init_options_init
+[PASS] test_serialized_pubsub: rmw_init
+[PASS] test_serialized_pubsub: rmw_create_node
+[PASS] test_serialized_pubsub: rmw_create_subscription
+[PASS] test_serialized_pubsub: rmw_create_publisher
+[PASS] test_serialized_pubsub: rmw_publish_serialized_message
+[PASS] test_serialized_pubsub: rmw_take_serialized_message
+[PASS] test_serialized_pubsub: message was taken
+[PASS] test_serialized_pubsub: message length matches
+[PASS] test_serialized_pubsub: message content matches
+[PASS] test_serialized_pubsub: rmw_take_serialized_message (empty queue)
+[PASS] test_serialized_pubsub: no message available
+
+--- test_serialized_pubsub_with_info ---
+[PASS] test_serialized_pubsub_with_info: init_options_init
+[PASS] test_serialized_pubsub_with_info: rmw_init
+[PASS] test_serialized_pubsub_with_info: rmw_create_node
+[PASS] test_serialized_pubsub_with_info: rmw_create_subscription
+[PASS] test_serialized_pubsub_with_info: rmw_create_publisher
+[PASS] test_serialized_pubsub_with_info: rmw_publish_serialized_message
+[PASS] test_serialized_pubsub_with_info: rmw_take_serialized_message_with_info
+[PASS] test_serialized_pubsub_with_info: message was taken
+[PASS] test_serialized_pubsub_with_info: source_timestamp is set
+[PASS] test_serialized_pubsub_with_info: received_timestamp >= source_timestamp
+[PASS] test_serialized_pubsub_with_info: from_intra_process is true
+
+--- test_matched_counts ---
+[PASS] test_matched_counts: init_options_init
+[PASS] test_matched_counts: rmw_init
+[PASS] test_matched_counts: rmw_create_node
+[PASS] test_matched_counts: rmw_create_publisher
+[PASS] test_matched_counts: rmw_publisher_count_matched_subscriptions
+[PASS] test_matched_counts: initially 0 subscriptions
+[PASS] test_matched_counts: rmw_create_subscription
+[PASS] test_matched_counts: rmw_publisher_count_matched_subscriptions after sub
+[PASS] test_matched_counts: 1 subscription after create
+[PASS] test_matched_counts: rmw_subscription_count_matched_publishers
+[PASS] test_matched_counts: 1 publisher
+[PASS] test_matched_counts: rmw_publisher_count_matched_subscriptions after destroy
+[PASS] test_matched_counts: 0 subscriptions after destroy
+
+--- test_wait_requires_context ---
+[PASS] test_wait_requires_context: rmw_wait returns INVALID_ARGUMENT or UNSUPPORTED with null wait_set
+[PASS] test_wait_requires_context: rmw_create_wait_set returns nullptr with null context
+[PASS] test_wait_requires_context: rmw_create_guard_condition returns nullptr with null context
+
+--- test_typed_publish_unsupported ---
+[PASS] test_typed_publish_unsupported: init_options_init
+[PASS] test_typed_publish_unsupported: rmw_init
+[PASS] test_typed_publish_unsupported: rmw_create_node
+[PASS] test_typed_publish_unsupported: rmw_create_publisher
+[PASS] test_typed_publish_unsupported: rmw_publish returns UNSUPPORTED
+
+--- test_fifo_overflow ---
+[PASS] test_fifo_overflow: init_options_init
+[PASS] test_fifo_overflow: rmw_init
+[PASS] test_fifo_overflow: rmw_create_node
+[PASS] test_fifo_overflow: rmw_create_subscription depth=3
+[PASS] test_fifo_overflow: rmw_create_publisher
+[PASS] test_fifo_overflow: publish message
+[PASS] test_fifo_overflow: publish message
+[PASS] test_fifo_overflow: publish message
+[PASS] test_fifo_overflow: publish message
+[PASS] test_fifo_overflow: publish message
+[PASS] test_fifo_overflow: take message
+[PASS] test_fifo_overflow: first message is msg_2 (oldest kept)
+[PASS] test_fifo_overflow: take message
+[PASS] test_fifo_overflow: take message
+[PASS] test_fifo_overflow: take message
+[PASS] test_fifo_overflow: received exactly 3 messages (queue depth)
+
+--- test_context_isolation ---
+[PASS] test_context_isolation: rmw_init context1
+[PASS] test_context_isolation: rmw_init context2
+[PASS] test_context_isolation: create node1
+[PASS] test_context_isolation: create node2
+[PASS] test_context_isolation: create pub1
+[PASS] test_context_isolation: create sub2
+[PASS] test_context_isolation: publish from context1
+[PASS] test_context_isolation: take in context2
+[PASS] test_context_isolation: message NOT received (contexts are isolated)
+
+=== Summary ===
+Passed: 90/90
+
+[SUCCESS] All Level 2 tests passed!
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test_level2_pubsub" end time: Jan 05 03:02 CST
+"test_level2_pubsub" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/3 Testing: test_level3_executor
+3/3 Test: test_level3_executor
+Command: "/home/jiusi/M-DDS/rmw_mock/build/test_executor"
+Directory: /home/jiusi/M-DDS/rmw_mock/build
+"test_level3_executor" start time: Jan 05 03:02 CST
+Output:
+----------------------------------------------------------
+=== rmw_mock Level 3 Acceptance Test ===
+Implementation: rmw_mock
+
+--- test_wait_set_lifecycle ---
+[PASS] test_wait_set_lifecycle: init_options_init
+[PASS] test_wait_set_lifecycle: rmw_init
+[PASS] test_wait_set_lifecycle: rmw_create_wait_set
+[PASS] test_wait_set_lifecycle: wait_set identifier
+[PASS] test_wait_set_lifecycle: rmw_destroy_wait_set
+
+--- test_guard_condition_lifecycle ---
+[PASS] test_guard_condition_lifecycle: init_options_init
+[PASS] test_guard_condition_lifecycle: rmw_init
+[PASS] test_guard_condition_lifecycle: rmw_create_guard_condition
+[PASS] test_guard_condition_lifecycle: guard_condition identifier
+[PASS] test_guard_condition_lifecycle: rmw_trigger_guard_condition
+[PASS] test_guard_condition_lifecycle: rmw_destroy_guard_condition
+
+--- test_wait_zero_timeout ---
+[PASS] test_wait_zero_timeout: init_options_init
+[PASS] test_wait_zero_timeout: rmw_init
+[PASS] test_wait_zero_timeout: rmw_create_node
+[PASS] test_wait_zero_timeout: rmw_create_wait_set
+[PASS] test_wait_zero_timeout: rmw_create_subscription
+[PASS] test_wait_zero_timeout: rmw_wait returns TIMEOUT with no data
+[PASS] test_wait_zero_timeout: subscription filtered out (not ready)
+
+--- test_wait_subscription_wake ---
+[PASS] test_wait_subscription_wake: init_options_init
+[PASS] test_wait_subscription_wake: rmw_init
+[PASS] test_wait_subscription_wake: rmw_create_node
+[PASS] test_wait_subscription_wake: rmw_create_wait_set
+[PASS] test_wait_subscription_wake: rmw_create_subscription
+[PASS] test_wait_subscription_wake: rmw_create_publisher
+[PASS] test_wait_subscription_wake: rmw_publish_serialized_message
+[PASS] test_wait_subscription_wake: wait thread finished
+[PASS] test_wait_subscription_wake: rmw_wait returned OK (woken by message)
+
+--- test_wait_guard_condition_wake ---
+[PASS] test_wait_guard_condition_wake: init_options_init
+[PASS] test_wait_guard_condition_wake: rmw_init
+[PASS] test_wait_guard_condition_wake: rmw_create_wait_set
+[PASS] test_wait_guard_condition_wake: rmw_create_guard_condition
+[PASS] test_wait_guard_condition_wake: rmw_trigger_guard_condition
+[PASS] test_wait_guard_condition_wake: wait thread finished
+[PASS] test_wait_guard_condition_wake: rmw_wait returned OK (woken by trigger)
+
+--- test_wait_timeout ---
+[PASS] test_wait_timeout: init_options_init
+[PASS] test_wait_timeout: rmw_init
+[PASS] test_wait_timeout: rmw_create_node
+[PASS] test_wait_timeout: rmw_create_wait_set
+[PASS] test_wait_timeout: rmw_create_subscription
+[PASS] test_wait_timeout: rmw_wait returns TIMEOUT
+[PASS] test_wait_timeout: waited at least 90ms
+[PASS] test_wait_timeout: waited less than 500ms
+
+--- test_guard_condition_consumed ---
+[PASS] test_guard_condition_consumed: init_options_init
+[PASS] test_guard_condition_consumed: rmw_init
+[PASS] test_guard_condition_consumed: rmw_create_wait_set
+[PASS] test_guard_condition_consumed: rmw_create_guard_condition
+[PASS] test_guard_condition_consumed: rmw_trigger_guard_condition
+[PASS] test_guard_condition_consumed: first wait returns OK (triggered)
+[PASS] test_guard_condition_consumed: guard condition is ready
+[PASS] test_guard_condition_consumed: second wait returns TIMEOUT (consumed)
+[PASS] test_guard_condition_consumed: guard condition not ready (consumed)
+
+--- test_array_filtering ---
+[PASS] test_array_filtering: init_options_init
+[PASS] test_array_filtering: rmw_init
+[PASS] test_array_filtering: rmw_create_wait_set
+[PASS] test_array_filtering: rmw_wait returns TIMEOUT
+[PASS] test_array_filtering: service filtered to nullptr
+[PASS] test_array_filtering: client filtered to nullptr
+[PASS] test_array_filtering: event filtered to nullptr
+
+=== Summary ===
+Passed: 58/58
+
+[SUCCESS] All Level 3 tests passed!
+rmw_mock is now semantically complete.
+rclcpp::spin() can block and wake on messages/guard conditions.
+<end of output>
+Test time =   0.22 sec
+----------------------------------------------------------
+Test Passed.
+"test_level3_executor" end time: Jan 05 03:02 CST
+"test_level3_executor" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Jan 05 03:02 CST

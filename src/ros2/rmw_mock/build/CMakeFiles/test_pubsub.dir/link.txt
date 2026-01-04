@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/test_pubsub.dir/test/level2/test_pubsub.cpp.o -o test_pubsub  -Wl,-rpath,/home/jiusi/M-DDS/rmw_mock/build librmw_mock.so 

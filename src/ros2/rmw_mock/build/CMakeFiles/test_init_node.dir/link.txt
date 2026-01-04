@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/test_init_node.dir/test/level1/test_init_node.cpp.o -o test_init_node  -Wl,-rpath,/home/jiusi/M-DDS/rmw_mock/build librmw_mock.so 

@@ -1,0 +1,175 @@
+# Copyright (c) 2026 ROS2 KaihongOS Port Project
+# Licensed under the Apache License, Version 2.0
+#
+# rmw_mock: Mock RMW implementation for testing rclcpp/rcl
+# Design: Zero middleware dependencies, per-context router, condvar-based wait
+
+import("//build/ohos.gni")
+
+#==============================================================================
+# Configuration
+#==============================================================================
+
+config("rmw_mock_config") {
+  include_dirs = [
+    "include",
+    # ROS2 RMW headers (adjust path as needed)
+    "//third_party/ros2/rmw/include",
+    "//third_party/ros2/rcutils/include",
+  ]
+
+  cflags_cc = [
+    "-std=c++17",
+    "-fvisibility=hidden",
+    "-Wall",
+    "-Wextra",
+    "-Wno-unused-parameter",
+  ]
+
+  defines = [
+    "RMW_MOCK_BUILDING_DLL",
+  ]
+}
+
+config("rmw_mock_public_config") {
+  include_dirs = [
+    "include",
+  ]
+}
+
+#==============================================================================
+# Level 1: Foundation (minimal RMW contract)
+#==============================================================================
+
+ohos_source_set("rmw_mock_level1") {
+  sources = [
+    "src/level1/rmw_identifier.cpp",
+    "src/level1/rmw_init.cpp",
+    "src/level1/rmw_node.cpp",
+  ]
+
+  configs = [ ":rmw_mock_config" ]
+}
+
+#==============================================================================
+# Level 2: Pub/Sub Core (to be implemented)
+#==============================================================================
+
+ohos_source_set("rmw_mock_level2") {
+  sources = [
+    "src/level2/mock_router.cpp",
+    "src/level2/rmw_publisher.cpp",
+    "src/level2/rmw_subscription.cpp",
+    "src/level2/rmw_stubs.cpp",
+  ]
+
+  configs = [ ":rmw_mock_config" ]
+}
+
+#==============================================================================
+# Level 3: Executor/Wait (to be implemented)
+#==============================================================================
+
+ohos_source_set("rmw_mock_level3") {
+  sources = [
+    "src/level3/rmw_wait_set.cpp",
+    "src/level3/rmw_guard_condition.cpp",
+    "src/level3/rmw_wait.cpp",
+  ]
+
+  configs = [ ":rmw_mock_config" ]
+}
+
+#==============================================================================
+# Main Library: librmw_mock.so
+#==============================================================================
+
+ohos_shared_library("rmw_mock") {
+  # Level 1 sources (Foundation)
+  sources = [
+    "src/level1/rmw_identifier.cpp",
+    "src/level1/rmw_init.cpp",
+    "src/level1/rmw_node.cpp",
+  ]
+
+  # Level 2 sources (Pub/Sub)
+  sources += [
+    "src/level2/mock_router.cpp",
+    "src/level2/rmw_publisher.cpp",
+    "src/level2/rmw_subscription.cpp",
+    "src/level2/rmw_stubs.cpp",
+  ]
+
+  # Level 3 sources (Wait)
+  sources += [
+    "src/level3/rmw_wait_set.cpp",
+    "src/level3/rmw_guard_condition.cpp",
+    "src/level3/rmw_wait.cpp",
+  ]
+
+  configs = [ ":rmw_mock_config" ]
+  public_configs = [ ":rmw_mock_public_config" ]
+
+  # CRITICAL: Zero middleware dependencies
+  # DO NOT add softbus_client or any transport layer
+  deps = []
+
+  # Only standard C++ library
+  external_deps = []
+
+  part_name = "rmw_mock"
+  subsystem_name = "ros2"
+
+  output_name = "rmw_mock"
+  output_extension = "so"
+}
+
+#==============================================================================
+# Test Executables
+#==============================================================================
+
+ohos_executable("test_init_node") {
+  sources = [ "test/level1/test_init_node.cpp" ]
+
+  configs = [ ":rmw_mock_config" ]
+
+  deps = [ ":rmw_mock" ]
+
+  part_name = "rmw_mock"
+  subsystem_name = "ros2"
+}
+
+ohos_executable("test_pubsub") {
+  sources = [ "test/level2/test_pubsub.cpp" ]
+
+  configs = [ ":rmw_mock_config" ]
+
+  deps = [ ":rmw_mock" ]
+
+  part_name = "rmw_mock"
+  subsystem_name = "ros2"
+}
+
+ohos_executable("test_executor") {
+  sources = [ "test/level3/test_executor.cpp" ]
+
+  configs = [ ":rmw_mock_config" ]
+
+  deps = [ ":rmw_mock" ]
+
+  part_name = "rmw_mock"
+  subsystem_name = "ros2"
+}
+
+#==============================================================================
+# Group targets for convenience
+#==============================================================================
+
+group("rmw_mock_all") {
+  deps = [
+    ":rmw_mock",
+    ":test_init_node",
+    ":test_pubsub",       # Level 2
+    ":test_executor",     # Level 3
+  ]
+}

@@ -1,0 +1,154 @@
+name: Update Rolling nightlies artifacts
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Runs at the start of every hour from 4 AM to 12 PM UTC
+    - cron: '0 4-12 * * *'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+env: 
+  TAG: "release-rolling-nightlies"
+permissions:
+  contents: write
+
+jobs:
+  verify-release-nightlies:
+    if: github.repository == 'ros2/ros2'
+    runs-on: ubuntu-latest
+    outputs:
+      should_update: ${{ steps.verify-age.outputs.should_update }}
+    steps:
+        # Early exit if artifacts have been updated already by a previous run. 
+      - name: Verify age of artifacts
+        id: verify-age
+        run: | 
+         THRESHOLD=$(date -d "yesterday 23:59" +%s)
+
+          echo "Checking assets against threshold: $(date -d @$THRESHOLD)"
+          # Use 'gh' to get all asset update times
+          ARTIFACTS=$(gh release view --repo ${{ github.repository }} "$TAG" --json assets --template '{{range .assets}}{{.name}} {{.updatedAt}}{{"\n"}}{{end}}')
+          if [ -z "$ARTIFACTS" ]; then
+            echo "⚠️ No artifacts found! Proceeding with update."
+            echo "should_update=true" >> "$GITHUB_OUTPUT"
+            exit 0                                                    
+          fi
+          SHOULD_UPDATE=true
+
+          while read -r NAME TIME; do
+            # Convert ISO 8601 (2026-01-08T...) to Unix seconds
+            ASSET_TS=$(date -d "$TIME" +%s)
+
+            if [ "$ASSET_TS" -gt "$THRESHOLD" ]; then
+              echo "✅ Artifact $NAME was updated recently (at $TIME). Skipping release."
+              SHOULD_UPDATE=false
+              break # We found a recent asset, no need to check others
+            fi
+          done <<< "$ARTIFACTS"
+
+          echo "should_update=$SHOULD_UPDATE" >> "$GITHUB_OUTPUT"
+
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Verify that all nightlies have passed and have been built in the last 24 hours
+      - name: Verify conditions for update of artifacts
+        id: verification
+        if: steps.verify-age.outputs.should_update == 'true'
+        run: |
+          echo "Verifying conditions for nightlies update";
+
+          THRESHOLD=$(($(date +%s) - 86400))000;
+
+          : # curl needs --globoff to avoid having to escape all brackets in the url
+          
+          JOBS_STATUS=$(curl -u "$GH_USER:$GH_TOKEN" --silent --globoff 'https://ci.ros2.org/api/xml?tree=jobs[name,lastBuild[timestamp,result]]&xpath=/hudson/job[name="packaging_linux"+or+name="packaging_windows"+or+name="packaging_linux-rhel"+or+name="packaging_linux-aarch64"]&wrapper=nightlies')
+
+          : # the XML returned have a <nightlies /> tag that needs to be cleaned to be able to split each job into a new line
+          JOBS=$(echo "$JOBS_STATUS" |sed 's|<nightlies[^>]*>||g; s|</nightlies>||g' | sed 's|</job>|</job>\n|g' | sed '/^$/d')
+  
+          echo "$JOBS" | while read -r JOB_BLOCK; do
+
+            NAME=$(echo "$JOB_BLOCK" | sed -n 's|.*<name>\(.*\)</name>.*|\1|p')
+            RESULT=$(echo "$JOB_BLOCK" | sed -n 's|.*<result>\(.*\)</result>.*|\1|p')
+            TS=$(echo "$JOB_BLOCK" | sed -n 's|.*<timestamp>\(.*\)</timestamp>.*|\1|p')
+
+            echo "Checking Job: $NAME..."
+
+            : # If job is still running then it's not possible to update
+            if [ -z "$RESULT" ]; then
+              echo "☁️ Job $NAME is currently in progress or has no result."
+              exit 1
+            fi
+
+            : # If the a job failed then the update should not happen to keep synchrony between os.
+            if [ "$RESULT" = "FAILURE" ]; then
+              echo "🌧️ Job $NAME failed with result: $RESULT"
+              exit 1
+            fi
+
+            : # If the job is older than T-24 then the nightly set has not completed fully yet. 
+            if [ "$TS" -lt "$THRESHOLD" ]; then
+              echo "☁️  Job $NAME is stale! Last run was > 24h ago (TS: $TS)"
+              exit 1
+            fi
+
+            echo "☀️ $NAME passed all checks."
+
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_USER: ${{secrets.GH_USER}}
+  download-and-update-artifacts:
+    if: github.repository == 'ros2/ros2' && needs.verify-release-nightlies.outputs.should_update == 'true'
+    runs-on: ubuntu-latest
+    needs: verify-release-nightlies
+    steps:
+      - name: Download artifacts
+        run: | 
+            mkdir -p artifacts
+            echo "⬇️ Downloading artifacts for packaging-linux-amd64" 
+            curl -u "$GH_USER:$GH_TOKEN" --silent --globoff "https://ci.ros2.org/view/packaging/job/packaging_linux/lastSuccessfulBuild/artifact/ws/ros2-package-linux-x86_64.tar.bz2" -o artifacts/ros2-rolling-nightly-linux-amd64.tar.bz2
+            echo "⬇️ Downloading artifacts for packaging-linux-arm64"
+            curl -u "$GH_USER:$GH_TOKEN" --silent --globoff "https://ci.ros2.org/view/packaging/job/packaging_linux-aarch64/lastSuccessfulBuild/artifact/ws/ros2-package-linux-aarch64.tar.bz2" -o artifacts/ros2-rolling-nightly-linux-arm64.tar.bz2
+            echo "⬇️ Downloading artifacts for packaging-linux-rhel-amd64"
+            curl -u "$GH_USER:$GH_TOKEN" --silent --globoff "https://ci.ros2.org/view/packaging/job/packaging_linux-rhel/lastSuccessfulBuild/artifact/ws/ros2-package-linux-x86_64.tar.bz2" -o artifacts/ros2-rolling-nightly-linux-rhel-amd64.tar.bz2
+            echo "⬇️ Downloading artifacts for packaging-windows"
+            curl -u "$GH_USER:$GH_TOKEN" --silent --globoff "https://ci.ros2.org/view/packaging/job/packaging_windows/lastSuccessfulBuild/artifact/ws/ros2-package-windows-AMD64.zip" -o artifacts/ros2-rolling-nightly-windows-release-amd64.zip
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_USER: ${{secrets.GH_USER}}
+      - name: Create release-notes file
+        run: | 
+          DATE=$(date +%Y-%m-%d)
+          cat <<EOF > release-notes.md
+          These are the binary packages for ROS 2 Rolling Nightlies $DATE.
+          These binaries will get updated nightly given that all jobs have "not failed" to keep synchrony across operating systems.
+
+          For runtime dependencies, see the binary package [installation instructions](https://docs.ros.org/en/rolling/Installation.html#binary-packages).
+          Your system must be up-to-date to be compatible with the downloaded packages.
+
+          Note: ignore the source code links because they don't contain the source code for ROS 2 (they're auto-generated by GitHub). Instead, grab the binary package for your platform. If you're interested in building from source, consult the [building from source instructions](https://docs.ros.org/en/rolling/Installation.html#building-from-source).
+          EOF
+          cat ./release-notes.md
+      - name: Update artifacts in release
+        run: |
+          : # Check if the release exists. If not, create it.
+          if ! gh release view  --repo ${{ github.repository }} "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG not found. Creating new pre-release..."
+            : # The target specified here is an orphaned branch to have something to point to.
+            gh release create  --repo ${{ github.repository }} "$TAG" --target 1466488161f0354de7c8443a7c8b976006a1d0f7 --prerelease --title "ROS 2 Rolling - Nightlies" --notes-file ./release-notes.md 
+          else
+            echo "Release $TAG exists. Updating date and uploading."
+            gh release edit "$TAG" --repo "${{ github.repository }}" --title "ROS 2 Rolling - Nightlies $(date +%Y-%m-%d)" --notes-file ./release-notes.md  --prerelease
+          fi
+          : # Verify artifacts exist and upload
+          if [ -d "artifacts" ] && [ "$(ls -A artifacts)" ]; then
+            gh release upload --repo ${{ github.repository }}  "$TAG" artifacts/* --clobber
+            echo "🚀 Artifacts updated correctly"
+          else
+            echo "❌ No artifacts found to upload!"
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}

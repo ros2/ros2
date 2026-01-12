@@ -1,16 +1,13 @@
-<<<<<<< HEAD
-Documentation is at https://docs.ros.org
-=======
-# About 
+# About
 The Robot Operating System (ROS) is a set of software libraries and tools that help you build robot applications.
 From drivers to state-of-the-art algorithms, and with powerful developer tools, ROS has what you need for your next robotics project.
 And it's all open source.
 Full project details on [ROS.org](https://ros.org/)
 
-# Getting Started 
+# Getting Started
 Looking to get started with ROS?
 Our [installation guide is here](https://www.ros.org/blog/getting-started/).
-Once you've installed ROS start by learning some [basic concepts](https://docs.ros.org/en/rolling/Concepts/Basic.html) and take a look at our [beginner tutorials](https://docs.ros.org/en/rolling/Tutorials/Beginner-CLI-Tools.html).
+Once you've installed ROS start by learning some [basic concepts](https://docs.ros.org/en/humble/Concepts/Basic.html) and take a look at our [beginner tutorials](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools.html).
 
 # Join the ROS Community
 
@@ -20,12 +17,12 @@ Once you've installed ROS start by learning some [basic concepts](https://docs.r
 * [ROS Zulip Server](https://openrobotics.zulipchat.com/)
 * [Robotics Stack Exchange](https://robotics.stackexchange.com/) (preferred ROS support forum).
 * [Official ROS Videos](https://vimeo.com/osrfoundation)
-* [ROSCon](https://roscon.ros.org), our yearly developer conference. 
-* Cite ROS 2 in academic work using [DOI: 10.1126/scirobotics.abm6074](https://www.science.org/doi/10.1126/scirobotics.abm6074) 
+* [ROSCon](https://roscon.ros.org), our yearly developer conference.
+* Cite ROS 2 in academic work using [DOI: 10.1126/scirobotics.abm6074](https://www.science.org/doi/10.1126/scirobotics.abm6074)
 
 ## Developer Resources
 * [ROS 2 Documentation](https://docs.ros.org/)
-* [ROS Package API reference](https://docs.ros.org/en/rolling/p/)
+* [ROS Package API reference](https://docs.ros.org/en/humble/p/)
 * [ROS Package Index](https://index.ros.org/)
 * [ROS on Docker Hub](https://hub.docker.com/_/ros/)
 * [ROS Resource Status Page](https://status.openrobotics.org/)
@@ -41,4 +38,3 @@ Once you've installed ROS start by learning some [basic concepts](https://docs.r
 
 ROS is made possible through the generous support of open source contributors and the non-profit [Open Source Robotics Foundation (OSRF)](https://www.openrobotics.org/).
 Tax deductible donations to the OSRF can be [made here.](https://donorbox.org/support-open-robotics?utm_medium=qrcode&utm_source=qrcode)
->>>>>>> a62874e (Discord to zulip link in readme (#1781))

@@ -108,7 +108,7 @@ python-orocos-kdl = "==1.5.1"
 pyyaml = "==6.0.1"
 qt = "==5.15.8"  # TODO: Conda doesn't have 5.15.13
 rosdistro = "==1.0.0"
-rust = "==1.75.0"
+rust = "==1.85.0"
 setuptools = "==68.1.2"
 six = "==1.16.0"
 snowballstemmer = "==2.2.0"

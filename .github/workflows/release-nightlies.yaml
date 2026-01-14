@@ -187,10 +187,10 @@ jobs:
           if ! gh release view  --repo ${{ github.repository }} "$TAG" >/dev/null 2>&1; then
             echo "Release $TAG not found. Creating new pre-release..."
             : # The target specified here is an orphaned branch to have something to point to.
-            gh release create "$TAG" --repo ${{ github.repository }}  --target "nightlies" --prerelease --title "ROS 2 Rolling - Nightlies $(date +%Y-%m-%d)" --notes-file ./release-notes.md 
+            gh release create "$TAG" --repo ${{ github.repository }}  --target "ros2ci-nightlies" --prerelease --title "ROS 2 Rolling - Nightlies $(date +%Y-%m-%d)" --notes-file ./release-notes.md 
           else
             echo "Release $TAG exists. Updating date and uploading."
-            gh release edit "$TAG" --repo "${{ github.repository }}" --target "nightlies" --title "ROS 2 Rolling - Nightlies $(date +%Y-%m-%d)" --notes-file ./release-notes.md  --prerelease
+            gh release edit "$TAG" --repo "${{ github.repository }}" --target "ros2ci-nightlies" --title "ROS 2 Rolling - Nightlies $(date +%Y-%m-%d)" --notes-file ./release-notes.md  --prerelease
           fi
           : # Verify artifacts exist and upload
           if [ -d "artifacts" ] && [ "$(ls -A artifacts)" ]; then

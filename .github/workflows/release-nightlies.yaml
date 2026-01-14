@@ -19,10 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       should_update: ${{ steps.verify-age.outputs.should_update }}
+      artifact_urls: ${{ steps.verification.outputs.urls }}
     steps:
         # Early exit if artifacts have been updated already by a previous run. 
       - name: Verify age of artifacts
         id: verify-age
+        shell: bash
         run: | 
           # Default behavior is should update unless a condition fails.
           echo "should_update=true" >> "$GITHUB_OUTPUT"
@@ -53,28 +55,33 @@ jobs:
           done <<< "$ARTIFACTS"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # Verify that all nightlies have passed and have been built in the last 24 hours
       - name: Verify conditions for update of artifacts
         id: verification
+        shell: bash
         if: steps.verify-age.outputs.should_update == 'true'
         run: |
           echo "Verifying conditions for nightlies update";
 
+          touch artifacts_urls.txt
           THRESHOLD=$(($(date +%s) - 86400))000;
 
-          : # curl needs --globoff to avoid having to escape all brackets in the url
+          # curl needs --globoff to avoid having to escape all brackets in the url
           
-          JOBS_STATUS=$(curl -u "$GH_USER:$GH_TOKEN" --silent --globoff 'https://ci.ros2.org/api/xml?tree=jobs[name,lastBuild[timestamp,result]]&xpath=/hudson/job[name="packaging_linux"+or+name="packaging_windows"+or+name="packaging_linux-rhel"+or+name="packaging_linux-aarch64"]&wrapper=nightlies')
+          JOBS_STATUS=$(curl -u "$GH_USER:$GH_TOKEN" --silent --globoff 'https://ci.ros2.org/api/xml?tree=jobs[name,lastBuild[number,timestamp,result,artifacts[relativePath],actions[parameters[name,value]]]]&xpath=/hudson/job[(name="packaging_linux"+or+name="packaging_windows"+or+name="packaging_linux-rhel"+or+name="packaging_linux-aarch64")+and+lastBuild/action/parameter[name="CI_ROS_DISTRO"+and+value="rolling"]]&wrapper=nightlies')
+          # the XML returned have a <nightlies /> tag that needs to be cleaned to be able to split each job into a new line
 
-          : # the XML returned have a <nightlies /> tag that needs to be cleaned to be able to split each job into a new line
           JOBS=$(echo "$JOBS_STATUS" |sed 's|<nightlies[^>]*>||g; s|</nightlies>||g' | sed 's|</job>|</job>\n|g' | sed '/^$/d')
   
-          echo "$JOBS" | while read -r JOB_BLOCK; do
+          while read -r JOB_BLOCK; do
 
-            NAME=$(echo "$JOB_BLOCK" | sed -n 's|.*<name>\(.*\)</name>.*|\1|p')
-            RESULT=$(echo "$JOB_BLOCK" | sed -n 's|.*<result>\(.*\)</result>.*|\1|p')
-            TS=$(echo "$JOB_BLOCK" | sed -n 's|.*<timestamp>\(.*\)</timestamp>.*|\1|p')
-
+            NAME=$(echo "$JOB_BLOCK" | cut -d'>' -f3 | cut -d'<' -f1)
+            BUILD=$(echo "$JOB_BLOCK" | sed -n 's|.*<number>\([^<]*\)</number>.*|\1|p')
+            RESULT=$(echo "$JOB_BLOCK" | sed -n 's|.*<result>\([^<]*\)</result>.*|\1|p')
+            TS=$(echo "$JOB_BLOCK" | sed -n 's|.*<timestamp>\([^<]*\)</timestamp>.*|\1|p')
+            REL_PATH=$(echo "$JOB_BLOCK" | sed -n 's|.*<relativePath>\([^<]*\)</relativePath>.*|\1|p')
+            
             echo "Checking Job: $NAME..."
 
             : # If job is still running then it's not possible to update
@@ -96,8 +103,18 @@ jobs:
             fi
 
             echo "☀️ $NAME passed all checks."
+            
+            echo "https://ci.ros2.org/job/$NAME/$BUILD/artifact/$REL_PATH" >> artifacts_urls.txt
 
-          done
+          done <<< "$JOBS"
+          # Pass urls to the GITHUB_OUTPUT 
+          if [ -s artifacts_urls.txt ]; then
+            URLS_ARRAY=$(cat artifacts_urls.txt | jq -R -s -c 'split("\n") | map(select(length > 0))')
+            echo "urls=$URLS_ARRAY" >> "$GITHUB_OUTPUT"
+          else
+            # If no urls are present fail
+            exit 1
+          fi
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_USER: ${{secrets.GH_USER}}

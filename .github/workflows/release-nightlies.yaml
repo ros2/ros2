@@ -24,17 +24,23 @@ jobs:
       - name: Verify age of artifacts
         id: verify-age
         run: | 
-         THRESHOLD=$(date -d "yesterday 23:59" +%s)
+          # Default behavior is should update unless a condition fails.
+          echo "should_update=true" >> "$GITHUB_OUTPUT"
+
+          # For the first run, avoid checking conditions since no release exists.
+          if ! gh release view  --repo ${{ github.repository }} "$TAG" >/dev/null 2>&1; then
+            exit 0
+          fi          
+
+          THRESHOLD=$(date -d "yesterday 23:59" +%s)
 
           echo "Checking assets against threshold: $(date -d @$THRESHOLD)"
-          # Use 'gh' to get all asset update times
           ARTIFACTS=$(gh release view --repo ${{ github.repository }} "$TAG" --json assets --template '{{range .assets}}{{.name}} {{.updatedAt}}{{"\n"}}{{end}}')
+          
           if [ -z "$ARTIFACTS" ]; then
             echo "⚠️ No artifacts found! Proceeding with update."
-            echo "should_update=true" >> "$GITHUB_OUTPUT"
             exit 0                                                    
           fi
-          SHOULD_UPDATE=true
 
           while read -r NAME TIME; do
             # Convert ISO 8601 (2026-01-08T...) to Unix seconds
@@ -42,13 +48,9 @@ jobs:
 
             if [ "$ASSET_TS" -gt "$THRESHOLD" ]; then
               echo "✅ Artifact $NAME was updated recently (at $TIME). Skipping release."
-              SHOULD_UPDATE=false
-              break # We found a recent asset, no need to check others
+              echo "should_update=false" >> "$GITHUB_OUTPUT"
             fi
           done <<< "$ARTIFACTS"
-
-          echo "should_update=$SHOULD_UPDATE" >> "$GITHUB_OUTPUT"
-
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Verify that all nightlies have passed and have been built in the last 24 hours

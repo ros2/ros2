@@ -6,7 +6,7 @@ on:
     # Runs at the start of every hour from 4 AM to 12 PM UTC
     - cron: '0 4-12 * * *'
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 env: 
   TAG: "release-rolling-nightlies"

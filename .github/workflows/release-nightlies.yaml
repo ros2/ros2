@@ -118,25 +118,56 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_USER: ${{secrets.GH_USER}}
-  download-and-update-artifacts:
+  download-artifacts:
     if: github.repository == 'ros2/ros2' && needs.verify-release-nightlies.outputs.should_update == 'true'
     runs-on: ubuntu-latest
     needs: verify-release-nightlies
+    strategy:
+      fail-fast: false
+      matrix:
+        target_url: ${{ fromJSON(needs.verify-release-nightlies.outputs.artifact_urls) }}
     steps:
       - name: Download artifacts
         run: | 
-            mkdir -p artifacts
-            echo "⬇️ Downloading artifacts for packaging-linux-amd64" 
-            curl -u "$GH_USER:$GH_TOKEN" --silent --globoff "https://ci.ros2.org/view/packaging/job/packaging_linux/lastSuccessfulBuild/artifact/ws/ros2-package-linux-x86_64.tar.bz2" -o artifacts/ros2-rolling-nightly-linux-amd64.tar.bz2
-            echo "⬇️ Downloading artifacts for packaging-linux-arm64"
-            curl -u "$GH_USER:$GH_TOKEN" --silent --globoff "https://ci.ros2.org/view/packaging/job/packaging_linux-aarch64/lastSuccessfulBuild/artifact/ws/ros2-package-linux-aarch64.tar.bz2" -o artifacts/ros2-rolling-nightly-linux-arm64.tar.bz2
-            echo "⬇️ Downloading artifacts for packaging-linux-rhel-amd64"
-            curl -u "$GH_USER:$GH_TOKEN" --silent --globoff "https://ci.ros2.org/view/packaging/job/packaging_linux-rhel/lastSuccessfulBuild/artifact/ws/ros2-package-linux-x86_64.tar.bz2" -o artifacts/ros2-rolling-nightly-linux-rhel-amd64.tar.bz2
-            echo "⬇️ Downloading artifacts for packaging-windows"
-            curl -u "$GH_USER:$GH_TOKEN" --silent --globoff "https://ci.ros2.org/view/packaging/job/packaging_windows/lastSuccessfulBuild/artifact/ws/ros2-package-windows-AMD64.zip" -o artifacts/ros2-rolling-nightly-windows-release-amd64.zip
+            echo "⬇️ Downloading artifacts for ${{ matrix.target_url }}" 
+            JOB_NAME=$(echo "${{matrix.target_url}}" | cut -d'/' -f5)
+            OS=$(echo "$JOB_NAME" | sed 's/packaging_//; s/-aarch64//')
+
+            if [[ "$JOB_NAME" == *"aarch64"* ]]; then 
+              ARCH="arm64"
+            else
+              ARCH="amd64"
+            fi 
+
+            if [[ "$JOB_NAME" == *"windows"* ]]; then 
+              EXT="zip"
+            else
+              EXT="tar.bz2"
+            fi 
+            ARTIFACT_NAME=ros2-rolling-nightly-$OS-$ARCH.$EXT
+            echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
+            curl -u "$GH_USER:$GH_TOKEN" --silent --globoff  "${{ matrix.target_url }}" -o "$ARTIFACT_NAME"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_USER: ${{secrets.GH_USER}}
+      - name: Upload artifacts to GH workflow storage
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with: 
+          retention-days: 1
+          name: ${{env.ARTIFACT_NAME}} 
+          path: .
+  update-release: 
+    if: github.repository == 'ros2/ros2' && needs.verify-release-nightlies.outputs.should_update == 'true'
+    runs-on: ubuntu-latest
+    needs: download-artifacts
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          # This downloads every artifact uploaded in the previous matrix
+          path: ./artifacts
+          pattern: ros2-rolling-*
+          merge-multiple: true
       - name: Create release-notes file
         run: | 
           DATE=$(date +%Y-%m-%d)
@@ -156,10 +187,10 @@ jobs:
           if ! gh release view  --repo ${{ github.repository }} "$TAG" >/dev/null 2>&1; then
             echo "Release $TAG not found. Creating new pre-release..."
             : # The target specified here is an orphaned branch to have something to point to.
-            gh release create  --repo ${{ github.repository }} "$TAG" --target 1466488161f0354de7c8443a7c8b976006a1d0f7 --prerelease --title "ROS 2 Rolling - Nightlies" --notes-file ./release-notes.md 
+            gh release create "$TAG" --repo ${{ github.repository }}  --target "nightlies" --prerelease --title "ROS 2 Rolling - Nightlies $(date +%Y-%m-%d)" --notes-file ./release-notes.md 
           else
             echo "Release $TAG exists. Updating date and uploading."
-            gh release edit "$TAG" --repo "${{ github.repository }}" --title "ROS 2 Rolling - Nightlies $(date +%Y-%m-%d)" --notes-file ./release-notes.md  --prerelease
+            gh release edit "$TAG" --repo "${{ github.repository }}" --target "nightlies" --title "ROS 2 Rolling - Nightlies $(date +%Y-%m-%d)" --notes-file ./release-notes.md  --prerelease
           fi
           : # Verify artifacts exist and upload
           if [ -d "artifacts" ] && [ "$(ls -A artifacts)" ]; then

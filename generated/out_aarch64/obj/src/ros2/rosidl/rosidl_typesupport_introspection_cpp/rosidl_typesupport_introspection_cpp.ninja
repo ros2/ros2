@@ -1,0 +1,17 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DROSIDL_TYPESUPPORT_INTROSPECTION_CPP_BUILDING_DLL -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../src/ros2/rosidl/rosidl_typesupport_introspection_cpp/include -I../../src/ros2/rosidl/rosidl_runtime_cpp/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_cc = -std=c++17 -Wall -Wextra -Wpedantic -std=c++17 -Wno-psabi -std=c++17
+target_output_name = librosidl_typesupport_introspection_cpp
+
+build obj/src/ros2/rosidl/rosidl_typesupport_introspection_cpp/src/librosidl_typesupport_introspection_cpp.identifier.o: cxx ../../src/ros2/rosidl/rosidl_typesupport_introspection_cpp/src/identifier.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = identifier.cpp
+  source_name_part = identifier
+
+build ./librosidl_typesupport_introspection_cpp.so: solink obj/src/ros2/rosidl/rosidl_typesupport_introspection_cpp/src/librosidl_typesupport_introspection_cpp.identifier.o ./librosidl_typesupport_introspection_c.so ./librosidl_runtime_c.so ./librcutils.so || obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

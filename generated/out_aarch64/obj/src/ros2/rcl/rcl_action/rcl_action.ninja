@@ -1,0 +1,36 @@
+defines = -DROS_PACKAGE_NAME=\"rcl_action\" -D__OHOS__ -D_GNU_SOURCE -DRCL_ACTION_BUILDING_DLL -DRCL_BUILDING_DLL -DRCUTILS_BUILDING_DLL -DROSIDL_RUNTIME_C_BUILDING_DLL -DRMW_VERSION_MAJOR=2 -DRMW_VERSION_MINOR=0 -DRMW_VERSION_PATCH=0 -DROSIDL_GENERATOR_C_BUILDING_DLL_rcl_interfaces -DROSIDL_GENERATOR_C_BUILDING_DLL_type_description_interfaces -DROSIDL_GENERATOR_C_BUILDING_DLL_service_msgs -DROSIDL_GENERATOR_C_BUILDING_DLL_builtin_interfaces -DROSIDL_GENERATOR_C_BUILDING_DLL_action_msgs
+include_dirs = -I../../generated -I../../src/ros2/rcl/rcl_action/include -I../../src/ros2/rcl/rcl/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rmw/rmw/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl_dynamic_typesupport/include -I../../src/ros2/rcl_logging/rcl_logging_interface/include -I../../src/ros2/rcl/rcl_yaml_param_parser/include -I../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include
+cflags = -std=c11 -Wno-unused-parameter -Wall -Wextra -Wno-unused-parameter -fPIC -std=c99 -std=c99 -std=c11 -std=c11
+cflags_c = -std=c11 -std=c11 -fPIC
+target_output_name = librcl_action
+
+build obj/src/ros2/rcl/rcl_action/rcl_action.inputdeps.stamp: stamp obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp obj/src/ros2/rcutils/logging_macros_gen.stamp
+build obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.action_client.o: cc ../../src/ros2/rcl/rcl_action/src/rcl_action/action_client.c || obj/src/ros2/rcl/rcl_action/rcl_action.inputdeps.stamp
+  source_file_part = action_client.c
+  source_name_part = action_client
+build obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.action_server.o: cc ../../src/ros2/rcl/rcl_action/src/rcl_action/action_server.c || obj/src/ros2/rcl/rcl_action/rcl_action.inputdeps.stamp
+  source_file_part = action_server.c
+  source_name_part = action_server
+build obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.goal_handle.o: cc ../../src/ros2/rcl/rcl_action/src/rcl_action/goal_handle.c || obj/src/ros2/rcl/rcl_action/rcl_action.inputdeps.stamp
+  source_file_part = goal_handle.c
+  source_name_part = goal_handle
+build obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.goal_state_machine.o: cc ../../src/ros2/rcl/rcl_action/src/rcl_action/goal_state_machine.c || obj/src/ros2/rcl/rcl_action/rcl_action.inputdeps.stamp
+  source_file_part = goal_state_machine.c
+  source_name_part = goal_state_machine
+build obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.graph.o: cc ../../src/ros2/rcl/rcl_action/src/rcl_action/graph.c || obj/src/ros2/rcl/rcl_action/rcl_action.inputdeps.stamp
+  source_file_part = graph.c
+  source_name_part = graph
+build obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.names.o: cc ../../src/ros2/rcl/rcl_action/src/rcl_action/names.c || obj/src/ros2/rcl/rcl_action/rcl_action.inputdeps.stamp
+  source_file_part = names.c
+  source_name_part = names
+build obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.types.o: cc ../../src/ros2/rcl/rcl_action/src/rcl_action/types.c || obj/src/ros2/rcl/rcl_action/rcl_action.inputdeps.stamp
+  source_file_part = types.c
+  source_name_part = types
+
+build ./librcl_action.so: solink obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.action_client.o obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.action_server.o obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.goal_handle.o obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.goal_state_machine.o obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.graph.o obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.names.o obj/src/ros2/rcl/rcl_action/src/rcl_action/librcl_action.types.o ./librcl.so ./librmw.so ./librosidl_runtime_c.so ./libaction_msgs.so ./librcutils.so ./librosidl_dynamic_typesupport.so ./librcl_logging_interface.so ./librcl_yaml_param_parser.so ./librmw_implementation.so ./librmw_cyclonedds_cpp.so ./librcl_interfaces.so ./librosidl_typesupport_introspection_c.so ./libtype_description_interfaces.so ./libservice_msgs.so ./libbuiltin_interfaces.so
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

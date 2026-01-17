@@ -1,0 +1,67 @@
+# Copyright (c) 2024 ROS2 KaihongOS Port Project
+# BUILD.gn for generated action_msgs
+
+import("//gn_templates/ros2_library.gni")
+
+_gen_base = "//generated/action_msgs"
+
+config("action_msgs_public_config") {
+  include_dirs = [ "//generated" ]
+  defines = [ "ROSIDL_GENERATOR_C_BUILDING_DLL_action_msgs" ]
+}
+
+# C++ type support introspection + dispatch
+source_set("action_msgs_type_support_cpp") {
+  sources = [
+    "${_gen_base}/msg/detail/goal_info__type_support.cpp",
+    "${_gen_base}/msg/detail/goal_status__type_support.cpp",
+    "${_gen_base}/msg/detail/goal_status_array__type_support.cpp",
+    "${_gen_base}/msg/goal_info__type_support.cpp",
+    "${_gen_base}/msg/goal_status__type_support.cpp",
+    "${_gen_base}/msg/goal_status_array__type_support.cpp",
+    "${_gen_base}/srv/cancel_goal__type_support.cpp",
+    "${_gen_base}/srv/detail/cancel_goal__type_support.cpp",
+    # C typesupport dispatch (separate from C++)
+    "${_gen_base}/msg/goal_info__type_support_c.cpp",
+    "${_gen_base}/msg/goal_status__type_support_c.cpp",
+    "${_gen_base}/msg/goal_status_array__type_support_c.cpp",
+    "${_gen_base}/srv/cancel_goal__type_support_c.cpp",
+  ]
+
+  include_dirs = [ "//generated" ]
+
+  deps = [
+    "//src/ros2/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//src/ros2/rosidl_typesupport/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//src/ros2/rosidl_typesupport/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+  ]
+
+  cflags_cc = [ "-std=c++17", "-Wno-unused-parameter" ]
+}
+
+ros2_shared_library("action_msgs") {
+  sources = [
+    "${_gen_base}/msg/detail/goal_info__functions.c",
+    "${_gen_base}/msg/detail/goal_status__functions.c",
+    "${_gen_base}/msg/detail/goal_status_array__functions.c",
+    "${_gen_base}/srv/detail/cancel_goal__functions.c",
+    "${_gen_base}/srv/cancel_goal__type_support.c",  # Service event message functions
+    "${_gen_base}/msg/detail/goal_info__type_support.c",
+    "${_gen_base}/msg/detail/goal_status__type_support.c",
+    "${_gen_base}/msg/detail/goal_status_array__type_support.c",
+    "${_gen_base}/srv/detail/cancel_goal__type_support.c",
+    "${_gen_base}/msg/detail/type_description_stubs.c",
+  ]
+
+  public_configs = [ ":action_msgs_public_config" ]
+
+  public_deps = [
+    ":action_msgs_type_support_cpp",
+    "//src/ros2/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//src/ros2/rcutils:rcutils",
+  ]
+
+  cflags = [ "-Wno-unused-parameter" ]
+}

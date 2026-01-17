@@ -1,0 +1,515 @@
+/*
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+// Copyright (c) 2024 ROS2 KaihongOS Port Project
+
+// Disable FORTIFY_SOURCE before including system headers to avoid __fd_chk
+// which is not available in musl libc used by OpenHarmony
+#undef _FORTIFY_SOURCE
+#define _FORTIFY_SOURCE 0
+
+#include <string.h>  /* C memcpy/memset for OHOS SDK compatibility */
+#include <stdlib.h>
+
+// OpenHarmony sysroot headers have hardcoded __fd_chk in FD_SET macro
+// but musl libc doesn't provide this function. Provide a no-op shim.
+extern "C" void __fd_chk(int fd) {
+    // No-op: just validate fd is in range (optional check)
+    (void)fd;
+}
+
+// Licensed under the Apache License, Version 2.0
+
+#include "rmw_dsoftbus/rmw_dsoftbus.h"
+#include "rmw_dsoftbus/types.h"
+#include <rcutils/allocator.h>  // Foundation layer memory management
+
+#include <sys/select.h>
+#include <cstring>
+#include <algorithm>
+#include <memory>
+
+extern "C"
+{
+
+rmw_wait_set_t * rmw_create_wait_set(rmw_context_t * context, size_t max_conditions)
+{
+    if (!context) {
+        RMW_SET_ERROR_MSG("context is null");
+        return nullptr;
+    }
+    if (context->implementation_identifier != rmw_get_implementation_identifier()) {
+        RMW_SET_ERROR_MSG("implementation identifier mismatch");
+        return nullptr;
+    }
+
+    // Allocate wait set implementation
+    auto ws_impl = new (std::nothrow) rmw_dsoftbus::WaitSetImpl();
+    if (!ws_impl) {
+        RMW_SET_ERROR_MSG("failed to allocate wait set impl");
+        return nullptr;
+    }
+
+    // Reserve space for conditions
+    ws_impl->subscriptions.reserve(max_conditions);
+    ws_impl->guard_conditions.reserve(max_conditions);
+    ws_impl->services.reserve(max_conditions);
+    ws_impl->clients.reserve(max_conditions);
+    ws_impl->events.reserve(max_conditions);
+
+    // Allocate rmw_wait_set_t
+    rcutils_allocator_t allocator = rcutils_get_default_allocator();
+    auto wait_set = static_cast<rmw_wait_set_t*>(allocator.allocate(sizeof(rmw_wait_set_t), allocator.state));
+    if (!wait_set) {
+        delete ws_impl;
+        RMW_SET_ERROR_MSG("failed to allocate rmw_wait_set_t");
+        return nullptr;
+    }
+
+    wait_set->implementation_identifier = rmw_get_implementation_identifier();
+    wait_set->data = ws_impl;
+
+    return wait_set;
+}
+
+rmw_ret_t rmw_destroy_wait_set(rmw_wait_set_t * wait_set)
+{
+    if (!wait_set) {
+        RMW_SET_ERROR_MSG("wait_set is null");
+        return RMW_RET_INVALID_ARGUMENT;
+    }
+    if (wait_set->implementation_identifier != rmw_get_implementation_identifier()) {
+        RMW_SET_ERROR_MSG("implementation identifier mismatch");
+        return RMW_RET_INCORRECT_RMW_IMPLEMENTATION;
+    }
+
+    auto ws_impl = static_cast<rmw_dsoftbus::WaitSetImpl*>(wait_set->data);
+    if (ws_impl) {
+        delete ws_impl;
+    }
+
+    // Deallocate using Foundation layer allocator
+    rcutils_allocator_t allocator = rcutils_get_default_allocator();
+    allocator.deallocate(wait_set, allocator.state);
+
+    return RMW_RET_OK;
+}
+
+rmw_ret_t rmw_wait(
+    rmw_subscriptions_t * subscriptions,
+    rmw_guard_conditions_t * guard_conditions,
+    rmw_services_t * services,
+    rmw_clients_t * clients,
+    rmw_events_t * events,
+    rmw_wait_set_t * wait_set,
+    const rmw_time_t * wait_timeout)
+{
+    fprintf(stderr, "[DEBUG][rmw_wait] called: subs=%p, gc=%p, ws=%p\n",
+            (void*)subscriptions, (void*)guard_conditions, (void*)wait_set);
+    fflush(stderr);
+
+    if (!wait_set) {
+        RMW_SET_ERROR_MSG("wait_set is null");
+        return RMW_RET_INVALID_ARGUMENT;
+    }
+    if (wait_set->implementation_identifier != rmw_get_implementation_identifier()) {
+        RMW_SET_ERROR_MSG("implementation identifier mismatch");
+        return RMW_RET_INCORRECT_RMW_IMPLEMENTATION;
+    }
+
+    fprintf(stderr, "[DEBUG][rmw_wait] checks passed\n");
+    fflush(stderr);
+
+    // Build fd_set for select()
+    fd_set read_fds;
+    FD_ZERO(&read_fds);
+    int max_fd = -1;
+
+    // Track which entities map to which fds
+    std::vector<std::pair<int, size_t>> sub_fd_map;      // fd -> subscription index
+    std::vector<std::pair<int, size_t>> gc_fd_map;       // fd -> guard condition index
+    std::vector<std::pair<int, size_t>> srv_fd_map;      // fd -> service index
+    std::vector<std::pair<int, size_t>> cli_fd_map;      // fd -> client index
+
+    // Add subscription pipe fds
+    if (subscriptions) {
+        for (size_t i = 0; i < subscriptions->subscriber_count; ++i) {
+            if (!subscriptions->subscribers[i]) continue;
+
+            auto sub = static_cast<rmw_subscription_t*>(subscriptions->subscribers[i]);
+            if (sub->implementation_identifier != rmw_get_implementation_identifier()) {
+                continue;
+            }
+
+            auto sub_impl = static_cast<rmw_dsoftbus::SubscriptionImpl*>(sub->data);
+            if (sub_impl && sub_impl->pipe_fd[0] >= 0) {
+                // First check if there's already data in the queue
+                std::lock_guard<std::mutex> lock(sub_impl->queue_mutex);
+                if (!sub_impl->message_queue.empty()) {
+                    // Data already available, don't wait
+                    continue;
+                }
+
+                FD_SET(sub_impl->pipe_fd[0], &read_fds);
+                max_fd = std::max(max_fd, sub_impl->pipe_fd[0]);
+                sub_fd_map.push_back({sub_impl->pipe_fd[0], i});
+            }
+        }
+    }
+
+    fprintf(stderr, "[DEBUG][rmw_wait] subscriptions processed\n");
+    fflush(stderr);
+
+    // Add guard condition pipe fds
+    if (guard_conditions) {
+        fprintf(stderr, "[DEBUG][rmw_wait] processing %zu guard conditions\n", guard_conditions->guard_condition_count);
+        fflush(stderr);
+
+        for (size_t i = 0; i < guard_conditions->guard_condition_count; ++i) {
+            fprintf(stderr, "[DEBUG][rmw_wait] gc[%zu]=%p\n", i, (void*)guard_conditions->guard_conditions[i]);
+            fflush(stderr);
+
+            if (!guard_conditions->guard_conditions[i]) continue;
+
+            auto gc = static_cast<rmw_guard_condition_t*>(guard_conditions->guard_conditions[i]);
+            fprintf(stderr, "[DEBUG][rmw_wait] gc=%p, impl_id=%p, our_id=%p\n",
+                    (void*)gc, (void*)gc->implementation_identifier, (void*)rmw_get_implementation_identifier());
+            fflush(stderr);
+
+            if (gc->implementation_identifier != rmw_get_implementation_identifier()) {
+                fprintf(stderr, "[DEBUG][rmw_wait] gc impl_id mismatch, skipping\n");
+                fflush(stderr);
+                continue;
+            }
+
+            auto gc_impl = static_cast<rmw_dsoftbus::GuardConditionImpl*>(gc->data);
+            fprintf(stderr, "[DEBUG][rmw_wait] gc_impl=%p\n", (void*)gc_impl);
+            fflush(stderr);
+
+            if (gc_impl) {
+                // Check if already triggered
+                if (gc_impl->triggered.load()) {
+                    continue;
+                }
+
+                if (gc_impl->pipe_fd[0] >= 0) {
+                    FD_SET(gc_impl->pipe_fd[0], &read_fds);
+                    max_fd = std::max(max_fd, gc_impl->pipe_fd[0]);
+                    gc_fd_map.push_back({gc_impl->pipe_fd[0], i});
+                }
+            }
+        }
+    }
+
+    fprintf(stderr, "[DEBUG][rmw_wait] guard conditions processed, max_fd=%d\n", max_fd);
+    fflush(stderr);
+
+    // Add service pipe fds
+    if (services) {
+        for (size_t i = 0; i < services->service_count; ++i) {
+            if (!services->services[i]) continue;
+
+            auto srv = static_cast<rmw_service_t*>(services->services[i]);
+            if (srv->implementation_identifier != rmw_get_implementation_identifier()) {
+                continue;
+            }
+
+            auto srv_impl = static_cast<rmw_dsoftbus::ServiceImpl*>(srv->data);
+            if (srv_impl && srv_impl->pipe_fd[0] >= 0) {
+                std::lock_guard<std::mutex> lock(srv_impl->queue_mutex);
+                if (!srv_impl->request_queue.empty()) {
+                    continue;
+                }
+
+                FD_SET(srv_impl->pipe_fd[0], &read_fds);
+                max_fd = std::max(max_fd, srv_impl->pipe_fd[0]);
+                srv_fd_map.push_back({srv_impl->pipe_fd[0], i});
+            }
+        }
+    }
+
+    // Add client pipe fds
+    if (clients) {
+        for (size_t i = 0; i < clients->client_count; ++i) {
+            if (!clients->clients[i]) continue;
+
+            auto cli = static_cast<rmw_client_t*>(clients->clients[i]);
+            if (cli->implementation_identifier != rmw_get_implementation_identifier()) {
+                continue;
+            }
+
+            auto cli_impl = static_cast<rmw_dsoftbus::ClientImpl*>(cli->data);
+            if (cli_impl && cli_impl->pipe_fd[0] >= 0) {
+                std::lock_guard<std::mutex> lock(cli_impl->queue_mutex);
+                if (!cli_impl->response_queue.empty()) {
+                    continue;
+                }
+
+                FD_SET(cli_impl->pipe_fd[0], &read_fds);
+                max_fd = std::max(max_fd, cli_impl->pipe_fd[0]);
+                cli_fd_map.push_back({cli_impl->pipe_fd[0], i});
+            }
+        }
+    }
+
+    // Events - clear all (not supported yet)
+    if (events) {
+        for (size_t i = 0; i < events->event_count; ++i) {
+            events->events[i] = nullptr;
+        }
+    }
+
+    // First pass: check if any entity already has data
+    bool has_ready = false;
+
+    if (subscriptions) {
+        for (size_t i = 0; i < subscriptions->subscriber_count; ++i) {
+            if (!subscriptions->subscribers[i]) continue;
+
+            auto sub = static_cast<rmw_subscription_t*>(subscriptions->subscribers[i]);
+            auto sub_impl = static_cast<rmw_dsoftbus::SubscriptionImpl*>(sub->data);
+            if (sub_impl) {
+                std::lock_guard<std::mutex> lock(sub_impl->queue_mutex);
+                if (sub_impl->message_queue.empty()) {
+                    subscriptions->subscribers[i] = nullptr;
+                } else {
+                    has_ready = true;
+                }
+            }
+        }
+    }
+
+    if (guard_conditions) {
+        for (size_t i = 0; i < guard_conditions->guard_condition_count; ++i) {
+            if (!guard_conditions->guard_conditions[i]) continue;
+
+            auto gc = static_cast<rmw_guard_condition_t*>(guard_conditions->guard_conditions[i]);
+            auto gc_impl = static_cast<rmw_dsoftbus::GuardConditionImpl*>(gc->data);
+            if (gc_impl) {
+                if (!gc_impl->triggered.load()) {
+                    guard_conditions->guard_conditions[i] = nullptr;
+                } else {
+                    gc_impl->triggered.store(false);
+                    has_ready = true;
+                }
+            }
+        }
+    }
+
+    if (services) {
+        for (size_t i = 0; i < services->service_count; ++i) {
+            if (!services->services[i]) continue;
+
+            auto srv = static_cast<rmw_service_t*>(services->services[i]);
+            auto srv_impl = static_cast<rmw_dsoftbus::ServiceImpl*>(srv->data);
+            if (srv_impl) {
+                std::lock_guard<std::mutex> lock(srv_impl->queue_mutex);
+                if (srv_impl->request_queue.empty()) {
+                    services->services[i] = nullptr;
+                } else {
+                    has_ready = true;
+                }
+            }
+        }
+    }
+
+    if (clients) {
+        for (size_t i = 0; i < clients->client_count; ++i) {
+            if (!clients->clients[i]) continue;
+
+            auto cli = static_cast<rmw_client_t*>(clients->clients[i]);
+            auto cli_impl = static_cast<rmw_dsoftbus::ClientImpl*>(cli->data);
+            if (cli_impl) {
+                std::lock_guard<std::mutex> lock(cli_impl->queue_mutex);
+                if (cli_impl->response_queue.empty()) {
+                    clients->clients[i] = nullptr;
+                } else {
+                    has_ready = true;
+                }
+            }
+        }
+    }
+
+    // If something is already ready, return immediately
+    if (has_ready) {
+        return RMW_RET_OK;
+    }
+
+    // Nothing ready and no fds to wait on
+    if (max_fd < 0) {
+        // Nothing to wait for, timeout immediately if timeout is 0
+        if (wait_timeout && wait_timeout->sec == 0 && wait_timeout->nsec == 0) {
+            return RMW_RET_TIMEOUT;
+        }
+        // Otherwise we have nothing to wait on - this is an edge case
+        return RMW_RET_TIMEOUT;
+    }
+
+    // Set up timeout
+    struct timeval tv;
+    struct timeval* tv_ptr = nullptr;
+    if (wait_timeout) {
+        tv.tv_sec = wait_timeout->sec;
+        tv.tv_usec = wait_timeout->nsec / 1000;
+        tv_ptr = &tv;
+    }
+
+    // Wait with select()
+    int ret = select(max_fd + 1, &read_fds, nullptr, nullptr, tv_ptr);
+
+    if (ret < 0) {
+        RMW_SET_ERROR_MSG("select() failed");
+        return RMW_RET_ERROR;
+    }
+
+    if (ret == 0) {
+        // Timeout - clear all pointers
+        if (subscriptions) {
+            for (size_t i = 0; i < subscriptions->subscriber_count; ++i) {
+                subscriptions->subscribers[i] = nullptr;
+            }
+        }
+        if (guard_conditions) {
+            for (size_t i = 0; i < guard_conditions->guard_condition_count; ++i) {
+                guard_conditions->guard_conditions[i] = nullptr;
+            }
+        }
+        if (services) {
+            for (size_t i = 0; i < services->service_count; ++i) {
+                services->services[i] = nullptr;
+            }
+        }
+        if (clients) {
+            for (size_t i = 0; i < clients->client_count; ++i) {
+                clients->clients[i] = nullptr;
+            }
+        }
+        return RMW_RET_TIMEOUT;
+    }
+
+    // Check which entities are ready and update pointers
+    if (subscriptions) {
+        for (size_t i = 0; i < subscriptions->subscriber_count; ++i) {
+            if (!subscriptions->subscribers[i]) continue;
+
+            auto sub = static_cast<rmw_subscription_t*>(subscriptions->subscribers[i]);
+            auto sub_impl = static_cast<rmw_dsoftbus::SubscriptionImpl*>(sub->data);
+
+            bool ready = false;
+            if (sub_impl && sub_impl->pipe_fd[0] >= 0) {
+                if (FD_ISSET(sub_impl->pipe_fd[0], &read_fds)) {
+                    // Consume notification byte
+                    char buf;
+                    read(sub_impl->pipe_fd[0], &buf, 1);
+                    ready = true;
+                }
+            }
+
+            if (!ready) {
+                // Double-check queue
+                std::lock_guard<std::mutex> lock(sub_impl->queue_mutex);
+                ready = !sub_impl->message_queue.empty();
+            }
+
+            if (!ready) {
+                subscriptions->subscribers[i] = nullptr;
+            }
+        }
+    }
+
+    if (guard_conditions) {
+        for (size_t i = 0; i < guard_conditions->guard_condition_count; ++i) {
+            if (!guard_conditions->guard_conditions[i]) continue;
+
+            auto gc = static_cast<rmw_guard_condition_t*>(guard_conditions->guard_conditions[i]);
+            auto gc_impl = static_cast<rmw_dsoftbus::GuardConditionImpl*>(gc->data);
+
+            bool ready = false;
+            if (gc_impl && gc_impl->pipe_fd[0] >= 0) {
+                if (FD_ISSET(gc_impl->pipe_fd[0], &read_fds)) {
+                    char buf;
+                    read(gc_impl->pipe_fd[0], &buf, 1);
+                    ready = true;
+                }
+            }
+
+            if (!ready) {
+                ready = gc_impl->triggered.exchange(false);
+            }
+
+            if (!ready) {
+                guard_conditions->guard_conditions[i] = nullptr;
+            }
+        }
+    }
+
+    if (services) {
+        for (size_t i = 0; i < services->service_count; ++i) {
+            if (!services->services[i]) continue;
+
+            auto srv = static_cast<rmw_service_t*>(services->services[i]);
+            auto srv_impl = static_cast<rmw_dsoftbus::ServiceImpl*>(srv->data);
+
+            bool ready = false;
+            if (srv_impl && srv_impl->pipe_fd[0] >= 0) {
+                if (FD_ISSET(srv_impl->pipe_fd[0], &read_fds)) {
+                    char buf;
+                    read(srv_impl->pipe_fd[0], &buf, 1);
+                    ready = true;
+                }
+            }
+
+            if (!ready) {
+                std::lock_guard<std::mutex> lock(srv_impl->queue_mutex);
+                ready = !srv_impl->request_queue.empty();
+            }
+
+            if (!ready) {
+                services->services[i] = nullptr;
+            }
+        }
+    }
+
+    if (clients) {
+        for (size_t i = 0; i < clients->client_count; ++i) {
+            if (!clients->clients[i]) continue;
+
+            auto cli = static_cast<rmw_client_t*>(clients->clients[i]);
+            auto cli_impl = static_cast<rmw_dsoftbus::ClientImpl*>(cli->data);
+
+            bool ready = false;
+            if (cli_impl && cli_impl->pipe_fd[0] >= 0) {
+                if (FD_ISSET(cli_impl->pipe_fd[0], &read_fds)) {
+                    char buf;
+                    read(cli_impl->pipe_fd[0], &buf, 1);
+                    ready = true;
+                }
+            }
+
+            if (!ready) {
+                std::lock_guard<std::mutex> lock(cli_impl->queue_mutex);
+                ready = !cli_impl->response_queue.empty();
+            }
+
+            if (!ready) {
+                clients->clients[i] = nullptr;
+            }
+        }
+    }
+
+    return RMW_RET_OK;
+}
+
+}  // extern "C"

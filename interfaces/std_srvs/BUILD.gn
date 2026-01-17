@@ -1,0 +1,137 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# std_srvs - Standard ROS2 service definitions
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Service definitions:
+# - Empty: Service with no request/response data
+# - SetBool: Set a boolean value
+# - Trigger: Trigger an action
+
+###############################################
+# rosidl_generator_c: C message definitions
+###############################################
+
+ros2_library("std_srvs__rosidl_generator_c") {
+  sources = [
+    "src/srv/empty__functions.c",
+    "src/srv/set_bool__functions.c",
+    "src/srv/trigger__functions.c",
+  ]
+
+  include_dirs = [
+    "include",
+    "//interfaces/builtin_interfaces/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_generator_c",
+  ]
+
+  cflags = [
+    "-DROS_PACKAGE_NAME=\"std_srvs\"",
+    "-DROSIDL_GENERATOR_C_BUILDING_DLL",
+  ]
+}
+
+###############################################
+# rosidl_typesupport_c: C type support
+###############################################
+
+ros2_library("std_srvs__rosidl_typesupport_c") {
+  sources = [
+    "src/srv/empty__type_support.c",
+    "src/srv/set_bool__type_support.c",
+    "src/srv/trigger__type_support.c",
+  ]
+
+  include_dirs = [
+    "include",
+    "//interfaces/builtin_interfaces/include",
+  ]
+
+  deps = [
+    ":std_srvs__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_c",
+  ]
+
+  cflags = [
+    "-DROS_PACKAGE_NAME=\"std_srvs\"",
+  ]
+}
+
+###############################################
+# rosidl_typesupport_fastrtps_c: FastRTPS C type support
+###############################################
+
+ros2_library("std_srvs__rosidl_typesupport_fastrtps_c") {
+  sources = [
+    "src/srv/empty__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/set_bool__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/trigger__rosidl_typesupport_fastrtps_c.cpp",
+  ]
+
+  include_dirs = [
+    "include",
+    "//interfaces/builtin_interfaces/include",
+  ]
+
+  deps = [
+    ":std_srvs__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_fastrtps_c:rosidl_typesupport_fastrtps_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_fastrtps_c",
+  ]
+
+  cflags_cc = [
+    "-DROS_PACKAGE_NAME=\"std_srvs\"",
+    "-std=c++17",
+  ]
+}
+
+###############################################
+# rosidl_typesupport_cpp: C++ type support
+###############################################
+
+ros2_library("std_srvs__rosidl_typesupport_cpp") {
+  sources = [
+    "src/srv/empty__type_support.cpp",
+    "src/srv/set_bool__type_support.cpp",
+    "src/srv/trigger__type_support.cpp",
+  ]
+
+  include_dirs = [
+    "include",
+    "//interfaces/builtin_interfaces/include",
+  ]
+
+  deps = [
+    ":std_srvs__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_cpp",
+  ]
+
+  cflags_cc = [
+    "-DROS_PACKAGE_NAME=\"std_srvs\"",
+    "-std=c++17",
+  ]
+}
+
+###############################################
+# Convenience group target
+###############################################
+
+group("std_srvs") {
+  deps = [
+    ":std_srvs__rosidl_generator_c",
+    ":std_srvs__rosidl_typesupport_c",
+    ":std_srvs__rosidl_typesupport_fastrtps_c",
+    ":std_srvs__rosidl_typesupport_cpp",
+  ]
+}

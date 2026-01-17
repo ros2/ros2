@@ -1,0 +1,42 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rcpputils - ROS2 C++ Utilities Library
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory
+_rcpputils_src = "//ros2/src/ros2/rcpputils"
+
+# ============================================================================
+# rcpputils shared library
+# ============================================================================
+ros2_shared_library("rcpputils") {
+  sources = [
+    "${_rcpputils_src}/src/asserts.cpp",
+    "${_rcpputils_src}/src/env.cpp",
+    "${_rcpputils_src}/src/filesystem_helper.cpp",
+    "${_rcpputils_src}/src/find_library.cpp",
+    "${_rcpputils_src}/src/process.cpp",
+    "${_rcpputils_src}/src/shared_library.cpp",
+  ]
+
+  include_dirs = [
+    "${_rcpputils_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+  ]
+
+  defines = [
+    "RCPPUTILS_BUILDING_DLL",
+  ]
+
+  libs = [
+    "dl",
+    "pthread",
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

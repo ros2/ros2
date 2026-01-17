@@ -1,0 +1,56 @@
+// Copyright (c) 2024 ROS2 OpenHarmony Port Project
+// visualization_msgs/srv/GetInteractiveMarkers_Request type
+
+#ifndef VISUALIZATION_MSGS__SRV__GETINTERACTIVEMARKERS_REQUEST_H_
+#define VISUALIZATION_MSGS__SRV__GETINTERACTIVEMARKERS_REQUEST_H_
+
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+
+#include "rosidl_runtime_c/message_type_support_struct.h"
+#include "rosidl_runtime_c/visibility_control.h"
+#include "visualization_msgs/msg/rosidl_generator_c__visibility_control.h"
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct visualization_msgs__srv__GetInteractiveMarkers_Request
+{
+  uint8_t structure_needs_at_least_one_member;
+} visualization_msgs__srv__GetInteractiveMarkers_Request;
+
+typedef struct visualization_msgs__srv__GetInteractiveMarkers_Request__Sequence
+{
+  visualization_msgs__srv__GetInteractiveMarkers_Request * data;
+  size_t size;
+  size_t capacity;
+} visualization_msgs__srv__GetInteractiveMarkers_Request__Sequence;
+
+ROSIDL_GENERATOR_C_PUBLIC_visualization_msgs
+bool visualization_msgs__srv__GetInteractiveMarkers_Request__init(visualization_msgs__srv__GetInteractiveMarkers_Request * msg);
+
+ROSIDL_GENERATOR_C_PUBLIC_visualization_msgs
+void visualization_msgs__srv__GetInteractiveMarkers_Request__fini(visualization_msgs__srv__GetInteractiveMarkers_Request * msg);
+
+ROSIDL_GENERATOR_C_PUBLIC_visualization_msgs
+visualization_msgs__srv__GetInteractiveMarkers_Request * visualization_msgs__srv__GetInteractiveMarkers_Request__create(void);
+
+ROSIDL_GENERATOR_C_PUBLIC_visualization_msgs
+void visualization_msgs__srv__GetInteractiveMarkers_Request__destroy(visualization_msgs__srv__GetInteractiveMarkers_Request * msg);
+
+ROSIDL_GENERATOR_C_PUBLIC_visualization_msgs
+bool visualization_msgs__srv__GetInteractiveMarkers_Request__Sequence__init(
+  visualization_msgs__srv__GetInteractiveMarkers_Request__Sequence * array, size_t size);
+
+ROSIDL_GENERATOR_C_PUBLIC_visualization_msgs
+void visualization_msgs__srv__GetInteractiveMarkers_Request__Sequence__fini(
+  visualization_msgs__srv__GetInteractiveMarkers_Request__Sequence * array);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif  // VISUALIZATION_MSGS__SRV__GETINTERACTIVEMARKERS_REQUEST_H_

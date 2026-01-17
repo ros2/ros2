@@ -1,0 +1,127 @@
+========================================
+Phase 2.1 跨设备 RPC 验收测试
+========================================
+
+✅ 准备工作已完成：
+  - Device A (Server): ec29004133314d38433031a522413c00
+  - Device B (Client): ec29004133314d38433031a751c63c00
+  - Network ID (Device A): 285eb738485f4253626ca3400029ef618bd3f219d1045e521fb5906ab403fef1
+  - 两台设备已部署：librmw_dsoftbus.so.0.1.0 (1.3MB) + 测试程序
+  - 动态链接器符号链接已创建
+
+
+========================================
+Terminal 1 - Server (Device A)
+========================================
+
+powershell.exe -NoProfile -Command "hdc -t ec29004133314d38433031a522413c00 shell 'cd /data/ros2 && export LD_LIBRARY_PATH=/data/ros2:/system/lib64 && ./service_rpc_server_test'"
+
+预期输出：
+-----------
+=== RMW Service Server Test ===
+[OK] RMW initialized
+[OK] Node created
+[ServiceClientManager] Created service server: /add_two_ints, listener_id=0
+[OK] Service created: /add_two_ints
+
+[INFO] Service ready, waiting for requests...
+[INFO] Press Ctrl+C to exit
+
+
+========================================
+Terminal 2 - Client (Device B)
+========================================
+
+powershell.exe -NoProfile -Command "hdc -t ec29004133314d38433031a751c63c00 shell 'cd /data/ros2 && export LD_LIBRARY_PATH=/data/ros2:/system/lib64 && export RMW_DSOFTBUS_SERVICE_PEER_ID=285eb738485f4253626ca3400029ef618bd3f219d1045e521fb5906ab403fef1 && ./service_rpc_client_test'"
+
+预期输出：
+-----------
+=== RMW Service Client Test ===
+[INFO] Peer network ID: 285eb738485f4253626ca3400029ef618bd3f219d1045e521fb5906ab403fef1
+[OK] RMW initialized
+[OK] Node created
+[ServiceClientManager] Created service client: /add_two_ints, listener_id=0
+[OK] Client created: /add_two_ints
+
+[REQUEST 1] Sending: a=10, b=20
+[ServiceClientManager] Connected to service: /add_two_ints, session_id=100 (REAL sessionId from OpenSession)
+[ServiceClientManager] Sent request: service=/add_two_ints, request_id=0, session=100, len=XX
+[REQUEST 1] Sent (sequence=0)
+
+<等待 5 秒>
+
+[ServiceClientManager] OnBytesReceived: sessionId=100, len=XX
+[ServiceClientManager] RESPONSE routed to client: /add_two_ints, request_id=0
+[RESPONSE 1] Received:
+  request_id: 0
+  sum = 30
+  Expected: 10 + 20 = 30
+  ✓ CORRECT
+
+
+========================================
+Terminal 1 (Server) 应该显示：
+========================================
+
+[ServiceClientManager] OnSessionOpened: sessionId=XXX, result=0
+[ServiceClientManager] OnBytesReceived: sessionId=XXX, len=XX
+[INFO] New client session registered: sessionId=XXX
+[ServiceClientManager] REQUEST routed to service: /add_two_ints, request_id=0, session=XXX
+
+[REQUEST 1] Received:
+  request_id: 0
+  a = 10, b = 20
+  Computed: sum = 30
+[ServiceClientManager] Sent response: service=/add_two_ints, request_id=0, session=XXX, len=XX
+[RESPONSE 1] Sent successfully
+
+
+========================================
+验收标准（至少完成以下 8 项）
+========================================
+
+✅ 1. Server service 创建成功（listener_id >= 0）
+✅ 2. Client client 创建成功
+✅ 3. Client OpenSession 成功（session_id > 0）
+✅ 4. Client 发送 REQUEST（log显示 "Sent request"）
+✅ 5. Server 接收 REQUEST（log显示 "REQUEST routed"）
+✅ 6. Server 发送 RESPONSE（log显示 "Sent successfully"）
+✅ 7. Client 接收 RESPONSE（log显示 "RESPONSE routed"）
+✅ 8. 数据正确（sum = 30, ✓ CORRECT）
+
+最小通过标准：至少 1 次成功的 Request (a=10, b=20) → Response (sum=30) 循环
+
+
+========================================
+如果遇到问题
+========================================
+
+问题 1: Server 报 "CreateSessionServer returned: -426442743"
+解决：已修复，使用包名 "com.huawei.dmsdp"
+
+问题 2: "./service_rpc_*_test: No such file or directory"
+解决：已创建符号链接 /lib/ld-linux-aarch64.so.1
+
+问题 3: Client 报 "RMW_DSOFTBUS_SERVICE_PEER_ID not set"
+解决：确保 Terminal 2 命令包含完整的 Network ID 环境变量
+
+问题 4: Client timeout
+可能原因：
+  - Server 未启动（先启动 Terminal 1）
+  - Network ID 不正确
+  - SoftBus 未运行（重启设备）
+
+
+========================================
+测试完成后
+========================================
+
+请将 Terminal 1 和 Terminal 2 的完整输出发给我，特别是：
+- Server 的 "[REQUEST X] Received" 行
+- Client 的 "[RESPONSE X] Received" 行
+- 是否显示 "✓ CORRECT"
+
+这将完成 Phase 2.1 的最终验收。
+
+
+《资治通鉴》："事不验于行，皆为空言。"

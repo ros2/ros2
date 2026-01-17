@@ -1,0 +1,6 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include
+target_output_name = rosidl_typesupport_introspection_c_headers
+
+
+build obj/src/ros2/rosidl/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c_headers.stamp: stamp || ./librosidl_runtime_c.so obj/src/ros2/rosidl/rosidl_typesupport_interface/rosidl_typesupport_interface.stamp ./librcutils.so

@@ -1,0 +1,83 @@
+defines = -DRMW_BUILDING_DLL -D__OHOS__ -D_GNU_SOURCE -DRCUTILS_BUILDING_DLL -DROSIDL_RUNTIME_C_BUILDING_DLL
+include_dirs = -I../../src/ros2/rmw/rmw/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl_dynamic_typesupport/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC -std=c99 -std=c99
+cflags_c = -std=c11
+target_output_name = librmw
+
+build obj/src/ros2/rmw/rmw/src/librmw.allocators.o: cc ../../src/ros2/rmw/rmw/src/allocators.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = allocators.c
+  source_name_part = allocators
+build obj/src/ros2/rmw/rmw/src/librmw.convert_rcutils_ret_to_rmw_ret.o: cc ../../src/ros2/rmw/rmw/src/convert_rcutils_ret_to_rmw_ret.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = convert_rcutils_ret_to_rmw_ret.c
+  source_name_part = convert_rcutils_ret_to_rmw_ret
+build obj/src/ros2/rmw/rmw/src/librmw.discovery_options.o: cc ../../src/ros2/rmw/rmw/src/discovery_options.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = discovery_options.c
+  source_name_part = discovery_options
+build obj/src/ros2/rmw/rmw/src/librmw.event.o: cc ../../src/ros2/rmw/rmw/src/event.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = event.c
+  source_name_part = event
+build obj/src/ros2/rmw/rmw/src/librmw.init.o: cc ../../src/ros2/rmw/rmw/src/init.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = init.c
+  source_name_part = init
+build obj/src/ros2/rmw/rmw/src/librmw.init_options.o: cc ../../src/ros2/rmw/rmw/src/init_options.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = init_options.c
+  source_name_part = init_options
+build obj/src/ros2/rmw/rmw/src/librmw.message_sequence.o: cc ../../src/ros2/rmw/rmw/src/message_sequence.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = message_sequence.c
+  source_name_part = message_sequence
+build obj/src/ros2/rmw/rmw/src/librmw.names_and_types.o: cc ../../src/ros2/rmw/rmw/src/names_and_types.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = names_and_types.c
+  source_name_part = names_and_types
+build obj/src/ros2/rmw/rmw/src/librmw.network_flow_endpoint.o: cc ../../src/ros2/rmw/rmw/src/network_flow_endpoint.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = network_flow_endpoint.c
+  source_name_part = network_flow_endpoint
+build obj/src/ros2/rmw/rmw/src/librmw.network_flow_endpoint_array.o: cc ../../src/ros2/rmw/rmw/src/network_flow_endpoint_array.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = network_flow_endpoint_array.c
+  source_name_part = network_flow_endpoint_array
+build obj/src/ros2/rmw/rmw/src/librmw.publisher_options.o: cc ../../src/ros2/rmw/rmw/src/publisher_options.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = publisher_options.c
+  source_name_part = publisher_options
+build obj/src/ros2/rmw/rmw/src/librmw.qos_string_conversions.o: cc ../../src/ros2/rmw/rmw/src/qos_string_conversions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = qos_string_conversions.c
+  source_name_part = qos_string_conversions
+build obj/src/ros2/rmw/rmw/src/librmw.sanity_checks.o: cc ../../src/ros2/rmw/rmw/src/sanity_checks.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = sanity_checks.c
+  source_name_part = sanity_checks
+build obj/src/ros2/rmw/rmw/src/librmw.security_options.o: cc ../../src/ros2/rmw/rmw/src/security_options.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = security_options.c
+  source_name_part = security_options
+build obj/src/ros2/rmw/rmw/src/librmw.subscription_content_filter_options.o: cc ../../src/ros2/rmw/rmw/src/subscription_content_filter_options.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = subscription_content_filter_options.c
+  source_name_part = subscription_content_filter_options
+build obj/src/ros2/rmw/rmw/src/librmw.subscription_options.o: cc ../../src/ros2/rmw/rmw/src/subscription_options.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = subscription_options.c
+  source_name_part = subscription_options
+build obj/src/ros2/rmw/rmw/src/librmw.time.o: cc ../../src/ros2/rmw/rmw/src/time.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = time.c
+  source_name_part = time
+build obj/src/ros2/rmw/rmw/src/librmw.topic_endpoint_info.o: cc ../../src/ros2/rmw/rmw/src/topic_endpoint_info.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = topic_endpoint_info.c
+  source_name_part = topic_endpoint_info
+build obj/src/ros2/rmw/rmw/src/librmw.topic_endpoint_info_array.o: cc ../../src/ros2/rmw/rmw/src/topic_endpoint_info_array.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = topic_endpoint_info_array.c
+  source_name_part = topic_endpoint_info_array
+build obj/src/ros2/rmw/rmw/src/librmw.types.o: cc ../../src/ros2/rmw/rmw/src/types.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = types.c
+  source_name_part = types
+build obj/src/ros2/rmw/rmw/src/librmw.validate_full_topic_name.o: cc ../../src/ros2/rmw/rmw/src/validate_full_topic_name.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = validate_full_topic_name.c
+  source_name_part = validate_full_topic_name
+build obj/src/ros2/rmw/rmw/src/librmw.validate_namespace.o: cc ../../src/ros2/rmw/rmw/src/validate_namespace.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = validate_namespace.c
+  source_name_part = validate_namespace
+build obj/src/ros2/rmw/rmw/src/librmw.validate_node_name.o: cc ../../src/ros2/rmw/rmw/src/validate_node_name.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = validate_node_name.c
+  source_name_part = validate_node_name
+
+build ./librmw.so: solink obj/src/ros2/rmw/rmw/src/librmw.allocators.o obj/src/ros2/rmw/rmw/src/librmw.convert_rcutils_ret_to_rmw_ret.o obj/src/ros2/rmw/rmw/src/librmw.discovery_options.o obj/src/ros2/rmw/rmw/src/librmw.event.o obj/src/ros2/rmw/rmw/src/librmw.init.o obj/src/ros2/rmw/rmw/src/librmw.init_options.o obj/src/ros2/rmw/rmw/src/librmw.message_sequence.o obj/src/ros2/rmw/rmw/src/librmw.names_and_types.o obj/src/ros2/rmw/rmw/src/librmw.network_flow_endpoint.o obj/src/ros2/rmw/rmw/src/librmw.network_flow_endpoint_array.o obj/src/ros2/rmw/rmw/src/librmw.publisher_options.o obj/src/ros2/rmw/rmw/src/librmw.qos_string_conversions.o obj/src/ros2/rmw/rmw/src/librmw.sanity_checks.o obj/src/ros2/rmw/rmw/src/librmw.security_options.o obj/src/ros2/rmw/rmw/src/librmw.subscription_content_filter_options.o obj/src/ros2/rmw/rmw/src/librmw.subscription_options.o obj/src/ros2/rmw/rmw/src/librmw.time.o obj/src/ros2/rmw/rmw/src/librmw.topic_endpoint_info.o obj/src/ros2/rmw/rmw/src/librmw.topic_endpoint_info_array.o obj/src/ros2/rmw/rmw/src/librmw.types.o obj/src/ros2/rmw/rmw/src/librmw.validate_full_topic_name.o obj/src/ros2/rmw/rmw/src/librmw.validate_namespace.o obj/src/ros2/rmw/rmw/src/librmw.validate_node_name.o ./librcutils.so ./librosidl_runtime_c.so ./librosidl_dynamic_typesupport.so
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

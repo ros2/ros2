@@ -1,0 +1,37 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# tracetools - ROS2 Tracing tools
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+import("//gn_templates/ros2_config.gni")
+
+# Source directory
+_tracetools_src = "//ros2/src/ros2/ros2_tracing/tracetools"
+
+# ============================================================================
+# tracetools shared library
+# ============================================================================
+ros2_shared_library("tracetools") {
+  sources = [
+    "${_tracetools_src}/src/status.c",
+    "${_tracetools_src}/src/status_tool.c",
+    "${_tracetools_src}/src/tp_call.c",
+    "${_tracetools_src}/src/tracetools.c",
+  ]
+
+  include_dirs = [
+    "${_tracetools_src}/include",
+  ]
+
+  defines = [
+    "TRACETOOLS_BUILDING_DLL",
+  ]
+
+  # Disable tracing by default for initial port
+  if (!ros2_enable_tracing) {
+    defines += [ "TRACETOOLS_DISABLED" ]
+  }
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

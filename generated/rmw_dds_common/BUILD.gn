@@ -1,0 +1,55 @@
+# Copyright (c) 2024 ROS2 KaihongOS Port Project
+# BUILD.gn for generated rmw_dds_common
+
+import("//gn_templates/ros2_library.gni")
+
+_gen_base = "//generated/rmw_dds_common"
+
+config("rmw_dds_common_public_config") {
+  include_dirs = [ "//generated" ]
+  defines = [ "ROSIDL_GENERATOR_C_BUILDING_DLL_rmw_dds_common" ]
+}
+
+# C++ type support introspection + dispatch
+source_set("rmw_dds_common_type_support_cpp") {
+  sources = [
+    "${_gen_base}/msg/detail/gid__type_support.cpp",
+    "${_gen_base}/msg/detail/node_entities_info__type_support.cpp",
+    "${_gen_base}/msg/detail/participant_entities_info__type_support.cpp",
+    "${_gen_base}/msg/gid__type_support.cpp",
+    "${_gen_base}/msg/node_entities_info__type_support.cpp",
+    "${_gen_base}/msg/participant_entities_info__type_support.cpp",
+  ]
+
+  include_dirs = [ "//generated" ]
+
+  deps = [
+    "//src/ros2/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//src/ros2/rosidl_typesupport/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+  ]
+
+  cflags_cc = [ "-std=c++17", "-Wno-unused-parameter" ]
+}
+
+ros2_shared_library("rmw_dds_common") {
+  sources = [
+    "${_gen_base}/msg/detail/gid__functions.c",
+    "${_gen_base}/msg/detail/node_entities_info__functions.c",
+    "${_gen_base}/msg/detail/participant_entities_info__functions.c",
+    "${_gen_base}/msg/detail/gid__type_support.c",
+    "${_gen_base}/msg/detail/node_entities_info__type_support.c",
+    "${_gen_base}/msg/detail/participant_entities_info__type_support.c",
+    "${_gen_base}/msg/detail/type_description_stubs.c",
+  ]
+
+  public_configs = [ ":rmw_dds_common_public_config" ]
+
+  public_deps = [
+    ":rmw_dds_common_type_support_cpp",
+    "//src/ros2/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//src/ros2/rcutils:rcutils",
+  ]
+
+  cflags = [ "-Wno-unused-parameter" ]
+}

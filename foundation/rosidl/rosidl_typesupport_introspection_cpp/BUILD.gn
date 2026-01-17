@@ -1,0 +1,35 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rosidl_typesupport_introspection_cpp - ROS IDL introspection type support for C++
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory
+_rosidl_typesupport_introspection_cpp_src = "//ros2/src/ros2/rosidl/rosidl_typesupport_introspection_cpp"
+
+# ============================================================================
+# rosidl_typesupport_introspection_cpp shared library
+# ============================================================================
+ros2_shared_library("rosidl_typesupport_introspection_cpp") {
+  sources = [
+    "${_rosidl_typesupport_introspection_cpp_src}/src/identifier.cpp",
+  ]
+
+  include_dirs = [
+    "${_rosidl_typesupport_introspection_cpp_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//foundation/rosidl/rosidl_typesupport_interface:rosidl_typesupport_interface",
+  ]
+
+  defines = [
+    "ROSIDL_TYPESUPPORT_INTROSPECTION_CPP_BUILDING_DLL",
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

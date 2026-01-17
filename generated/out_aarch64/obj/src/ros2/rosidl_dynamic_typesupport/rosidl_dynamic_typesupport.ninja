@@ -1,0 +1,29 @@
+defines = -DROSIDL_DYNAMIC_TYPESUPPORT_BUILDING_DLL -D__OHOS__ -D_GNU_SOURCE -DRCUTILS_BUILDING_DLL -DROSIDL_RUNTIME_C_BUILDING_DLL
+include_dirs = -I../../src/ros2/rosidl_dynamic_typesupport/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC -std=c99
+cflags_c = -std=c11
+target_output_name = librosidl_dynamic_typesupport
+
+build obj/src/ros2/rosidl_dynamic_typesupport/src/librosidl_dynamic_typesupport.dynamic_message_type_support_struct.o: cc ../../src/ros2/rosidl_dynamic_typesupport/src/dynamic_message_type_support_struct.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = dynamic_message_type_support_struct.c
+  source_name_part = dynamic_message_type_support_struct
+build obj/src/ros2/rosidl_dynamic_typesupport/src/librosidl_dynamic_typesupport.identifier.o: cc ../../src/ros2/rosidl_dynamic_typesupport/src/identifier.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = identifier.c
+  source_name_part = identifier
+build obj/src/ros2/rosidl_dynamic_typesupport/src/api/librosidl_dynamic_typesupport.serialization_support.o: cc ../../src/ros2/rosidl_dynamic_typesupport/src/api/serialization_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = serialization_support.c
+  source_name_part = serialization_support
+build obj/src/ros2/rosidl_dynamic_typesupport/src/api/librosidl_dynamic_typesupport.dynamic_data.o: cc ../../src/ros2/rosidl_dynamic_typesupport/src/api/dynamic_data.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = dynamic_data.c
+  source_name_part = dynamic_data
+build obj/src/ros2/rosidl_dynamic_typesupport/src/api/librosidl_dynamic_typesupport.dynamic_type.o: cc ../../src/ros2/rosidl_dynamic_typesupport/src/api/dynamic_type.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = dynamic_type.c
+  source_name_part = dynamic_type
+
+build ./librosidl_dynamic_typesupport.so: solink obj/src/ros2/rosidl_dynamic_typesupport/src/librosidl_dynamic_typesupport.dynamic_message_type_support_struct.o obj/src/ros2/rosidl_dynamic_typesupport/src/librosidl_dynamic_typesupport.identifier.o obj/src/ros2/rosidl_dynamic_typesupport/src/api/librosidl_dynamic_typesupport.serialization_support.o obj/src/ros2/rosidl_dynamic_typesupport/src/api/librosidl_dynamic_typesupport.dynamic_data.o obj/src/ros2/rosidl_dynamic_typesupport/src/api/librosidl_dynamic_typesupport.dynamic_type.o ./librcutils.so ./librosidl_runtime_c.so
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

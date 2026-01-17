@@ -1,0 +1,6 @@
+build/
+build-*/
+*.o
+*.so
+*.so.*
+*.a

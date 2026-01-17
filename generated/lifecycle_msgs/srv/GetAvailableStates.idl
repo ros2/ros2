@@ -1,0 +1,18 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from lifecycle_msgs/lifecycle_msgs/srv/GetAvailableStates.srv
+// generated code does not contain a copyright notice
+
+#include "lifecycle_msgs/msg/State.idl"
+
+module lifecycle_msgs {
+  module srv {
+    struct GetAvailableStates_Request {
+      uint8 structure_needs_at_least_one_member;
+    };
+    @verbatim (language="comment", text=
+      "Array of possible states that can be transitioned to.")
+    struct GetAvailableStates_Response {
+      sequence<lifecycle_msgs::msg::State> available_states;
+    };
+  };
+};

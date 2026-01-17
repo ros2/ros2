@@ -1,0 +1,23 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DROSIDL_GENERATOR_C_BUILDING_DLL_unique_identifier_msgs -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../generated -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include
+cflags = -Wno-unused-parameter -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -std=c11 -std=c11 -fPIC
+target_output_name = libunique_identifier_msgs
+
+build obj/generated/unique_identifier_msgs/msg/detail/libunique_identifier_msgs.uuid__functions.o: cc ../../generated/unique_identifier_msgs/msg/detail/uuid__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = uuid__functions.c
+  source_name_part = uuid__functions
+build obj/generated/unique_identifier_msgs/msg/detail/libunique_identifier_msgs.uuid__type_support.o: cc ../../generated/unique_identifier_msgs/msg/detail/uuid__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = uuid__type_support.c
+  source_name_part = uuid__type_support
+build obj/generated/unique_identifier_msgs/msg/detail/libunique_identifier_msgs.type_description_stubs.o: cc ../../generated/unique_identifier_msgs/msg/detail/type_description_stubs.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description_stubs.c
+  source_name_part = type_description_stubs
+
+build ./libunique_identifier_msgs.so: solink obj/generated/unique_identifier_msgs/msg/detail/libunique_identifier_msgs.uuid__functions.o obj/generated/unique_identifier_msgs/msg/detail/libunique_identifier_msgs.uuid__type_support.o obj/generated/unique_identifier_msgs/msg/detail/libunique_identifier_msgs.type_description_stubs.o obj/generated/unique_identifier_msgs/msg/detail/unique_identifier_msgs_type_support_cpp.uuid__type_support.o obj/generated/unique_identifier_msgs/msg/unique_identifier_msgs_type_support_cpp.uuid__type_support.o obj/generated/unique_identifier_msgs/msg/unique_identifier_msgs_type_support_cpp.uuid__type_support_c.o ./librosidl_runtime_c.so ./librosidl_typesupport_introspection_c.so ./librcutils.so ./librosidl_typesupport_c.so ./librosidl_typesupport_cpp.so ./librosidl_typesupport_introspection_cpp.so || obj/generated/unique_identifier_msgs/unique_identifier_msgs_type_support_cpp.stamp obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

@@ -1,0 +1,33 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from statistics_msgs/statistics_msgs/msg/StatisticDataPoint.msg
+// generated code does not contain a copyright notice
+
+
+module statistics_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "This holds the structure of a single data point of a StatisticDataType." "\n"
+      "" "\n"
+      "This message is used in MetricsStatisticsMessage, defined in MetricsStatisticsMessage.msg." "\n"
+      "" "\n"
+      "Examples of the value of data point are" "\n"
+      "- average size of messages received" "\n"
+      "- standard deviation of the period of messages published" "\n"
+      "- maximum age of messages published" "\n"
+      "" "\n"
+      "A value of nan represents no data is available." "\n"
+      "One example is that standard deviation is only available when there are two or more data points but there is only one," "\n"
+      "and in this case the value would be nan." "\n"
+      "+inf and -inf are not allowed.")
+    struct StatisticDataPoint {
+      @verbatim (language="comment", text=
+        "The statistic type of this data point, defined in StatisticDataType.msg" "\n"
+        "Default value should be StatisticDataType.STATISTICS_DATA_TYPE_UNINITIALIZED (0).")
+      uint8 data_type;
+
+      @verbatim (language="comment", text=
+        "The value of the data point")
+      double data;
+    };
+  };
+};

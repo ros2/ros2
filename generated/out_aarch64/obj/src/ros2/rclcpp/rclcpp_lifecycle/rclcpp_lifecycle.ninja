@@ -1,0 +1,33 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DRCLCPP_LIFECYCLE_BUILDING_DLL -DROSIDL_GENERATOR_C_BUILDING_DLL_lifecycle_msgs -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL -DRCL_BUILDING_DLL -DRMW_VERSION_MAJOR=2 -DRMW_VERSION_MINOR=0 -DRMW_VERSION_PATCH=0 -DROSIDL_GENERATOR_C_BUILDING_DLL_rcl_interfaces -DROSIDL_GENERATOR_C_BUILDING_DLL_type_description_interfaces -DROSIDL_GENERATOR_C_BUILDING_DLL_service_msgs -DROSIDL_GENERATOR_C_BUILDING_DLL_builtin_interfaces -DRCLCPP_BUILDING_LIBRARY -DLIBSTATISTICS_COLLECTOR_BUILDING_LIBRARY -DROSIDL_GENERATOR_C_BUILDING_DLL_statistics_msgs -DROSIDL_GENERATOR_C_BUILDING_DLL_rosgraph_msgs -DROSIDL_TYPESUPPORT_CPP_BUILDING_DLL -DROSIDL_TYPESUPPORT_INTROSPECTION_CPP_BUILDING_DLL -DTRACETOOLS_DISABLED -DTRACETOOLS_TRACEPOINTS_EXCLUDED -DRCL_LIFECYCLE_BUILDING_DLL
+include_dirs = -I../../src/ros2/rclcpp/rclcpp_lifecycle/include -I../../generated -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include -I../../src/ros2/rcl/rcl/include -I../../src/ros2/rmw/rmw/include -I../../src/ros2/rosidl_dynamic_typesupport/include -I../../src/ros2/rcl_logging/rcl_logging_interface/include -I../../src/ros2/rcl/rcl_yaml_param_parser/include -I../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/include -I../../src/ros2/rclcpp/rclcpp/include -I../../src/ros-tooling/libstatistics_collector/include -I../../src/ros2/rcpputils/include -I../../src/ros2/rosidl/rosidl_runtime_cpp/include -I../../src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/include -I../../src/ros2/rosidl_typesupport/rosidl_typesupport_c/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_cpp/include -I../../src/ros2/ros2_tracing/tracetools/include -I../../src/ros2/rcl/rcl_lifecycle/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC -std=c99 -std=c99 -std=c11 -std=c11
+cflags_cc = -std=c++17 -Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual -std=c++17 -Wno-psabi -std=c++17 -fPIC -std=c++17
+target_output_name = librclcpp_lifecycle
+
+build obj/src/ros2/rclcpp/rclcpp_lifecycle/rclcpp_lifecycle.inputdeps.stamp: stamp obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp obj/src/ros2/rcutils/logging_macros_gen.stamp
+build obj/src/ros2/rclcpp/rclcpp_lifecycle/src/librclcpp_lifecycle.lifecycle_node.o: cxx ../../src/ros2/rclcpp/rclcpp_lifecycle/src/lifecycle_node.cpp || obj/src/ros2/rclcpp/rclcpp_lifecycle/rclcpp_lifecycle.inputdeps.stamp
+  source_file_part = lifecycle_node.cpp
+  source_name_part = lifecycle_node
+build obj/src/ros2/rclcpp/rclcpp_lifecycle/src/librclcpp_lifecycle.lifecycle_node_interface_impl.o: cxx ../../src/ros2/rclcpp/rclcpp_lifecycle/src/lifecycle_node_interface_impl.cpp || obj/src/ros2/rclcpp/rclcpp_lifecycle/rclcpp_lifecycle.inputdeps.stamp
+  source_file_part = lifecycle_node_interface_impl.cpp
+  source_name_part = lifecycle_node_interface_impl
+build obj/src/ros2/rclcpp/rclcpp_lifecycle/src/librclcpp_lifecycle.managed_entity.o: cxx ../../src/ros2/rclcpp/rclcpp_lifecycle/src/managed_entity.cpp || obj/src/ros2/rclcpp/rclcpp_lifecycle/rclcpp_lifecycle.inputdeps.stamp
+  source_file_part = managed_entity.cpp
+  source_name_part = managed_entity
+build obj/src/ros2/rclcpp/rclcpp_lifecycle/src/node_interfaces/librclcpp_lifecycle.lifecycle_node_interface.o: cxx ../../src/ros2/rclcpp/rclcpp_lifecycle/src/node_interfaces/lifecycle_node_interface.cpp || obj/src/ros2/rclcpp/rclcpp_lifecycle/rclcpp_lifecycle.inputdeps.stamp
+  source_file_part = lifecycle_node_interface.cpp
+  source_name_part = lifecycle_node_interface
+build obj/src/ros2/rclcpp/rclcpp_lifecycle/src/librclcpp_lifecycle.state.o: cxx ../../src/ros2/rclcpp/rclcpp_lifecycle/src/state.cpp || obj/src/ros2/rclcpp/rclcpp_lifecycle/rclcpp_lifecycle.inputdeps.stamp
+  source_file_part = state.cpp
+  source_name_part = state
+build obj/src/ros2/rclcpp/rclcpp_lifecycle/src/librclcpp_lifecycle.transition.o: cxx ../../src/ros2/rclcpp/rclcpp_lifecycle/src/transition.cpp || obj/src/ros2/rclcpp/rclcpp_lifecycle/rclcpp_lifecycle.inputdeps.stamp
+  source_file_part = transition.cpp
+  source_name_part = transition
+
+build ./librclcpp_lifecycle.so: solink obj/src/ros2/rclcpp/rclcpp_lifecycle/src/librclcpp_lifecycle.lifecycle_node.o obj/src/ros2/rclcpp/rclcpp_lifecycle/src/librclcpp_lifecycle.lifecycle_node_interface_impl.o obj/src/ros2/rclcpp/rclcpp_lifecycle/src/librclcpp_lifecycle.managed_entity.o obj/src/ros2/rclcpp/rclcpp_lifecycle/src/node_interfaces/librclcpp_lifecycle.lifecycle_node_interface.o obj/src/ros2/rclcpp/rclcpp_lifecycle/src/librclcpp_lifecycle.state.o obj/src/ros2/rclcpp/rclcpp_lifecycle/src/librclcpp_lifecycle.transition.o ./liblifecycle_msgs.so ./librcl.so ./librclcpp.so ./librcl_interfaces.so ./librcl_lifecycle.so ./librcutils.so ./librosidl_typesupport_cpp.so ./librosidl_runtime_c.so ./librosidl_typesupport_introspection_c.so ./librmw.so ./librosidl_dynamic_typesupport.so ./librcl_logging_interface.so ./librcl_yaml_param_parser.so ./librmw_implementation.so ./librmw_cyclonedds_cpp.so ./libtype_description_interfaces.so ./libservice_msgs.so ./libbuiltin_interfaces.so ./libstatistics_collector.so ./librcpputils.so ./libstatistics_msgs.so ./librosgraph_msgs.so ./librosidl_typesupport_c.so ./librosidl_typesupport_introspection_cpp.so
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

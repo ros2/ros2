@@ -1,0 +1,26 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from type_description_interfaces/type_description_interfaces/msg/Field.msg
+// generated code does not contain a copyright notice
+
+#include "type_description_interfaces/msg/FieldType.idl"
+
+module type_description_interfaces {
+  module msg {
+    @verbatim (language="comment", text=
+      "Represents a single field in a type.")
+    struct Field {
+      @verbatim (language="comment", text=
+        "Name of the field.")
+      string name;
+
+      @verbatim (language="comment", text=
+        "Type of the field, including details about the type like length, nested name, etc.")
+      type_description_interfaces::msg::FieldType type;
+
+      @verbatim (language="comment", text=
+        "Literal default value of the field as a string, as it appeared in the original" "\n"
+        "message description file, whether that be .msg/.srv/.action or .idl.")
+      string default_value;
+    };
+  };
+};

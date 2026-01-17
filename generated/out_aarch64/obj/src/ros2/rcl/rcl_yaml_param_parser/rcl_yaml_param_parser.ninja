@@ -1,0 +1,32 @@
+defines = -DRCL_YAML_PARAM_PARSER_BUILDING_DLL -D__OHOS__ -D_GNU_SOURCE -DRCUTILS_BUILDING_DLL -DROSIDL_RUNTIME_C_BUILDING_DLL
+include_dirs = -I../../src/ros2/rcl/rcl_yaml_param_parser/src -I../../src/ros2/rcl/rcl_yaml_param_parser/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rmw/rmw/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl_dynamic_typesupport/include -I../../third_party/libyaml/libyaml-0.2.5/include
+cflags = -Wno-conversion -Wno-sign-conversion -Wall -Wextra -Wno-unused-parameter -fPIC -std=c11 -std=c99 -std=c99 -std=c99 -DYAML_DECLARE_EXPORT
+cflags_c = -std=c11
+target_output_name = librcl_yaml_param_parser
+
+build obj/src/ros2/rcl/rcl_yaml_param_parser/src/librcl_yaml_param_parser.add_to_arrays.o: cc ../../src/ros2/rcl/rcl_yaml_param_parser/src/add_to_arrays.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = add_to_arrays.c
+  source_name_part = add_to_arrays
+build obj/src/ros2/rcl/rcl_yaml_param_parser/src/librcl_yaml_param_parser.namespace.o: cc ../../src/ros2/rcl/rcl_yaml_param_parser/src/namespace.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = namespace.c
+  source_name_part = namespace
+build obj/src/ros2/rcl/rcl_yaml_param_parser/src/librcl_yaml_param_parser.node_params.o: cc ../../src/ros2/rcl/rcl_yaml_param_parser/src/node_params.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = node_params.c
+  source_name_part = node_params
+build obj/src/ros2/rcl/rcl_yaml_param_parser/src/librcl_yaml_param_parser.parse.o: cc ../../src/ros2/rcl/rcl_yaml_param_parser/src/parse.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = parse.c
+  source_name_part = parse
+build obj/src/ros2/rcl/rcl_yaml_param_parser/src/librcl_yaml_param_parser.parser.o: cc ../../src/ros2/rcl/rcl_yaml_param_parser/src/parser.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = parser.c
+  source_name_part = parser
+build obj/src/ros2/rcl/rcl_yaml_param_parser/src/librcl_yaml_param_parser.yaml_variant.o: cc ../../src/ros2/rcl/rcl_yaml_param_parser/src/yaml_variant.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = yaml_variant.c
+  source_name_part = yaml_variant
+
+build ./librcl_yaml_param_parser.so: solink obj/src/ros2/rcl/rcl_yaml_param_parser/src/librcl_yaml_param_parser.add_to_arrays.o obj/src/ros2/rcl/rcl_yaml_param_parser/src/librcl_yaml_param_parser.namespace.o obj/src/ros2/rcl/rcl_yaml_param_parser/src/librcl_yaml_param_parser.node_params.o obj/src/ros2/rcl/rcl_yaml_param_parser/src/librcl_yaml_param_parser.parse.o obj/src/ros2/rcl/rcl_yaml_param_parser/src/librcl_yaml_param_parser.parser.o obj/src/ros2/rcl/rcl_yaml_param_parser/src/librcl_yaml_param_parser.yaml_variant.o ./librcutils.so ./librmw.so ./libyaml.so ./librosidl_runtime_c.so ./librosidl_dynamic_typesupport.so
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

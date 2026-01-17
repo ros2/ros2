@@ -1,0 +1,79 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rcl - ROS Client Library
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory
+_rcl_src = "//ros2/src/ros2/rcl/rcl"
+
+# ============================================================================
+# rcl shared library
+# ============================================================================
+ros2_shared_library("rcl") {
+  sources = [
+    "${_rcl_src}/src/rcl/arguments.c",
+    "${_rcl_src}/src/rcl/client.c",
+    "${_rcl_src}/src/rcl/common.c",
+    "${_rcl_src}/src/rcl/context.c",
+    "${_rcl_src}/src/rcl/discovery_options.c",
+    "${_rcl_src}/src/rcl/domain_id.c",
+    "${_rcl_src}/src/rcl/dynamic_message_type_support.c",
+    "${_rcl_src}/src/rcl/event.c",
+    "${_rcl_src}/src/rcl/expand_topic_name.c",
+    "${_rcl_src}/src/rcl/graph.c",
+    "${_rcl_src}/src/rcl/guard_condition.c",
+    "${_rcl_src}/src/rcl/init.c",
+    "${_rcl_src}/src/rcl/init_options.c",
+    "${_rcl_src}/src/rcl/lexer.c",
+    "${_rcl_src}/src/rcl/lexer_lookahead.c",
+    "${_rcl_src}/src/rcl/localhost.c",
+    "${_rcl_src}/src/rcl/log_level.c",
+    "${_rcl_src}/src/rcl/logging.c",
+    "${_rcl_src}/src/rcl/logging_rosout.c",
+    "${_rcl_src}/src/rcl/network_flow_endpoints.c",
+    "${_rcl_src}/src/rcl/node.c",
+    "${_rcl_src}/src/rcl/node_options.c",
+    "${_rcl_src}/src/rcl/node_resolve_name.c",
+    "${_rcl_src}/src/rcl/node_type_cache.c",
+    "${_rcl_src}/src/rcl/publisher.c",
+    "${_rcl_src}/src/rcl/remap.c",
+    "${_rcl_src}/src/rcl/rmw_implementation_identifier_check.c",
+    "${_rcl_src}/src/rcl/security.c",
+    "${_rcl_src}/src/rcl/service.c",
+    "${_rcl_src}/src/rcl/service_event_publisher.c",
+    "${_rcl_src}/src/rcl/subscription.c",
+    "${_rcl_src}/src/rcl/time.c",
+    "${_rcl_src}/src/rcl/timer.c",
+    "${_rcl_src}/src/rcl/type_description_conversions.c",
+    "${_rcl_src}/src/rcl/type_hash.c",
+    "${_rcl_src}/src/rcl/validate_enclave_name.c",
+    "${_rcl_src}/src/rcl/validate_topic_name.c",
+    "${_rcl_src}/src/rcl/wait.c",
+  ]
+
+  include_dirs = [
+    "${_rcl_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rcl/rcl_yaml_param_parser:rcl_yaml_param_parser",
+    "//foundation/rmw:rmw",
+    "//foundation/rmw_implementation:rmw_implementation",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/tracing:tracetools",
+    "//interfaces/rcl_interfaces:rcl_interfaces",
+    "//interfaces/builtin_interfaces:builtin_interfaces",
+    "//interfaces/rosgraph_msgs:rosgraph_msgs",
+  ]
+
+  defines = [
+    "RCL_BUILDING_DLL",
+  ]
+
+  libs = [ "dl" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

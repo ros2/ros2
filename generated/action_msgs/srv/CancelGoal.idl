@@ -1,0 +1,50 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from action_msgs/action_msgs/srv/CancelGoal.srv
+// generated code does not contain a copyright notice
+
+#include "action_msgs/msg/GoalInfo.idl"
+
+module action_msgs {
+  module srv {
+    @verbatim (language="comment", text=
+      "Cancel one or more goals with the following policy:" "\n"
+      "" "\n"
+      "- If the goal ID is zero and timestamp is zero, cancel all goals." "\n"
+      "- If the goal ID is zero and timestamp is not zero, cancel all goals accepted" "\n"
+      "  at or before the timestamp." "\n"
+      "- If the goal ID is not zero and timestamp is zero, cancel the goal with the" "\n"
+      "  given ID regardless of the time it was accepted." "\n"
+      "- If the goal ID is not zero and timestamp is not zero, cancel the goal with" "\n"
+      "  the given ID and all goals accepted at or before the timestamp.")
+    struct CancelGoal_Request {
+      @verbatim (language="comment", text=
+        "Goal info describing the goals to cancel, see above.")
+      action_msgs::msg::GoalInfo goal_info;
+    };
+    module CancelGoal_Response_Constants {
+      @verbatim (language="comment", text=
+        "Indicates the request was accepted without any errors." "\n"        "" "\n"        "One or more goals have transitioned to the CANCELING state. The" "\n"        "goals_canceling list is not empty.")
+      const int8 ERROR_NONE = 0;
+      @verbatim (language="comment", text=
+        "Indicates the request was rejected." "\n"        "" "\n"        "No goals have transitioned to the CANCELING state. The goals_canceling list is" "\n"        "empty.")
+      const int8 ERROR_REJECTED = 1;
+      @verbatim (language="comment", text=
+        "Indicates the requested goal ID does not exist." "\n"        "" "\n"        "No goals have transitioned to the CANCELING state. The goals_canceling list is" "\n"        "empty.")
+      const int8 ERROR_UNKNOWN_GOAL_ID = 2;
+      @verbatim (language="comment", text=
+        "Indicates the goal is not cancelable because it is already in a terminal state." "\n"        "" "\n"        "No goals have transitioned to the CANCELING state. The goals_canceling list is" "\n"        "empty.")
+      const int8 ERROR_GOAL_TERMINATED = 3;
+    };
+    @verbatim (language="comment", text=
+      "Return codes.")
+    struct CancelGoal_Response {
+      @verbatim (language="comment", text=
+        "Return code, see above definitions.")
+      int8 return_code;
+
+      @verbatim (language="comment", text=
+        "Goals that accepted the cancel request.")
+      sequence<action_msgs::msg::GoalInfo> goals_canceling;
+    };
+  };
+};

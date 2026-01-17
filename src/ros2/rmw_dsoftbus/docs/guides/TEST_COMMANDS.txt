@@ -1,0 +1,73 @@
+========================================
+OpenSession Callback 手动测试命令
+========================================
+
+设备 ID:
+  Device 1 (Server): ec29004133314d38433031a5544f3c00
+  Device 2 (Client): ec29004133314d38433031a522413c00
+
+========================================
+步骤 1: 获取 Network ID
+========================================
+
+执行:
+hdc -t ec29004133314d38433031a522413c00 shell 'cd /data/test && LD_LIBRARY_PATH=. ./phase3b_session_test list'
+
+输出中复制其中一个 networkId (Device 1 的)
+
+========================================
+步骤 2: 终端 1 - 启动 Server
+========================================
+
+执行:
+hdc -t ec29004133314d38433031a5544f3c00 shell 'cd /data/test && LD_LIBRARY_PATH=. ./phase3b_session_test server'
+
+等待看到:
+  [Test] CreateSessionServer returned: 0
+  [SERVER] Waiting for incoming connections...
+
+⏰ 从这时起 30 秒倒计时开始
+
+========================================
+步骤 3: 终端 2 - 运行 Client (30秒内!)
+========================================
+
+执行 (替换 <NETWORK_ID>):
+hdc -t ec29004133314d38433031a522413c00 shell 'cd /data/test && LD_LIBRARY_PATH=. ./phase3b_session_test client <NETWORK_ID>'
+
+示例 (使用实际ID):
+hdc -t ec29004133314d38433031a522413c00 shell 'cd /data/test && LD_LIBRARY_PATH=. ./phase3b_session_test client 6ea1cecbc95eb2d290af12d0d447e8689339ad105e1d736aa4a6cfd3f6aa3ee3'
+
+========================================
+步骤 4: 观察结果
+========================================
+
+Client 终端看:
+  [Callback] OnSessionOpened: sessionId=1, result=?
+
+成功: result=0
+失败: result=-426115004
+
+Server 终端看:
+  [Callback] OnSessionOpened: sessionId=X, result=?
+  [Callback] OnBytesReceived: data=Test message #1
+
+========================================
+故障排查
+========================================
+
+如果失败 (-426115004):
+
+1. 检查 Server 是否运行:
+   hdc -t ec29004133314d38433031a5544f3c00 shell 'ps | grep phase3b'
+
+2. 检查 Network ID 是否正确:
+   重新从步骤 1 获取
+
+3. 检查时序:
+   Server 启动后 < 30 秒内运行 Client
+
+4. 查看 hilog:
+   hdc -t ec29004133314d38433031a5544f3c00 shell 'hilog -x | grep -E "Session|Trans|426115004" | tail -50'
+
+========================================

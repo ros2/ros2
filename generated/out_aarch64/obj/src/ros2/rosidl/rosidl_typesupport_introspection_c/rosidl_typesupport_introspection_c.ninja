@@ -1,0 +1,17 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DRCUTILS_BUILDING_DLL -DROSIDL_RUNTIME_C_BUILDING_DLL
+include_dirs = -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -std=c11 -std=c11 -fPIC
+target_output_name = librosidl_typesupport_introspection_c
+
+build obj/src/ros2/rosidl/rosidl_typesupport_introspection_c/src/librosidl_typesupport_introspection_c.identifier.o: cc ../../src/ros2/rosidl/rosidl_typesupport_introspection_c/src/identifier.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = identifier.c
+  source_name_part = identifier
+
+build ./librosidl_typesupport_introspection_c.so: solink obj/src/ros2/rosidl/rosidl_typesupport_introspection_c/src/librosidl_typesupport_introspection_c.identifier.o ./librcutils.so ./librosidl_runtime_c.so || obj/src/ros2/rosidl/rosidl_typesupport_interface/rosidl_typesupport_interface.stamp
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

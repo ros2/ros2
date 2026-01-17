@@ -1,0 +1,38 @@
+defines = -DHAVE_CONFIG_H -D__OHOS__ -D_GNU_SOURCE
+include_dirs = -I../../third_party/libyaml/libyaml-0.2.5/src -I../../third_party/libyaml/libyaml-0.2.5 -I../../third_party/libyaml/libyaml-0.2.5/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC -Wno-unused-parameter -Wno-sign-compare -std=c99 -DYAML_DECLARE_EXPORT
+cflags_c = -std=c11
+target_output_name = libyaml
+
+build obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.api.o: cc ../../third_party/libyaml/libyaml-0.2.5/src/api.c
+  source_file_part = api.c
+  source_name_part = api
+build obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.dumper.o: cc ../../third_party/libyaml/libyaml-0.2.5/src/dumper.c
+  source_file_part = dumper.c
+  source_name_part = dumper
+build obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.emitter.o: cc ../../third_party/libyaml/libyaml-0.2.5/src/emitter.c
+  source_file_part = emitter.c
+  source_name_part = emitter
+build obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.loader.o: cc ../../third_party/libyaml/libyaml-0.2.5/src/loader.c
+  source_file_part = loader.c
+  source_name_part = loader
+build obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.parser.o: cc ../../third_party/libyaml/libyaml-0.2.5/src/parser.c
+  source_file_part = parser.c
+  source_name_part = parser
+build obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.reader.o: cc ../../third_party/libyaml/libyaml-0.2.5/src/reader.c
+  source_file_part = reader.c
+  source_name_part = reader
+build obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.scanner.o: cc ../../third_party/libyaml/libyaml-0.2.5/src/scanner.c
+  source_file_part = scanner.c
+  source_name_part = scanner
+build obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.writer.o: cc ../../third_party/libyaml/libyaml-0.2.5/src/writer.c
+  source_file_part = writer.c
+  source_name_part = writer
+
+build ./libyaml.so: solink obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.api.o obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.dumper.o obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.emitter.o obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.loader.o obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.parser.o obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.reader.o obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.scanner.o obj/third_party/libyaml/libyaml-0.2.5/src/libyaml.writer.o
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

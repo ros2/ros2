@@ -1,0 +1,57 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from rcl_interfaces/rcl_interfaces/msg/ParameterDescriptor.msg
+// generated code does not contain a copyright notice
+
+#include "rcl_interfaces/msg/FloatingPointRange.idl"
+#include "rcl_interfaces/msg/IntegerRange.idl"
+
+module rcl_interfaces {
+  module msg {
+    @verbatim (language="comment", text=
+      "This is the message to communicate a parameter's descriptor.")
+    struct ParameterDescriptor {
+      @verbatim (language="comment", text=
+        "The name of the parameter.")
+      string name;
+
+      @verbatim (language="comment", text=
+        "Enum values are defined in the `ParameterType.msg` message.")
+      uint8 type;
+
+      @verbatim (language="comment", text=
+        "Description of the parameter, visible from introspection tools.")
+      string description;
+
+      @verbatim (language="comment", text=
+        "Parameter constraints" "\n"
+        "Plain English description of additional constraints which cannot be expressed" "\n"
+        "with the available constraints, e.g. \"only prime numbers\"." "\n"
+        "" "\n"
+        "By convention, this should only be used to clarify constraints which cannot" "\n"
+        "be completely expressed with the parameter constraints below.")
+      string additional_constraints;
+
+      @verbatim (language="comment", text=
+        "If 'true' then the value cannot change after it has been initialized.")
+      @default (value=FALSE)
+      boolean read_only;
+
+      @verbatim (language="comment", text=
+        "If true, the parameter is allowed to change type.")
+      @default (value=FALSE)
+      boolean dynamic_typing;
+
+      @verbatim (language="comment", text=
+        "If any of the following sequences are not empty, then the constraint inside of" "\n"
+        "them apply to this parameter." "\n"
+        "" "\n"
+        "FloatingPointRange and IntegerRange are mutually exclusive." "\n"
+        "FloatingPointRange consists of a from_value, a to_value, and a step.")
+      sequence<rcl_interfaces::msg::FloatingPointRange, 1> floating_point_range;
+
+      @verbatim (language="comment", text=
+        "IntegerRange consists of a from_value, a to_value, and a step.")
+      sequence<rcl_interfaces::msg::IntegerRange, 1> integer_range;
+    };
+  };
+};

@@ -1,0 +1,71 @@
+{
+  "name": "@ohos/rmw_dsoftbus",
+  "version": "1.0.0",
+  "description": "ROS2 RMW implementation based on OpenHarmony DSoftBus",
+  "publishAs": "code-segment",
+  "segment": {
+    "destPath": "foundation/communication/rmw_dsoftbus"
+  },
+  "dirs": {},
+  "scripts": {},
+  "author": {},
+  "homePage": "https://gitee.com/openharmony",
+  "repository": "https://gitee.com/openharmony/ros2_rmw_dsoftbus",
+  "supplier": "Organization: OpenHarmony",
+  "license": "Apache License 2.0",
+  "component": {
+    "name": "rmw_dsoftbus",
+    "subsystem": "communication",
+    "adapted_system_type": [
+      "standard"
+    ],
+    "syscap": [
+      "SystemCapability.Communication.RMW.DSoftBus"
+    ],
+    "features": [
+      "rmw_dsoftbus_feature_session_mode",
+      "rmw_dsoftbus_feature_graph_discovery"
+    ],
+    "rom": "512KB",
+    "ram": "20MB",
+    "deps": {
+      "components": [
+        "access_token",
+        "c_utils",
+        "dsoftbus",
+        "hilog",
+        "ipc",
+        "samgr",
+        "init"
+      ],
+      "third_party": []
+    },
+    "build": {
+      "group_type": {
+        "base_group": [],
+        "fwk_group": [
+          "//foundation/communication/rmw_dsoftbus:rmw_dsoftbus"
+        ],
+        "service_group": [
+          "//foundation/communication/rmw_dsoftbus:rmw_discovery_daemon",
+          "//foundation/communication/rmw_dsoftbus:rmw_daemon_init",
+          "//foundation/communication/rmw_dsoftbus:softbus_permission_json"
+        ]
+      },
+      "inner_kits": [
+        {
+          "name": "//foundation/communication/rmw_dsoftbus:rmw_dsoftbus",
+          "header": {
+            "header_files": [
+              "rmw_dsoftbus/session_manager.h",
+              "rmw_dsoftbus/types.h",
+              "rmw_dsoftbus/rmw_dsoftbus.h"
+            ],
+            "header_base": "//foundation/communication/rmw_dsoftbus/include"
+          }
+        }
+      ],
+      "test": []
+    }
+  }
+}

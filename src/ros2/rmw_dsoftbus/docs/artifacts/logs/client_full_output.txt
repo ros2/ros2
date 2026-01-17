@@ -1,0 +1,56 @@
+
+==============================================================
+  Phase 3B Session API Test                                   
+  Based on OpenHarmony dsoftbus auth_session_test.c           
+==============================================================
+
+[Token] === Injecting Access Token ===
+[Token] OK GetAccessTokenId returned: 0x2805b74b
+[Token] OK SetSelfTokenID succeeded
+[DSoftBus] === Loading libsoftbus_client.z.so ===
+[DSoftBus] OK Loaded from: /system/lib64/platformsdk/libsoftbus_client.z.so
+[DSoftBus] OK CreateSessionServer: 0x7fb3f80168
+[DSoftBus] OK OpenSession: 0x7fb3f80704
+[DSoftBus] OK SendBytes: 0x7fb3f7f80c
+[DSoftBus] OK GetLocalNodeDeviceInfo: 0x7fb3f53d18
+[DSoftBus] OK GetAllNodeDeviceInfo: 0x7fb3f53bcc
+[DSoftBus] INFO GetPeerDeviceId: 0x7fb3f8223c
+[DSoftBus] INFO GetPeerSessionName: 0x7fb3f821b4
+[DSoftBus] INFO GetSessionSide: 0x7fb3f822c4
+[Test] === Creating Session Server ===
+[Test] pkgName: com.huawei.ros2_rmw_dsoftbus
+[Test] sessionName: com.huawei.ros2_rmw_dsoftbus.test
+[Test] CreateSessionServer returned: 0
+[Test] OK Session server created
+
+[Test] === CLIENT MODE ===
+[Test] === Listing Online Devices ===
+[Test] Found 2 online device(s):
+  [0] networkId: 6ea1cecbc95eb2d290af12d0d447e8689339ad105e1d736aa4a6cfd3f6aa3ee3
+      deviceName: KaihongBoard-3588S
+  [1] networkId: e05acef96ee6b1b68025cac8b3de7ee95ab6b8bb457051176eafea89cc0d1212
+      deviceName: KaihongBoard-3588S
+[Test] === Opening Session to Peer ===
+[Test] peerNetworkId: 6ea1cecbc95eb2d290af12d0d447e8689339ad105e1d736aa4a6cfd3f6aa3ee3
+[Test] SessionAttribute configuration:
+  - dataType: 2 (TYPE_BYTES=2)
+  - linkTypeNum: 0 (auto-select)
+  - encryptType: 0 (no encryption)
+  - fastTransData: 0
+  - fastTransDataSize: 0
+[Test] Calling OpenSession with:
+  - mySessionName: com.huawei.ros2_rmw_dsoftbus.test
+  - peerSessionName: com.huawei.ros2_rmw_dsoftbus.test
+  - peerNetworkId: 6ea1cecbc95eb2d290af12d0d447e8689339ad105e1d736aa4a6cfd3f6aa3ee3
+  - groupId: (empty)
+[Test] OpenSession returned: 1
+[Test] OK Session opened (ID=1), waiting for callback...
+[Test] Waiting for session to connect (timeout=10 sec)...
+[Callback] OnSessionOpened: sessionId=1, result=-426115004
+[Callback] Session 1 failed to open: -426115004
+..........
+[Test] TIMEOUT waiting for session
+[FAIL] Session did not connect in time
+[Test] === Cleanup ===
+[Test] Closing outbound session 1
+[Test] Removing session server

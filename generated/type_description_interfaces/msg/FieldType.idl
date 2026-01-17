@@ -1,0 +1,159 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from type_description_interfaces/type_description_interfaces/msg/FieldType.msg
+// generated code does not contain a copyright notice
+
+
+module type_description_interfaces {
+  module msg {
+    module FieldType_Constants {
+      @verbatim (language="comment", text=
+        "A constant for each type supported according to:" "\n"        "  http://design.ros2.org/articles/legacy_interface_definition.html" "\n"        "and:" "\n"        "  http://design.ros2.org/articles/idl_interface_definition.html" "\n"        "Order is loosely coupled to the order of appearance in the IDL 4.2 spec:" "\n"        " https://www.omg.org/spec/IDL/4.2" "\n"        "Layout of constants across the 0-255 decimal values in the uint8:" "\n"        "" "\n"        "- 000    : Reserved for \"not set\"" "\n"        "- 001-048: Primitive types, strings, and reserved space for future primitive types" "\n"        "- 049-096: Fixed sized array of primitive and string types" "\n"        "- 097-144: Bounded Sequences of primitive and string types" "\n"        "- 145-192: Unbounded Sequences of primitive and string types" "\n"        "- 193-255: Reserved space for future array/sequence-like types")
+      const uint8 FIELD_TYPE_NOT_SET = 0;
+      @verbatim (language="comment", text=
+        "Nested type defined in other .msg/.idl files.")
+      const uint8 FIELD_TYPE_NESTED_TYPE = 1;
+      @verbatim (language="comment", text=
+        "Integer Types")
+      const uint8 FIELD_TYPE_INT8 = 2;
+      const uint8 FIELD_TYPE_UINT8 = 3;
+      const uint8 FIELD_TYPE_INT16 = 4;
+      const uint8 FIELD_TYPE_UINT16 = 5;
+      const uint8 FIELD_TYPE_INT32 = 6;
+      const uint8 FIELD_TYPE_UINT32 = 7;
+      const uint8 FIELD_TYPE_INT64 = 8;
+      const uint8 FIELD_TYPE_UINT64 = 9;
+      @verbatim (language="comment", text=
+        "Floating-Point Types")
+      const uint8 FIELD_TYPE_FLOAT = 10;
+      const uint8 FIELD_TYPE_DOUBLE = 11;
+      const uint8 FIELD_TYPE_LONG_DOUBLE = 12;
+      @verbatim (language="comment", text=
+        "Char and WChar Types")
+      const uint8 FIELD_TYPE_CHAR = 13;
+      const uint8 FIELD_TYPE_WCHAR = 14;
+      @verbatim (language="comment", text=
+        "Boolean Type")
+      const uint8 FIELD_TYPE_BOOLEAN = 15;
+      @verbatim (language="comment", text=
+        "Byte/Octet Type")
+      const uint8 FIELD_TYPE_BYTE = 16;
+      @verbatim (language="comment", text=
+        "String Types")
+      const uint8 FIELD_TYPE_STRING = 17;
+      const uint8 FIELD_TYPE_WSTRING = 18;
+      @verbatim (language="comment", text=
+        "Fixed String Types")
+      const uint8 FIELD_TYPE_FIXED_STRING = 19;
+      const uint8 FIELD_TYPE_FIXED_WSTRING = 20;
+      @verbatim (language="comment", text=
+        "Bounded String Types")
+      const uint8 FIELD_TYPE_BOUNDED_STRING = 21;
+      const uint8 FIELD_TYPE_BOUNDED_WSTRING = 22;
+      @verbatim (language="comment", text=
+        "Fixed Sized Array Types")
+      const uint8 FIELD_TYPE_NESTED_TYPE_ARRAY = 49;
+      const uint8 FIELD_TYPE_INT8_ARRAY = 50;
+      const uint8 FIELD_TYPE_UINT8_ARRAY = 51;
+      const uint8 FIELD_TYPE_INT16_ARRAY = 52;
+      const uint8 FIELD_TYPE_UINT16_ARRAY = 53;
+      const uint8 FIELD_TYPE_INT32_ARRAY = 54;
+      const uint8 FIELD_TYPE_UINT32_ARRAY = 55;
+      const uint8 FIELD_TYPE_INT64_ARRAY = 56;
+      const uint8 FIELD_TYPE_UINT64_ARRAY = 57;
+      const uint8 FIELD_TYPE_FLOAT_ARRAY = 58;
+      const uint8 FIELD_TYPE_DOUBLE_ARRAY = 59;
+      const uint8 FIELD_TYPE_LONG_DOUBLE_ARRAY = 60;
+      const uint8 FIELD_TYPE_CHAR_ARRAY = 61;
+      const uint8 FIELD_TYPE_WCHAR_ARRAY = 62;
+      const uint8 FIELD_TYPE_BOOLEAN_ARRAY = 63;
+      const uint8 FIELD_TYPE_BYTE_ARRAY = 64;
+      const uint8 FIELD_TYPE_STRING_ARRAY = 65;
+      const uint8 FIELD_TYPE_WSTRING_ARRAY = 66;
+      const uint8 FIELD_TYPE_FIXED_STRING_ARRAY = 67;
+      const uint8 FIELD_TYPE_FIXED_WSTRING_ARRAY = 68;
+      const uint8 FIELD_TYPE_BOUNDED_STRING_ARRAY = 69;
+      const uint8 FIELD_TYPE_BOUNDED_WSTRING_ARRAY = 70;
+      @verbatim (language="comment", text=
+        "Bounded Sequence Types")
+      const uint8 FIELD_TYPE_NESTED_TYPE_BOUNDED_SEQUENCE = 97;
+      const uint8 FIELD_TYPE_INT8_BOUNDED_SEQUENCE = 98;
+      const uint8 FIELD_TYPE_UINT8_BOUNDED_SEQUENCE = 99;
+      const uint8 FIELD_TYPE_INT16_BOUNDED_SEQUENCE = 100;
+      const uint8 FIELD_TYPE_UINT16_BOUNDED_SEQUENCE = 101;
+      const uint8 FIELD_TYPE_INT32_BOUNDED_SEQUENCE = 102;
+      const uint8 FIELD_TYPE_UINT32_BOUNDED_SEQUENCE = 103;
+      const uint8 FIELD_TYPE_INT64_BOUNDED_SEQUENCE = 104;
+      const uint8 FIELD_TYPE_UINT64_BOUNDED_SEQUENCE = 105;
+      const uint8 FIELD_TYPE_FLOAT_BOUNDED_SEQUENCE = 106;
+      const uint8 FIELD_TYPE_DOUBLE_BOUNDED_SEQUENCE = 107;
+      const uint8 FIELD_TYPE_LONG_DOUBLE_BOUNDED_SEQUENCE = 108;
+      const uint8 FIELD_TYPE_CHAR_BOUNDED_SEQUENCE = 109;
+      const uint8 FIELD_TYPE_WCHAR_BOUNDED_SEQUENCE = 110;
+      const uint8 FIELD_TYPE_BOOLEAN_BOUNDED_SEQUENCE = 111;
+      const uint8 FIELD_TYPE_BYTE_BOUNDED_SEQUENCE = 112;
+      const uint8 FIELD_TYPE_STRING_BOUNDED_SEQUENCE = 113;
+      const uint8 FIELD_TYPE_WSTRING_BOUNDED_SEQUENCE = 114;
+      const uint8 FIELD_TYPE_FIXED_STRING_BOUNDED_SEQUENCE = 115;
+      const uint8 FIELD_TYPE_FIXED_WSTRING_BOUNDED_SEQUENCE = 116;
+      const uint8 FIELD_TYPE_BOUNDED_STRING_BOUNDED_SEQUENCE = 117;
+      const uint8 FIELD_TYPE_BOUNDED_WSTRING_BOUNDED_SEQUENCE = 118;
+      @verbatim (language="comment", text=
+        "Unbounded Sequence Types")
+      const uint8 FIELD_TYPE_NESTED_TYPE_UNBOUNDED_SEQUENCE = 145;
+      const uint8 FIELD_TYPE_INT8_UNBOUNDED_SEQUENCE = 146;
+      const uint8 FIELD_TYPE_UINT8_UNBOUNDED_SEQUENCE = 147;
+      const uint8 FIELD_TYPE_INT16_UNBOUNDED_SEQUENCE = 148;
+      const uint8 FIELD_TYPE_UINT16_UNBOUNDED_SEQUENCE = 149;
+      const uint8 FIELD_TYPE_INT32_UNBOUNDED_SEQUENCE = 150;
+      const uint8 FIELD_TYPE_UINT32_UNBOUNDED_SEQUENCE = 151;
+      const uint8 FIELD_TYPE_INT64_UNBOUNDED_SEQUENCE = 152;
+      const uint8 FIELD_TYPE_UINT64_UNBOUNDED_SEQUENCE = 153;
+      const uint8 FIELD_TYPE_FLOAT_UNBOUNDED_SEQUENCE = 154;
+      const uint8 FIELD_TYPE_DOUBLE_UNBOUNDED_SEQUENCE = 155;
+      const uint8 FIELD_TYPE_LONG_DOUBLE_UNBOUNDED_SEQUENCE = 156;
+      const uint8 FIELD_TYPE_CHAR_UNBOUNDED_SEQUENCE = 157;
+      const uint8 FIELD_TYPE_WCHAR_UNBOUNDED_SEQUENCE = 158;
+      const uint8 FIELD_TYPE_BOOLEAN_UNBOUNDED_SEQUENCE = 159;
+      const uint8 FIELD_TYPE_BYTE_UNBOUNDED_SEQUENCE = 160;
+      const uint8 FIELD_TYPE_STRING_UNBOUNDED_SEQUENCE = 161;
+      const uint8 FIELD_TYPE_WSTRING_UNBOUNDED_SEQUENCE = 162;
+      const uint8 FIELD_TYPE_FIXED_STRING_UNBOUNDED_SEQUENCE = 163;
+      const uint8 FIELD_TYPE_FIXED_WSTRING_UNBOUNDED_SEQUENCE = 164;
+      const uint8 FIELD_TYPE_BOUNDED_STRING_UNBOUNDED_SEQUENCE = 165;
+      const uint8 FIELD_TYPE_BOUNDED_WSTRING_UNBOUNDED_SEQUENCE = 166;
+    };
+    @verbatim (language="comment", text=
+      "Represents the type of a field and related meta-data.")
+    struct FieldType {
+      @verbatim (language="comment", text=
+        "Identifying number for the type of the field, using one of the above constants.")
+      @default (value=0)
+      uint8 type_id;
+
+      @verbatim (language="comment", text=
+        "Only used when the type is an array or a bounded sequence." "\n"
+        "In the case of an array, this is the fixed capacity of the array." "\n"
+        "In the case of a bounded sequence, this is the maximum capacity of the sequence." "\n"
+        "In all other cases this field is unused.")
+      uint64 capacity;
+
+      @verbatim (language="comment", text=
+        "Only used when the type is a fixed or bounded string/wstring, or a array/sequence of those." "\n"
+        "In the case of a fixed string/wstring, it is the fixed length of the string." "\n"
+        "In the case of a bounded string/wstring, it is the maximum capacity of the string." "\n"
+        "In the case of an array/sequence of fixed string/wstring, it is the fixed length of the strings." "\n"
+        "In the case of an array/sequence of bounded string/wstring, it is the maximum capacity of the strings." "\n"
+        "It is not currently possible to have different string capacities per element in the array/sequence.")
+      uint64 string_capacity;
+
+      @verbatim (language="comment", text=
+        "Only used when the type is a nested type or array/sequence of nested types." "\n"
+        "This is limited to 255 characters." "\n"
+        "TODO(wjwwood): this 255 character limit was chosen due to this being the limit" "\n"
+        "  for DDSI-RTPS based middlewares, which is the most commonly used right now." "\n"
+        "  We lack a ROS 2 specific limit in our design documents, but we should update" "\n"
+        "  this and/or link to the design doc when that is available.")
+      string<255> nested_type_name;
+    };
+  };
+};

@@ -1,0 +1,13 @@
+{
+  "SESSION_NAME": "com.huawei.dmsdp.ros2_disc_20881",
+  "REGEXP": "false",
+  "DEVID": "NETWORKID",
+  "SEC_LEVEL": "public",
+  "APP_INFO": [
+    {
+      "TYPE": "normal_app",
+      "PKG_NAME": "",
+      "ACTIONS": "create,open"
+    }
+  ]
+}

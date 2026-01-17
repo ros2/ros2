@@ -1,0 +1,208 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# nav_msgs - ROS2 navigation message types
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+_package_name = "nav_msgs"
+
+# ============================================================================
+# nav_msgs message types:
+#
+# Odometry:
+#   Odometry - Robot odometry (pose + twist with covariances)
+#
+# Path/Planning:
+#   Path - Sequence of poses representing a navigation path
+#   GridCells - Collection of cells in a grid
+#
+# Map:
+#   OccupancyGrid - 2D occupancy grid map
+#   MapMetaData - Metadata for occupancy grid (resolution, width, height, origin)
+#
+# Services:
+#   GetMap - Request current map
+#   GetPlan - Request path plan from start to goal
+#   SetMap - Set a new map
+#   LoadMap - Load map from file
+# ============================================================================
+
+# ============================================================================
+# nav_msgs C generator library
+# ============================================================================
+ros2_shared_library("nav_msgs__rosidl_generator_c") {
+  sources = [
+    # Map types
+    "src/msg/map_meta_data__functions.c",
+    "src/msg/occupancy_grid__functions.c",
+    "src/msg/grid_cells__functions.c",
+
+    # Odometry types
+    "src/msg/odometry__functions.c",
+
+    # Path types
+    "src/msg/path__functions.c",
+
+    # Service types - Request/Response
+    "src/srv/get_map__request__functions.c",
+    "src/srv/get_map__response__functions.c",
+    "src/srv/get_plan__request__functions.c",
+    "src/srv/get_plan__response__functions.c",
+    "src/srv/set_map__request__functions.c",
+    "src/srv/set_map__response__functions.c",
+    "src/srv/load_map__request__functions.c",
+    "src/srv/load_map__response__functions.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_generator_c",
+    "//interfaces/std_msgs:std_msgs__rosidl_generator_c",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_generator_c",
+  ]
+
+  defines = [ "ROSIDL_GENERATOR_C_BUILDING_DLL_${_package_name}" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# nav_msgs type support C library
+# ============================================================================
+ros2_shared_library("nav_msgs__rosidl_typesupport_c") {
+  sources = [
+    # Map types
+    "src/msg/map_meta_data__type_support.c",
+    "src/msg/occupancy_grid__type_support.c",
+    "src/msg/grid_cells__type_support.c",
+
+    # Odometry types
+    "src/msg/odometry__type_support.c",
+
+    # Path types
+    "src/msg/path__type_support.c",
+
+    # Service types - Request/Response
+    "src/srv/get_map__request__type_support.c",
+    "src/srv/get_map__response__type_support.c",
+    "src/srv/get_plan__request__type_support.c",
+    "src/srv/get_plan__response__type_support.c",
+    "src/srv/set_map__request__type_support.c",
+    "src/srv/set_map__response__type_support.c",
+    "src/srv/load_map__request__type_support.c",
+    "src/srv/load_map__response__type_support.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":nav_msgs__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//foundation/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_c",
+    "//interfaces/std_msgs:std_msgs__rosidl_typesupport_c",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_typesupport_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_C_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# nav_msgs FastRTPS type support
+# ============================================================================
+ros2_shared_library("nav_msgs__rosidl_typesupport_fastrtps_c") {
+  sources = [
+    "src/msg/odometry__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/path__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/occupancy_grid__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/get_map__request__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/get_map__response__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/get_plan__request__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/get_plan__response__rosidl_typesupport_fastrtps_c.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":nav_msgs__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_fastrtps_c:rosidl_typesupport_fastrtps_c",
+    "//vendor/fastdds/fastcdr:fastcdr",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_fastrtps_c",
+    "//interfaces/std_msgs:std_msgs__rosidl_typesupport_fastrtps_c",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_typesupport_fastrtps_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_FASTRTPS_C_BUILDING_DLL_${_package_name}" ]
+
+  cflags_cc = [ "-Wno-unused-parameter" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# nav_msgs C++ type support
+# ============================================================================
+config("nav_msgs_cpp_config") {
+  include_dirs = [ "include" ]
+}
+
+ros2_shared_library("nav_msgs__rosidl_typesupport_cpp") {
+  sources = [
+    "src/msg/odometry__type_support.cpp",
+    "src/msg/path__type_support.cpp",
+    "src/msg/occupancy_grid__type_support.cpp",
+    "src/msg/map_meta_data__type_support.cpp",
+    "src/msg/grid_cells__type_support.cpp",
+    "src/srv/get_map__request__type_support.cpp",
+    "src/srv/get_map__response__type_support.cpp",
+    "src/srv/get_plan__request__type_support.cpp",
+    "src/srv/get_plan__response__type_support.cpp",
+    "src/srv/set_map__request__type_support.cpp",
+    "src/srv/set_map__response__type_support.cpp",
+    "src/srv/load_map__request__type_support.cpp",
+    "src/srv/load_map__response__type_support.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":nav_msgs__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//foundation/rosidl/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//foundation/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_cpp",
+    "//interfaces/std_msgs:std_msgs__rosidl_typesupport_cpp",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_typesupport_cpp",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_CPP_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# Package group target
+# ============================================================================
+group("nav_msgs") {
+  public_deps = [
+    ":nav_msgs__rosidl_generator_c",
+    ":nav_msgs__rosidl_typesupport_c",
+    ":nav_msgs__rosidl_typesupport_cpp",
+    ":nav_msgs__rosidl_typesupport_fastrtps_c",
+  ]
+
+  public_configs = [ ":nav_msgs_cpp_config" ]
+}

@@ -1,0 +1,125 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# unique_identifier_msgs - ROS2 unique identifier message types
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+_package_name = "unique_identifier_msgs"
+
+# ============================================================================
+# unique_identifier_msgs message types:
+#
+#   UUID - 128-bit universally unique identifier (16 bytes)
+# ============================================================================
+
+# ============================================================================
+# unique_identifier_msgs C generator library
+# ============================================================================
+ros2_shared_library("unique_identifier_msgs__rosidl_generator_c") {
+  sources = [
+    "src/msg/uuid__functions.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+  ]
+
+  defines = [ "ROSIDL_GENERATOR_C_BUILDING_DLL_${_package_name}" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# unique_identifier_msgs type support C library
+# ============================================================================
+ros2_shared_library("unique_identifier_msgs__rosidl_typesupport_c") {
+  sources = [
+    "src/msg/uuid__type_support.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":unique_identifier_msgs__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//foundation/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_C_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# unique_identifier_msgs FastRTPS type support
+# ============================================================================
+ros2_shared_library("unique_identifier_msgs__rosidl_typesupport_fastrtps_c") {
+  sources = [
+    "src/msg/uuid__rosidl_typesupport_fastrtps_c.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":unique_identifier_msgs__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_fastrtps_c:rosidl_typesupport_fastrtps_c",
+    "//vendor/fastdds/fastcdr:fastcdr",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_FASTRTPS_C_BUILDING_DLL_${_package_name}" ]
+
+  cflags_cc = [ "-Wno-unused-parameter" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# unique_identifier_msgs C++ type support
+# ============================================================================
+config("unique_identifier_msgs_cpp_config") {
+  include_dirs = [ "include" ]
+}
+
+ros2_shared_library("unique_identifier_msgs__rosidl_typesupport_cpp") {
+  sources = [
+    "src/msg/uuid__type_support.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":unique_identifier_msgs__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//foundation/rosidl/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//foundation/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_CPP_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# Package group target
+# ============================================================================
+group("unique_identifier_msgs") {
+  public_deps = [
+    ":unique_identifier_msgs__rosidl_generator_c",
+    ":unique_identifier_msgs__rosidl_typesupport_c",
+    ":unique_identifier_msgs__rosidl_typesupport_cpp",
+    ":unique_identifier_msgs__rosidl_typesupport_fastrtps_c",
+  ]
+
+  public_configs = [ ":unique_identifier_msgs_cpp_config" ]
+}

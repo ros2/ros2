@@ -1,0 +1,17 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DRCUTILS_BUILDING_DLL -DROSIDL_RUNTIME_C_BUILDING_DLL -DRMW_VERSION_MAJOR=2 -DRMW_VERSION_MINOR=0 -DRMW_VERSION_PATCH=0
+include_dirs = -I../../src/ros2/rmw/rmw/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl_dynamic_typesupport/include -I../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC -std=c99 -std=c99
+cflags_c = -std=c11
+target_output_name = librmw_implementation
+
+build obj/src/ros2/rmw_implementation/rmw_implementation/src/librmw_implementation.rmw_shim.o: cc ../../src/ros2/rmw_implementation/rmw_implementation/src/rmw_shim.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = rmw_shim.c
+  source_name_part = rmw_shim
+
+build ./librmw_implementation.so: solink obj/src/ros2/rmw_implementation/rmw_implementation/src/librmw_implementation.rmw_shim.o ./librmw.so ./librmw_cyclonedds_cpp.so ./librcutils.so ./librosidl_runtime_c.so ./librosidl_dynamic_typesupport.so
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

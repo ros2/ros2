@@ -1,0 +1,202 @@
+# ============================================================================
+# Makefile for rmw_dsoftbus - GCC Linaro Cross-Compilation (VERIFIED)
+# ============================================================================
+# Target: aarch64-linux-gnu (KaihongOS rk3588s with musl libc)
+# Host: x86-64 (WSL Ubuntu 20.04)
+# Compiler: gcc-linaro-7.5.0 (verified working with static libstdc++)
+# ============================================================================
+
+# Toolchain paths
+TOOLCHAIN_ROOT := /home/jiusi/M-DDS/openharmony_prebuilts/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu
+SYSROOT        := $(TOOLCHAIN_ROOT)/aarch64-linux-gnu/libc
+CC             := $(TOOLCHAIN_ROOT)/bin/aarch64-linux-gnu-gcc
+CXX            := $(TOOLCHAIN_ROOT)/bin/aarch64-linux-gnu-g++
+AR             := $(TOOLCHAIN_ROOT)/bin/aarch64-linux-gnu-ar
+STRIP          := $(TOOLCHAIN_ROOT)/bin/aarch64-linux-gnu-strip
+
+# Build directories
+BUILD_DIR      = build-aarch64
+OUT_DIR        = $(BUILD_DIR)/lib
+BIN_DIR        = $(BUILD_DIR)/bin
+
+# Installation targets
+INSTALL_LIB    = /data/lib
+INSTALL_BIN    = /data/bin
+
+# Source files
+SOURCES = $(wildcard src/*.cpp)
+HEADERS = $(wildcard include/rmw_dsoftbus/*.h)
+OBJECTS = $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(SOURCES))
+
+# Library targets
+LIBNAME = rmw_dsoftbus
+LIB_SO = librmw_dsoftbus.so.0.1.0
+LIB_SO_LINK = librmw_dsoftbus.so.0
+LIB_STATIC = librmw_dsoftbus.a
+
+# Compilation flags
+CFLAGS = \
+	-std=c99 \
+	-O2 \
+	-Wall -Wextra -Wpedantic \
+	-fPIC
+
+CXXFLAGS = \
+	-std=c++17 \
+	-O2 \
+	-Wall -Wextra -Wpedantic \
+	-fPIC \
+	-DRMW_DSOFTBUS_BUILDING_LIBRARY \
+	--sysroot=$(SYSROOT) \
+	-include include/rmw_dsoftbus/compat_clib.h
+
+# Include paths
+INCLUDE_FLAGS = \
+	-Iinclude \
+	-Imock_includes \
+	-Imock_includes/rmw \
+	-Imock_includes/rcutils \
+	-Imock_includes/rosidl_runtime_c \
+	-Imock_includes/rosidl_typesupport_interface
+
+# Linker flags - Static C++ runtime for maximum compatibility
+LDFLAGS_COMMON = \
+	-Wl,-rpath,/data \
+	-Wl,-rpath,/system/lib64 \
+	-Wl,--as-needed \
+	-Wl,--version-script=rmw_dsoftbus.version
+
+LDFLAGS = $(LDFLAGS_COMMON) \
+	-static-libstdc++ \
+	-static-libgcc
+
+# ============================================================================
+# Build Rules
+# ============================================================================
+
+.PHONY: all clean install verify help toolchain-info
+
+all: $(OUT_DIR)/$(LIB_SO) $(OUT_DIR)/$(LIB_SO_LINK) $(OUT_DIR)/$(LIB_STATIC)
+	@echo ""
+	@echo "✅ Cross-compilation successful!"
+	@echo "===================================="
+	@ls -lh $(OUT_DIR)/*.so* $(OUT_DIR)/*.a 2>/dev/null || true
+	@echo ""
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR) $(OUT_DIR) $(BIN_DIR)
+
+$(OUT_DIR):
+	mkdir -p $(OUT_DIR)
+
+$(BUILD_DIR)/%.o: src/%.cpp $(HEADERS) | $(BUILD_DIR)
+	@echo "🔨 Compiling: $<"
+	$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) -c -o $@ $<
+
+# Shared library (main target)
+$(OUT_DIR)/$(LIB_SO): $(OBJECTS) | $(OUT_DIR)
+	@echo "🔗 Linking shared library: $(LIB_SO)"
+	$(CXX) -shared $(LDFLAGS_COMMON) -Wl,-soname,$(LIB_SO_LINK) \
+		-o $@ $(OBJECTS) -static-libstdc++ -static-libgcc
+	@echo "✅ Shared library created: $@"
+	@size $@
+
+# Symbolic link: .so.0 → .so.0.1.0
+$(OUT_DIR)/$(LIB_SO_LINK): $(OUT_DIR)/$(LIB_SO)
+	@echo "🔗 Creating symlink: $(LIB_SO_LINK) → $(LIB_SO)"
+	cd $(OUT_DIR) && ln -sf $(LIB_SO) $(LIB_SO_LINK)
+
+# Static library (for linking into other projects)
+$(OUT_DIR)/$(LIB_STATIC): $(OBJECTS) | $(OUT_DIR)
+	@echo "📦 Creating static library: $(LIB_STATIC)"
+	$(AR) rcs $@ $(OBJECTS)
+	@echo "✅ Static library created: $@"
+
+clean:
+	@echo "🧹 Cleaning build artifacts..."
+	rm -rf $(BUILD_DIR)
+	@echo "✅ Clean complete"
+
+# Verify cross-compilation
+verify: all
+	@echo ""
+	@echo "🔍 Verification Report"
+	@echo "======================"
+	@echo ""
+	@echo "1. Binary format:"
+	@file $(OUT_DIR)/$(LIB_SO) | head -1
+	@echo ""
+	@echo "2. Library size:"
+	@ls -lh $(OUT_DIR)/$(LIB_SO)
+	@echo ""
+	@echo "3. Dependencies (should only be libc/libm):"
+	@aarch64-linux-gnu-readelf -d $(OUT_DIR)/$(LIB_SO) 2>/dev/null | grep NEEDED || echo "   ✅ No external NEEDED dependencies (statically linked)"
+	@echo ""
+	@echo "4. RPATH configuration:"
+	@aarch64-linux-gnu-readelf -d $(OUT_DIR)/$(LIB_SO) 2>/dev/null | grep RPATH || echo "   (RPATH not explicitly set)"
+	@echo ""
+	@echo "5. Exported symbols:"
+	@aarch64-linux-gnu-nm -D $(OUT_DIR)/$(LIB_SO) 2>/dev/null | grep -c " T rmw_" && echo "   RMW APIs found ✅" || echo "   (symbols may be stripped)"
+	@echo ""
+
+# Install to device
+install: all
+	@echo "📤 Preparing files for deployment..."
+	mkdir -p /mnt/c/tmp/hdc_transfer
+	cp $(OUT_DIR)/$(LIB_SO) /mnt/c/tmp/hdc_transfer/
+	cp $(OUT_DIR)/$(LIB_SO_LINK) /mnt/c/tmp/hdc_transfer/ 2>/dev/null || true
+	@echo ""
+	@echo "📝 Files ready in: /mnt/c/tmp/hdc_transfer/"
+	@ls -lh /mnt/c/tmp/hdc_transfer/
+	@echo ""
+	@echo "📌 Note: gcc-linaro binaries have static C++ runtime"
+	@echo "   No additional runtime libraries needed!"
+	@echo ""
+	@echo "🚀 To deploy to device:"
+	@echo "   DEVICE_ID=\$$(powershell.exe -Command \"hdc list targets\" | head -1 | awk '{print \$$1}' | tr -d '\\r\\n')"
+	@echo "   powershell.exe -Command \"hdc -t \$$DEVICE_ID file send 'C:\\tmp\\hdc_transfer\\librmw_dsoftbus.so.0.1.0' '/data/lib/'\""
+	@echo "   powershell.exe -Command \"hdc -t \$$DEVICE_ID shell 'cd /data/lib && ln -sf librmw_dsoftbus.so.0.1.0 librmw_dsoftbus.so.0'\""
+
+toolchain-info:
+	@echo "Toolchain Information"
+	@echo "===================="
+	@echo ""
+	@echo "GCC Version:"
+	@$(CXX) --version | head -1
+	@echo ""
+	@echo "Target:"
+	@$(CXX) -v 2>&1 | grep "Target" || $(CXX) -v 2>&1 | grep "target"
+	@echo ""
+	@echo "Compiler paths:"
+	@echo "  CC  = $(CC)"
+	@echo "  CXX = $(CXX)"
+	@echo ""
+	@echo "Linking mode: Static C++ runtime (-static-libstdc++ -static-libgcc)"
+	@echo "Compatibility: Maximum (works on any glibc/musl system)"
+	@echo ""
+
+help:
+	@echo "RMW_DSOFTBUS - GCC Linaro Makefile (aarch64 Cross-Compilation)"
+	@echo "=============================================================="
+	@echo ""
+	@echo "Usage: make -f Makefile.aarch64 [target]"
+	@echo ""
+	@echo "Targets:"
+	@echo "  all              - Build shared library, symlink, and static library"
+	@echo "  clean            - Remove build artifacts"
+	@echo "  verify           - Verify cross-compilation (binary format, symbols, deps)"
+	@echo "  install          - Prepare files for device deployment"
+	@echo "  toolchain-info   - Show compiler version and configuration"
+	@echo "  help             - Show this help message"
+	@echo ""
+	@echo "Configuration (environment variables):"
+	@echo "  TOOLCHAIN_ROOT   - GCC Linaro root (default: $(TOOLCHAIN_ROOT))"
+	@echo ""
+	@echo "Examples:"
+	@echo "  make -f Makefile.aarch64                    # Build with defaults"
+	@echo "  make -f Makefile.aarch64 verify             # Build and verify"
+	@echo "  make -f Makefile.aarch64 clean all          # Clean and rebuild"
+	@echo "  make -f Makefile.aarch64 install            # Prepare for deployment"
+	@echo ""
+	@echo "✅ This toolchain is verified to work on KaihongOS rk3588s devices"
+	@echo ""

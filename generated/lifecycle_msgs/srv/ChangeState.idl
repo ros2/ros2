@@ -1,0 +1,22 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from lifecycle_msgs/lifecycle_msgs/srv/ChangeState.srv
+// generated code does not contain a copyright notice
+
+#include "lifecycle_msgs/msg/Transition.idl"
+
+module lifecycle_msgs {
+  module srv {
+    @verbatim (language="comment", text=
+      "The requested transition." "\n"
+      "" "\n"
+      "This change state service will fail if the transition is not possible.")
+    struct ChangeState_Request {
+      lifecycle_msgs::msg::Transition transition;
+    };
+    struct ChangeState_Response {
+      @verbatim (language="comment", text=
+        "Indicates whether the service was able to initiate the state transition")
+      boolean success;
+    };
+  };
+};

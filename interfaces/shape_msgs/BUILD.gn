@@ -1,0 +1,145 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# shape_msgs - ROS2 geometric shape message types
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+_package_name = "shape_msgs"
+
+# ============================================================================
+# shape_msgs message types:
+#
+# Basic Shapes:
+#   SolidPrimitive - Box, sphere, cylinder, cone
+#   Plane - Infinite plane (ax + by + cz + d = 0)
+#
+# Mesh:
+#   MeshTriangle - Three vertex indices forming a triangle
+#   Mesh - Collection of vertices and triangles
+# ============================================================================
+
+# ============================================================================
+# shape_msgs C generator library
+# ============================================================================
+ros2_shared_library("shape_msgs__rosidl_generator_c") {
+  sources = [
+    "src/msg/mesh_triangle__functions.c",
+    "src/msg/mesh__functions.c",
+    "src/msg/plane__functions.c",
+    "src/msg/solid_primitive__functions.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_generator_c",
+  ]
+
+  defines = [ "ROSIDL_GENERATOR_C_BUILDING_DLL_${_package_name}" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# shape_msgs type support C library
+# ============================================================================
+ros2_shared_library("shape_msgs__rosidl_typesupport_c") {
+  sources = [
+    "src/msg/mesh_triangle__type_support.c",
+    "src/msg/mesh__type_support.c",
+    "src/msg/plane__type_support.c",
+    "src/msg/solid_primitive__type_support.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":shape_msgs__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//foundation/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_typesupport_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_C_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# shape_msgs FastRTPS type support
+# ============================================================================
+ros2_shared_library("shape_msgs__rosidl_typesupport_fastrtps_c") {
+  sources = [
+    "src/msg/mesh__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/solid_primitive__rosidl_typesupport_fastrtps_c.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":shape_msgs__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_fastrtps_c:rosidl_typesupport_fastrtps_c",
+    "//vendor/fastdds/fastcdr:fastcdr",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_typesupport_fastrtps_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_FASTRTPS_C_BUILDING_DLL_${_package_name}" ]
+
+  cflags_cc = [ "-Wno-unused-parameter" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# shape_msgs C++ type support
+# ============================================================================
+config("shape_msgs_cpp_config") {
+  include_dirs = [ "include" ]
+}
+
+ros2_shared_library("shape_msgs__rosidl_typesupport_cpp") {
+  sources = [
+    "src/msg/mesh_triangle__type_support.cpp",
+    "src/msg/mesh__type_support.cpp",
+    "src/msg/plane__type_support.cpp",
+    "src/msg/solid_primitive__type_support.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":shape_msgs__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//foundation/rosidl/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//foundation/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_typesupport_cpp",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_CPP_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# Package group target
+# ============================================================================
+group("shape_msgs") {
+  public_deps = [
+    ":shape_msgs__rosidl_generator_c",
+    ":shape_msgs__rosidl_typesupport_c",
+    ":shape_msgs__rosidl_typesupport_cpp",
+    ":shape_msgs__rosidl_typesupport_fastrtps_c",
+  ]
+
+  public_configs = [ ":shape_msgs_cpp_config" ]
+}

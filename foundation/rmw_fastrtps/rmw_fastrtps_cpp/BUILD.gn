@@ -1,0 +1,91 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rmw_fastrtps_cpp - FastDDS RMW implementation for C++
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory
+_rmw_fastrtps_cpp_src = "//ros2/src/ros2/rmw_fastrtps/rmw_fastrtps_cpp"
+
+# ============================================================================
+# rmw_fastrtps_cpp shared library
+# ============================================================================
+ros2_shared_library("rmw_fastrtps_cpp") {
+  sources = [
+    "${_rmw_fastrtps_cpp_src}/src/get_client.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/get_participant.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/get_publisher.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/get_service.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/get_subscriber.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/identifier.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/init_rmw_context_impl.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/publisher.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_client.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_compare_gids_equal.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_count.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_dynamic_message_type_support.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_event.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_features.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_get_endpoint_network_flow.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_get_gid_for_client.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_get_gid_for_publisher.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_get_implementation_identifier.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_get_serialization_format.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_get_topic_endpoint_info.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_guard_condition.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_init.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_logging.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_node.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_node_info_and_types.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_node_names.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_publish.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_publisher.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_qos.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_request.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_response.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_serialize.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_service.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_service_names_and_types.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_service_server_is_available.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_subscription.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_take.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_topic_names_and_types.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_trigger_guard_condition.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_wait.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/rmw_wait_set.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/serialization_format.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/subscription.cpp",
+    "${_rmw_fastrtps_cpp_src}/src/type_support_common.cpp",
+  ]
+
+  include_dirs = [
+    "${_rmw_fastrtps_cpp_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rcpputils:rcpputils",
+    "//foundation/rmw:rmw",
+    "//foundation/rmw_fastrtps/rmw_fastrtps_shared_cpp:rmw_fastrtps_shared_cpp",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_fastrtps_c:rosidl_typesupport_fastrtps_c",
+    "//foundation/rosidl/rosidl_typesupport_fastrtps_cpp:rosidl_typesupport_fastrtps_cpp",
+    "//foundation/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//foundation/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+    "//foundation/tracing:tracetools",
+    "//vendor/fastdds/fastcdr:fastcdr",
+    "//vendor/fastdds/fastrtps:fastrtps",
+  ]
+
+  defines = [
+    "RMW_FASTRTPS_CPP_BUILDING_DLL",
+  ]
+
+  cflags_cc = [
+    "-Wno-unused-parameter",
+    "-Wno-deprecated-declarations",
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

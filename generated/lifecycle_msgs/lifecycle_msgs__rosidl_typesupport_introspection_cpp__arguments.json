@@ -1,0 +1,43 @@
+{
+  "package_name": "lifecycle_msgs",
+  "idl_tuples": [
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs:msg/State.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs:msg/Transition.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs:msg/TransitionDescription.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs:msg/TransitionEvent.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs:srv/ChangeState.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs:srv/GetAvailableStates.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs:srv/GetAvailableTransitions.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs:srv/GetState.idl"
+  ],
+  "ros_interface_files": [
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/msg/State.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/msg/Transition.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/msg/TransitionDescription.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/msg/TransitionEvent.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/srv/ChangeState.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/srv/GetAvailableStates.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/srv/GetAvailableTransitions.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/srv/GetState.idl"
+  ],
+  "output_dir": "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs",
+  "template_dir": "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_typesupport_introspection_cpp/resource",
+  "target_dependencies": [
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_typesupport_introspection_cpp/resource/msg__rosidl_typesupport_introspection_cpp.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_typesupport_introspection_cpp/resource/srv__type_support.cpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_typesupport_introspection_cpp/resource/srv__rosidl_typesupport_introspection_cpp.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_typesupport_introspection_cpp/resource/idl__rosidl_typesupport_introspection_cpp.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_typesupport_introspection_cpp/resource/msg__type_support.cpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_typesupport_introspection_cpp/resource/idl__type_support.cpp.em",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/msg/State.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/msg/Transition.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/msg/TransitionDescription.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/msg/TransitionEvent.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/srv/ChangeState.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/srv/GetAvailableStates.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/srv/GetAvailableTransitions.idl",
+    "/home/jiusi/M-DDS/ros2/generated/lifecycle_msgs/srv/GetState.idl"
+  ],
+  "ros_interface_dependencies": [],
+  "type_description_tuples": []
+}

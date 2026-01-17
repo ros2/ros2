@@ -1,0 +1,94 @@
+========================================
+Phase 3 跨设备测试 - 快速开始
+========================================
+
+已完成:
+  ✅ 代码实现 (10/10 tasks)
+  ✅ 编译部署 (3/3 devices, 2.2MB library)
+  ✅ request_id 压力测试 (1000 次通过)
+
+待手动验证:
+  ⏸️ 跨设备 Service call 闭环
+  ⏸️ Session kill/restart 状态测试
+
+========================================
+快速执行
+========================================
+
+## 测试 1: 跨设备 Service call (10 个请求)
+
+### 终端 1 - 启动 Server (Device 1)
+
+powershell.exe -NoProfile -Command "hdc -t ec29004133314d38433031a522413c00 shell 'cd /data && LD_LIBRARY_PATH=/system/lib64 ./phase3_cross_device_rpc server'"
+
+  → 看输出中的 "Network ID: XXXXX"
+  → 保持运行
+
+### 终端 2 - 运行 Client (Device 2)
+
+powershell.exe -NoProfile -Command "hdc -t ec29004133314d38433031a5544f3c00 shell 'cd /data && LD_LIBRARY_PATH=/system/lib64 RMW_DSOFTBUS_PEER_ID=<复制上面的Network_ID> ./phase3_cross_device_rpc client 10'"
+
+期望:
+  ✅ 10/10 请求成功
+  ✅ request_id: 1-10
+  ✅ 计算正确 (a+b=sum)
+
+---
+
+## 测试 2: 压力测试 (1000 个请求)
+
+Server 保持运行，在终端 2 执行：
+
+powershell.exe -NoProfile -Command "hdc -t ec29004133314d38433031a5544f3c00 shell 'cd /data && LD_LIBRARY_PATH=/system/lib64 RMW_DSOFTBUS_PEER_ID=<Network_ID> ./phase3_cross_device_rpc pressure'"
+
+期望:
+  ✅ 1000/1000 成功
+  ✅ 0 超时
+
+---
+
+## 测试 3: Session kill/restart
+
+### A. 启动后台 Server
+
+powershell.exe -NoProfile -Command "hdc -t ec29004133314d38433031a522413c00 shell 'cd /data && LD_LIBRARY_PATH=/system/lib64 nohup /data/phase3_cross_device_rpc server > /data/server.log 2>&1 &'"
+
+### B. 验证可用
+
+powershell.exe -NoProfile -Command "hdc -t ec29004133314d38433031a5544f3c00 shell 'cd /data && LD_LIBRARY_PATH=/system/lib64 RMW_DSOFTBUS_PEER_ID=<Network_ID> /data/phase3_cross_device_rpc resilience'"
+
+  → 期望: Service 可用
+
+### C. 杀死 Server
+
+powershell.exe -NoProfile -Command "hdc -t ec29004133314d38433031a522413c00 shell 'killall phase3_cross_device_rpc'"
+
+等待 2 秒
+
+### D. 验证不可用
+
+powershell.exe -NoProfile -Command "hdc -t ec29004133314d38433031a5544f3c00 shell 'cd /data && LD_LIBRARY_PATH=/system/lib64 RMW_DSOFTBUS_PEER_ID=<Network_ID> /data/phase3_cross_device_rpc resilience'"
+
+  → 期望: Service 不可用
+
+### E. 重启 Server
+
+（重复步骤 A）
+
+### F. 验证恢复
+
+（重复步骤 B）
+  → 期望: Service 恢复可用
+
+---
+
+## 如果 Network ID 无法自动获取
+
+查看 Server 启动日志的前几行：
+  - "本设备信息: Network ID: XXXXX"
+  - 或 "⚠️ 无法获取本设备 Network ID"
+
+如果显示 "无法获取"：
+  使用之前记录的 Network ID 或联系管理员
+
+========================================

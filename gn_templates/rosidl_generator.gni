@@ -1,0 +1,268 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rosidl Interface Generation Template
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# ============================================================================
+# rosidl_generate_interfaces - Generate ROS2 interface code from .msg/.srv/.action
+# ============================================================================
+#
+# This template generates C/C++ code from ROS2 interface definitions.
+# For OpenHarmony port, we recommend pre-generating code on the host
+# and only compiling on the device.
+#
+# Parameters:
+#   package_name - Package name (required)
+#   interface_files - List of .msg/.srv/.action files (required)
+#   dependencies - Other interface packages this depends on (optional)
+#
+template("rosidl_generate_interfaces") {
+  _package_name = invoker.package_name
+  _gen_dir = "${target_gen_dir}/${_package_name}"
+
+  # Step 1: Generate C code (action)
+  action("${target_name}_gen_c") {
+    script = "//scripts/rosidl_generate_c.py"
+
+    inputs = invoker.interface_files
+
+    outputs = [
+      "${_gen_dir}/msg/${_package_name}__rosidl_generator_c.h",
+      "${_gen_dir}/msg/${_package_name}__struct.h",
+      "${_gen_dir}/msg/${_package_name}__functions.h",
+      "${_gen_dir}/msg/${_package_name}__functions.c",
+      "${_gen_dir}/msg/${_package_name}__type_support.h",
+    ]
+
+    args = [
+      "--package-name", _package_name,
+      "--output-dir", rebase_path(_gen_dir, root_build_dir),
+      "--interface-files",
+    ]
+    foreach(f, invoker.interface_files) {
+      args += [ rebase_path(f, root_build_dir) ]
+    }
+  }
+
+  # Step 2: Generate C++ code (action)
+  action("${target_name}_gen_cpp") {
+    script = "//scripts/rosidl_generate_cpp.py"
+
+    inputs = invoker.interface_files
+
+    outputs = [
+      "${_gen_dir}/msg/${_package_name}__rosidl_generator_cpp.hpp",
+      "${_gen_dir}/msg/${_package_name}__struct.hpp",
+      "${_gen_dir}/msg/${_package_name}__traits.hpp",
+      "${_gen_dir}/msg/${_package_name}__builder.hpp",
+    ]
+
+    args = [
+      "--package-name", _package_name,
+      "--output-dir", rebase_path(_gen_dir, root_build_dir),
+      "--interface-files",
+    ]
+    foreach(f, invoker.interface_files) {
+      args += [ rebase_path(f, root_build_dir) ]
+    }
+  }
+
+  # Step 3: Generate introspection type support
+  action("${target_name}_gen_introspection_c") {
+    script = "//scripts/rosidl_generate_introspection.py"
+
+    inputs = invoker.interface_files
+
+    outputs = [
+      "${_gen_dir}/detail/${_package_name}__rosidl_typesupport_introspection_c.h",
+      "${_gen_dir}/detail/${_package_name}__type_support.c",
+    ]
+
+    args = [
+      "--package-name", _package_name,
+      "--output-dir", rebase_path(_gen_dir, root_build_dir),
+      "--interface-files",
+    ]
+    foreach(f, invoker.interface_files) {
+      args += [ rebase_path(f, root_build_dir) ]
+    }
+  }
+
+  # Step 4: Generate FastRTPS type support
+  action("${target_name}_gen_fastrtps") {
+    script = "//scripts/rosidl_generate_fastrtps.py"
+
+    inputs = invoker.interface_files
+
+    outputs = [
+      "${_gen_dir}/detail/${_package_name}__rosidl_typesupport_fastrtps_c.h",
+      "${_gen_dir}/detail/${_package_name}__rosidl_typesupport_fastrtps_cpp.hpp",
+    ]
+
+    args = [
+      "--package-name", _package_name,
+      "--output-dir", rebase_path(_gen_dir, root_build_dir),
+      "--interface-files",
+    ]
+    foreach(f, invoker.interface_files) {
+      args += [ rebase_path(f, root_build_dir) ]
+    }
+  }
+
+  # Step 5: Compile generated C code
+  ros2_shared_library("${target_name}__rosidl_generator_c") {
+    deps = [
+      ":${target_name}_gen_c",
+      "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    ]
+
+    if (defined(invoker.dependencies)) {
+      foreach(dep, invoker.dependencies) {
+        deps += [ "${dep}:${dep}__rosidl_generator_c" ]
+      }
+    }
+
+    sources = filter_include(get_target_outputs(":${target_name}_gen_c"), [ "*.c" ])
+
+    include_dirs = [
+      _gen_dir,
+      "${_gen_dir}/msg",
+    ]
+
+    defines = [ "${_package_name}_BUILDING_DLL" ]
+  }
+
+  # Step 6: Compile type support library
+  ros2_shared_library("${target_name}__rosidl_typesupport_c") {
+    deps = [
+      ":${target_name}_gen_introspection_c",
+      ":${target_name}__rosidl_generator_c",
+      "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+      "//foundation/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    ]
+
+    sources = filter_include(get_target_outputs(":${target_name}_gen_introspection_c"), [ "*.c" ])
+
+    include_dirs = [
+      _gen_dir,
+      "${_gen_dir}/detail",
+    ]
+  }
+
+  # Step 7: Compile FastRTPS type support
+  ros2_shared_library("${target_name}__rosidl_typesupport_fastrtps_c") {
+    deps = [
+      ":${target_name}_gen_fastrtps",
+      ":${target_name}__rosidl_generator_c",
+      "//foundation/rosidl/rosidl_typesupport_fastrtps_c:rosidl_typesupport_fastrtps_c",
+      "//vendor/fastdds/fastcdr:fastcdr",
+    ]
+
+    sources = filter_include(get_target_outputs(":${target_name}_gen_fastrtps"), [ "*.c", "*.cpp" ])
+
+    include_dirs = [
+      _gen_dir,
+      "${_gen_dir}/detail",
+    ]
+  }
+
+  # Step 8: Package group target
+  group(target_name) {
+    deps = [
+      ":${target_name}__rosidl_generator_c",
+      ":${target_name}__rosidl_typesupport_c",
+      ":${target_name}__rosidl_typesupport_fastrtps_c",
+    ]
+  }
+}
+
+# ============================================================================
+# rosidl_pregenerated - Use pre-generated interface code
+# ============================================================================
+#
+# For faster builds and to avoid Python dependency on device,
+# pre-generate code on the host and use this template.
+#
+# Parameters:
+#   package_name - Package name (required)
+#   generated_dir - Directory containing pre-generated code (required)
+#   c_sources - C source files (required)
+#   typesupport_sources - Type support source files (required)
+#   fastrtps_sources - FastRTPS type support source files (optional)
+#   dependencies - Other interface packages this depends on (optional)
+#
+template("rosidl_pregenerated") {
+  _package_name = invoker.package_name
+  _gen_dir = invoker.generated_dir
+
+  # C generator library
+  ros2_shared_library("${target_name}__rosidl_generator_c") {
+    sources = invoker.c_sources
+
+    include_dirs = [
+      _gen_dir,
+      "${_gen_dir}/msg",
+      "${_gen_dir}/srv",
+      "${_gen_dir}/action",
+    ]
+
+    deps = [
+      "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    ]
+
+    if (defined(invoker.dependencies)) {
+      foreach(dep, invoker.dependencies) {
+        deps += [ "${dep}:${dep}__rosidl_generator_c" ]
+      }
+    }
+
+    defines = [ "${_package_name}_BUILDING_DLL" ]
+  }
+
+  # Type support library
+  ros2_shared_library("${target_name}__rosidl_typesupport_c") {
+    sources = invoker.typesupport_sources
+
+    include_dirs = [
+      _gen_dir,
+      "${_gen_dir}/detail",
+    ]
+
+    deps = [
+      ":${target_name}__rosidl_generator_c",
+      "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+      "//foundation/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    ]
+  }
+
+  # FastRTPS type support (optional)
+  if (defined(invoker.fastrtps_sources)) {
+    ros2_shared_library("${target_name}__rosidl_typesupport_fastrtps_c") {
+      sources = invoker.fastrtps_sources
+
+      include_dirs = [
+        _gen_dir,
+        "${_gen_dir}/detail",
+      ]
+
+      deps = [
+        ":${target_name}__rosidl_generator_c",
+        "//foundation/rosidl/rosidl_typesupport_fastrtps_c:rosidl_typesupport_fastrtps_c",
+        "//vendor/fastdds/fastcdr:fastcdr",
+      ]
+    }
+  }
+
+  # Package group
+  group(target_name) {
+    deps = [
+      ":${target_name}__rosidl_generator_c",
+      ":${target_name}__rosidl_typesupport_c",
+    ]
+
+    if (defined(invoker.fastrtps_sources)) {
+      deps += [ ":${target_name}__rosidl_typesupport_fastrtps_c" ]
+    }
+  }
+}

@@ -1,0 +1,2 @@
+﻿/bin/sh: Trans: inaccessible or not found
+/bin/sh: 426115004: inaccessible or not found

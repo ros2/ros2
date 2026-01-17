@@ -1,0 +1,23 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from rcl_interfaces/rcl_interfaces/srv/GetParameterTypes.srv
+// generated code does not contain a copyright notice
+
+
+module rcl_interfaces {
+  module srv {
+    @verbatim (language="comment", text=
+      "A list of parameter names." "\n"
+      "TODO(wjwwood): link to parameter naming rules.")
+    struct GetParameterTypes_Request {
+      sequence<string> names;
+    };
+    @verbatim (language="comment", text=
+      "List of types which is the same length and order as the provided names." "\n"
+      "" "\n"
+      "The type enum is defined in ParameterType.msg. ParameterType.PARAMETER_NOT_SET" "\n"
+      "indicates that the parameter is not currently set.")
+    struct GetParameterTypes_Response {
+      sequence<uint8> types;
+    };
+  };
+};

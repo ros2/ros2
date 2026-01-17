@@ -1,0 +1,89 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rmw_fastrtps_shared_cpp - Shared code for FastDDS RMW implementations
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory
+_rmw_fastrtps_shared_cpp_src = "//ros2/src/ros2/rmw_fastrtps/rmw_fastrtps_shared_cpp"
+
+# ============================================================================
+# rmw_fastrtps_shared_cpp shared library
+# ============================================================================
+ros2_shared_library("rmw_fastrtps_shared_cpp") {
+  sources = [
+    "${_rmw_fastrtps_shared_cpp_src}/src/create_rmw_gid.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/custom_participant_info.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/custom_publisher_info.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/custom_subscriber_info.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/demangle.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/init_rmw_context_impl.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/listener_thread.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/namespace_prefix.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/participant.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/publisher.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/qos.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_client.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_compare_gids_equal.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_count.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_event.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_features.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_get_endpoint_network_flow.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_get_gid_for_client.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_get_gid_for_publisher.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_get_topic_endpoint_info.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_guard_condition.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_init.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_logging.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_node.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_node_info_and_types.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_node_names.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_publish.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_publisher.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_qos.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_request.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_response.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_security_logging.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_service.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_service_names_and_types.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_service_server_is_available.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_subscription.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_take.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_topic_names_and_types.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_trigger_guard_condition.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_wait.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/rmw_wait_set.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/subscription.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/time_utils.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/TypeSupport_impl.cpp",
+    "${_rmw_fastrtps_shared_cpp_src}/src/utils.cpp",
+  ]
+
+  include_dirs = [
+    "${_rmw_fastrtps_shared_cpp_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rcpputils:rcpputils",
+    "//foundation/rmw:rmw",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//foundation/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+    "//foundation/tracing:tracetools",
+    "//vendor/fastdds/fastcdr:fastcdr",
+    "//vendor/fastdds/fastrtps:fastrtps",
+  ]
+
+  defines = [
+    "RMW_FASTRTPS_SHARED_CPP_BUILDING_DLL",
+  ]
+
+  cflags_cc = [
+    "-Wno-unused-parameter",
+    "-Wno-deprecated-declarations",
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

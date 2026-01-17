@@ -1,0 +1,110 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DDDS_HAS_LIFESPAN=1 -DDDS_HAS_DEADLINE_MISSED=1 -DDDS_HAS_TYPE_DISCOVERY=1 -DDDS_HAS_TOPIC_DISCOVERY=1
+include_dirs = -I../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/include -I../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src -I../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/include -I../../src/eclipse-cyclonedds/cyclonedds/stubs -I../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/include -Igen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -include gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/config.h -std=c11
+target_output_name = libddsc
+
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_init.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_init.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_init.c
+  source_name_part = dds_init
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_domain.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_domain.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_domain.c
+  source_name_part = dds_domain
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_entity.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_entity.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_entity.c
+  source_name_part = dds_entity
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_handles.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_handles.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_handles.c
+  source_name_part = dds_handles
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_participant.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_participant.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_participant.c
+  source_name_part = dds_participant
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_publisher.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_publisher.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_publisher.c
+  source_name_part = dds_publisher
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_subscriber.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_subscriber.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_subscriber.c
+  source_name_part = dds_subscriber
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_writer.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_writer.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_writer.c
+  source_name_part = dds_writer
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_reader.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_reader.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_reader.c
+  source_name_part = dds_reader
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_topic.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_topic.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_topic.c
+  source_name_part = dds_topic
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_read.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_read.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_read.c
+  source_name_part = dds_read
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_write.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_write.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_write.c
+  source_name_part = dds_write
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_coherent.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_coherent.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_coherent.c
+  source_name_part = dds_coherent
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_instance.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_instance.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_instance.c
+  source_name_part = dds_instance
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_qos.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_qos.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_qos.c
+  source_name_part = dds_qos
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_waitset.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_waitset.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_waitset.c
+  source_name_part = dds_waitset
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_readcond.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_readcond.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_readcond.c
+  source_name_part = dds_readcond
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_guardcond.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_guardcond.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_guardcond.c
+  source_name_part = dds_guardcond
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_querycond.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_querycond.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_querycond.c
+  source_name_part = dds_querycond
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_listener.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_listener.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_listener.c
+  source_name_part = dds_listener
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_matched.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_matched.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_matched.c
+  source_name_part = dds_matched
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_alloc.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_alloc.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_alloc.c
+  source_name_part = dds_alloc
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_data_allocator.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_data_allocator.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_data_allocator.c
+  source_name_part = dds_data_allocator
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_loan.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_loan.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_loan.c
+  source_name_part = dds_loan
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_builtin.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_builtin.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_builtin.c
+  source_name_part = dds_builtin
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_serdata_builtintopic.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_serdata_builtintopic.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_serdata_builtintopic.c
+  source_name_part = dds_serdata_builtintopic
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_sertype_builtintopic.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_sertype_builtintopic.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_sertype_builtintopic.c
+  source_name_part = dds_sertype_builtintopic
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_whc_builtintopic.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_whc_builtintopic.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_whc_builtintopic.c
+  source_name_part = dds_whc_builtintopic
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_rhc.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_rhc.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_rhc.c
+  source_name_part = dds_rhc
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_rhc_default.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_rhc_default.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_rhc_default.c
+  source_name_part = dds_rhc_default
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_whc.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_whc.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_whc.c
+  source_name_part = dds_whc
+build obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_statistics.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/dds_statistics.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dds_statistics.c
+  source_name_part = dds_statistics
+
+build ./libddsc.so: solink obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_init.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_domain.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_entity.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_handles.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_participant.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_publisher.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_subscriber.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_writer.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_reader.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_topic.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_read.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_write.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_coherent.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_instance.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_qos.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_waitset.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_readcond.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_guardcond.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_querycond.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_listener.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_matched.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_alloc.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_data_allocator.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_loan.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_builtin.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_serdata_builtintopic.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_sertype_builtintopic.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_whc_builtintopic.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_rhc.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_rhc_default.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_whc.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/src/libddsc.dds_statistics.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_acknack.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_config.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_deliver_locally.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_endpoint.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_entity.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_entity_index.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_entity_match.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_eth.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_handshake.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_iid.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_ipaddr.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_list_genptr.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_mcgroup.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_ownip.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_participant.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_plist.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_pmd.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_portmapping.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_proxy_endpoint.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_proxy_participant.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_raweth.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_rhc.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_statistics.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_tcp.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_threadmon.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_time.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_tkmap.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_topic.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_tran.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_udp.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_vendor.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_security_stubs.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_cdrstream.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_serdata.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_serdata_default.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_serdata_plist.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_serdata_pserop.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_sertopic.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_sertype.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_sertype_default.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_sertype_plist.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_sertype_pserop.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_deadline.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_lifespan.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_typebuilder.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_typelib.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_typelookup.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_typewrap.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_vnet.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_wraddrset.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_xt_typeinfo.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_xt_typelookup.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.ddsi_xt_typemap.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_addrset.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_bitset_inlines.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_bswap.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_ddsi_discovery.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_freelist.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_gc.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_init.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_inverse_uint32_set.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_lat_estim.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_lease.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_misc.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_pcap.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_qosmatch.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_radmin.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_receive.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_sockwaitset.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_thread.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_transmit.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_whc.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_xevent.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_xmsg.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.sysdeps.o obj/src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/src/ddsi_sources.q_debmon.o ./libddsrt.a || obj/src/eclipse-cyclonedds/cyclonedds/ddsi_sources.stamp
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

@@ -1,0 +1,11 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# Minimal .gn configuration for standalone build
+
+# The location of the build configuration file.
+buildconfig = "//build_config/BUILDCONFIG.gn"
+
+# The executable used to execute scripts in action and exec_script.
+script_executable = "/usr/bin/env"
+
+# Disable OpenHarmony components support for standalone build
+ohos_components_support = false

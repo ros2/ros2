@@ -1,0 +1,20 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rosidl_typesupport_interface - Header-only type support interface
+
+import("//build/ohos.gni")
+
+# Source directory
+_rosidl_typesupport_interface_src = "//ros2/src/ros2/rosidl/rosidl_typesupport_interface"
+
+# ============================================================================
+# rosidl_typesupport_interface (header-only)
+# ============================================================================
+config("rosidl_typesupport_interface_config") {
+  include_dirs = [
+    "${_rosidl_typesupport_interface_src}/include",
+  ]
+}
+
+group("rosidl_typesupport_interface") {
+  public_configs = [ ":rosidl_typesupport_interface_config" ]
+}

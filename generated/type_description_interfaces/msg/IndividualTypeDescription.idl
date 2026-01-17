@@ -1,0 +1,26 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from type_description_interfaces/type_description_interfaces/msg/IndividualTypeDescription.msg
+// generated code does not contain a copyright notice
+
+#include "type_description_interfaces/msg/Field.idl"
+
+module type_description_interfaces {
+  module msg {
+    @verbatim (language="comment", text=
+      "Represents a single type, without the types it references, if any.")
+    struct IndividualTypeDescription {
+      @verbatim (language="comment", text=
+        "Name of the type." "\n"
+        "This is limited to 255 characters." "\n"
+        "TODO(wjwwood): this 255 character limit was chosen due to this being the limit" "\n"
+        "  for DDSI-RTPS based middlewares, which is the most commonly used right now." "\n"
+        "  We lack a ROS 2 specific limit in our design documents, but we should update" "\n"
+        "  this and/or link to the design doc when that is available.")
+      string<255> type_name;
+
+      @verbatim (language="comment", text=
+        "Fields of the type.")
+      sequence<type_description_interfaces::msg::Field> fields;
+    };
+  };
+};

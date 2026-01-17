@@ -1,0 +1,74 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -std=c11 -fPIC -Wall -Wextra -Wno-unused-parameter -std=c11
+target_output_name = librosidl_runtime_c
+
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.message_type_support.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/message_type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = message_type_support.c
+  source_name_part = message_type_support
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.service_type_support.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/service_type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = service_type_support.c
+  source_name_part = service_type_support
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.string_functions.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/string_functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = string_functions.c
+  source_name_part = string_functions
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.u16string_functions.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/u16string_functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = u16string_functions.c
+  source_name_part = u16string_functions
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.primitives_sequence_functions.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/primitives_sequence_functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = primitives_sequence_functions.c
+  source_name_part = primitives_sequence_functions
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.sequence_bound.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/sequence_bound.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = sequence_bound.c
+  source_name_part = sequence_bound
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.type_hash.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_hash.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_hash.c
+  source_name_part = type_hash
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.type_description_utils.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_description_utils.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description_utils.c
+  source_name_part = type_description_utils
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.field__functions.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_description/field__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field__functions.c
+  source_name_part = field__functions
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.field__description.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_description/field__description.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field__description.c
+  source_name_part = field__description
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.field_type__functions.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_description/field_type__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field_type__functions.c
+  source_name_part = field_type__functions
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.field_type__description.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_description/field_type__description.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field_type__description.c
+  source_name_part = field_type__description
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.individual_type_description__functions.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_description/individual_type_description__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = individual_type_description__functions.c
+  source_name_part = individual_type_description__functions
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.individual_type_description__description.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_description/individual_type_description__description.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = individual_type_description__description.c
+  source_name_part = individual_type_description__description
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.key_value__functions.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_description/key_value__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = key_value__functions.c
+  source_name_part = key_value__functions
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.key_value__description.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_description/key_value__description.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = key_value__description.c
+  source_name_part = key_value__description
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.type_description__functions.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_description/type_description__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description__functions.c
+  source_name_part = type_description__functions
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.type_description__description.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_description/type_description__description.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description__description.c
+  source_name_part = type_description__description
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.type_source__functions.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_description/type_source__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_source__functions.c
+  source_name_part = type_source__functions
+build obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.type_source__description.o: cc ../../src/ros2/rosidl/rosidl_runtime_c/src/type_description/type_source__description.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_source__description.c
+  source_name_part = type_source__description
+
+build ./librosidl_runtime_c.so: solink obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.message_type_support.o obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.service_type_support.o obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.string_functions.o obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.u16string_functions.o obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.primitives_sequence_functions.o obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.sequence_bound.o obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.type_hash.o obj/src/ros2/rosidl/rosidl_runtime_c/src/librosidl_runtime_c.type_description_utils.o obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.field__functions.o obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.field__description.o obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.field_type__functions.o obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.field_type__description.o obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.individual_type_description__functions.o obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.individual_type_description__description.o obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.key_value__functions.o obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.key_value__description.o obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.type_description__functions.o obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.type_description__description.o obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.type_source__functions.o obj/src/ros2/rosidl/rosidl_runtime_c/src/type_description/librosidl_runtime_c.type_source__description.o ./librcutils.so || obj/src/ros2/rosidl/rosidl_typesupport_interface/rosidl_typesupport_interface.stamp
+  ldflags = -Wl,--no-undefined -Wl,-soname,librosidl_runtime_c.so
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

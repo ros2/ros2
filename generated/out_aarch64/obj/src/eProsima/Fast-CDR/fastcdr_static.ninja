@@ -1,0 +1,38 @@
+defines = -D__OHOS__ -D_GNU_SOURCE
+include_dirs = -I../../src/eProsima/Fast-CDR/include -Igen/src/eProsima/Fast-CDR/fastcdr/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_cc = -Wno-unused-parameter -std=c++17 -Wno-psabi
+target_output_name = libfastcdr_static
+
+build obj/src/eProsima/Fast-CDR/src/cpp/libfastcdr_static.Cdr.o: cxx ../../src/eProsima/Fast-CDR/src/cpp/Cdr.cpp || obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp
+  source_file_part = Cdr.cpp
+  source_name_part = Cdr
+build obj/src/eProsima/Fast-CDR/src/cpp/libfastcdr_static.CdrSizeCalculator.o: cxx ../../src/eProsima/Fast-CDR/src/cpp/CdrSizeCalculator.cpp || obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp
+  source_file_part = CdrSizeCalculator.cpp
+  source_name_part = CdrSizeCalculator
+build obj/src/eProsima/Fast-CDR/src/cpp/libfastcdr_static.FastBuffer.o: cxx ../../src/eProsima/Fast-CDR/src/cpp/FastBuffer.cpp || obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp
+  source_file_part = FastBuffer.cpp
+  source_name_part = FastBuffer
+build obj/src/eProsima/Fast-CDR/src/cpp/libfastcdr_static.FastCdr.o: cxx ../../src/eProsima/Fast-CDR/src/cpp/FastCdr.cpp || obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp
+  source_file_part = FastCdr.cpp
+  source_name_part = FastCdr
+build obj/src/eProsima/Fast-CDR/src/cpp/exceptions/libfastcdr_static.BadOptionalAccessException.o: cxx ../../src/eProsima/Fast-CDR/src/cpp/exceptions/BadOptionalAccessException.cpp || obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp
+  source_file_part = BadOptionalAccessException.cpp
+  source_name_part = BadOptionalAccessException
+build obj/src/eProsima/Fast-CDR/src/cpp/exceptions/libfastcdr_static.BadParamException.o: cxx ../../src/eProsima/Fast-CDR/src/cpp/exceptions/BadParamException.cpp || obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp
+  source_file_part = BadParamException.cpp
+  source_name_part = BadParamException
+build obj/src/eProsima/Fast-CDR/src/cpp/exceptions/libfastcdr_static.Exception.o: cxx ../../src/eProsima/Fast-CDR/src/cpp/exceptions/Exception.cpp || obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp
+  source_file_part = Exception.cpp
+  source_name_part = Exception
+build obj/src/eProsima/Fast-CDR/src/cpp/exceptions/libfastcdr_static.LockedExternalAccessException.o: cxx ../../src/eProsima/Fast-CDR/src/cpp/exceptions/LockedExternalAccessException.cpp || obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp
+  source_file_part = LockedExternalAccessException.cpp
+  source_name_part = LockedExternalAccessException
+build obj/src/eProsima/Fast-CDR/src/cpp/exceptions/libfastcdr_static.NotEnoughMemoryException.o: cxx ../../src/eProsima/Fast-CDR/src/cpp/exceptions/NotEnoughMemoryException.cpp || obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp
+  source_file_part = NotEnoughMemoryException.cpp
+  source_name_part = NotEnoughMemoryException
+
+build ./libfastcdr_static.a: alink obj/src/eProsima/Fast-CDR/src/cpp/libfastcdr_static.Cdr.o obj/src/eProsima/Fast-CDR/src/cpp/libfastcdr_static.CdrSizeCalculator.o obj/src/eProsima/Fast-CDR/src/cpp/libfastcdr_static.FastBuffer.o obj/src/eProsima/Fast-CDR/src/cpp/libfastcdr_static.FastCdr.o obj/src/eProsima/Fast-CDR/src/cpp/exceptions/libfastcdr_static.BadOptionalAccessException.o obj/src/eProsima/Fast-CDR/src/cpp/exceptions/libfastcdr_static.BadParamException.o obj/src/eProsima/Fast-CDR/src/cpp/exceptions/libfastcdr_static.Exception.o obj/src/eProsima/Fast-CDR/src/cpp/exceptions/libfastcdr_static.LockedExternalAccessException.o obj/src/eProsima/Fast-CDR/src/cpp/exceptions/libfastcdr_static.NotEnoughMemoryException.o || obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp
+  arflags =
+  output_extension = .a
+  output_dir = .

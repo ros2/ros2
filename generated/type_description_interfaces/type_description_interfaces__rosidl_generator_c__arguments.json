@@ -1,0 +1,53 @@
+{
+  "package_name": "type_description_interfaces",
+  "idl_tuples": [
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces:msg/Field.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces:msg/FieldType.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces:msg/IndividualTypeDescription.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces:msg/KeyValue.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces:msg/TypeDescription.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces:msg/TypeSource.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces:srv/GetTypeDescription.idl"
+  ],
+  "ros_interface_files": [
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/msg/Field.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/msg/FieldType.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/msg/IndividualTypeDescription.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/msg/KeyValue.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/msg/TypeDescription.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/msg/TypeSource.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/srv/GetTypeDescription.idl"
+  ],
+  "output_dir": "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces",
+  "template_dir": "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource",
+  "target_dependencies": [
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/full__description.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/empty__description.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/msg__type_support.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl__functions.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl__type_support.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/action__type_support.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl__functions.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/msg__functions.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/msg__functions.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl__type_support.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/srv__type_support.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl__description.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/action__type_support.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl__struct.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/srv__type_support.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/msg__struct.h.em",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/msg/Field.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/msg/FieldType.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/msg/IndividualTypeDescription.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/msg/KeyValue.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/msg/TypeDescription.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/msg/TypeSource.idl",
+    "/home/jiusi/M-DDS/ros2/generated/type_description_interfaces/srv/GetTypeDescription.idl"
+  ],
+  "ros_interface_dependencies": [
+    "service_msgs"
+  ],
+  "type_description_tuples": []
+}

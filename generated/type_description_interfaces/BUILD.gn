@@ -1,0 +1,84 @@
+# Copyright (c) 2024 ROS2 KaihongOS Port Project
+# BUILD.gn for generated type_description_interfaces
+
+import("//gn_templates/ros2_library.gni")
+
+_gen_base = "//generated/type_description_interfaces"
+
+config("type_description_interfaces_public_config") {
+  include_dirs = [ "//generated" ]
+  defines = [ "ROSIDL_GENERATOR_C_BUILDING_DLL_type_description_interfaces" ]
+}
+
+# C++ type support introspection + dispatch
+source_set("type_description_interfaces_type_support_cpp") {
+  sources = [
+    "${_gen_base}/msg/detail/field__type_support.cpp",
+    "${_gen_base}/msg/detail/field_type__type_support.cpp",
+    "${_gen_base}/msg/detail/individual_type_description__type_support.cpp",
+    "${_gen_base}/msg/detail/key_value__type_support.cpp",
+    "${_gen_base}/msg/detail/type_description__type_support.cpp",
+    "${_gen_base}/msg/detail/type_source__type_support.cpp",
+    "${_gen_base}/msg/field__type_support.cpp",
+    "${_gen_base}/msg/field_type__type_support.cpp",
+    "${_gen_base}/msg/individual_type_description__type_support.cpp",
+    "${_gen_base}/msg/key_value__type_support.cpp",
+    "${_gen_base}/msg/type_description__type_support.cpp",
+    "${_gen_base}/msg/type_source__type_support.cpp",
+    "${_gen_base}/srv/detail/get_type_description__type_support.cpp",
+    "${_gen_base}/srv/get_type_description__type_support.cpp",
+    # C typesupport dispatch files (separate from C++ typesupport)
+    "${_gen_base}/msg/field__type_support_c.cpp",
+    "${_gen_base}/msg/field_type__type_support_c.cpp",
+    "${_gen_base}/msg/individual_type_description__type_support_c.cpp",
+    "${_gen_base}/msg/key_value__type_support_c.cpp",
+    "${_gen_base}/msg/type_description__type_support_c.cpp",
+    "${_gen_base}/msg/type_source__type_support_c.cpp",
+    "${_gen_base}/srv/get_type_description__type_support_c.cpp",
+  ]
+
+  include_dirs = [ "//generated" ]
+
+  deps = [
+    "//src/ros2/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//src/ros2/rosidl_typesupport/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//src/ros2/rosidl_typesupport/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+    "//generated/service_msgs:service_msgs_type_support_cpp",
+  ]
+
+  cflags_cc = [ "-std=c++17", "-Wno-unused-parameter" ]
+}
+
+ros2_shared_library("type_description_interfaces") {
+  sources = [
+    "${_gen_base}/msg/detail/field__functions.c",
+    "${_gen_base}/msg/detail/field_type__functions.c",
+    "${_gen_base}/msg/detail/individual_type_description__functions.c",
+    "${_gen_base}/msg/detail/key_value__functions.c",
+    "${_gen_base}/msg/detail/type_description__functions.c",
+    "${_gen_base}/msg/detail/type_source__functions.c",
+    "${_gen_base}/srv/detail/get_type_description__functions.c",
+    "${_gen_base}/srv/get_type_description__type_support.c",  # Service event message functions
+    "${_gen_base}/msg/detail/field__type_support.c",
+    "${_gen_base}/msg/detail/field_type__type_support.c",
+    "${_gen_base}/msg/detail/individual_type_description__type_support.c",
+    "${_gen_base}/msg/detail/key_value__type_support.c",
+    "${_gen_base}/msg/detail/type_description__type_support.c",
+    "${_gen_base}/msg/detail/type_source__type_support.c",
+    "${_gen_base}/srv/detail/get_type_description__type_support.c",
+    "${_gen_base}/msg/detail/type_description_stubs.c",
+  ]
+
+  public_configs = [ ":type_description_interfaces_public_config" ]
+
+  public_deps = [
+    ":type_description_interfaces_type_support_cpp",
+    "//src/ros2/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//src/ros2/rcutils:rcutils",
+    "//generated/service_msgs:service_msgs",
+  ]
+
+  cflags = [ "-Wno-unused-parameter" ]
+}

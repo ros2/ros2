@@ -1,0 +1,122 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DDDS_HAS_LIFESPAN=1 -DDDS_HAS_DEADLINE_MISSED=1 -DDDS_HAS_TYPE_DISCOVERY=1 -DDDS_HAS_TOPIC_DISCOVERY=1
+include_dirs = -I../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/include -I../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src -Igen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -include gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/config.h -std=c11
+target_output_name = libddsrt
+
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.atomics.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/atomics.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = atomics.c
+  source_name_part = atomics
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.avl.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/avl.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = avl.c
+  source_name_part = avl
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.bswap.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/bswap.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = bswap.c
+  source_name_part = bswap
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.cdtors.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/cdtors.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = cdtors.c
+  source_name_part = cdtors
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.circlist.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/circlist.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = circlist.c
+  source_name_part = circlist
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.environ.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/environ.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = environ.c
+  source_name_part = environ
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.expand_vars.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/expand_vars.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = expand_vars.c
+  source_name_part = expand_vars
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.fibheap.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/fibheap.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = fibheap.c
+  source_name_part = fibheap
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.hopscotch.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/hopscotch.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = hopscotch.c
+  source_name_part = hopscotch
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.ifaddrs.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/ifaddrs.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = ifaddrs.c
+  source_name_part = ifaddrs
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.io.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/io.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = io.c
+  source_name_part = io
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.log.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/log.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = log.c
+  source_name_part = log
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.md5.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/md5.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = md5.c
+  source_name_part = md5
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.mh3.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/mh3.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = mh3.c
+  source_name_part = mh3
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.random.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/random.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = random.c
+  source_name_part = random
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.retcode.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/retcode.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = retcode.c
+  source_name_part = retcode
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.sockets.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/sockets.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = sockets.c
+  source_name_part = sockets
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.string.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/string.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = string.c
+  source_name_part = string
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.strtod.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/strtod.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = strtod.c
+  source_name_part = strtod
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.strtol.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/strtol.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = strtol.c
+  source_name_part = strtol
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.threads.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/threads.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = threads.c
+  source_name_part = threads
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.time.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/time.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = time.c
+  source_name_part = time
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.xmlparser.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/xmlparser.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = xmlparser.c
+  source_name_part = xmlparser
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/dynlib/posix/libddsrt.dynlib.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/dynlib/posix/dynlib.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = dynlib.c
+  source_name_part = dynlib
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/environ/posix/libddsrt.environ.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/environ/posix/environ.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = environ.c
+  source_name_part = environ
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/filesystem/posix/libddsrt.filesystem.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/filesystem/posix/filesystem.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = filesystem.c
+  source_name_part = filesystem
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/heap/posix/libddsrt.heap.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/heap/posix/heap.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = heap.c
+  source_name_part = heap
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/ifaddrs/posix/libddsrt.ifaddrs.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/ifaddrs/posix/ifaddrs.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = ifaddrs.c
+  source_name_part = ifaddrs
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/netstat/linux/libddsrt.netstat.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/netstat/linux/netstat.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = netstat.c
+  source_name_part = netstat
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/process/posix/libddsrt.process.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/process/posix/process.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = process.c
+  source_name_part = process
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/random/posix/libddsrt.random.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/random/posix/random.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = random.c
+  source_name_part = random
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/rusage/posix/libddsrt.rusage.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/rusage/posix/rusage.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = rusage.c
+  source_name_part = rusage
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/sockets/posix/libddsrt.gethostname.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/sockets/posix/gethostname.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = gethostname.c
+  source_name_part = gethostname
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/sockets/posix/libddsrt.socket.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/sockets/posix/socket.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = socket.c
+  source_name_part = socket
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/sync/posix/libddsrt.sync.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/sync/posix/sync.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = sync.c
+  source_name_part = sync
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/threads/posix/libddsrt.threads.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/threads/posix/threads.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = threads.c
+  source_name_part = threads
+build obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/time/posix/libddsrt.time.o: cc ../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/time/posix/time.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = time.c
+  source_name_part = time
+
+build ./libddsrt.a: alink obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.atomics.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.avl.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.bswap.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.cdtors.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.circlist.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.environ.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.expand_vars.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.fibheap.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.hopscotch.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.ifaddrs.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.io.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.log.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.md5.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.mh3.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.random.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.retcode.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.sockets.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.string.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.strtod.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.strtol.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.threads.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.time.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/libddsrt.xmlparser.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/dynlib/posix/libddsrt.dynlib.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/environ/posix/libddsrt.environ.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/filesystem/posix/libddsrt.filesystem.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/heap/posix/libddsrt.heap.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/ifaddrs/posix/libddsrt.ifaddrs.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/netstat/linux/libddsrt.netstat.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/process/posix/libddsrt.process.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/random/posix/libddsrt.random.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/rusage/posix/libddsrt.rusage.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/sockets/posix/libddsrt.gethostname.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/sockets/posix/libddsrt.socket.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/sync/posix/libddsrt.sync.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/threads/posix/libddsrt.threads.o obj/src/eclipse-cyclonedds/cyclonedds/src/ddsrt/src/time/posix/libddsrt.time.o || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  arflags =
+  output_extension = .a
+  output_dir = .

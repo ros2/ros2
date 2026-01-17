@@ -1,0 +1,17 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DRCL_BUILDING_DLL -DRCUTILS_BUILDING_DLL -DROSIDL_RUNTIME_C_BUILDING_DLL -DRMW_VERSION_MAJOR=2 -DRMW_VERSION_MINOR=0 -DRMW_VERSION_PATCH=0 -DROSIDL_GENERATOR_C_BUILDING_DLL_rcl_interfaces -DROSIDL_GENERATOR_C_BUILDING_DLL_type_description_interfaces -DROSIDL_GENERATOR_C_BUILDING_DLL_service_msgs -DROSIDL_GENERATOR_C_BUILDING_DLL_builtin_interfaces
+include_dirs = -I../../src/ros2/rcl/rcl/include -I../../src/ros2/rcutils/include -I../../src/ros2/rmw/rmw/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../generated -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl_dynamic_typesupport/include -I../../src/ros2/rcl_logging/rcl_logging_interface/include -I../../src/ros2/rcl/rcl_yaml_param_parser/include -I../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include
+cflags = -std=c11 -Wno-unused-parameter -Wall -Wextra -Wno-unused-parameter -fPIC -std=c99 -std=c99 -std=c11 -std=c11
+cflags_c = -std=c11 -std=c11 -fPIC
+target_output_name = test_rcl_basic
+
+build obj/test/rcl_test/test_rcl_basic.test_rcl_basic.o: cc ../../test/rcl_test/test_rcl_basic.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = test_rcl_basic.c
+  source_name_part = test_rcl_basic
+
+build ./test_rcl_basic: link obj/test/rcl_test/test_rcl_basic.test_rcl_basic.o ./librcl.so ./librcutils.so ./librosidl_dynamic_typesupport.so ./libservice_msgs.so ./librmw.so ./librosidl_runtime_c.so ./librcl_logging_interface.so ./librcl_yaml_param_parser.so ./librmw_implementation.so ./librmw_cyclonedds_cpp.so ./librcl_interfaces.so ./librosidl_typesupport_introspection_c.so ./libtype_description_interfaces.so ./libbuiltin_interfaces.so
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = 
+  output_dir = .

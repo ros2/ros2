@@ -1,0 +1,56 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from lifecycle_msgs/lifecycle_msgs/msg/State.msg
+// generated code does not contain a copyright notice
+
+
+module lifecycle_msgs {
+  module msg {
+    module State_Constants {
+      @verbatim (language="comment", text=
+        "These are the primary states. State changes can only be requested when the" "\n"        "node is in one of these states." "\n"        "Indicates state has not yet been set.")
+      const uint8 PRIMARY_STATE_UNKNOWN = 0;
+      @verbatim (language="comment", text=
+        "This is the life cycle state the node is in immediately after being" "\n"        "instantiated.")
+      const uint8 PRIMARY_STATE_UNCONFIGURED = 1;
+      @verbatim (language="comment", text=
+        "This state represents a node that is not currently performing any processing.")
+      const uint8 PRIMARY_STATE_INACTIVE = 2;
+      @verbatim (language="comment", text=
+        "This is the main state of the node's life cycle. While in this state, the node" "\n"        "performs any processing, responds to service requests, reads and processes" "\n"        "data, produces output, etc.")
+      const uint8 PRIMARY_STATE_ACTIVE = 3;
+      @verbatim (language="comment", text=
+        "The finalized state is the state in which the node ends immediately before" "\n"        "being destroyed.")
+      const uint8 PRIMARY_STATE_FINALIZED = 4;
+      @verbatim (language="comment", text=
+        "Temporary intermediate states. When a transition is requested, the node" "\n"        "changes its state into one of these states." "\n"        "In this transition state the node's onConfigure callback will be called to" "\n"        "allow the node to load its configuration and conduct any required setup.")
+      const uint8 TRANSITION_STATE_CONFIGURING = 10;
+      @verbatim (language="comment", text=
+        "In this transition state the node's callback onCleanup will be called to clear" "\n"        "all state and return the node to a functionally equivalent state as when" "\n"        "first created.")
+      const uint8 TRANSITION_STATE_CLEANINGUP = 11;
+      @verbatim (language="comment", text=
+        "In this transition state the callback onShutdown will be executed to do any" "\n"        "cleanup necessary before destruction.")
+      const uint8 TRANSITION_STATE_SHUTTINGDOWN = 12;
+      @verbatim (language="comment", text=
+        "In this transition state the callback onActivate will be executed to do any" "\n"        "final preparations to start executing.")
+      const uint8 TRANSITION_STATE_ACTIVATING = 13;
+      @verbatim (language="comment", text=
+        "In this transition state the callback onDeactivate will be executed to do any" "\n"        "cleanup to start executing, and reverse the onActivate changes.")
+      const uint8 TRANSITION_STATE_DEACTIVATING = 14;
+      @verbatim (language="comment", text=
+        "This transition state is where any error may be cleaned up.")
+      const uint8 TRANSITION_STATE_ERRORPROCESSING = 15;
+    };
+    @verbatim (language="comment", text=
+      "Primary state definitions as depicted in:" "\n"
+      "http://design.ros2.org/articles/node_lifecycle.html")
+    struct State {
+      @verbatim (language="comment", text=
+        "The state id value from the above definitions.")
+      uint8 id;
+
+      @verbatim (language="comment", text=
+        "A text label of the state.")
+      string label;
+    };
+  };
+};

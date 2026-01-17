@@ -1,0 +1,92 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -std=c11 -fPIC -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L -D__OHOS__ -Wall -Wextra -Wconversion -Wpedantic -Wno-sign-conversion -Wno-unused-parameter -std=c11
+target_output_name = librcutils
+
+build obj/src/ros2/rcutils/src/librcutils.allocator.o: cc ../../src/ros2/rcutils/src/allocator.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = allocator.c
+  source_name_part = allocator
+build obj/src/ros2/rcutils/src/librcutils.array_list.o: cc ../../src/ros2/rcutils/src/array_list.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = array_list.c
+  source_name_part = array_list
+build obj/src/ros2/rcutils/src/librcutils.char_array.o: cc ../../src/ros2/rcutils/src/char_array.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = char_array.c
+  source_name_part = char_array
+build obj/src/ros2/rcutils/src/librcutils.uint8_array.o: cc ../../src/ros2/rcutils/src/uint8_array.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = uint8_array.c
+  source_name_part = uint8_array
+build obj/src/ros2/rcutils/src/librcutils.hash_map.o: cc ../../src/ros2/rcutils/src/hash_map.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = hash_map.c
+  source_name_part = hash_map
+build obj/src/ros2/rcutils/src/librcutils.string_array.o: cc ../../src/ros2/rcutils/src/string_array.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = string_array.c
+  source_name_part = string_array
+build obj/src/ros2/rcutils/src/librcutils.string_map.o: cc ../../src/ros2/rcutils/src/string_map.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = string_map.c
+  source_name_part = string_map
+build obj/src/ros2/rcutils/src/librcutils.format_string.o: cc ../../src/ros2/rcutils/src/format_string.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = format_string.c
+  source_name_part = format_string
+build obj/src/ros2/rcutils/src/librcutils.repl_str.o: cc ../../src/ros2/rcutils/src/repl_str.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = repl_str.c
+  source_name_part = repl_str
+build obj/src/ros2/rcutils/src/librcutils.split.o: cc ../../src/ros2/rcutils/src/split.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = split.c
+  source_name_part = split
+build obj/src/ros2/rcutils/src/librcutils.strdup.o: cc ../../src/ros2/rcutils/src/strdup.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = strdup.c
+  source_name_part = strdup
+build obj/src/ros2/rcutils/src/librcutils.strcasecmp.o: cc ../../src/ros2/rcutils/src/strcasecmp.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = strcasecmp.c
+  source_name_part = strcasecmp
+build obj/src/ros2/rcutils/src/librcutils.snprintf.o: cc ../../src/ros2/rcutils/src/snprintf.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = snprintf.c
+  source_name_part = snprintf
+build obj/src/ros2/rcutils/src/librcutils.strerror.o: cc ../../src/ros2/rcutils/src/strerror.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = strerror.c
+  source_name_part = strerror
+build obj/src/ros2/rcutils/src/librcutils.cmdline_parser.o: cc ../../src/ros2/rcutils/src/cmdline_parser.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = cmdline_parser.c
+  source_name_part = cmdline_parser
+build obj/src/ros2/rcutils/src/librcutils.find.o: cc ../../src/ros2/rcutils/src/find.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = find.c
+  source_name_part = find
+build obj/src/ros2/rcutils/src/librcutils.env.o: cc ../../src/ros2/rcutils/src/env.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = env.c
+  source_name_part = env
+build obj/src/ros2/rcutils/src/librcutils.error_handling.o: cc ../../src/ros2/rcutils/src/error_handling.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = error_handling.c
+  source_name_part = error_handling
+build obj/src/ros2/rcutils/src/librcutils.filesystem.o: cc ../../src/ros2/rcutils/src/filesystem.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = filesystem.c
+  source_name_part = filesystem
+build obj/src/ros2/rcutils/src/librcutils.logging.o: cc ../../src/ros2/rcutils/src/logging.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = logging.c
+  source_name_part = logging
+build obj/src/ros2/rcutils/src/librcutils.process.o: cc ../../src/ros2/rcutils/src/process.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = process.c
+  source_name_part = process
+build obj/src/ros2/rcutils/src/librcutils.qsort.o: cc ../../src/ros2/rcutils/src/qsort.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = qsort.c
+  source_name_part = qsort
+build obj/src/ros2/rcutils/src/librcutils.sha256.o: cc ../../src/ros2/rcutils/src/sha256.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = sha256.c
+  source_name_part = sha256
+build obj/src/ros2/rcutils/src/librcutils.shared_library.o: cc ../../src/ros2/rcutils/src/shared_library.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = shared_library.c
+  source_name_part = shared_library
+build obj/src/ros2/rcutils/src/librcutils.time.o: cc ../../src/ros2/rcutils/src/time.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = time.c
+  source_name_part = time
+build obj/src/ros2/rcutils/src/librcutils.time_unix.o: cc ../../src/ros2/rcutils/src/time_unix.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = time_unix.c
+  source_name_part = time_unix
+
+build ./librcutils.so: solink obj/src/ros2/rcutils/src/librcutils.allocator.o obj/src/ros2/rcutils/src/librcutils.array_list.o obj/src/ros2/rcutils/src/librcutils.char_array.o obj/src/ros2/rcutils/src/librcutils.uint8_array.o obj/src/ros2/rcutils/src/librcutils.hash_map.o obj/src/ros2/rcutils/src/librcutils.string_array.o obj/src/ros2/rcutils/src/librcutils.string_map.o obj/src/ros2/rcutils/src/librcutils.format_string.o obj/src/ros2/rcutils/src/librcutils.repl_str.o obj/src/ros2/rcutils/src/librcutils.split.o obj/src/ros2/rcutils/src/librcutils.strdup.o obj/src/ros2/rcutils/src/librcutils.strcasecmp.o obj/src/ros2/rcutils/src/librcutils.snprintf.o obj/src/ros2/rcutils/src/librcutils.strerror.o obj/src/ros2/rcutils/src/librcutils.cmdline_parser.o obj/src/ros2/rcutils/src/librcutils.find.o obj/src/ros2/rcutils/src/librcutils.env.o obj/src/ros2/rcutils/src/librcutils.error_handling.o obj/src/ros2/rcutils/src/librcutils.filesystem.o obj/src/ros2/rcutils/src/librcutils.logging.o obj/src/ros2/rcutils/src/librcutils.process.o obj/src/ros2/rcutils/src/librcutils.qsort.o obj/src/ros2/rcutils/src/librcutils.sha256.o obj/src/ros2/rcutils/src/librcutils.shared_library.o obj/src/ros2/rcutils/src/librcutils.time.o obj/src/ros2/rcutils/src/librcutils.time_unix.o || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  ldflags = -Wl,--no-undefined -Wl,-soname,librcutils.so
+  libs = -lpthread -ldl -lm -lc
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

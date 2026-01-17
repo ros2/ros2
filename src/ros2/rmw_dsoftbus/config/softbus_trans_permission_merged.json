@@ -1,0 +1,104 @@
+[
+  {
+    "SESSION_NAME": "com\\.huawei\\.dmsdp\\..*",
+    "REGEXP": "true",
+    "DEVID": "NETWORKID",
+    "SEC_LEVEL": "public",
+    "APP_INFO": [
+      {
+        "TYPE": "native_app",
+        "PKG_NAME": "com.huawei.dmsdp",
+        "ACTIONS": "create,open"
+      },
+      {
+        "TYPE": "self_app",
+        "PKG_NAME": "com.huawei.dmsdp",
+        "ACTIONS": "create,open"
+      },
+      {
+        "TYPE": "system_app",
+        "PKG_NAME": "com.huawei.dmsdp",
+        "ACTIONS": "create,open"
+      },
+      {
+        "TYPE": "native_app",
+        "PKG_NAME": "discovery_final_test",
+        "ACTIONS": "create,open"
+      },
+      {
+        "TYPE": "native_app",
+        "PKG_NAME": "message_send_recv_test",
+        "ACTIONS": "create,open"
+      },
+      {
+        "TYPE": "native_app",
+        "PKG_NAME": "get_network_id",
+        "ACTIONS": "create,open"
+      },
+      {
+        "TYPE": "native_app",
+        "PKG_NAME": "diagnose_initialize",
+        "ACTIONS": "create,open"
+      },
+      {
+        "TYPE": "native_app",
+        "PKG_NAME": "rmw_discovery_daemon",
+        "ACTIONS": "create,open"
+      }
+    ]
+  },
+  {
+    "SESSION_NAME": "com.huawei.ros2_rmw_dsoftbus.*",
+    "REGEXP": "true",
+    "DEVID": "NETWORKID",
+    "SEC_LEVEL": "public",
+    "APP_INFO": [
+      {
+        "PKG_NAME": "rmw_discovery_daemon",
+        "TYPE": "native_app",
+        "ACTIONS": "create,open"
+      },
+      {
+        "PKG_NAME": "com.huawei.ros2_rmw_dsoftbus",
+        "TYPE": "native_app",
+        "ACTIONS": "create,open"
+      }
+    ]
+  },
+  {
+    "SESSION_NAME": "com.huawei.ros2.*",
+    "REGEXP": "true",
+    "DEVID": "NETWORKID",
+    "SEC_LEVEL": "public",
+    "APP_INFO": [
+      {
+        "PKG_NAME": "ros2_talker",
+        "TYPE": "native_app",
+        "ACTIONS": "create,open"
+      },
+      {
+        "PKG_NAME": "ros2_listener",
+        "TYPE": "native_app",
+        "ACTIONS": "create,open"
+      }
+    ]
+  },
+  {
+    "SESSION_NAME": "com\\.kaihong\\.rmw_discovery\\..*",
+    "REGEXP": "true",
+    "DEVID": "NETWORKID",
+    "SEC_LEVEL": "public",
+    "APP_INFO": [
+      {
+        "PKG_NAME": "com.kaihong.rmw_discovery",
+        "TYPE": "system_app",
+        "ACTIONS": "create,open"
+      },
+      {
+        "PKG_NAME": "com.kaihong.rmw_discovery",
+        "TYPE": "normal_app",
+        "ACTIONS": "create,open"
+      }
+    ]
+  }
+]

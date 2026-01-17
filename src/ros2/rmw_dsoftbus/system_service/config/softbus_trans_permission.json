@@ -1,0 +1,33 @@
+[
+  {
+    "SESSION_NAME": "com.huawei.ros2_rmw_dsoftbus.*",
+    "REGEXP": "true",
+    "DEVID": "NETWORKID",
+    "SEC_LEVEL": "public",
+    "APP_INFO": [
+      {
+        "PKG_NAME": "rmw_discovery_daemon",
+        "TYPE": "native_app",
+        "ACTIONS": "create,open"
+      }
+    ]
+  },
+  {
+    "SESSION_NAME": "com.huawei.ros2.*",
+    "REGEXP": "true",
+    "DEVID": "NETWORKID",
+    "SEC_LEVEL": "public",
+    "APP_INFO": [
+      {
+        "PKG_NAME": "ros2_talker",
+        "TYPE": "native_app",
+        "ACTIONS": "create,open"
+      },
+      {
+        "PKG_NAME": "ros2_listener",
+        "TYPE": "native_app",
+        "ACTIONS": "create,open"
+      }
+    ]
+  }
+]

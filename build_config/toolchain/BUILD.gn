@@ -1,0 +1,92 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# OpenHarmony aarch64 cross-compilation toolchain
+
+# OpenHarmony toolchain paths (Updated: 2026-01-17 for SDK toolchain)
+_sdk_root = "/home/jiusi/command-line-tools/sdk/default/openharmony/native"
+_llvm_root = "$_sdk_root/llvm"
+_sysroot = "$_sdk_root/sysroot"
+
+# ============================================================================
+# aarch64-linux-ohos toolchain
+# ============================================================================
+toolchain("target") {
+  # Compiler binaries
+  cc = "$_llvm_root/bin/clang"
+  cxx = "$_llvm_root/bin/clang++"
+  ar = "$_llvm_root/bin/llvm-ar"
+  ld = cxx  # Use clang++ for linking C++ code
+
+  # Target triple and sysroot
+  _target_triple = "aarch64-linux-ohos"
+  _common_flags = "--target=$_target_triple --sysroot=$_sysroot"
+
+  # C/C++ flags
+  _common_cflags = "$_common_flags -I$_llvm_root/include/libcxx-ohos/include/c++/v1"
+
+  # Linker flags
+  _common_ldflags = "$_common_flags -L$_llvm_root/lib/aarch64-linux-ohos -lc++ -lc++abi"
+
+  # Tool invocation templates
+  tool("cc") {
+    depfile = "{{output}}.d"
+    command = "$cc -MMD -MF $depfile $_common_cflags {{defines}} {{include_dirs}} {{cflags}} {{cflags_c}} -c {{source}} -o {{output}}"
+    depsformat = "gcc"
+    description = "CC {{output}}"
+    outputs = [ "{{source_out_dir}}/{{target_output_name}}.{{source_name_part}}.o" ]
+  }
+
+  tool("cxx") {
+    depfile = "{{output}}.d"
+    command = "$cxx -MMD -MF $depfile $_common_cflags {{defines}} {{include_dirs}} {{cflags}} {{cflags_cc}} -c {{source}} -o {{output}}"
+    depsformat = "gcc"
+    description = "CXX {{output}}"
+    outputs = [ "{{source_out_dir}}/{{target_output_name}}.{{source_name_part}}.o" ]
+  }
+
+  tool("alink") {
+    rspfile = "{{output}}.rsp"
+    command = "rm -f {{output}} && $ar rcs {{output}} @$rspfile"
+    description = "AR {{output}}"
+    rspfile_content = "{{inputs}}"
+    outputs = [ "{{output_dir}}/{{target_output_name}}{{output_extension}}" ]
+    default_output_extension = ".a"
+    default_output_dir = "{{root_out_dir}}"
+    output_prefix = "lib"
+  }
+
+  tool("solink") {
+    soname = "{{target_output_name}}{{output_extension}}"
+    sofile = "{{output_dir}}/$soname"
+    rspfile = soname + ".rsp"
+
+    command = "$ld -shared $_common_ldflags {{ldflags}} -o $sofile -Wl,-soname=$soname @$rspfile"
+    rspfile_content = "{{inputs}} {{libs}}"
+    description = "SOLINK $sofile"
+
+    default_output_extension = ".so"
+    default_output_dir = "{{root_out_dir}}"
+    output_prefix = "lib"
+    outputs = [ sofile ]
+  }
+
+  tool("link") {
+    outfile = "{{output_dir}}/{{target_output_name}}{{output_extension}}"
+    rspfile = "$outfile.rsp"
+
+    command = "$ld $_common_ldflags {{ldflags}} -o $outfile -Wl,--start-group @$rspfile {{libs}} -Wl,--end-group"
+    description = "LINK $outfile"
+    rspfile_content = "{{inputs}}"
+    default_output_dir = "{{root_out_dir}}"
+    outputs = [ outfile ]
+  }
+
+  tool("stamp") {
+    command = "touch {{output}}"
+    description = "STAMP {{output}}"
+  }
+
+  tool("copy") {
+    command = "cp -af {{source}} {{output}}"
+    description = "COPY {{source}} {{output}}"
+  }
+}

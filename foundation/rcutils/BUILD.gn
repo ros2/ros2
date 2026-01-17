@@ -1,0 +1,134 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rcutils - ROS2 C Utilities Library
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory (original ROS2 source)
+_rcutils_src = "//ros2/src/ros2/rcutils"
+
+# ============================================================================
+# rcutils shared library
+# ============================================================================
+ros2_shared_library("rcutils") {
+  sources = [
+    "${_rcutils_src}/src/allocator.c",
+    "${_rcutils_src}/src/array_list.c",
+    "${_rcutils_src}/src/char_array.c",
+    "${_rcutils_src}/src/cmdline_parser.c",
+    "${_rcutils_src}/src/env.c",
+    "${_rcutils_src}/src/error_handling.c",
+    "${_rcutils_src}/src/filesystem.c",
+    "${_rcutils_src}/src/find.c",
+    "${_rcutils_src}/src/format_string.c",
+    "${_rcutils_src}/src/hash_map.c",
+    "${_rcutils_src}/src/logging.c",
+    "${_rcutils_src}/src/process.c",
+    "${_rcutils_src}/src/qsort.c",
+    "${_rcutils_src}/src/repl_str.c",
+    "${_rcutils_src}/src/sha256.c",
+    "${_rcutils_src}/src/shared_library.c",
+    "${_rcutils_src}/src/snprintf.c",
+    "${_rcutils_src}/src/split.c",
+    "${_rcutils_src}/src/strcasecmp.c",
+    "${_rcutils_src}/src/strdup.c",
+    "${_rcutils_src}/src/strerror.c",
+    "${_rcutils_src}/src/string_array.c",
+    "${_rcutils_src}/src/string_map.c",
+    "${_rcutils_src}/src/time.c",
+    "${_rcutils_src}/src/time_unix.c",  # Unix-specific implementation
+    "${_rcutils_src}/src/uint8_array.c",
+  ]
+
+  include_dirs = [
+    "${_rcutils_src}/include",
+    "${_rcutils_src}/src",
+  ]
+
+  defines = [
+    "RCUTILS_BUILDING_DLL",
+    "_GNU_SOURCE",
+  ]
+
+  # Platform-specific configurations
+  if (is_ohos) {
+    defines += [ "__OHOS__" ]
+  }
+
+  libs = [
+    "dl",      # For shared library loading
+    "pthread", # For threading
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# rcutils with fault injection (for testing)
+# ============================================================================
+ros2_shared_library("rcutils_testing") {
+  sources = [
+    "${_rcutils_src}/src/testing/fault_injection.c",
+  ]
+
+  include_dirs = [
+    "${_rcutils_src}/include",
+  ]
+
+  deps = [ ":rcutils" ]
+
+  defines = [
+    "RCUTILS_BUILDING_DLL",
+    "RCUTILS_ENABLE_FAULT_INJECTION",
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# Test executable
+# ============================================================================
+if (defined(ohos_test)) {
+  import("//gn_templates/ros2_executable.gni")
+
+  ros2_test("rcutils_test") {
+    sources = [
+      "${_rcutils_src}/test/test_allocator.cpp",
+      "${_rcutils_src}/test/test_array_list.cpp",
+      "${_rcutils_src}/test/test_char_array.cpp",
+      "${_rcutils_src}/test/test_cmdline_parser.cpp",
+      "${_rcutils_src}/test/test_env.cpp",
+      "${_rcutils_src}/test/test_error_handling.cpp",
+      "${_rcutils_src}/test/test_filesystem.cpp",
+      "${_rcutils_src}/test/test_find.cpp",
+      "${_rcutils_src}/test/test_format_string.cpp",
+      "${_rcutils_src}/test/test_hash_map.cpp",
+      "${_rcutils_src}/test/test_logging.cpp",
+      "${_rcutils_src}/test/test_macros.cpp",
+      "${_rcutils_src}/test/test_process.cpp",
+      "${_rcutils_src}/test/test_repl_str.cpp",
+      "${_rcutils_src}/test/test_sha256.cpp",
+      "${_rcutils_src}/test/test_shared_library.cpp",
+      "${_rcutils_src}/test/test_snprintf.cpp",
+      "${_rcutils_src}/test/test_split.cpp",
+      "${_rcutils_src}/test/test_strcasecmp.cpp",
+      "${_rcutils_src}/test/test_strdup.cpp",
+      "${_rcutils_src}/test/test_strerror.cpp",
+      "${_rcutils_src}/test/test_string_array.cpp",
+      "${_rcutils_src}/test/test_string_map.cpp",
+      "${_rcutils_src}/test/test_time.cpp",
+      "${_rcutils_src}/test/test_uint8_array.cpp",
+    ]
+
+    include_dirs = [
+      "${_rcutils_src}/include",
+    ]
+
+    deps = [
+      ":rcutils",
+      ":rcutils_testing",
+    ]
+  }
+}

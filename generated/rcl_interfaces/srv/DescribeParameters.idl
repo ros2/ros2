@@ -1,0 +1,22 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from rcl_interfaces/rcl_interfaces/srv/DescribeParameters.srv
+// generated code does not contain a copyright notice
+
+#include "rcl_interfaces/msg/ParameterDescriptor.idl"
+
+module rcl_interfaces {
+  module srv {
+    @verbatim (language="comment", text=
+      "A list of parameters of which to get the descriptor.")
+    struct DescribeParameters_Request {
+      sequence<string> names;
+    };
+    @verbatim (language="comment", text=
+      "A list of the descriptors of all parameters requested in the same order" "\n"
+      "as they were requested. This list has the same length as the list of" "\n"
+      "parameters requested.")
+    struct DescribeParameters_Response {
+      sequence<rcl_interfaces::msg::ParameterDescriptor> descriptors;
+    };
+  };
+};

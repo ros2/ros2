@@ -1,0 +1,35 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DROSIDL_GENERATOR_C_BUILDING_DLL_rmw_dds_common -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../generated -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include
+cflags = -Wno-unused-parameter -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -std=c11
+target_output_name = librmw_dds_common
+
+build obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.gid__functions.o: cc ../../generated/rmw_dds_common/msg/detail/gid__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = gid__functions.c
+  source_name_part = gid__functions
+build obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.node_entities_info__functions.o: cc ../../generated/rmw_dds_common/msg/detail/node_entities_info__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = node_entities_info__functions.c
+  source_name_part = node_entities_info__functions
+build obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.participant_entities_info__functions.o: cc ../../generated/rmw_dds_common/msg/detail/participant_entities_info__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = participant_entities_info__functions.c
+  source_name_part = participant_entities_info__functions
+build obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.gid__type_support.o: cc ../../generated/rmw_dds_common/msg/detail/gid__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = gid__type_support.c
+  source_name_part = gid__type_support
+build obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.node_entities_info__type_support.o: cc ../../generated/rmw_dds_common/msg/detail/node_entities_info__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = node_entities_info__type_support.c
+  source_name_part = node_entities_info__type_support
+build obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.participant_entities_info__type_support.o: cc ../../generated/rmw_dds_common/msg/detail/participant_entities_info__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = participant_entities_info__type_support.c
+  source_name_part = participant_entities_info__type_support
+build obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.type_description_stubs.o: cc ../../generated/rmw_dds_common/msg/detail/type_description_stubs.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description_stubs.c
+  source_name_part = type_description_stubs
+
+build ./librmw_dds_common.so: solink obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.gid__functions.o obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.node_entities_info__functions.o obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.participant_entities_info__functions.o obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.gid__type_support.o obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.node_entities_info__type_support.o obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.participant_entities_info__type_support.o obj/generated/rmw_dds_common/msg/detail/librmw_dds_common.type_description_stubs.o obj/generated/rmw_dds_common/msg/detail/rmw_dds_common_type_support_cpp.gid__type_support.o obj/generated/rmw_dds_common/msg/detail/rmw_dds_common_type_support_cpp.node_entities_info__type_support.o obj/generated/rmw_dds_common/msg/detail/rmw_dds_common_type_support_cpp.participant_entities_info__type_support.o obj/generated/rmw_dds_common/msg/rmw_dds_common_type_support_cpp.gid__type_support.o obj/generated/rmw_dds_common/msg/rmw_dds_common_type_support_cpp.node_entities_info__type_support.o obj/generated/rmw_dds_common/msg/rmw_dds_common_type_support_cpp.participant_entities_info__type_support.o ./librosidl_runtime_c.so ./librcutils.so ./librosidl_typesupport_cpp.so ./librosidl_typesupport_c.so ./librosidl_typesupport_introspection_cpp.so ./librosidl_typesupport_introspection_c.so || obj/generated/rmw_dds_common/rmw_dds_common_type_support_cpp.stamp obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

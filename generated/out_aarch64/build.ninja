@@ -1,0 +1,311 @@
+ninja_required_version = 1.7.2
+
+rule gn
+  command = ../../../OpenHarmony/prebuilts/build-tools/linux-x86/bin/gn --root=../.. -q --regeneration gen .
+  pool = console
+  description = Regenerating ninja files
+
+build build.ninja: gn
+  generator = 1
+  depfile = build.ninja.d
+
+subninja toolchain.ninja
+
+build default: phony obj/default.stamp
+build fastdds: phony obj/fastdds.stamp
+build ros2_foundation: phony obj/ros2_foundation.stamp
+build ros2_middleware: phony obj/ros2_middleware.stamp
+build tests: phony obj/tests.stamp
+build vendor: phony obj/vendor.stamp
+build cross_device_publisher_v2: phony tests/cross_device_publisher_v2
+build cross_device_subscriber_v2: phony tests/cross_device_subscriber_v2
+build cyclonedds_test: phony tests/cyclonedds_test
+build minimal_test: phony tests/minimal_test
+build test_rcutils: phony tests/test_rcutils
+build test_rosidl_runtime_c: phony tests/test_rosidl_runtime_c
+build action_msgs: phony ./libaction_msgs.so
+build action_msgs_type_support_cpp: phony obj/generated/action_msgs/action_msgs_type_support_cpp.stamp
+build ament_index_cpp: phony ./libament_index_cpp.so
+build asio: phony obj/src/eProsima/Fast-DDS/thirdparty/asio/asio.stamp
+build builtin_interfaces: phony ./libbuiltin_interfaces.so
+build builtin_interfaces_type_support_cpp: phony obj/generated/builtin_interfaces/builtin_interfaces_type_support_cpp.stamp
+build cyclone_config_gen: phony obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+build cyclonedds: phony obj/src/eclipse-cyclonedds/cyclonedds/cyclonedds.stamp
+build ddsc: phony ./libddsc.so
+build ddsi_sources: phony obj/src/eclipse-cyclonedds/cyclonedds/ddsi_sources.stamp
+build ddsrt: phony ./libddsrt.a
+build fastcdr: phony ./libfastcdr.so
+build fastcdr_config_gen: phony obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp
+build fastcdr_static: phony ./libfastcdr_static.a
+build fastdds_config_gen: phony obj/src/eProsima/Fast-DDS/fastdds_config_gen.stamp
+build fastrtps: phony ./libfastrtps.so
+build foundation_tests: phony obj/test/foundation_test/foundation_tests.stamp
+build introspection_tests: phony obj/test/introspection_test/introspection_tests.stamp
+build libstatistics_collector: phony ./libstatistics_collector.so
+build libyaml_vendor: phony obj/src/ros2/libyaml_vendor/libyaml_vendor.stamp
+build lifecycle_msgs: phony ./liblifecycle_msgs.so
+build lifecycle_msgs_type_support_cpp: phony obj/generated/lifecycle_msgs/lifecycle_msgs_type_support_cpp.stamp
+build logging_macros_gen: phony obj/src/ros2/rcutils/logging_macros_gen.stamp
+build rcl: phony ./librcl.so
+build rcl_action: phony ./librcl_action.so
+build rcl_interfaces: phony ./librcl_interfaces.so
+build rcl_interfaces_type_support_cpp: phony obj/generated/rcl_interfaces/rcl_interfaces_type_support_cpp.stamp
+build rcl_lifecycle: phony ./librcl_lifecycle.so
+build rcl_logging_interface: phony ./librcl_logging_interface.so
+build rcl_logging_noop: phony ./librcl_logging_noop.so
+build rcl_yaml_param_parser: phony ./librcl_yaml_param_parser.so
+build rclcpp: phony ./librclcpp.so
+build rclcpp_action: phony ./librclcpp_action.so
+build rclcpp_lifecycle: phony ./librclcpp_lifecycle.so
+build rcpputils: phony ./librcpputils.so
+build rcpputils_tests: phony obj/test/rcpputils_test/rcpputils_tests.stamp
+build rcutils: phony ./librcutils.so
+build rcutils_deploy: phony obj/src/ros2/rcutils/rcutils_deploy.stamp
+build rmw: phony ./librmw.so
+build rmw_cyclonedds_cpp: phony ./librmw_cyclonedds_cpp.so
+build rmw_dds_common: phony ./librmw_dds_common.so
+build rmw_dds_common_library: phony ./librmw_dds_common_library.so
+build rmw_dds_common_type_support_cpp: phony obj/generated/rmw_dds_common/rmw_dds_common_type_support_cpp.stamp
+build rmw_implementation: phony ./librmw_implementation.so
+build rosgraph_msgs: phony ./librosgraph_msgs.so
+build rosgraph_msgs_type_support_cpp: phony obj/generated/rosgraph_msgs/rosgraph_msgs_type_support_cpp.stamp
+build rosidl_dynamic_typesupport: phony ./librosidl_dynamic_typesupport.so
+build rosidl_runtime_c: phony ./librosidl_runtime_c.so
+build rosidl_runtime_cpp: phony obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp
+build rosidl_typesupport_c: phony ./librosidl_typesupport_c.so
+build rosidl_typesupport_cpp: phony ./librosidl_typesupport_cpp.so
+build rosidl_typesupport_interface: phony obj/src/ros2/rosidl/rosidl_typesupport_interface/rosidl_typesupport_interface.stamp
+build rosidl_typesupport_introspection_c: phony ./librosidl_typesupport_introspection_c.so
+build rosidl_typesupport_introspection_c_headers: phony obj/src/ros2/rosidl/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c_headers.stamp
+build rosidl_typesupport_introspection_cpp: phony ./librosidl_typesupport_introspection_cpp.so
+build service_msgs: phony ./libservice_msgs.so
+build service_msgs_type_support_cpp: phony obj/generated/service_msgs/service_msgs_type_support_cpp.stamp
+build simple_msg_v2: phony tests/libsimple_msg_v2.so
+build statistics_msgs: phony ./libstatistics_msgs.so
+build statistics_msgs_type_support_cpp: phony obj/generated/statistics_msgs/statistics_msgs_type_support_cpp.stamp
+build std_msgs: phony ./libstd_msgs.so
+build std_msgs_type_support_cpp: phony obj/generated/std_msgs/std_msgs_type_support_cpp.stamp
+build tinyxml2: phony ./libtinyxml2.a
+build tracetools: phony obj/src/ros2/ros2_tracing/tracetools/tracetools.stamp
+build type_description_interfaces: phony ./libtype_description_interfaces.so
+build type_description_interfaces_type_support_cpp: phony obj/generated/type_description_interfaces/type_description_interfaces_type_support_cpp.stamp
+build unique_identifier_msgs: phony ./libunique_identifier_msgs.so
+build unique_identifier_msgs_type_support_cpp: phony obj/generated/unique_identifier_msgs/unique_identifier_msgs_type_support_cpp.stamp
+build yaml: phony ./libyaml.so
+build $:default: phony obj/default.stamp
+build $:fastdds: phony obj/fastdds.stamp
+build $:ros2_foundation: phony obj/ros2_foundation.stamp
+build $:ros2_middleware: phony obj/ros2_middleware.stamp
+build $:tests: phony obj/tests.stamp
+build $:vendor: phony obj/vendor.stamp
+build demo_cpp$:listener: phony ./listener
+build demo_cpp$:talker: phony ./talker
+build generated/action_msgs$:action_msgs: phony ./libaction_msgs.so
+build generated/action_msgs: phony ./libaction_msgs.so
+build generated/action_msgs$:action_msgs_type_support_cpp: phony obj/generated/action_msgs/action_msgs_type_support_cpp.stamp
+build generated/builtin_interfaces$:builtin_interfaces: phony ./libbuiltin_interfaces.so
+build generated/builtin_interfaces: phony ./libbuiltin_interfaces.so
+build generated/builtin_interfaces$:builtin_interfaces_type_support_cpp: phony obj/generated/builtin_interfaces/builtin_interfaces_type_support_cpp.stamp
+build generated/lifecycle_msgs$:lifecycle_msgs: phony ./liblifecycle_msgs.so
+build generated/lifecycle_msgs: phony ./liblifecycle_msgs.so
+build generated/lifecycle_msgs$:lifecycle_msgs_type_support_cpp: phony obj/generated/lifecycle_msgs/lifecycle_msgs_type_support_cpp.stamp
+build generated/rcl_interfaces$:rcl_interfaces: phony ./librcl_interfaces.so
+build generated/rcl_interfaces: phony ./librcl_interfaces.so
+build generated/rcl_interfaces$:rcl_interfaces_type_support_cpp: phony obj/generated/rcl_interfaces/rcl_interfaces_type_support_cpp.stamp
+build generated/rmw_dds_common$:rmw_dds_common: phony ./librmw_dds_common.so
+build generated/rmw_dds_common: phony ./librmw_dds_common.so
+build generated/rmw_dds_common$:rmw_dds_common_type_support_cpp: phony obj/generated/rmw_dds_common/rmw_dds_common_type_support_cpp.stamp
+build generated/rosgraph_msgs$:rosgraph_msgs: phony ./librosgraph_msgs.so
+build generated/rosgraph_msgs: phony ./librosgraph_msgs.so
+build generated/rosgraph_msgs$:rosgraph_msgs_type_support_cpp: phony obj/generated/rosgraph_msgs/rosgraph_msgs_type_support_cpp.stamp
+build generated/service_msgs$:service_msgs: phony ./libservice_msgs.so
+build generated/service_msgs: phony ./libservice_msgs.so
+build generated/service_msgs$:service_msgs_type_support_cpp: phony obj/generated/service_msgs/service_msgs_type_support_cpp.stamp
+build generated/statistics_msgs$:statistics_msgs: phony ./libstatistics_msgs.so
+build generated/statistics_msgs: phony ./libstatistics_msgs.so
+build generated/statistics_msgs$:statistics_msgs_type_support_cpp: phony obj/generated/statistics_msgs/statistics_msgs_type_support_cpp.stamp
+build generated/std_msgs$:std_msgs: phony ./libstd_msgs.so
+build generated/std_msgs: phony ./libstd_msgs.so
+build generated/std_msgs$:std_msgs_type_support_cpp: phony obj/generated/std_msgs/std_msgs_type_support_cpp.stamp
+build generated/type_description_interfaces$:type_description_interfaces: phony ./libtype_description_interfaces.so
+build generated/type_description_interfaces: phony ./libtype_description_interfaces.so
+build generated/type_description_interfaces$:type_description_interfaces_type_support_cpp: phony obj/generated/type_description_interfaces/type_description_interfaces_type_support_cpp.stamp
+build generated/unique_identifier_msgs$:unique_identifier_msgs: phony ./libunique_identifier_msgs.so
+build generated/unique_identifier_msgs: phony ./libunique_identifier_msgs.so
+build generated/unique_identifier_msgs$:unique_identifier_msgs_type_support_cpp: phony obj/generated/unique_identifier_msgs/unique_identifier_msgs_type_support_cpp.stamp
+build src/ament/ament_index/ament_index_cpp$:ament_index_cpp: phony ./libament_index_cpp.so
+build src/ament/ament_index/ament_index_cpp: phony ./libament_index_cpp.so
+build src/eProsima/Fast-CDR$:fastcdr: phony ./libfastcdr.so
+build src/eProsima/Fast-CDR$:fastcdr_config_gen: phony obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp
+build src/eProsima/Fast-CDR$:fastcdr_static: phony ./libfastcdr_static.a
+build src/eProsima/Fast-DDS$:fastdds_config_gen: phony obj/src/eProsima/Fast-DDS/fastdds_config_gen.stamp
+build src/eProsima/Fast-DDS$:fastrtps: phony ./libfastrtps.so
+build src/eProsima/Fast-DDS/thirdparty/asio$:asio: phony obj/src/eProsima/Fast-DDS/thirdparty/asio/asio.stamp
+build src/eProsima/Fast-DDS/thirdparty/asio: phony obj/src/eProsima/Fast-DDS/thirdparty/asio/asio.stamp
+build src/eProsima/Fast-DDS/thirdparty/tinyxml2$:tinyxml2: phony ./libtinyxml2.a
+build src/eProsima/Fast-DDS/thirdparty/tinyxml2: phony ./libtinyxml2.a
+build src/eclipse-cyclonedds/cyclonedds$:cyclone_config_gen: phony obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+build src/eclipse-cyclonedds/cyclonedds$:cyclonedds: phony obj/src/eclipse-cyclonedds/cyclonedds/cyclonedds.stamp
+build src/eclipse-cyclonedds/cyclonedds: phony obj/src/eclipse-cyclonedds/cyclonedds/cyclonedds.stamp
+build src/eclipse-cyclonedds/cyclonedds$:ddsc: phony ./libddsc.so
+build src/eclipse-cyclonedds/cyclonedds$:ddsi_sources: phony obj/src/eclipse-cyclonedds/cyclonedds/ddsi_sources.stamp
+build src/eclipse-cyclonedds/cyclonedds$:ddsrt: phony ./libddsrt.a
+build src/ros-tooling/libstatistics_collector$:libstatistics_collector: phony ./libstatistics_collector.so
+build src/ros-tooling/libstatistics_collector: phony ./libstatistics_collector.so
+build src/ros2/libyaml_vendor$:libyaml_vendor: phony obj/src/ros2/libyaml_vendor/libyaml_vendor.stamp
+build src/ros2/libyaml_vendor: phony obj/src/ros2/libyaml_vendor/libyaml_vendor.stamp
+build src/ros2/rcl/rcl$:rcl: phony ./librcl.so
+build src/ros2/rcl/rcl: phony ./librcl.so
+build src/ros2/rcl/rcl_action$:rcl_action: phony ./librcl_action.so
+build src/ros2/rcl/rcl_action: phony ./librcl_action.so
+build src/ros2/rcl/rcl_lifecycle$:rcl_lifecycle: phony ./librcl_lifecycle.so
+build src/ros2/rcl/rcl_lifecycle: phony ./librcl_lifecycle.so
+build src/ros2/rcl/rcl_yaml_param_parser$:rcl_yaml_param_parser: phony ./librcl_yaml_param_parser.so
+build src/ros2/rcl/rcl_yaml_param_parser: phony ./librcl_yaml_param_parser.so
+build src/ros2/rcl_logging/rcl_logging_interface$:rcl_logging_interface: phony ./librcl_logging_interface.so
+build src/ros2/rcl_logging/rcl_logging_interface: phony ./librcl_logging_interface.so
+build src/ros2/rcl_logging/rcl_logging_noop$:rcl_logging_noop: phony ./librcl_logging_noop.so
+build src/ros2/rcl_logging/rcl_logging_noop: phony ./librcl_logging_noop.so
+build src/ros2/rclcpp/rclcpp$:rclcpp: phony ./librclcpp.so
+build src/ros2/rclcpp/rclcpp: phony ./librclcpp.so
+build src/ros2/rclcpp/rclcpp_action$:rclcpp_action: phony ./librclcpp_action.so
+build src/ros2/rclcpp/rclcpp_action: phony ./librclcpp_action.so
+build src/ros2/rclcpp/rclcpp_lifecycle$:rclcpp_lifecycle: phony ./librclcpp_lifecycle.so
+build src/ros2/rclcpp/rclcpp_lifecycle: phony ./librclcpp_lifecycle.so
+build src/ros2/rcpputils$:rcpputils: phony ./librcpputils.so
+build src/ros2/rcpputils: phony ./librcpputils.so
+build src/ros2/rcutils$:logging_macros_gen: phony obj/src/ros2/rcutils/logging_macros_gen.stamp
+build src/ros2/rcutils$:rcutils: phony ./librcutils.so
+build src/ros2/rcutils: phony ./librcutils.so
+build src/ros2/rcutils$:rcutils_deploy: phony obj/src/ros2/rcutils/rcutils_deploy.stamp
+build src/ros2/rmw/rmw$:rmw: phony ./librmw.so
+build src/ros2/rmw/rmw: phony ./librmw.so
+build src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp$:rmw_cyclonedds_cpp: phony ./librmw_cyclonedds_cpp.so
+build src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp: phony ./librmw_cyclonedds_cpp.so
+build src/ros2/rmw_dds_common/rmw_dds_common$:rmw_dds_common_library: phony ./librmw_dds_common_library.so
+build src/ros2/rmw_implementation/rmw_implementation$:rmw_implementation: phony ./librmw_implementation.so
+build src/ros2/rmw_implementation/rmw_implementation: phony ./librmw_implementation.so
+build src/ros2/ros2_tracing/tracetools$:tracetools: phony obj/src/ros2/ros2_tracing/tracetools/tracetools.stamp
+build src/ros2/ros2_tracing/tracetools: phony obj/src/ros2/ros2_tracing/tracetools/tracetools.stamp
+build src/ros2/rosidl/rosidl_runtime_c$:rosidl_runtime_c: phony ./librosidl_runtime_c.so
+build src/ros2/rosidl/rosidl_runtime_c: phony ./librosidl_runtime_c.so
+build src/ros2/rosidl/rosidl_runtime_cpp$:rosidl_runtime_cpp: phony obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp
+build src/ros2/rosidl/rosidl_runtime_cpp: phony obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp
+build src/ros2/rosidl/rosidl_typesupport_interface$:rosidl_typesupport_interface: phony obj/src/ros2/rosidl/rosidl_typesupport_interface/rosidl_typesupport_interface.stamp
+build src/ros2/rosidl/rosidl_typesupport_interface: phony obj/src/ros2/rosidl/rosidl_typesupport_interface/rosidl_typesupport_interface.stamp
+build src/ros2/rosidl/rosidl_typesupport_introspection_c$:rosidl_typesupport_introspection_c: phony ./librosidl_typesupport_introspection_c.so
+build src/ros2/rosidl/rosidl_typesupport_introspection_c: phony ./librosidl_typesupport_introspection_c.so
+build src/ros2/rosidl/rosidl_typesupport_introspection_c$:rosidl_typesupport_introspection_c_headers: phony obj/src/ros2/rosidl/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c_headers.stamp
+build src/ros2/rosidl/rosidl_typesupport_introspection_cpp$:rosidl_typesupport_introspection_cpp: phony ./librosidl_typesupport_introspection_cpp.so
+build src/ros2/rosidl/rosidl_typesupport_introspection_cpp: phony ./librosidl_typesupport_introspection_cpp.so
+build src/ros2/rosidl_dynamic_typesupport$:rosidl_dynamic_typesupport: phony ./librosidl_dynamic_typesupport.so
+build src/ros2/rosidl_dynamic_typesupport: phony ./librosidl_dynamic_typesupport.so
+build src/ros2/rosidl_typesupport/rosidl_typesupport_c$:rosidl_typesupport_c: phony ./librosidl_typesupport_c.so
+build src/ros2/rosidl_typesupport/rosidl_typesupport_c: phony ./librosidl_typesupport_c.so
+build src/ros2/rosidl_typesupport/rosidl_typesupport_cpp$:rosidl_typesupport_cpp: phony ./librosidl_typesupport_cpp.so
+build src/ros2/rosidl_typesupport/rosidl_typesupport_cpp: phony ./librosidl_typesupport_cpp.so
+build test/cross_device$:cross_device_publisher_v2: phony tests/cross_device_publisher_v2
+build test/cross_device$:cross_device_subscriber_v2: phony tests/cross_device_subscriber_v2
+build test/cross_device$:minimal_test: phony tests/minimal_test
+build test/cross_device$:simple_msg_v2: phony tests/libsimple_msg_v2.so
+build test/cyclonedds_test$:cyclonedds_test: phony tests/cyclonedds_test
+build test/cyclonedds_test: phony tests/cyclonedds_test
+build test/foundation_test$:foundation_tests: phony obj/test/foundation_test/foundation_tests.stamp
+build test/foundation_test$:test_rcutils: phony tests/test_rcutils
+build test/foundation_test$:test_rosidl_runtime_c: phony tests/test_rosidl_runtime_c
+build test/introspection_test$:introspection_tests: phony obj/test/introspection_test/introspection_tests.stamp
+build test/introspection_test$:test_introspection_c: phony ./test_introspection_c
+build test/rcl_test$:test_rcl_basic: phony ./test_rcl_basic
+build test/rcpputils_test$:rcpputils_tests: phony obj/test/rcpputils_test/rcpputils_tests.stamp
+build test/rcpputils_test$:test_rcpputils: phony ./test_rcpputils
+build third_party/libyaml/libyaml-0.2.5$:yaml: phony ./libyaml.so
+
+build all: phony $
+    obj/default.stamp $
+    obj/fastdds.stamp $
+    obj/ros2_foundation.stamp $
+    obj/ros2_middleware.stamp $
+    obj/tests.stamp $
+    obj/vendor.stamp $
+    ./listener $
+    ./talker $
+    ./libaction_msgs.so $
+    obj/generated/action_msgs/action_msgs_type_support_cpp.stamp $
+    ./libbuiltin_interfaces.so $
+    obj/generated/builtin_interfaces/builtin_interfaces_type_support_cpp.stamp $
+    ./liblifecycle_msgs.so $
+    obj/generated/lifecycle_msgs/lifecycle_msgs_type_support_cpp.stamp $
+    ./librcl_interfaces.so $
+    obj/generated/rcl_interfaces/rcl_interfaces_type_support_cpp.stamp $
+    ./librmw_dds_common.so $
+    obj/generated/rmw_dds_common/rmw_dds_common_type_support_cpp.stamp $
+    ./librosgraph_msgs.so $
+    obj/generated/rosgraph_msgs/rosgraph_msgs_type_support_cpp.stamp $
+    ./libservice_msgs.so $
+    obj/generated/service_msgs/service_msgs_type_support_cpp.stamp $
+    ./libstatistics_msgs.so $
+    obj/generated/statistics_msgs/statistics_msgs_type_support_cpp.stamp $
+    ./libstd_msgs.so $
+    obj/generated/std_msgs/std_msgs_type_support_cpp.stamp $
+    ./libtype_description_interfaces.so $
+    obj/generated/type_description_interfaces/type_description_interfaces_type_support_cpp.stamp $
+    ./libunique_identifier_msgs.so $
+    obj/generated/unique_identifier_msgs/unique_identifier_msgs_type_support_cpp.stamp $
+    ./libament_index_cpp.so $
+    ./libfastcdr.so $
+    obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp $
+    ./libfastcdr_static.a $
+    obj/src/eProsima/Fast-DDS/fastdds_config_gen.stamp $
+    ./libfastrtps.so $
+    obj/src/eProsima/Fast-DDS/thirdparty/asio/asio.stamp $
+    ./libtinyxml2.a $
+    obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp $
+    obj/src/eclipse-cyclonedds/cyclonedds/cyclonedds.stamp $
+    ./libddsc.so $
+    obj/src/eclipse-cyclonedds/cyclonedds/ddsi_sources.stamp $
+    ./libddsrt.a $
+    ./libstatistics_collector.so $
+    obj/src/ros2/libyaml_vendor/libyaml_vendor.stamp $
+    ./librcl.so $
+    ./librcl_action.so $
+    ./librcl_lifecycle.so $
+    ./librcl_yaml_param_parser.so $
+    ./librcl_logging_interface.so $
+    ./librcl_logging_noop.so $
+    ./librclcpp.so $
+    ./librclcpp_action.so $
+    ./librclcpp_lifecycle.so $
+    ./librcpputils.so $
+    obj/src/ros2/rcutils/logging_macros_gen.stamp $
+    ./librcutils.so $
+    obj/src/ros2/rcutils/rcutils_deploy.stamp $
+    ./librmw.so $
+    ./librmw_cyclonedds_cpp.so $
+    ./librmw_dds_common_library.so $
+    ./librmw_implementation.so $
+    obj/src/ros2/ros2_tracing/tracetools/tracetools.stamp $
+    ./librosidl_runtime_c.so $
+    obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp $
+    obj/src/ros2/rosidl/rosidl_typesupport_interface/rosidl_typesupport_interface.stamp $
+    ./librosidl_typesupport_introspection_c.so $
+    obj/src/ros2/rosidl/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c_headers.stamp $
+    ./librosidl_typesupport_introspection_cpp.so $
+    ./librosidl_dynamic_typesupport.so $
+    ./librosidl_typesupport_c.so $
+    ./librosidl_typesupport_cpp.so $
+    tests/cross_device_publisher_v2 $
+    tests/cross_device_subscriber_v2 $
+    tests/minimal_test $
+    tests/libsimple_msg_v2.so $
+    tests/cyclonedds_test $
+    obj/test/foundation_test/foundation_tests.stamp $
+    tests/test_rcutils $
+    tests/test_rosidl_runtime_c $
+    obj/test/introspection_test/introspection_tests.stamp $
+    ./test_introspection_c $
+    ./test_rcl_basic $
+    obj/test/rcpputils_test/rcpputils_tests.stamp $
+    ./test_rcpputils $
+    ./libyaml.so
+
+default default

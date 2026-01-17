@@ -1,0 +1,47 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from statistics_msgs/statistics_msgs/msg/MetricsMessage.msg
+// generated code does not contain a copyright notice
+
+#include "builtin_interfaces/msg/Time.idl"
+#include "statistics_msgs/msg/StatisticDataPoint.idl"
+
+module statistics_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "A generic metrics message providing statistics for measurements from different sources. For example," "\n"
+      "measure a system's CPU % for a given window yields the following data points over a window of time:" "\n"
+      "" "\n"
+      "  - average cpu %" "\n"
+      "  - std deviation" "\n"
+      "  - min" "\n"
+      "  - max" "\n"
+      "  - sample count" "\n"
+      "" "\n"
+      "These are all represented as different 'StatisticDataPoint's.")
+    struct MetricsMessage {
+      @verbatim (language="comment", text=
+        "Name metric measurement source, e.g., node, topic, or process name")
+      string measurement_source_name;
+
+      @verbatim (language="comment", text=
+        "Name of the metric being measured, e.g. cpu_percentage, free_memory_mb, message_age, etc.")
+      string metrics_source;
+
+      @verbatim (language="comment", text=
+        "Unit of measure of the metric, e.g. percent, mb, seconds, etc.")
+      string unit;
+
+      @verbatim (language="comment", text=
+        "Measurement window start time")
+      builtin_interfaces::msg::Time window_start;
+
+      @verbatim (language="comment", text=
+        "Measurement window end time")
+      builtin_interfaces::msg::Time window_stop;
+
+      @verbatim (language="comment", text=
+        "A list of statistics data point, defined in StatisticDataPoint.msg")
+      sequence<statistics_msgs::msg::StatisticDataPoint> statistics;
+    };
+  };
+};

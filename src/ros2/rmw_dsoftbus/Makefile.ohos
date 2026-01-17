@@ -1,0 +1,197 @@
+# ============================================================================
+# Makefile for rmw_dsoftbus - OHOS SDK Clang Cross-Compilation
+# ============================================================================
+# Target: aarch64-linux-ohos (KaihongOS rk3588s)
+# Host: x86-64 (WSL Ubuntu 20.04)
+# Compiler: OHOS SDK Clang 15.0.4 (official toolchain)
+# ============================================================================
+
+# OpenHarmony Clang toolchain paths
+OHOS_CLANG_ROOT ?= /home/jiusi/M-DDS/openharmony_prebuilts/clang_linux-x86_64-81cdec-20240308
+CLANG_BIN     := $(OHOS_CLANG_ROOT)/bin
+
+# Compiler setup
+CC             = $(CLANG_BIN)/aarch64-unknown-linux-ohos-clang
+CXX            = $(CLANG_BIN)/aarch64-unknown-linux-ohos-clang++
+AR             = $(CLANG_BIN)/llvm-ar
+STRIP          = $(CLANG_BIN)/llvm-strip
+
+# Build directories
+BUILD_DIR      = build-ohos
+OUT_DIR        = $(BUILD_DIR)/lib
+BIN_DIR        = $(BUILD_DIR)/bin
+
+# Installation targets
+INSTALL_LIB    = /data/lib
+INSTALL_BIN    = /data/bin
+INSTALL_RUNTIME = /data
+
+# Source files
+SOURCES = $(wildcard src/*.cpp)
+HEADERS = $(wildcard include/rmw_dsoftbus/*.h)
+OBJECTS = $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(SOURCES))
+
+# Library targets
+LIBNAME = rmw_dsoftbus
+LIB_SO = librmw_dsoftbus.so.0.1.0
+LIB_SO_LINK = librmw_dsoftbus.so.0
+LIB_STATIC = librmw_dsoftbus.a
+
+# Compilation flags
+CFLAGS = \
+	-std=c99 \
+	-O2 \
+	-Wall -Wextra -Wpedantic \
+	-fPIC \
+	-fvisibility=hidden \
+	-D__MUSL__ \
+	-DRMW_DSOFTBUS_STUB_MODE=1
+
+CXXFLAGS = \
+	-std=c++17 \
+	-O2 \
+	-Wall -Wextra -Wpedantic \
+	-fPIC \
+	-fvisibility=hidden \
+	-D__MUSL__ \
+	-DRMW_DSOFTBUS_STUB_MODE=1
+
+# Include paths (no sysroot needed for OHOS Clang)
+INCLUDE_FLAGS = \
+	-Iinclude \
+	-Imock_includes \
+	-Imock_includes/rmw \
+	-Imock_includes/rcutils \
+	-Imock_includes/rosidl_runtime_c \
+	-Imock_includes/rosidl_typesupport_interface
+
+# Linker flags - static C++ runtime for portability
+LDFLAGS_COMMON = \
+	-Wl,-rpath,/data \
+	-Wl,-rpath,/system/lib64 \
+	-Wl,--as-needed
+
+# Use static C++ runtime (simpler deployment)
+LDFLAGS = $(LDFLAGS_COMMON) \
+	-static-libstdc++ \
+	-lpthread \
+	-ldl
+
+# ============================================================================
+# Build Rules
+# ============================================================================
+
+.PHONY: all clean install verify help
+
+all: $(OUT_DIR)/$(LIB_SO) $(OUT_DIR)/$(LIB_SO_LINK) $(OUT_DIR)/$(LIB_STATIC)
+	@echo "✅ Build complete: $(OUT_DIR)/"
+	@ls -lh $(OUT_DIR)/*.so* $(OUT_DIR)/*.a 2>/dev/null || true
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR) $(OUT_DIR) $(BIN_DIR)
+
+$(BUILD_DIR)/%.o: src/%.cpp $(HEADERS) | $(BUILD_DIR)
+	@echo "🔨 Compiling: $<"
+	$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) -c -o $@ $<
+
+# Shared library (main target)
+$(OUT_DIR)/$(LIB_SO): $(OBJECTS) | $(BUILD_DIR)
+	@echo "🔗 Linking: $(LIB_SO)"
+	$(CXX) -shared $(LDFLAGS_COMMON) -Wl,-soname,$(LIB_SO_LINK) \
+		-o $@ $(OBJECTS) -stdlib=libc++ -lc++ -lc++abi
+	@echo "✅ Library created: $@"
+	@size $@
+
+# Symbolic link: .so.0 → .so.0.1.0
+$(OUT_DIR)/$(LIB_SO_LINK): $(OUT_DIR)/$(LIB_SO)
+	@echo "🔗 Creating symlink: $(LIB_SO_LINK) → $(LIB_SO)"
+	cd $(OUT_DIR) && ln -sf $(LIB_SO) $(LIB_SO_LINK)
+
+# Static library (for linking into other projects)
+$(OUT_DIR)/$(LIB_STATIC): $(OBJECTS) | $(BUILD_DIR)
+	@echo "📦 Creating static library: $(LIB_STATIC)"
+	$(AR) rcs $@ $(OBJECTS)
+	@echo "✅ Static library created: $@"
+
+clean:
+	@echo "🧹 Cleaning build artifacts..."
+	rm -rf $(BUILD_DIR)
+	@echo "✅ Clean complete"
+
+# Verify cross-compilation
+verify: all
+	@echo ""
+	@echo "🔍 Verification Report"
+	@echo "======================"
+	@echo ""
+	@echo "1. Binary information:"
+	@file $(OUT_DIR)/$(LIB_SO) | head -1
+	@echo ""
+	@echo "2. Library size:"
+	@ls -lh $(OUT_DIR)/$(LIB_SO)
+	@echo ""
+	@echo "3. Dependencies (should be minimal):"
+	@readelf -d $(OUT_DIR)/$(LIB_SO) | grep NEEDED || echo "   (no NEEDED entries - statically linked)"
+	@echo ""
+	@echo "4. RPATH configuration:"
+	@readelf -d $(OUT_DIR)/$(LIB_SO) | grep RPATH
+	@echo ""
+	@echo "5. Exported symbols (RMW APIs):"
+	@nm -D $(OUT_DIR)/$(LIB_SO) | grep -c " T rmw_" && echo "   RMW API symbols found ✅" || echo "   (symbols may be stripped)"
+	@echo ""
+
+# Install to device (requires HDC)
+install: all
+	@echo "📤 Preparing installation..."
+	mkdir -p /mnt/c/tmp/hdc_transfer
+	cp $(OUT_DIR)/$(LIB_SO) /mnt/c/tmp/hdc_transfer/
+	cp $(OUT_DIR)/$(LIB_SO_LINK) /mnt/c/tmp/hdc_transfer/ 2>/dev/null || true
+	cp $(OHOS_SDK_ROOT)/llvm/lib/aarch64-linux-ohos/libc++_shared.so /mnt/c/tmp/hdc_transfer/
+	@echo ""
+	@echo "📝 Files ready for deployment:"
+	@ls -lh /mnt/c/tmp/hdc_transfer/
+	@echo ""
+	@echo "🚀 To deploy to device:"
+	@echo "   DEVICE_ID=\$$(powershell.exe -Command \"hdc list targets\" | head -1 | awk '{print \$$1}' | tr -d '\\r\\n')"
+	@echo "   powershell.exe -Command \"hdc -t \$$DEVICE_ID file send 'C:\\tmp\\hdc_transfer\\librmw_dsoftbus.so.0.1.0' '/data/lib/'\""
+	@echo "   powershell.exe -Command \"hdc -t \$$DEVICE_ID file send 'C:\\tmp\\hdc_transfer\\libc++_shared.so' '/data/lib/'\""
+	@echo "   powershell.exe -Command \"hdc -t \$$DEVICE_ID shell 'cd /data/lib && ln -sf librmw_dsoftbus.so.0.1.0 librmw_dsoftbus.so.0'\""
+
+help:
+	@echo "RMW_DSOFTBUS - OHOS SDK Makefile"
+	@echo "===================================="
+	@echo ""
+	@echo "Usage: make [target]"
+	@echo ""
+	@echo "Targets:"
+	@echo "  all              - Build shared library (.so), symlink, and static library (.a)"
+	@echo "  clean            - Remove build artifacts"
+	@echo "  verify           - Verify cross-compilation (binary info, symbols, etc.)"
+	@echo "  install          - Prepare files for device deployment"
+	@echo "  help             - Show this help message"
+	@echo ""
+	@echo "Configuration:"
+	@echo "  OHOS_SDK_ROOT    - OpenHarmony SDK root (default: $(OHOS_SDK_ROOT))"
+	@echo "  SYSROOT          - Compiler sysroot (default: $(SYSROOT))"
+	@echo ""
+	@echo "Examples:"
+	@echo "  make                    # Build with default settings"
+	@echo "  make verify             # Build and verify"
+	@echo "  make clean all          # Clean and rebuild"
+	@echo "  make install            # Prepare for deployment"
+	@echo ""
+
+# ============================================================================
+# Compiler version info
+# ============================================================================
+
+.PHONY: toolchain-info
+toolchain-info:
+	@echo "Toolchain Information"
+	@echo "===================="
+	@echo ""
+	@$(CXX) --version
+	@echo ""
+	@echo "Sysroot: $(SYSROOT)"
+	@echo "SDK Root: $(OHOS_SDK_ROOT)"
+	@echo ""

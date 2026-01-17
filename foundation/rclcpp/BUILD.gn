@@ -1,0 +1,222 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rclcpp - ROS Client Library for C++
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory
+_rclcpp_src = "//ros2/src/ros2/rclcpp/rclcpp"
+
+# ============================================================================
+# rclcpp shared library
+# ============================================================================
+ros2_shared_library("rclcpp") {
+  sources = [
+    # Core
+    "${_rclcpp_src}/src/rclcpp/any_executable.cpp",
+    "${_rclcpp_src}/src/rclcpp/callback_group.cpp",
+    "${_rclcpp_src}/src/rclcpp/client.cpp",
+    "${_rclcpp_src}/src/rclcpp/clock.cpp",
+    "${_rclcpp_src}/src/rclcpp/context.cpp",
+    "${_rclcpp_src}/src/rclcpp/create_generic_client.cpp",
+    "${_rclcpp_src}/src/rclcpp/duration.cpp",
+    "${_rclcpp_src}/src/rclcpp/event.cpp",
+    "${_rclcpp_src}/src/rclcpp/event_handler.cpp",
+    "${_rclcpp_src}/src/rclcpp/executable_list.cpp",
+    "${_rclcpp_src}/src/rclcpp/executor.cpp",
+    "${_rclcpp_src}/src/rclcpp/executor_options.cpp",
+    "${_rclcpp_src}/src/rclcpp/executors.cpp",
+    "${_rclcpp_src}/src/rclcpp/expand_topic_or_service_name.cpp",
+    "${_rclcpp_src}/src/rclcpp/future_return_code.cpp",
+    "${_rclcpp_src}/src/rclcpp/generic_client.cpp",
+    "${_rclcpp_src}/src/rclcpp/generic_publisher.cpp",
+    "${_rclcpp_src}/src/rclcpp/generic_subscription.cpp",
+    "${_rclcpp_src}/src/rclcpp/graph_listener.cpp",
+    "${_rclcpp_src}/src/rclcpp/guard_condition.cpp",
+    "${_rclcpp_src}/src/rclcpp/init_options.cpp",
+    "${_rclcpp_src}/src/rclcpp/intra_process_manager.cpp",
+    "${_rclcpp_src}/src/rclcpp/logger.cpp",
+    "${_rclcpp_src}/src/rclcpp/logging_mutex.cpp",
+    "${_rclcpp_src}/src/rclcpp/memory_strategies.cpp",
+    "${_rclcpp_src}/src/rclcpp/memory_strategy.cpp",
+    "${_rclcpp_src}/src/rclcpp/message_info.cpp",
+    "${_rclcpp_src}/src/rclcpp/network_flow_endpoint.cpp",
+    "${_rclcpp_src}/src/rclcpp/node.cpp",
+    "${_rclcpp_src}/src/rclcpp/node_options.cpp",
+    "${_rclcpp_src}/src/rclcpp/parameter.cpp",
+    "${_rclcpp_src}/src/rclcpp/parameter_client.cpp",
+    "${_rclcpp_src}/src/rclcpp/parameter_event_handler.cpp",
+    "${_rclcpp_src}/src/rclcpp/parameter_events_filter.cpp",
+    "${_rclcpp_src}/src/rclcpp/parameter_map.cpp",
+    "${_rclcpp_src}/src/rclcpp/parameter_service.cpp",
+    "${_rclcpp_src}/src/rclcpp/parameter_value.cpp",
+    "${_rclcpp_src}/src/rclcpp/publisher_base.cpp",
+    "${_rclcpp_src}/src/rclcpp/qos.cpp",
+    "${_rclcpp_src}/src/rclcpp/qos_overriding_options.cpp",
+    "${_rclcpp_src}/src/rclcpp/rate.cpp",
+    "${_rclcpp_src}/src/rclcpp/serialization.cpp",
+    "${_rclcpp_src}/src/rclcpp/serialized_message.cpp",
+    "${_rclcpp_src}/src/rclcpp/service.cpp",
+    "${_rclcpp_src}/src/rclcpp/signal_handler.cpp",
+    "${_rclcpp_src}/src/rclcpp/subscription_base.cpp",
+    "${_rclcpp_src}/src/rclcpp/subscription_intra_process_base.cpp",
+    "${_rclcpp_src}/src/rclcpp/time.cpp",
+    "${_rclcpp_src}/src/rclcpp/time_source.cpp",
+    "${_rclcpp_src}/src/rclcpp/timer.cpp",
+    "${_rclcpp_src}/src/rclcpp/type_support.cpp",
+    "${_rclcpp_src}/src/rclcpp/typesupport_helpers.cpp",
+    "${_rclcpp_src}/src/rclcpp/utilities.cpp",
+    "${_rclcpp_src}/src/rclcpp/waitable.cpp",
+
+    # Contexts
+    "${_rclcpp_src}/src/rclcpp/contexts/default_context.cpp",
+
+    # Detail
+    "${_rclcpp_src}/src/rclcpp/detail/add_guard_condition_to_rcl_wait_set.cpp",
+    "${_rclcpp_src}/src/rclcpp/detail/resolve_intra_process_buffer_type.cpp",
+    "${_rclcpp_src}/src/rclcpp/detail/resolve_parameter_overrides.cpp",
+    "${_rclcpp_src}/src/rclcpp/detail/rmw_implementation_specific_payload.cpp",
+    "${_rclcpp_src}/src/rclcpp/detail/rmw_implementation_specific_publisher_payload.cpp",
+    "${_rclcpp_src}/src/rclcpp/detail/rmw_implementation_specific_subscription_payload.cpp",
+    "${_rclcpp_src}/src/rclcpp/detail/utilities.cpp",
+
+    # Dynamic type support
+    "${_rclcpp_src}/src/rclcpp/dynamic_typesupport/dynamic_message.cpp",
+    "${_rclcpp_src}/src/rclcpp/dynamic_typesupport/dynamic_message_type.cpp",
+    "${_rclcpp_src}/src/rclcpp/dynamic_typesupport/dynamic_message_type_builder.cpp",
+    "${_rclcpp_src}/src/rclcpp/dynamic_typesupport/dynamic_message_type_support.cpp",
+    "${_rclcpp_src}/src/rclcpp/dynamic_typesupport/dynamic_serialization_support.cpp",
+
+    # Exceptions
+    "${_rclcpp_src}/src/rclcpp/exceptions/exceptions.cpp",
+
+    # Executors
+    "${_rclcpp_src}/src/rclcpp/executors/executor_entities_collection.cpp",
+    "${_rclcpp_src}/src/rclcpp/executors/executor_entities_collector.cpp",
+    "${_rclcpp_src}/src/rclcpp/executors/executor_notify_waitable.cpp",
+    "${_rclcpp_src}/src/rclcpp/executors/multi_threaded_executor.cpp",
+    "${_rclcpp_src}/src/rclcpp/executors/single_threaded_executor.cpp",
+    "${_rclcpp_src}/src/rclcpp/executors/static_single_threaded_executor.cpp",
+
+    # Experimental
+    "${_rclcpp_src}/src/rclcpp/experimental/executors/events_executor/events_executor.cpp",
+    "${_rclcpp_src}/src/rclcpp/experimental/timers_manager.cpp",
+
+    # Node interfaces
+    "${_rclcpp_src}/src/rclcpp/node_interfaces/node_base.cpp",
+    "${_rclcpp_src}/src/rclcpp/node_interfaces/node_clock.cpp",
+    "${_rclcpp_src}/src/rclcpp/node_interfaces/node_graph.cpp",
+    "${_rclcpp_src}/src/rclcpp/node_interfaces/node_logging.cpp",
+    "${_rclcpp_src}/src/rclcpp/node_interfaces/node_parameters.cpp",
+    "${_rclcpp_src}/src/rclcpp/node_interfaces/node_services.cpp",
+    "${_rclcpp_src}/src/rclcpp/node_interfaces/node_time_source.cpp",
+    "${_rclcpp_src}/src/rclcpp/node_interfaces/node_timers.cpp",
+    "${_rclcpp_src}/src/rclcpp/node_interfaces/node_topics.cpp",
+    "${_rclcpp_src}/src/rclcpp/node_interfaces/node_type_descriptions.cpp",
+    "${_rclcpp_src}/src/rclcpp/node_interfaces/node_waitables.cpp",
+
+    # Wait set policies
+    "${_rclcpp_src}/src/rclcpp/wait_set_policies/detail/write_preferring_read_write_lock.cpp",
+  ]
+
+  include_dirs = [
+    "${_rclcpp_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rcpputils:rcpputils",
+    "//foundation/rcl/rcl:rcl",
+    "//foundation/rcl/rcl_yaml_param_parser:rcl_yaml_param_parser",
+    "//foundation/rmw:rmw",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//foundation/rosidl/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//foundation/tracing:tracetools",
+    "//interfaces/rcl_interfaces:rcl_interfaces",
+    "//interfaces/builtin_interfaces:builtin_interfaces",
+    "//interfaces/rosgraph_msgs:rosgraph_msgs",
+    "//interfaces/statistics_msgs:statistics_msgs",
+  ]
+
+  defines = [
+    "RCLCPP_BUILDING_DLL",
+  ]
+
+  cflags_cc = [
+    "-Wno-unused-parameter",
+    "-Wno-sign-compare",
+  ]
+
+  libs = [ "pthread" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# rclcpp_action shared library
+# ============================================================================
+ros2_shared_library("rclcpp_action") {
+  sources = [
+    "//ros2/src/ros2/rclcpp/rclcpp_action/src/client.cpp",
+    "//ros2/src/ros2/rclcpp/rclcpp_action/src/qos.cpp",
+    "//ros2/src/ros2/rclcpp/rclcpp_action/src/server.cpp",
+    "//ros2/src/ros2/rclcpp/rclcpp_action/src/types.cpp",
+  ]
+
+  include_dirs = [
+    "//ros2/src/ros2/rclcpp/rclcpp_action/include",
+  ]
+
+  deps = [
+    ":rclcpp",
+    "//foundation/rcl/rcl_action:rcl_action",
+    "//interfaces/action_msgs:action_msgs",
+  ]
+
+  defines = [
+    "RCLCPP_ACTION_BUILDING_DLL",
+  ]
+
+  cflags_cc = [
+    "-Wno-unused-parameter",
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# rclcpp_lifecycle shared library
+# ============================================================================
+ros2_shared_library("rclcpp_lifecycle") {
+  sources = [
+    "//ros2/src/ros2/rclcpp/rclcpp_lifecycle/src/lifecycle_node.cpp",
+    "//ros2/src/ros2/rclcpp/rclcpp_lifecycle/src/lifecycle_node_interface_impl.cpp",
+    "//ros2/src/ros2/rclcpp/rclcpp_lifecycle/src/state.cpp",
+    "//ros2/src/ros2/rclcpp/rclcpp_lifecycle/src/transition.cpp",
+  ]
+
+  include_dirs = [
+    "//ros2/src/ros2/rclcpp/rclcpp_lifecycle/include",
+  ]
+
+  deps = [
+    ":rclcpp",
+    "//foundation/rcl/rcl_lifecycle:rcl_lifecycle",
+    "//interfaces/lifecycle_msgs:lifecycle_msgs",
+  ]
+
+  defines = [
+    "RCLCPP_LIFECYCLE_BUILDING_DLL",
+  ]
+
+  cflags_cc = [
+    "-Wno-unused-parameter",
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

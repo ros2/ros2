@@ -1,0 +1,20 @@
+{
+  "package_name": "unique_identifier_msgs",
+  "idl_tuples": [
+    "/home/jiusi/M-DDS/ros2/generated/unique_identifier_msgs:msg/UUID.idl"
+  ],
+  "ros_interface_files": [
+    "/home/jiusi/M-DDS/ros2/generated/unique_identifier_msgs/msg/UUID.idl"
+  ],
+  "output_dir": "/home/jiusi/M-DDS/ros2/generated/unique_identifier_msgs",
+  "template_dir": "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_c/resource",
+  "target_dependencies": [
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_c/resource/srv__type_support.cpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_c/resource/action__type_support.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_c/resource/msg__type_support.cpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_c/resource/idl__type_support.cpp.em",
+    "/home/jiusi/M-DDS/ros2/generated/unique_identifier_msgs/msg/UUID.idl"
+  ],
+  "ros_interface_dependencies": [],
+  "type_description_tuples": []
+}

@@ -1,0 +1,41 @@
+{
+  "package_name": "statistics_msgs",
+  "idl_tuples": [
+    "/home/jiusi/M-DDS/ros2/generated/statistics_msgs:msg/MetricsMessage.idl",
+    "/home/jiusi/M-DDS/ros2/generated/statistics_msgs:msg/StatisticDataPoint.idl",
+    "/home/jiusi/M-DDS/ros2/generated/statistics_msgs:msg/StatisticDataType.idl"
+  ],
+  "ros_interface_files": [
+    "/home/jiusi/M-DDS/ros2/generated/statistics_msgs/msg/MetricsMessage.idl",
+    "/home/jiusi/M-DDS/ros2/generated/statistics_msgs/msg/StatisticDataPoint.idl",
+    "/home/jiusi/M-DDS/ros2/generated/statistics_msgs/msg/StatisticDataType.idl"
+  ],
+  "output_dir": "/home/jiusi/M-DDS/ros2/generated/statistics_msgs",
+  "template_dir": "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource",
+  "target_dependencies": [
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/full__description.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/empty__description.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/msg__type_support.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl__functions.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl__type_support.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/action__type_support.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl__functions.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/msg__functions.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/msg__functions.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl__type_support.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/srv__type_support.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl__description.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/action__type_support.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/idl__struct.h.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/srv__type_support.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_c/resource/msg__struct.h.em",
+    "/home/jiusi/M-DDS/ros2/generated/statistics_msgs/msg/MetricsMessage.idl",
+    "/home/jiusi/M-DDS/ros2/generated/statistics_msgs/msg/StatisticDataPoint.idl",
+    "/home/jiusi/M-DDS/ros2/generated/statistics_msgs/msg/StatisticDataType.idl"
+  ],
+  "ros_interface_dependencies": [
+    "builtin_interfaces"
+  ],
+  "type_description_tuples": []
+}

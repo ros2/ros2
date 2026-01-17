@@ -1,0 +1,242 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rcl_interfaces - ROS2 client library interface types
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+_package_name = "rcl_interfaces"
+
+# ============================================================================
+# rcl_interfaces message types:
+#
+# Parameter types:
+#   ParameterType        - Constants for parameter types
+#   ParameterValue       - Parameter value (bool/int/double/string/arrays)
+#   Parameter            - Named parameter with value
+#   ParameterDescriptor  - Parameter description with constraints
+#   SetParametersResult  - Result of setting a parameter
+#   ListParametersResult - Result of listing parameters
+#   ParameterEvent       - Event when parameters change
+#   ParameterEventDescriptors - Descriptors for parameter events
+#
+# Range types:
+#   FloatingPointRange   - Range constraint for floating point
+#   IntegerRange         - Range constraint for integers
+#
+# Log types:
+#   Log                  - Log message
+#
+# Services:
+#   DescribeParameters   - Get parameter descriptors
+#   GetParameters        - Get parameter values
+#   GetParameterTypes    - Get parameter types
+#   ListParameters       - List available parameters
+#   SetParameters        - Set parameter values
+#   SetParametersAtomically - Set parameters atomically
+#   GetLoggerLevels      - Get logger levels
+#   SetLoggerLevels      - Set logger levels
+# ============================================================================
+
+# ============================================================================
+# rcl_interfaces C generator library
+# ============================================================================
+ros2_shared_library("rcl_interfaces__rosidl_generator_c") {
+  sources = [
+    # Parameter types
+    "src/msg/parameter_type__functions.c",
+    "src/msg/parameter_value__functions.c",
+    "src/msg/parameter__functions.c",
+    "src/msg/parameter_descriptor__functions.c",
+    "src/msg/set_parameters_result__functions.c",
+    "src/msg/list_parameters_result__functions.c",
+    "src/msg/parameter_event__functions.c",
+    "src/msg/parameter_event_descriptors__functions.c",
+    # Range types
+    "src/msg/floating_point_range__functions.c",
+    "src/msg/integer_range__functions.c",
+    # Log types
+    "src/msg/log__functions.c",
+    # Services
+    "src/srv/describe_parameters__functions.c",
+    "src/srv/get_parameters__functions.c",
+    "src/srv/get_parameter_types__functions.c",
+    "src/srv/list_parameters__functions.c",
+    "src/srv/set_parameters__functions.c",
+    "src/srv/set_parameters_atomically__functions.c",
+    "src/srv/get_logger_levels__functions.c",
+    "src/srv/set_logger_levels__functions.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_generator_c",
+  ]
+
+  defines = [ "ROSIDL_GENERATOR_C_BUILDING_DLL_${_package_name}" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# rcl_interfaces type support C library
+# ============================================================================
+ros2_shared_library("rcl_interfaces__rosidl_typesupport_c") {
+  sources = [
+    # Parameter types
+    "src/msg/parameter_type__type_support.c",
+    "src/msg/parameter_value__type_support.c",
+    "src/msg/parameter__type_support.c",
+    "src/msg/parameter_descriptor__type_support.c",
+    "src/msg/set_parameters_result__type_support.c",
+    "src/msg/list_parameters_result__type_support.c",
+    "src/msg/parameter_event__type_support.c",
+    "src/msg/parameter_event_descriptors__type_support.c",
+    # Range types
+    "src/msg/floating_point_range__type_support.c",
+    "src/msg/integer_range__type_support.c",
+    # Log types
+    "src/msg/log__type_support.c",
+    # Services
+    "src/srv/describe_parameters__type_support.c",
+    "src/srv/get_parameters__type_support.c",
+    "src/srv/get_parameter_types__type_support.c",
+    "src/srv/list_parameters__type_support.c",
+    "src/srv/set_parameters__type_support.c",
+    "src/srv/set_parameters_atomically__type_support.c",
+    "src/srv/get_logger_levels__type_support.c",
+    "src/srv/set_logger_levels__type_support.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":rcl_interfaces__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//foundation/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_C_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# rcl_interfaces FastRTPS type support
+# ============================================================================
+ros2_shared_library("rcl_interfaces__rosidl_typesupport_fastrtps_c") {
+  sources = [
+    # Parameter types
+    "src/msg/parameter_type__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/parameter_value__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/parameter__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/parameter_descriptor__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/set_parameters_result__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/list_parameters_result__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/parameter_event__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/parameter_event_descriptors__rosidl_typesupport_fastrtps_c.cpp",
+    # Range types
+    "src/msg/floating_point_range__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/integer_range__rosidl_typesupport_fastrtps_c.cpp",
+    # Log types
+    "src/msg/log__rosidl_typesupport_fastrtps_c.cpp",
+    # Services
+    "src/srv/describe_parameters__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/get_parameters__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/get_parameter_types__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/list_parameters__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/set_parameters__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/set_parameters_atomically__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/get_logger_levels__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/set_logger_levels__rosidl_typesupport_fastrtps_c.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":rcl_interfaces__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_fastrtps_c:rosidl_typesupport_fastrtps_c",
+    "//vendor/fastdds/fastcdr:fastcdr",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_fastrtps_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_FASTRTPS_C_BUILDING_DLL_${_package_name}" ]
+
+  cflags_cc = [ "-Wno-unused-parameter" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# rcl_interfaces C++ type support
+# ============================================================================
+config("rcl_interfaces_cpp_config") {
+  include_dirs = [ "include" ]
+}
+
+ros2_shared_library("rcl_interfaces__rosidl_typesupport_cpp") {
+  sources = [
+    # Parameter types
+    "src/msg/parameter_type__type_support.cpp",
+    "src/msg/parameter_value__type_support.cpp",
+    "src/msg/parameter__type_support.cpp",
+    "src/msg/parameter_descriptor__type_support.cpp",
+    "src/msg/set_parameters_result__type_support.cpp",
+    "src/msg/list_parameters_result__type_support.cpp",
+    "src/msg/parameter_event__type_support.cpp",
+    "src/msg/parameter_event_descriptors__type_support.cpp",
+    # Range types
+    "src/msg/floating_point_range__type_support.cpp",
+    "src/msg/integer_range__type_support.cpp",
+    # Log types
+    "src/msg/log__type_support.cpp",
+    # Services
+    "src/srv/describe_parameters__type_support.cpp",
+    "src/srv/get_parameters__type_support.cpp",
+    "src/srv/get_parameter_types__type_support.cpp",
+    "src/srv/list_parameters__type_support.cpp",
+    "src/srv/set_parameters__type_support.cpp",
+    "src/srv/set_parameters_atomically__type_support.cpp",
+    "src/srv/get_logger_levels__type_support.cpp",
+    "src/srv/set_logger_levels__type_support.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":rcl_interfaces__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//foundation/rosidl/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//foundation/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_cpp",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_CPP_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# Package group target
+# ============================================================================
+group("rcl_interfaces") {
+  public_deps = [
+    ":rcl_interfaces__rosidl_generator_c",
+    ":rcl_interfaces__rosidl_typesupport_c",
+    ":rcl_interfaces__rosidl_typesupport_cpp",
+    ":rcl_interfaces__rosidl_typesupport_fastrtps_c",
+  ]
+
+  public_configs = [ ":rcl_interfaces_cpp_config" ]
+}

@@ -1,0 +1,54 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rosidl_runtime_c - ROS IDL runtime support for C
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory
+_rosidl_runtime_c_src = "//ros2/src/ros2/rosidl/rosidl_runtime_c"
+
+# ============================================================================
+# rosidl_runtime_c shared library
+# ============================================================================
+ros2_shared_library("rosidl_runtime_c") {
+  sources = [
+    # Core sources
+    "${_rosidl_runtime_c_src}/src/message_type_support.c",
+    "${_rosidl_runtime_c_src}/src/primitives_sequence_functions.c",
+    "${_rosidl_runtime_c_src}/src/sequence_bound.c",
+    "${_rosidl_runtime_c_src}/src/service_type_support.c",
+    "${_rosidl_runtime_c_src}/src/string_functions.c",
+    "${_rosidl_runtime_c_src}/src/type_description_utils.c",
+    "${_rosidl_runtime_c_src}/src/type_hash.c",
+    "${_rosidl_runtime_c_src}/src/u16string_functions.c",
+
+    # Type description sources
+    "${_rosidl_runtime_c_src}/src/type_description/field__description.c",
+    "${_rosidl_runtime_c_src}/src/type_description/field__functions.c",
+    "${_rosidl_runtime_c_src}/src/type_description/field_type__description.c",
+    "${_rosidl_runtime_c_src}/src/type_description/field_type__functions.c",
+    "${_rosidl_runtime_c_src}/src/type_description/individual_type_description__description.c",
+    "${_rosidl_runtime_c_src}/src/type_description/individual_type_description__functions.c",
+    "${_rosidl_runtime_c_src}/src/type_description/key_value__description.c",
+    "${_rosidl_runtime_c_src}/src/type_description/key_value__functions.c",
+    "${_rosidl_runtime_c_src}/src/type_description/type_description__description.c",
+    "${_rosidl_runtime_c_src}/src/type_description/type_description__functions.c",
+    "${_rosidl_runtime_c_src}/src/type_description/type_source__description.c",
+    "${_rosidl_runtime_c_src}/src/type_description/type_source__functions.c",
+  ]
+
+  include_dirs = [
+    "${_rosidl_runtime_c_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+  ]
+
+  defines = [
+    "ROSIDL_RUNTIME_C_BUILDING_DLL",
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

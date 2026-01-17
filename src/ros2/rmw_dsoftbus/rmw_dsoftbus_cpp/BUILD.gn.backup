@@ -1,0 +1,75 @@
+# Copyright (c) 2024 ROS2 KaihongOS Port Project
+# BUILD.gn for rmw_dsoftbus_cpp
+#
+# RMW implementation using OpenHarmony dsoftbus
+
+import("//gn_templates/ros2_library.gni")
+
+_rmw_dsoftbus_src = "//src/ros2/rmw_dsoftbus"
+
+config("rmw_dsoftbus_cpp_public_config") {
+  include_dirs = [
+    "${_rmw_dsoftbus_src}/include",
+  ]
+
+  defines = [
+    "RMW_VERSION_MAJOR=0",
+    "RMW_VERSION_MINOR=1",
+    "RMW_VERSION_PATCH=0",
+  ]
+}
+
+ros2_shared_library("rmw_dsoftbus_cpp") {
+  sources = [
+    "${_rmw_dsoftbus_src}/src/cdr_serializer.cpp",
+    "${_rmw_dsoftbus_src}/src/dsoftbus_adapter.cpp",
+    "${_rmw_dsoftbus_src}/src/qos_mapper.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_allocation.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_client.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_event.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_get_info.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_guard_condition.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_init.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_logging.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_node.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_publisher.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_qos.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_serialize.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_service.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_subscription.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_wait.cpp",
+    "${_rmw_dsoftbus_src}/src/transport_backends.cpp",
+    "${_rmw_dsoftbus_src}/src/transport_controller.cpp",
+    "${_rmw_dsoftbus_src}/src/transport_khtrans_backend.cpp",
+    "${_rmw_dsoftbus_src}/src/transport_manager.cpp",
+    "${_rmw_dsoftbus_src}/src/transport_session_backend.cpp",
+    "${_rmw_dsoftbus_src}/src/transport_socket_backend.cpp",
+  ]
+
+  public_configs = [ ":rmw_dsoftbus_cpp_public_config" ]
+
+  public_deps = [
+    "//src/ros2/rmw/rmw:rmw",
+  ]
+
+  deps = [
+    "//src/ros2/rcutils:rcutils",
+    "//src/ros2/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+  ]
+
+  # dsoftbus libraries - these will be provided by the KaihongOS system
+  libs = [
+    "softbus_client",
+    "softbus_server",
+  ]
+
+  cflags_cc = [
+    "-std=c++17",
+    "-Wall",
+    "-Wextra",
+    "-Wno-unused-parameter",
+    "-DUSE_REAL_SOFTBUS",
+  ]
+}

@@ -1,0 +1,25 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from builtin_interfaces/builtin_interfaces/msg/Duration.msg
+// generated code does not contain a copyright notice
+
+
+module builtin_interfaces {
+  module msg {
+    @verbatim (language="comment", text=
+      "Duration defines a period between two time points." "\n"
+      "Messages of this datatype are of ROS Time following this design:" "\n"
+      "https://design.ros2.org/articles/clock_and_time.html")
+    struct Duration {
+      @verbatim (language="comment", text=
+        "The seconds component, valid over all int32 values.")
+      int32 sec;
+
+      @verbatim (language="comment", text=
+        "The nanoseconds component, valid in the range [0, 1e9), to be added to the seconds component." "\n"
+        "e.g." "\n"
+        "The duration -1.7 seconds is represented as {sec: -2, nanosec: 3e8}" "\n"
+        "The duration 1.7 seconds is represented as {sec: 1, nanosec: 7e8}")
+      uint32 nanosec;
+    };
+  };
+};

@@ -1,0 +1,48 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DRMW_VERSION_MAJOR=2 -DRMW_VERSION_MINOR=0 -DRMW_VERSION_PATCH=0 -DRCUTILS_BUILDING_DLL -DROSIDL_RUNTIME_C_BUILDING_DLL -DDDS_HAS_LIFESPAN=1 -DDDS_HAS_DEADLINE_MISSED=1 -DDDS_HAS_TYPE_DISCOVERY=1 -DDDS_HAS_TOPIC_DISCOVERY=1 -DROSIDL_GENERATOR_C_BUILDING_DLL_rmw_dds_common -DROSIDL_TYPESUPPORT_INTROSPECTION_CPP_BUILDING_DLL -DTRACETOOLS_DISABLED -DTRACETOOLS_TRACEPOINTS_EXCLUDED
+include_dirs = -I../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/include -I../../src/ros2/rmw/rmw/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl_dynamic_typesupport/include -I../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/include -I../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/include -I../../src/eclipse-cyclonedds/cyclonedds/stubs -I../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/include -Igen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include -I../../src/ros2/rcpputils/include -I../../src/ros2/rmw_dds_common/rmw_dds_common/include -I../../src/ros2/rosidl/rosidl_runtime_cpp/include -I../../generated -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_cpp/include -I../../src/ros2/ros2_tracing/tracetools/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC -std=c99 -std=c99
+cflags_cc = -std=c++17 -Wall -Wextra -Wno-unused-parameter -std=c++17 -Wno-psabi -std=c++17 -fPIC -std=c++17
+target_output_name = librmw_cyclonedds_cpp
+
+build obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/rmw_cyclonedds_cpp.inputdeps.stamp: stamp obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp obj/src/ros2/rcutils/logging_macros_gen.stamp
+build obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.rmw_get_network_flow_endpoints.o: cxx ../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/rmw_get_network_flow_endpoints.cpp || obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/rmw_cyclonedds_cpp.inputdeps.stamp
+  source_file_part = rmw_get_network_flow_endpoints.cpp
+  source_name_part = rmw_get_network_flow_endpoints
+build obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.rmw_node.o: cxx ../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/rmw_node.cpp || obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/rmw_cyclonedds_cpp.inputdeps.stamp
+  source_file_part = rmw_node.cpp
+  source_name_part = rmw_node
+build obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.serdata.o: cxx ../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdata.cpp || obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/rmw_cyclonedds_cpp.inputdeps.stamp
+  source_file_part = serdata.cpp
+  source_name_part = serdata
+build obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.serdes.o: cxx ../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/serdes.cpp || obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/rmw_cyclonedds_cpp.inputdeps.stamp
+  source_file_part = serdes.cpp
+  source_name_part = serdes
+build obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.u16string.o: cxx ../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/u16string.cpp || obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/rmw_cyclonedds_cpp.inputdeps.stamp
+  source_file_part = u16string.cpp
+  source_name_part = u16string
+build obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.exception.o: cxx ../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/exception.cpp || obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/rmw_cyclonedds_cpp.inputdeps.stamp
+  source_file_part = exception.cpp
+  source_name_part = exception
+build obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.demangle.o: cxx ../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/demangle.cpp || obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/rmw_cyclonedds_cpp.inputdeps.stamp
+  source_file_part = demangle.cpp
+  source_name_part = demangle
+build obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.deserialization_exception.o: cxx ../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/deserialization_exception.cpp || obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/rmw_cyclonedds_cpp.inputdeps.stamp
+  source_file_part = deserialization_exception.cpp
+  source_name_part = deserialization_exception
+build obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.Serialization.o: cxx ../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/Serialization.cpp || obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/rmw_cyclonedds_cpp.inputdeps.stamp
+  source_file_part = Serialization.cpp
+  source_name_part = Serialization
+build obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.TypeSupport2.o: cxx ../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/TypeSupport2.cpp || obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/rmw_cyclonedds_cpp.inputdeps.stamp
+  source_file_part = TypeSupport2.cpp
+  source_name_part = TypeSupport2
+build obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.TypeSupport.o: cxx ../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/TypeSupport.cpp || obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/rmw_cyclonedds_cpp.inputdeps.stamp
+  source_file_part = TypeSupport.cpp
+  source_name_part = TypeSupport
+
+build ./librmw_cyclonedds_cpp.so: solink obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.rmw_get_network_flow_endpoints.o obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.rmw_node.o obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.serdata.o obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.serdes.o obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.u16string.o obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.exception.o obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.demangle.o obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.deserialization_exception.o obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.Serialization.o obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.TypeSupport2.o obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/src/librmw_cyclonedds_cpp.TypeSupport.o ./librmw.so ./libddsc.so ./librcutils.so ./librcpputils.so ./librmw_dds_common_library.so ./librosidl_typesupport_introspection_c.so ./librosidl_typesupport_introspection_cpp.so ./librosidl_runtime_c.so ./librosidl_dynamic_typesupport.so ./librmw_dds_common.so || obj/src/ros2/ros2_tracing/tracetools/tracetools.stamp
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

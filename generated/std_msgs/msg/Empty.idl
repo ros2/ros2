@@ -1,0 +1,12 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from std_msgs/std_msgs/msg/Empty.msg
+// generated code does not contain a copyright notice
+
+
+module std_msgs {
+  module msg {
+    struct Empty {
+      uint8 structure_needs_at_least_one_member;
+    };
+  };
+};

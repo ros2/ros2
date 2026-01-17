@@ -1,0 +1,26 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from std_msgs/std_msgs/msg/UInt64MultiArray.msg
+// generated code does not contain a copyright notice
+
+#include "std_msgs/msg/MultiArrayLayout.idl"
+
+module std_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "This was originally provided as an example message." "\n"
+      "It is deprecated as of Foxy" "\n"
+      "It is recommended to create your own semantically meaningful message." "\n"
+      "However if you would like to continue using this please use the equivalent in example_msgs.")
+    struct UInt64MultiArray {
+      @verbatim (language="comment", text=
+        "Please look at the MultiArrayLayout message definition for" "\n"
+        "documentation on all multiarrays." "\n"
+        "specification of data layout")
+      std_msgs::msg::MultiArrayLayout layout;
+
+      @verbatim (language="comment", text=
+        "array of data")
+      sequence<uint64> data;
+    };
+  };
+};

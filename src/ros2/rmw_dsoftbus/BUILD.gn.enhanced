@@ -1,0 +1,369 @@
+# Copyright (c) 2024 ROS2 KaihongOS Port Project
+# rmw_dsoftbus - ROS2 RMW implementation using OpenHarmony dsoftbus
+#
+# Enhanced BUILD.gn with modular source sets and conditional compilation
+
+import("//build/ohos.gni")
+
+# Import build configuration
+if (defined(use_custom_build_config)) {
+  import("build.config.gni")
+} else {
+  # Default configuration
+  use_real_dsoftbus = true
+  enable_debug_logging = false
+  enable_testing = true
+}
+
+# ============================================================================
+# Configuration
+# ============================================================================
+
+config("rmw_dsoftbus_public_config") {
+  include_dirs = [ "include" ]
+  defines = [ "RMW_DSOFTBUS_BUILDING_LIBRARY" ]
+
+  if (use_real_dsoftbus) {
+    defines += [ "RMW_DSOFTBUS_USE_REAL_SOFTBUS=1" ]
+  } else {
+    defines += [ "RMW_DSOFTBUS_STUB_MODE=1" ]
+  }
+}
+
+config("rmw_dsoftbus_private_config") {
+  include_dirs = [
+    # ROS2 Foundation dependencies
+    "//third_party/ros2/rmw/include",
+    "//third_party/ros2/rcutils/include",
+    "//third_party/ros2/rosidl_runtime_c/include",
+    "//third_party/ros2/rosidl_typesupport_interface/include",
+  ]
+
+  if (use_real_dsoftbus) {
+    include_dirs += [
+      # OpenHarmony dsoftbus headers
+      "//foundation/communication/dsoftbus/interfaces/kits",
+      "//foundation/communication/dsoftbus/interfaces/kits/transport",
+      "//foundation/communication/dsoftbus/interfaces/kits/bus_center",
+      "//foundation/communication/dsoftbus/interfaces/kits/common",
+      "//foundation/communication/dsoftbus/interfaces/kits/kh_trans",
+      "//foundation/communication/dsoftbus/interfaces/kits/discovery",
+    ]
+  }
+
+  cflags_cc = [
+    "-std=c++17",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-fvisibility=hidden",
+    "-fno-exceptions",
+  ]
+
+  if (enable_debug_logging) {
+    defines = [ "RMW_DSOFTBUS_DEBUG=1" ]
+  }
+}
+
+# ============================================================================
+# Source Sets (Modular)
+# ============================================================================
+
+# Core RMW API implementation
+source_set("rmw_api_core") {
+  sources = [
+    "src/rmw_init.cpp",
+    "src/rmw_node.cpp",
+    "src/rmw_publisher.cpp",
+    "src/rmw_subscription.cpp",
+    "src/rmw_client.cpp",
+    "src/rmw_service.cpp",
+    "src/rmw_wait.cpp",
+    "src/rmw_event.cpp",
+    "src/rmw_guard_condition.cpp",
+    "src/rmw_get_info.cpp",
+  ]
+
+  # Add rmw_missing_apis.cpp if it exists
+  if (exec_script("//build/scripts/file_exists.py",
+                  [ rebase_path("src/rmw_missing_apis.cpp") ],
+                  "value")) {
+    sources += [ "src/rmw_missing_apis.cpp" ]
+  }
+
+  public_configs = [ ":rmw_dsoftbus_public_config" ]
+  configs = [ ":rmw_dsoftbus_private_config" ]
+}
+
+# Serialization and QoS
+source_set("rmw_utilities") {
+  sources = [
+    "src/cdr_serializer.cpp",
+    "src/rmw_serialize.cpp",
+    "src/qos_mapper.cpp",
+    "src/rmw_qos.cpp",
+  ]
+
+  configs = [ ":rmw_dsoftbus_private_config" ]
+}
+
+# Foundation layer integration
+source_set("rmw_foundation") {
+  sources = [
+    "src/rmw_allocation.cpp",
+    "src/rmw_logging.cpp",
+  ]
+
+  configs = [ ":rmw_dsoftbus_private_config" ]
+
+  deps = [ "//third_party/ros2/rcutils:rcutils" ]
+}
+
+# Transport layer backends
+source_set("transport_layer") {
+  sources = []
+
+  # Add transport files if they exist
+  transport_files = [
+    "src/transport_controller.cpp",
+    "src/transport_manager.cpp",
+    "src/transport_backends.cpp",
+    "src/transport_socket_backend.cpp",
+    "src/transport_khtrans_backend.cpp",
+    "src/transport_session_backend.cpp",
+    "src/transport_simple.cpp",
+  ]
+
+  foreach(file, transport_files) {
+    if (exec_script("//build/scripts/file_exists.py",
+                    [ rebase_path(file) ],
+                    "value")) {
+      sources += [ file ]
+    }
+  }
+
+  configs = [ ":rmw_dsoftbus_private_config" ]
+}
+
+# dsoftbus adapter (conditional compilation)
+source_set("dsoftbus_adapter") {
+  sources = [ "src/dsoftbus_adapter.cpp" ]
+  configs = [ ":rmw_dsoftbus_private_config" ]
+
+  if (!use_real_dsoftbus) {
+    defines = [ "RMW_DSOFTBUS_STUB_MODE=1" ]
+  }
+}
+
+# Socket Direct backend (if exists)
+source_set("socket_direct") {
+  sources = []
+
+  if (exec_script("//build/scripts/file_exists.py",
+                  [ rebase_path("src/socket_direct.cpp") ],
+                  "value")) {
+    sources += [ "src/socket_direct.cpp" ]
+  }
+
+  configs = [ ":rmw_dsoftbus_private_config" ]
+}
+
+# ============================================================================
+# Main Library (Session-based)
+# ============================================================================
+
+ohos_shared_library("rmw_dsoftbus") {
+  deps = [
+    ":rmw_api_core",
+    ":rmw_utilities",
+    ":rmw_foundation",
+    ":dsoftbus_adapter",
+  ]
+
+  # Add optional transport layer
+  if (exec_script("//build/scripts/file_exists.py",
+                  [ rebase_path("src/transport_controller.cpp") ],
+                  "value")) {
+    deps += [
+      ":transport_layer",
+      ":socket_direct",
+    ]
+  }
+
+  public_configs = [ ":rmw_dsoftbus_public_config" ]
+
+  # ROS2 Foundation dependencies
+  deps += [ "//third_party/ros2/rcutils:rcutils" ]
+
+  # OpenHarmony system dependencies
+  if (use_real_dsoftbus) {
+    external_deps = [
+      "c_utils:utils",
+      "dsoftbus:softbus_client",
+      "hilog:libhilog",
+    ]
+  }
+
+  # Output configuration
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "ros2"
+  output_name = "librmw_dsoftbus"
+
+  # Symbol visibility
+  if (exec_script("//build/scripts/file_exists.py",
+                  [ rebase_path("rmw_dsoftbus.version") ],
+                  "value")) {
+    version_script = "rmw_dsoftbus.version"
+  }
+
+  # Install configuration
+  install_enable = true
+  module_install_dir = "lib64"
+}
+
+# ============================================================================
+# Clean RMW Library (Optional)
+# ============================================================================
+
+if (exec_script("//build/scripts/file_exists.py",
+                [ rebase_path("src/rmw_api_clean.cpp") ],
+                "value")) {
+  ohos_shared_library("rmw_dsoftbus_cpp") {
+    sources = [ "src/rmw_api_clean.cpp" ]
+
+    # Add transport_simple if exists
+    if (exec_script("//build/scripts/file_exists.py",
+                    [ rebase_path("src/transport_simple.cpp") ],
+                    "value")) {
+      sources += [ "src/transport_simple.cpp" ]
+    }
+
+    # Add rcutils stub if exists
+    if (exec_script("//build/scripts/file_exists.py",
+                    [ rebase_path("src/rcutils_stub.c") ],
+                    "value")) {
+      sources += [ "src/rcutils_stub.c" ]
+    }
+
+    public_configs = [ ":rmw_dsoftbus_public_config" ]
+    configs = [ ":rmw_dsoftbus_private_config" ]
+
+    # Minimal dependencies
+    libs = [ "pthread" ]
+
+    part_name = "rmw_dsoftbus_cpp"
+    subsystem_name = "ros2"
+    output_name = "librmw_dsoftbus_cpp"
+
+    install_enable = true
+    module_install_dir = "lib64"
+  }
+}
+
+# ============================================================================
+# Test Executables
+# ============================================================================
+
+if (enable_testing) {
+  # Main test program
+  ohos_executable("rmw_dsoftbus_test") {
+    sources = [
+      "test/test_init.cpp",
+      "test/test_main.cpp",
+      "test/test_node.cpp",
+      "test/test_pubsub.cpp",
+    ]
+
+    deps = [ ":rmw_dsoftbus" ]
+
+    part_name = "rmw_dsoftbus"
+    subsystem_name = "ros2"
+  }
+
+  # RMW verification test
+  if (exec_script("//build/scripts/file_exists.py",
+                  [ rebase_path("test/rmw_test_main.cpp") ],
+                  "value")) {
+    ohos_executable("rmw_verify_test") {
+      sources = [ "test/rmw_test_main.cpp" ]
+      deps = [ ":rmw_dsoftbus" ]
+      part_name = "rmw_dsoftbus"
+      subsystem_name = "ros2"
+    }
+  }
+
+  # Socket Direct tests
+  if (exec_script("//build/scripts/file_exists.py",
+                  [ rebase_path("test/socket_direct_test.cpp") ],
+                  "value")) {
+    ohos_executable("socket_direct_test") {
+      sources = [ "test/socket_direct_test.cpp" ]
+      deps = [ ":rmw_dsoftbus" ]
+      part_name = "rmw_dsoftbus"
+      subsystem_name = "ros2"
+    }
+  }
+
+  # Pub/Sub integration tests
+  test_files = [
+    "test/rmw_socket_direct_pub_test.cpp",
+    "test/rmw_socket_direct_sub_test.cpp",
+    "test/test_transport.cpp",
+  ]
+
+  test_targets = [
+    "rmw_socket_pub_test",
+    "rmw_socket_sub_test",
+    "transport_test",
+  ]
+
+  foreach(index, [ 0, 1, 2 ]) {
+    file = test_files[index]
+    target = test_targets[index]
+
+    if (exec_script("//build/scripts/file_exists.py",
+                    [ rebase_path(file) ],
+                    "value")) {
+      ohos_executable(target) {
+        sources = [ file ]
+        deps = [ ":rmw_dsoftbus" ]
+        part_name = "rmw_dsoftbus"
+        subsystem_name = "ros2"
+      }
+    }
+  }
+}
+
+# ============================================================================
+# Group for easy reference
+# ============================================================================
+
+group("rmw_dsoftbus_all") {
+  deps = [ ":rmw_dsoftbus" ]
+
+  # Add clean RMW if exists
+  if (exec_script("//build/scripts/file_exists.py",
+                  [ rebase_path("src/rmw_api_clean.cpp") ],
+                  "value")) {
+    deps += [ ":rmw_dsoftbus_cpp" ]
+  }
+
+  if (enable_testing) {
+    deps += [ ":rmw_dsoftbus_test" ]
+
+    # Add optional test targets
+    optional_tests = [
+      "rmw_verify_test",
+      "socket_direct_test",
+      "rmw_socket_pub_test",
+      "rmw_socket_sub_test",
+      "transport_test",
+    ]
+
+    foreach(test, optional_tests) {
+      if (defined(invoker.test)) {
+        deps += [ ":${test}" ]
+      }
+    }
+  }
+}

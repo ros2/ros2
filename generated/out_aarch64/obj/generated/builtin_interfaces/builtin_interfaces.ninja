@@ -1,0 +1,29 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DROSIDL_GENERATOR_C_BUILDING_DLL_builtin_interfaces -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../generated -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include
+cflags = -Wno-unused-parameter -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -std=c11 -std=c11 -fPIC
+target_output_name = libbuiltin_interfaces
+
+build obj/generated/builtin_interfaces/msg/detail/libbuiltin_interfaces.duration__functions.o: cc ../../generated/builtin_interfaces/msg/detail/duration__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = duration__functions.c
+  source_name_part = duration__functions
+build obj/generated/builtin_interfaces/msg/detail/libbuiltin_interfaces.time__functions.o: cc ../../generated/builtin_interfaces/msg/detail/time__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = time__functions.c
+  source_name_part = time__functions
+build obj/generated/builtin_interfaces/msg/detail/libbuiltin_interfaces.duration__type_support.o: cc ../../generated/builtin_interfaces/msg/detail/duration__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = duration__type_support.c
+  source_name_part = duration__type_support
+build obj/generated/builtin_interfaces/msg/detail/libbuiltin_interfaces.time__type_support.o: cc ../../generated/builtin_interfaces/msg/detail/time__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = time__type_support.c
+  source_name_part = time__type_support
+build obj/generated/builtin_interfaces/msg/detail/libbuiltin_interfaces.type_description_stubs.o: cc ../../generated/builtin_interfaces/msg/detail/type_description_stubs.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description_stubs.c
+  source_name_part = type_description_stubs
+
+build ./libbuiltin_interfaces.so: solink obj/generated/builtin_interfaces/msg/detail/libbuiltin_interfaces.duration__functions.o obj/generated/builtin_interfaces/msg/detail/libbuiltin_interfaces.time__functions.o obj/generated/builtin_interfaces/msg/detail/libbuiltin_interfaces.duration__type_support.o obj/generated/builtin_interfaces/msg/detail/libbuiltin_interfaces.time__type_support.o obj/generated/builtin_interfaces/msg/detail/libbuiltin_interfaces.type_description_stubs.o obj/generated/builtin_interfaces/msg/detail/builtin_interfaces_type_support_cpp.duration__type_support.o obj/generated/builtin_interfaces/msg/detail/builtin_interfaces_type_support_cpp.time__type_support.o obj/generated/builtin_interfaces/msg/builtin_interfaces_type_support_cpp.duration__type_support.o obj/generated/builtin_interfaces/msg/builtin_interfaces_type_support_cpp.time__type_support.o obj/generated/builtin_interfaces/msg/builtin_interfaces_type_support_cpp.duration__type_support_c.o obj/generated/builtin_interfaces/msg/builtin_interfaces_type_support_cpp.time__type_support_c.o ./librosidl_runtime_c.so ./librosidl_typesupport_introspection_c.so ./librcutils.so ./librosidl_typesupport_c.so ./librosidl_typesupport_cpp.so ./librosidl_typesupport_introspection_cpp.so || obj/generated/builtin_interfaces/builtin_interfaces_type_support_cpp.stamp obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

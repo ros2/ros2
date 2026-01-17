@@ -1,0 +1,85 @@
+01-16 12:58:19.955     0     0 I I00000/HiLog: ========Zeroth log of type: init
+01-16 17:40:00.715  1052 18920 I C02d13/HDC_LOG: [async_cmd.cpp:84] FinishShellProc finish pipeRead fd:35 pid:18918
+01-16 17:40:00.715  1052 18920 I C02d13/HDC_LOG: [task.cpp:50] HdcTaskBase::TaskFinish notify begin channelId:158935378
+01-16 17:40:00.715  1052 18920 I C02d13/HDC_LOG: [task.cpp:52] HdcTaskBase::TaskFinish notify end channelId:158935378
+01-16 17:40:00.716  1052 17441 I C02d13/HDC_LOG: [daemon.cpp:397] FetchCommand channelId:158935378 command:2
+01-16 17:40:00.716  1052 17441 I C02d13/HDC_LOG: [session.cpp:107] BeginRemoveTask taskType:0 channelId:158935378
+01-16 17:40:00.716  1052 17441 I C02d13/HDC_LOG: [session.cpp:161] ClearOwnTasks OP_CLEAR finish, sessionId:4053085393 channelIDInput:158935378
+01-16 17:40:00.716  1052 17441 I C02d13/HDC_LOG: [session.cpp:119] TaskDelay task remove retry count 0/30, taskType:0 channelId:158935378, sessionId:4053085393
+01-16 17:40:00.716  1052 17441 I C02d13/HDC_LOG: [async_cmd.cpp:53] ReadyForRelease close fd:-1 pid:18918
+01-16 17:40:00.716  1052 17441 I C02d13/HDC_LOG: [daemon_unity.cpp:27] ~HdcDaemonUnity channelId:158935378
+01-16 17:40:00.716  1052 17441 I C02d13/HDC_LOG: [task.cpp:37] ~HdcTaskBase channelId:158935378
+01-16 17:40:00.716  1052 17441 I C02d13/HDC_LOG: [session.cpp:127] TaskDelay task remove finish, channelId:158935378
+01-16 17:40:00.731  1052 17441 I C02d13/HDC_LOG: [daemon.cpp:397] FetchCommand channelId:158935378 command:2
+01-16 17:40:00.741  1049  1292 I C05743/TransCtrl: [softbus_proxychannel_manager.c:1509] TransProxyTimerItemProc# enter.
+01-16 17:40:00.897  1049  1335 I C05781/LnnHeartBeat: [kh_heartbeat_service.c:973] KhHbHandleMessage# [KHHB]KhHbHandleMessage:what=1!
+01-16 17:40:00.897  1049  1335 I C05781/LnnHeartBeat: [kh_heartbeat_service.c:129] LnnKhHbPostMessageDelay# [KHHB]LnnKhHbPostMessageDelay:type=1 delayMillis=1000!
+01-16 17:40:00.898  1049  1335 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:704] PostHbData# [KHHB]PostHbData success, laneId:5, data:{"ltype":0,"seq":4399,"ptype":0,"intvl":1000}
+01-16 17:40:00.935  1049  1337 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:405] OnLaneDataReceived# [KHHB]recv hb lane data success, laneId:5, connectionId:131101, data:{"ltype":0,"seq":4399,"ptype":1,"intvl":1000}
+01-16 17:40:00.935  1049  1337 I C05781/LnnHeartBeat: [kh_heartbeat_service.c:129] LnnKhHbPostMessageDelay# [KHHB]LnnKhHbPostMessageDelay:type=2 delayMillis=15000!
+01-16 17:40:00.936  1049  1337 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:704] PostHbData# [KHHB]PostHbData success, laneId:5, data:{"ltype":0,"seq":4399,"ptype":2,"intvl":1000}
+01-16 17:40:01.082   590  2103 I C015b0/NetConnManager: [SendProbe-(net_http_probe.cpp:98)]Send net:[101] HTTP&HTTPS probe in
+01-16 17:40:01.084   590  2103 E C015b0/NetConnManager: [SetProxyOption-(net_http_probe.cpp:370)]global http proxy or network proxy is empty.
+01-16 17:40:01.084   590  2103 I C015b0/NetConnManager: [SendDnsProbe-(net_http_probe.cpp:464)]Get net[101] ip addr for HTTP&HTTPS probe url 
+01-16 17:40:01.085   998  2191 I C015b0/NetsysNativeService: [Send-(fwmark_client.cpp:68)]FwmarkClient: socketFd_: 31
+01-16 17:40:01.086   998  1180 I C015b0/NetsysNativeService: [SetMark-(fwmark_network.cpp:99)]FwmarkNetwork: SetMark netId: 101, socketFd:33, cmd:0
+01-16 17:40:01.086   998  1180 I C015b0/NetsysNativeService: [CloseSocket-(fwmark_network.cpp:78)]NO_ERROR_CODE CloseSocket socket:33, ret:0
+01-16 17:40:01.086   998  1180 I C015b0/NetsysNativeService: [CloseSocket-(fwmark_network.cpp:78)]NO_ERROR_CODE CloseSocket socket:10, ret:4
+01-16 17:40:01.119   998  2191 I C015b0/NetsysNativeService: [FillAddrInfo-(dns_manager.cpp:202)]FillAddrInfo 6
+01-16 17:40:01.163   590  2103 I C015b0/NetConnManager: [RecvHttpProbeResponse-(net_http_probe.cpp:539)]Recv net[101] http probe response, code:[204], redirectUrl:[http://connectivitycheck.platform.hicloud.com/generate_204]
+01-16 17:40:01.164   590  2103 I C015b0/NetConnManager: [RecvHttpProbeResponse-(net_http_probe.cpp:543)]Recv net[101] https probe response, code:[204], redirectUrl:[https://connectivitycheck.platform.hicloud.com/generate_204]
+01-16 17:40:01.165   590  2103 I C015b0/NetConnManager: [Detection-(net_monitor.cpp:109)]Net[101] probe success
+01-16 17:40:01.166  1455  1484 E C015b0/NetConnManager: [OnNetDetectionResult-(net_detection_callback_stub.cpp:54)]Execute ContainFileDescriptors failed
+01-16 17:40:01.166  1455  1484 I C01560/WifiNetObserver: OnNetDetectionResultChanged nettype:1, url:https://connectivitycheck.platform.hicloud.com/generate_204
+01-16 17:40:01.168   278   930 I C02d10/HiView-SysEventSource: CheckValidSysEvent: event[NETMANAGER|NET_CONN_MONITOR_STAT|115739] is valid.
+01-16 17:40:01.169  1455  1760 I C01560/OHWIFI_STATE_MACHINE: ExecuteTreeStateMsg, State machine: LinkedState execute Cmd:12316
+01-16 17:40:01.169  1455  1760 I C01560/StaStateMachine: netdetection, netstate:1 url:.
+01-16 17:40:01.169  1455  1760 I C01560/StaStateMachine: Enter HandleNetCheckResult, netState:1 screen:1.
+01-16 17:40:01.169  1455  1760 I C01560/StaStateMachine: HandleNetCheckResult network state is working
+01-16 17:40:01.169  1455  1760 I C01560/WifiStaManager: Enter, DealStaConnChanged, state: 19, instId: 0, ssid: KaiHong, bssid: c4:d4:38:64:d0:40
+01-16 17:40:01.170  1455  1760 I C01562/ScanInterface: Enter ScanInterface::OnClientModeStatusChanged, staStatus=19.
+01-16 17:40:01.170  1455  1760 I C01562/ScanService: Enter ScanService::HandleNetworkQualityChanged, change to status: 19.
+01-16 17:40:01.170  1455  1760 E C01560/OHWIFI_MANAGER_LOCK_MANAGER: Failed to update wifi power mode for connect state change
+01-16 17:40:01.170  1455  1760 I C01560/StaStateMachine: After updated, current network status history is 1/1/1/1/1/1/1/1/1/1/.
+01-16 17:40:01.173   278   930 I C02d10/HiView-SysEventSource: CheckValidSysEvent: event[COMMUNICATION|WIFI_CHR_EVENT|115740] is valid.
+01-16 17:40:01.174   590   595 I C015b0/NetsysNativeService: [OnRemoteRequest-(net_dns_result_callback_stub.cpp:31)]Stub call start, code:[0]
+01-16 17:40:01.174   590   631 I C015b0/NetConnManager: [NetDetectionForDnsHealthSync-(network.cpp:446)]Enter Network::NetDetectionForDnsHealthSync
+01-16 17:40:01.174   590   631 I C015b0/NetConnManager: [NetDetectionForDnsHealthSync-(network.cpp:452)]Last netDetectionState: [2]
+01-16 17:40:01.174   590   631 I C015b0/NetConnManager: [NetDetectionForDnsHealthSync-(network.cpp:462)]Not match, no need to restart.
+01-16 17:40:01.213  2266  2406 I C04100/DHFWK: [DHTimer][Execute]:start
+01-16 17:40:01.514  1049  1335 I C05781/LnnHeartBeat: [kh_heartbeat_service.c:973] KhHbHandleMessage# [KHHB]KhHbHandleMessage:what=1!
+01-16 17:40:01.514  1049  1335 I C05781/LnnHeartBeat: [kh_heartbeat_service.c:129] LnnKhHbPostMessageDelay# [KHHB]LnnKhHbPostMessageDelay:type=1 delayMillis=1000!
+01-16 17:40:01.514  1049  1335 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:704] PostHbData# [KHHB]PostHbData success, laneId:4, data:{"ltype":0,"seq":9635,"ptype":0,"intvl":1000}
+01-16 17:40:01.545  1049  1337 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:405] OnLaneDataReceived# [KHHB]recv hb lane data success, laneId:4, connectionId:131104, data:{"ltype":0,"seq":9635,"ptype":1,"intvl":1000}
+01-16 17:40:01.545  1049  1337 I C05781/LnnHeartBeat: [kh_heartbeat_service.c:129] LnnKhHbPostMessageDelay# [KHHB]LnnKhHbPostMessageDelay:type=2 delayMillis=15000!
+01-16 17:40:01.545  1049  1337 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:704] PostHbData# [KHHB]PostHbData success, laneId:4, data:{"ltype":0,"seq":9635,"ptype":2,"intvl":1000}
+01-16 17:40:01.741  1049  1292 I C05743/TransCtrl: [softbus_proxychannel_manager.c:1509] TransProxyTimerItemProc# enter.
+01-16 17:40:01.815   278   776 I C02d10/UCollectUtil-IoCollector: CollectDiskStats: collect disk stats size=33, isUpdate=1
+01-16 17:40:01.857   278   776 I C02d10/UCollectUtil-IoCollector: CollectAllProcIoStats: collect process io stats size=32, isUpdate=1
+01-16 17:40:01.898  1049  1335 I C05781/LnnHeartBeat: [kh_heartbeat_service.c:973] KhHbHandleMessage# [KHHB]KhHbHandleMessage:what=1!
+01-16 17:40:01.898  1049  1335 I C05781/LnnHeartBeat: [kh_heartbeat_service.c:129] LnnKhHbPostMessageDelay# [KHHB]LnnKhHbPostMessageDelay:type=1 delayMillis=1000!
+01-16 17:40:01.898  1049  1335 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:704] PostHbData# [KHHB]PostHbData success, laneId:5, data:{"ltype":0,"seq":4400,"ptype":0,"intvl":1000}
+01-16 17:40:01.936  1049  1337 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:405] OnLaneDataReceived# [KHHB]recv hb lane data success, laneId:5, connectionId:131101, data:{"ltype":0,"seq":4400,"ptype":1,"intvl":1000}
+01-16 17:40:01.936  1049  1337 I C05781/LnnHeartBeat: [kh_heartbeat_service.c:129] LnnKhHbPostMessageDelay# [KHHB]LnnKhHbPostMessageDelay:type=2 delayMillis=15000!
+01-16 17:40:01.936  1049  1337 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:704] PostHbData# [KHHB]PostHbData success, laneId:5, data:{"ltype":0,"seq":4400,"ptype":2,"intvl":1000}
+01-16 17:40:02.027  1049  1336 I C05784/LnnLane: [lnn_trans_lane.c:825] MsgHandler# what=6
+01-16 17:40:02.249  1052 17441 I C02d13/HDC_LOG: [daemon.cpp:397] FetchCommand channelId:616836766 command:1001
+01-16 17:40:02.249  1052 17441 E C02c02/PARAM: [param_manager.c:736]SystemReadParam failed! name is:persist.hdc.control.shell, errNum is:106!
+01-16 17:40:02.249  1052 17441 I C02d13/HDC_LOG: [session.cpp:1335] New HTaskInfo channelId:616836766 command:1001
+01-16 17:40:02.249  1052 17441 I C02d13/HDC_LOG: [session.cpp:750] AdminTask add session 4053085393, channelId 616836766, mapTask size: 1
+01-16 17:40:02.249  1052 17441 I C02d13/HDC_LOG: [task.cpp:32] HdcTaskBase channelId:616836766
+01-16 17:40:02.249  1052 17441 E C02c02/PARAM: [param_manager.c:736]SystemReadParam failed! name is:persist.hdc.root, errNum is:106!
+01-16 17:40:02.249  1052 17441 W C02d13/HDC_LOG: [async_cmd.cpp:110] GetDevItem false key:persist.hdc.root
+01-16 17:40:02.249  1052 18922 I C02d13/HDC_LOG: [async_cmd.cpp:212] Popen pipe fds[pipeRead]:35 fds[pipeWrite]:36, mode 0
+01-16 17:40:02.250  1052 17441 I C02d13/HDC_LOG: [async_cmd.cpp:262] ExecuteCommand cmd:hilog -x > /data/test/device1_hilog.txt 2>&1 & fd:35 pid:18923
+01-16 17:40:02.257  1052 18925 I C02d13/HDC_LOG: [async_cmd.cpp:84] FinishShellProc finish pipeRead fd:35 pid:18923
+01-16 17:40:02.257  1052 18925 I C02d13/HDC_LOG: [task.cpp:50] HdcTaskBase::TaskFinish notify begin channelId:616836766
+01-16 17:40:02.257  1052 18925 I C02d13/HDC_LOG: [task.cpp:52] HdcTaskBase::TaskFinish notify end channelId:616836766
+01-16 17:40:02.258  1052 17441 I C02d13/HDC_LOG: [daemon.cpp:397] FetchCommand channelId:616836766 command:2
+01-16 17:40:02.258  1052 17441 I C02d13/HDC_LOG: [session.cpp:107] BeginRemoveTask taskType:0 channelId:616836766
+01-16 17:40:02.258  1052 17441 I C02d13/HDC_LOG: [session.cpp:161] ClearOwnTasks OP_CLEAR finish, sessionId:4053085393 channelIDInput:616836766
+01-16 17:40:02.258  1052 17441 I C02d13/HDC_LOG: [session.cpp:119] TaskDelay task remove retry count 0/30, taskType:0 channelId:616836766, sessionId:4053085393
+01-16 17:40:02.258  1052 17441 I C02d13/HDC_LOG: [async_cmd.cpp:53] ReadyForRelease close fd:-1 pid:18923
+01-16 17:40:02.258  1052 17441 I C02d13/HDC_LOG: [daemon_unity.cpp:27] ~HdcDaemonUnity channelId:616836766
+01-16 17:40:02.258  1052 17441 I C02d13/HDC_LOG: [task.cpp:37] ~HdcTaskBase channelId:616836766
+01-16 17:40:02.258  1052 17441 I C02d13/HDC_LOG: [session.cpp:127] TaskDelay task remove finish, channelId:616836766

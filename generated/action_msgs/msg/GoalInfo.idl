@@ -1,0 +1,20 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from action_msgs/action_msgs/msg/GoalInfo.msg
+// generated code does not contain a copyright notice
+
+#include "builtin_interfaces/msg/Time.idl"
+#include "unique_identifier_msgs/msg/UUID.idl"
+
+module action_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "Goal ID")
+    struct GoalInfo {
+      unique_identifier_msgs::msg::UUID goal_id;
+
+      @verbatim (language="comment", text=
+        "Time when the goal was accepted")
+      builtin_interfaces::msg::Time stamp;
+    };
+  };
+};

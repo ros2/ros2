@@ -1,0 +1,26 @@
+{
+  "package_name": "rmw_dds_common",
+  "idl_tuples": [
+    "/home/jiusi/M-DDS/ros2/generated/rmw_dds_common:msg/Gid.idl",
+    "/home/jiusi/M-DDS/ros2/generated/rmw_dds_common:msg/NodeEntitiesInfo.idl",
+    "/home/jiusi/M-DDS/ros2/generated/rmw_dds_common:msg/ParticipantEntitiesInfo.idl"
+  ],
+  "ros_interface_files": [
+    "/home/jiusi/M-DDS/ros2/generated/rmw_dds_common/msg/Gid.idl",
+    "/home/jiusi/M-DDS/ros2/generated/rmw_dds_common/msg/NodeEntitiesInfo.idl",
+    "/home/jiusi/M-DDS/ros2/generated/rmw_dds_common/msg/ParticipantEntitiesInfo.idl"
+  ],
+  "output_dir": "/home/jiusi/M-DDS/ros2/generated/rmw_dds_common",
+  "template_dir": "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/resource",
+  "target_dependencies": [
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/resource/srv__type_support.cpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/resource/action__type_support.cpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/resource/msg__type_support.cpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/resource/idl__type_support.cpp.em",
+    "/home/jiusi/M-DDS/ros2/generated/rmw_dds_common/msg/Gid.idl",
+    "/home/jiusi/M-DDS/ros2/generated/rmw_dds_common/msg/NodeEntitiesInfo.idl",
+    "/home/jiusi/M-DDS/ros2/generated/rmw_dds_common/msg/ParticipantEntitiesInfo.idl"
+  ],
+  "ros_interface_dependencies": [],
+  "type_description_tuples": []
+}

@@ -1,0 +1,39 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rcl_yaml_param_parser - RCL YAML Parameter Parser
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory
+_rcl_yaml_param_parser_src = "//ros2/src/ros2/rcl/rcl_yaml_param_parser"
+
+# ============================================================================
+# rcl_yaml_param_parser shared library
+# ============================================================================
+ros2_shared_library("rcl_yaml_param_parser") {
+  sources = [
+    "${_rcl_yaml_param_parser_src}/src/add_to_arrays.c",
+    "${_rcl_yaml_param_parser_src}/src/namespace.c",
+    "${_rcl_yaml_param_parser_src}/src/node_params.c",
+    "${_rcl_yaml_param_parser_src}/src/parse.c",
+    "${_rcl_yaml_param_parser_src}/src/parser.c",
+    "${_rcl_yaml_param_parser_src}/src/yaml_variant.c",
+  ]
+
+  include_dirs = [
+    "${_rcl_yaml_param_parser_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rmw:rmw",
+    "//vendor/libyaml:yaml",
+  ]
+
+  defines = [
+    "RCL_YAML_PARAM_PARSER_BUILDING_DLL",
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

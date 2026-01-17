@@ -1,0 +1,17 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DRCLCPP_BUILDING_LIBRARY -DROSIDL_GENERATOR_C_BUILDING_DLL_builtin_interfaces -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL -DLIBSTATISTICS_COLLECTOR_BUILDING_LIBRARY -DRCL_BUILDING_DLL -DRMW_VERSION_MAJOR=2 -DRMW_VERSION_MINOR=0 -DRMW_VERSION_PATCH=0 -DROSIDL_GENERATOR_C_BUILDING_DLL_rcl_interfaces -DROSIDL_GENERATOR_C_BUILDING_DLL_type_description_interfaces -DROSIDL_GENERATOR_C_BUILDING_DLL_service_msgs -DROSIDL_GENERATOR_C_BUILDING_DLL_statistics_msgs -DROSIDL_GENERATOR_C_BUILDING_DLL_rosgraph_msgs -DROSIDL_TYPESUPPORT_CPP_BUILDING_DLL -DROSIDL_TYPESUPPORT_INTROSPECTION_CPP_BUILDING_DLL -DTRACETOOLS_DISABLED -DTRACETOOLS_TRACEPOINTS_EXCLUDED -DROSIDL_GENERATOR_C_BUILDING_DLL_std_msgs
+include_dirs = -I../../generated -I../../src/ros2/rclcpp/rclcpp/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include -I../../src/ros-tooling/libstatistics_collector/include -I../../src/ros2/rcl/rcl/include -I../../src/ros2/rmw/rmw/include -I../../src/ros2/rosidl_dynamic_typesupport/include -I../../src/ros2/rcl_logging/rcl_logging_interface/include -I../../src/ros2/rcl/rcl_yaml_param_parser/include -I../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/include -I../../src/ros2/rcpputils/include -I../../src/ros2/rosidl/rosidl_runtime_cpp/include -I../../src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/include -I../../src/ros2/rosidl_typesupport/rosidl_typesupport_c/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_cpp/include -I../../src/ros2/ros2_tracing/tracetools/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC -std=c99 -std=c99 -std=c11 -std=c11
+cflags_cc = -std=c++17 -Wall -Wextra -std=c++17 -Wno-psabi -std=c++17 -fPIC -std=c++17
+target_output_name = listener
+
+build obj/demo_cpp/src/listener.listener.o: cxx ../../demo_cpp/src/listener.cpp || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = listener.cpp
+  source_name_part = listener
+
+build ./listener: link obj/demo_cpp/src/listener.listener.o ./librclcpp.so ./libstd_msgs.so ./librosidl_typesupport_cpp.so ./librosidl_typesupport_introspection_cpp.so ./libbuiltin_interfaces.so ./librosidl_runtime_c.so ./librcutils.so ./librosidl_typesupport_introspection_c.so ./libstatistics_collector.so ./librcl.so ./librmw.so ./librosidl_dynamic_typesupport.so ./librcl_logging_interface.so ./librcl_yaml_param_parser.so ./librmw_implementation.so ./librmw_cyclonedds_cpp.so ./librcl_interfaces.so ./libtype_description_interfaces.so ./libservice_msgs.so ./librcpputils.so ./libstatistics_msgs.so ./librosgraph_msgs.so ./librosidl_typesupport_c.so
+  ldflags =
+  libs = -lpthread -lc -lm -ldl
+  frameworks =
+  swiftmodules =
+  output_extension = 
+  output_dir = .

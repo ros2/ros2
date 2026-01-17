@@ -1,0 +1,17 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../src/ros2/rcpputils/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_cc = -std=c++17 -Wno-psabi -std=c++17 -fPIC
+target_output_name = test_rcpputils
+
+build obj/test/rcpputils_test/test_rcpputils.test_rcpputils.o: cxx ../../test/rcpputils_test/test_rcpputils.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = test_rcpputils.cpp
+  source_name_part = test_rcpputils
+
+build ./test_rcpputils: link obj/test/rcpputils_test/test_rcpputils.test_rcpputils.o ./librcutils.so ./librcpputils.so
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = 
+  output_dir = .

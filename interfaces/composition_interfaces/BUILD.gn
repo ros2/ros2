@@ -1,0 +1,140 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# composition_interfaces - ROS2 component composition interface types
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+_package_name = "composition_interfaces"
+
+# ============================================================================
+# composition_interfaces types:
+#
+# Services:
+#   LoadNode   - Load a component node into a container
+#   UnloadNode - Unload a component node by unique_id
+#   ListNodes  - List all loaded component nodes
+# ============================================================================
+
+# ============================================================================
+# composition_interfaces C generator library
+# ============================================================================
+ros2_shared_library("composition_interfaces__rosidl_generator_c") {
+  sources = [
+    "src/srv/load_node__functions.c",
+    "src/srv/unload_node__functions.c",
+    "src/srv/list_nodes__functions.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//interfaces/rcl_interfaces:rcl_interfaces__rosidl_generator_c",
+  ]
+
+  defines = [ "ROSIDL_GENERATOR_C_BUILDING_DLL_${_package_name}" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# composition_interfaces type support C library
+# ============================================================================
+ros2_shared_library("composition_interfaces__rosidl_typesupport_c") {
+  sources = [
+    "src/srv/load_node__type_support.c",
+    "src/srv/unload_node__type_support.c",
+    "src/srv/list_nodes__type_support.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":composition_interfaces__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//foundation/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//interfaces/rcl_interfaces:rcl_interfaces__rosidl_typesupport_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_C_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# composition_interfaces FastRTPS type support
+# ============================================================================
+ros2_shared_library("composition_interfaces__rosidl_typesupport_fastrtps_c") {
+  sources = [
+    "src/srv/load_node__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/unload_node__rosidl_typesupport_fastrtps_c.cpp",
+    "src/srv/list_nodes__rosidl_typesupport_fastrtps_c.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":composition_interfaces__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_fastrtps_c:rosidl_typesupport_fastrtps_c",
+    "//vendor/fastdds/fastcdr:fastcdr",
+    "//interfaces/rcl_interfaces:rcl_interfaces__rosidl_typesupport_fastrtps_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_FASTRTPS_C_BUILDING_DLL_${_package_name}" ]
+
+  cflags_cc = [ "-Wno-unused-parameter" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# composition_interfaces C++ type support
+# ============================================================================
+config("composition_interfaces_cpp_config") {
+  include_dirs = [ "include" ]
+}
+
+ros2_shared_library("composition_interfaces__rosidl_typesupport_cpp") {
+  sources = [
+    "src/srv/load_node__type_support.cpp",
+    "src/srv/unload_node__type_support.cpp",
+    "src/srv/list_nodes__type_support.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":composition_interfaces__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//foundation/rosidl/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//foundation/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+    "//interfaces/rcl_interfaces:rcl_interfaces__rosidl_typesupport_cpp",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_CPP_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# Package group target
+# ============================================================================
+group("composition_interfaces") {
+  public_deps = [
+    ":composition_interfaces__rosidl_generator_c",
+    ":composition_interfaces__rosidl_typesupport_c",
+    ":composition_interfaces__rosidl_typesupport_cpp",
+    ":composition_interfaces__rosidl_typesupport_fastrtps_c",
+  ]
+
+  public_configs = [ ":composition_interfaces_cpp_config" ]
+}

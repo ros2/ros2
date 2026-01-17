@@ -1,0 +1,129 @@
+defines = -DDEFAULT_RMW_IMPLEMENTATION=rmw_implementation -DROS_PACKAGE_NAME=\"rcl\" -D__OHOS__ -D_GNU_SOURCE -DRCL_BUILDING_DLL -DRCUTILS_BUILDING_DLL -DROSIDL_RUNTIME_C_BUILDING_DLL -DRMW_VERSION_MAJOR=2 -DRMW_VERSION_MINOR=0 -DRMW_VERSION_PATCH=0 -DROSIDL_GENERATOR_C_BUILDING_DLL_rcl_interfaces -DROSIDL_GENERATOR_C_BUILDING_DLL_type_description_interfaces -DROSIDL_GENERATOR_C_BUILDING_DLL_service_msgs -DROSIDL_GENERATOR_C_BUILDING_DLL_builtin_interfaces -DTRACETOOLS_DISABLED -DTRACETOOLS_TRACEPOINTS_EXCLUDED
+include_dirs = -I../../src/ros2/rcl/rcl/src -I../../generated -I../../src/ros2/rcl/rcl/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rmw/rmw/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl_dynamic_typesupport/include -I../../src/ros2/rcl_logging/rcl_logging_interface/include -I../../src/ros2/rcl/rcl_yaml_param_parser/include -I../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include -I../../src/ros2/ros2_tracing/tracetools/include -I../../third_party/libyaml/libyaml-0.2.5/include
+cflags = -std=c11 -Wno-unused-parameter -Wall -Wextra -Wno-unused-parameter -fPIC -std=c99 -std=c99 -std=c11 -std=c11 -std=c99 -DYAML_DECLARE_EXPORT
+cflags_c = -std=c11 -std=c11 -fPIC
+target_output_name = librcl
+
+build obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp: stamp obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp obj/src/ros2/rcutils/logging_macros_gen.stamp
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.init.o: cc ../../src/ros2/rcl/rcl/src/rcl/init.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = init.c
+  source_name_part = init
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.init_options.o: cc ../../src/ros2/rcl/rcl/src/rcl/init_options.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = init_options.c
+  source_name_part = init_options
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.context.o: cc ../../src/ros2/rcl/rcl/src/rcl/context.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = context.c
+  source_name_part = context
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.common.o: cc ../../src/ros2/rcl/rcl/src/rcl/common.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = common.c
+  source_name_part = common
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.domain_id.o: cc ../../src/ros2/rcl/rcl/src/rcl/domain_id.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = domain_id.c
+  source_name_part = domain_id
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.node.o: cc ../../src/ros2/rcl/rcl/src/rcl/node.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = node.c
+  source_name_part = node
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.node_options.o: cc ../../src/ros2/rcl/rcl/src/rcl/node_options.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = node_options.c
+  source_name_part = node_options
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.node_resolve_name.o: cc ../../src/ros2/rcl/rcl/src/rcl/node_resolve_name.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = node_resolve_name.c
+  source_name_part = node_resolve_name
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.node_type_cache.o: cc ../../src/ros2/rcl/rcl/src/rcl/node_type_cache.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = node_type_cache.c
+  source_name_part = node_type_cache
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.publisher.o: cc ../../src/ros2/rcl/rcl/src/rcl/publisher.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = publisher.c
+  source_name_part = publisher
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.subscription.o: cc ../../src/ros2/rcl/rcl/src/rcl/subscription.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = subscription.c
+  source_name_part = subscription
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.service.o: cc ../../src/ros2/rcl/rcl/src/rcl/service.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = service.c
+  source_name_part = service
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.service_event_publisher.o: cc ../../src/ros2/rcl/rcl/src/rcl/service_event_publisher.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = service_event_publisher.c
+  source_name_part = service_event_publisher
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.client.o: cc ../../src/ros2/rcl/rcl/src/rcl/client.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = client.c
+  source_name_part = client
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.timer.o: cc ../../src/ros2/rcl/rcl/src/rcl/timer.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = timer.c
+  source_name_part = timer
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.wait.o: cc ../../src/ros2/rcl/rcl/src/rcl/wait.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = wait.c
+  source_name_part = wait
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.time.o: cc ../../src/ros2/rcl/rcl/src/rcl/time.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = time.c
+  source_name_part = time
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.guard_condition.o: cc ../../src/ros2/rcl/rcl/src/rcl/guard_condition.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = guard_condition.c
+  source_name_part = guard_condition
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.event.o: cc ../../src/ros2/rcl/rcl/src/rcl/event.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = event.c
+  source_name_part = event
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.graph.o: cc ../../src/ros2/rcl/rcl/src/rcl/graph.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = graph.c
+  source_name_part = graph
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.network_flow_endpoints.o: cc ../../src/ros2/rcl/rcl/src/rcl/network_flow_endpoints.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = network_flow_endpoints.c
+  source_name_part = network_flow_endpoints
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.logging.o: cc ../../src/ros2/rcl/rcl/src/rcl/logging.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = logging.c
+  source_name_part = logging
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.logging_rosout.o: cc ../../src/ros2/rcl/rcl/src/rcl/logging_rosout.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = logging_rosout.c
+  source_name_part = logging_rosout
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.log_level.o: cc ../../src/ros2/rcl/rcl/src/rcl/log_level.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = log_level.c
+  source_name_part = log_level
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.arguments.o: cc ../../src/ros2/rcl/rcl/src/rcl/arguments.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = arguments.c
+  source_name_part = arguments
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.remap.o: cc ../../src/ros2/rcl/rcl/src/rcl/remap.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = remap.c
+  source_name_part = remap
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.lexer.o: cc ../../src/ros2/rcl/rcl/src/rcl/lexer.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = lexer.c
+  source_name_part = lexer
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.lexer_lookahead.o: cc ../../src/ros2/rcl/rcl/src/rcl/lexer_lookahead.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = lexer_lookahead.c
+  source_name_part = lexer_lookahead
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.expand_topic_name.o: cc ../../src/ros2/rcl/rcl/src/rcl/expand_topic_name.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = expand_topic_name.c
+  source_name_part = expand_topic_name
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.validate_topic_name.o: cc ../../src/ros2/rcl/rcl/src/rcl/validate_topic_name.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = validate_topic_name.c
+  source_name_part = validate_topic_name
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.validate_enclave_name.o: cc ../../src/ros2/rcl/rcl/src/rcl/validate_enclave_name.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = validate_enclave_name.c
+  source_name_part = validate_enclave_name
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.discovery_options.o: cc ../../src/ros2/rcl/rcl/src/rcl/discovery_options.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = discovery_options.c
+  source_name_part = discovery_options
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.security.o: cc ../../src/ros2/rcl/rcl/src/rcl/security.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = security.c
+  source_name_part = security
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.localhost.o: cc ../../src/ros2/rcl/rcl/src/rcl/localhost.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = localhost.c
+  source_name_part = localhost
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.type_hash.o: cc ../../src/ros2/rcl/rcl/src/rcl/type_hash.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = type_hash.c
+  source_name_part = type_hash
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.type_description_conversions.o: cc ../../src/ros2/rcl/rcl/src/rcl/type_description_conversions.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = type_description_conversions.c
+  source_name_part = type_description_conversions
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.dynamic_message_type_support.o: cc ../../src/ros2/rcl/rcl/src/rcl/dynamic_message_type_support.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = dynamic_message_type_support.c
+  source_name_part = dynamic_message_type_support
+build obj/src/ros2/rcl/rcl/src/rcl/librcl.rmw_implementation_identifier_check.o: cc ../../src/ros2/rcl/rcl/src/rcl/rmw_implementation_identifier_check.c || obj/src/ros2/rcl/rcl/rcl.inputdeps.stamp
+  source_file_part = rmw_implementation_identifier_check.c
+  source_name_part = rmw_implementation_identifier_check
+
+build ./librcl.so: solink obj/src/ros2/rcl/rcl/src/rcl/librcl.init.o obj/src/ros2/rcl/rcl/src/rcl/librcl.init_options.o obj/src/ros2/rcl/rcl/src/rcl/librcl.context.o obj/src/ros2/rcl/rcl/src/rcl/librcl.common.o obj/src/ros2/rcl/rcl/src/rcl/librcl.domain_id.o obj/src/ros2/rcl/rcl/src/rcl/librcl.node.o obj/src/ros2/rcl/rcl/src/rcl/librcl.node_options.o obj/src/ros2/rcl/rcl/src/rcl/librcl.node_resolve_name.o obj/src/ros2/rcl/rcl/src/rcl/librcl.node_type_cache.o obj/src/ros2/rcl/rcl/src/rcl/librcl.publisher.o obj/src/ros2/rcl/rcl/src/rcl/librcl.subscription.o obj/src/ros2/rcl/rcl/src/rcl/librcl.service.o obj/src/ros2/rcl/rcl/src/rcl/librcl.service_event_publisher.o obj/src/ros2/rcl/rcl/src/rcl/librcl.client.o obj/src/ros2/rcl/rcl/src/rcl/librcl.timer.o obj/src/ros2/rcl/rcl/src/rcl/librcl.wait.o obj/src/ros2/rcl/rcl/src/rcl/librcl.time.o obj/src/ros2/rcl/rcl/src/rcl/librcl.guard_condition.o obj/src/ros2/rcl/rcl/src/rcl/librcl.event.o obj/src/ros2/rcl/rcl/src/rcl/librcl.graph.o obj/src/ros2/rcl/rcl/src/rcl/librcl.network_flow_endpoints.o obj/src/ros2/rcl/rcl/src/rcl/librcl.logging.o obj/src/ros2/rcl/rcl/src/rcl/librcl.logging_rosout.o obj/src/ros2/rcl/rcl/src/rcl/librcl.log_level.o obj/src/ros2/rcl/rcl/src/rcl/librcl.arguments.o obj/src/ros2/rcl/rcl/src/rcl/librcl.remap.o obj/src/ros2/rcl/rcl/src/rcl/librcl.lexer.o obj/src/ros2/rcl/rcl/src/rcl/librcl.lexer_lookahead.o obj/src/ros2/rcl/rcl/src/rcl/librcl.expand_topic_name.o obj/src/ros2/rcl/rcl/src/rcl/librcl.validate_topic_name.o obj/src/ros2/rcl/rcl/src/rcl/librcl.validate_enclave_name.o obj/src/ros2/rcl/rcl/src/rcl/librcl.discovery_options.o obj/src/ros2/rcl/rcl/src/rcl/librcl.security.o obj/src/ros2/rcl/rcl/src/rcl/librcl.localhost.o obj/src/ros2/rcl/rcl/src/rcl/librcl.type_hash.o obj/src/ros2/rcl/rcl/src/rcl/librcl.type_description_conversions.o obj/src/ros2/rcl/rcl/src/rcl/librcl.dynamic_message_type_support.o obj/src/ros2/rcl/rcl/src/rcl/librcl.rmw_implementation_identifier_check.o ./librcutils.so ./librmw.so ./librosidl_runtime_c.so ./librcl_logging_interface.so ./librcl_yaml_param_parser.so ./librmw_implementation.so ./librcl_interfaces.so ./libtype_description_interfaces.so ./librcl_logging_noop.so ./libyaml.so ./libservice_msgs.so ./librosidl_dynamic_typesupport.so ./librmw_cyclonedds_cpp.so ./librosidl_typesupport_introspection_c.so ./libbuiltin_interfaces.so || obj/src/ros2/ros2_tracing/tracetools/tracetools.stamp
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

@@ -1,0 +1,9 @@
+# Add C typesupport dispatch files (separate from C++ typesupport)
+Sources to add after msg/*__type_support.cpp:
+    "${_gen_base}/msg/field__type_support_c.cpp",
+    "${_gen_base}/msg/field_type__type_support_c.cpp",
+    "${_gen_base}/msg/individual_type_description__type_support_c.cpp",
+    "${_gen_base}/msg/key_value__type_support_c.cpp",
+    "${_gen_base}/msg/type_description__type_support_c.cpp",
+    "${_gen_base}/msg/type_source__type_support_c.cpp",
+    "${_gen_base}/srv/get_type_description__type_support_c.cpp",

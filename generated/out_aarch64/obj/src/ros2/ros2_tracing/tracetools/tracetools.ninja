@@ -1,0 +1,6 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DTRACETOOLS_DISABLED -DTRACETOOLS_TRACEPOINTS_EXCLUDED
+include_dirs = -I../../src/ros2/ros2_tracing/tracetools/include
+target_output_name = tracetools
+
+
+build obj/src/ros2/ros2_tracing/tracetools/tracetools.stamp: stamp

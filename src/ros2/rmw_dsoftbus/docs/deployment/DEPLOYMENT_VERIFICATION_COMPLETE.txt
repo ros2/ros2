@@ -1,0 +1,132 @@
+========================================
+rmw_dsoftbus 部署验证完成
+========================================
+
+验证时间: 2026-01-06 06:10 UTC
+服务器: cp (/kh_data/pengys/OpenHarmony)
+部署路径: foundation/communication/rmw_dsoftbus/
+状态: ✅ 所有文件已验证，可开始编译
+
+========================================
+验证结果摘要
+========================================
+
+目录结构          ✅ 8个子目录正确
+BUILD.gn          ✅ 185行，ohos模板，external_deps正确
+bundle.json       ✅ JSON格式正确，组件配置正确
+源代码文件        ✅ 28个cpp文件（所有RMW API）
+头文件            ✅ 25个h文件
+daemon main.cpp   ✅ 46行，初始化逻辑正确
+测试文件          ✅ 2个测试cpp
+native_token.cpp  ✅ 包含GetAccessTokenId和SetSelfTokenID
+subsystem配置     ✅ rmw_dsoftbus子系统已添加
+产品配置          ✅ communication/rmw_dsoftbus组件已添加
+
+========================================
+关键配置验证
+========================================
+
+✅ BUILD.gn配置:
+   - ohos_shared_library("librmw_dsoftbus")
+   - ohos_executable("rmw_discovery_daemon")
+   - external_deps包含: access_token, hilog, ipc
+   - install_enable = true
+   - install_images = ["system"]
+   - part_name = "rmw_dsoftbus"
+   - subsystem_name = "communication"
+
+✅ native_token.cpp:
+   - GetAccessTokenId() 存在
+   - SetSelfTokenID() 存在
+   - InitializeNativeToken() 存在
+   - processName = "rmw_discovery_daemon"
+   - aplStr = "system_core"
+
+✅ 系统配置:
+   - subsystem_config.json: rmw_dsoftbus已注册
+   - config.json: rmw_dsoftbus组件已添加到communication
+
+========================================
+编译命令（在cp服务器执行）
+========================================
+
+ssh cp
+cd /kh_data/pengys/OpenHarmony
+./build.sh --product-name khs_3588s_sbc --ccache
+
+预计时间: 1-2小时
+
+编译成功后检查:
+  ls -lh out/khs_3588s_sbc/communication/rmw_dsoftbus/
+  ls -lh out/khs_3588s_sbc/packages/phone/images/system.img
+
+========================================
+编译成功后的操作
+========================================
+
+1. 下载system.img到本地
+   scp cp:/kh_data/pengys/OpenHarmony/out/khs_3588s_sbc/packages/phone/images/system.img /tmp/
+
+2. 刷写到所有3个设备（必须）
+   每个设备: reboot bootloader → fastboot flash system → fastboot reboot
+
+3. 验证Token注册
+   hdc shell "ps -Z | grep rmw_discovery"
+   预期: u:r:rmw_discovery:s0 或类似（不是su:s0）
+
+4. 最终验收（rx > 0）
+   运行跨设备测试，验证Session建立成功
+
+========================================
+预期结果
+========================================
+
+✅ 编译成功:
+   - librmw_dsoftbus.so 生成
+   - rmw_discovery_daemon 生成
+   - system.img 包含rmw_dsoftbus组件
+
+✅ 刷写成功:
+   - fastboot flash完成
+   - 设备正常启动
+
+✅ Token注册成功:
+   - daemon获得正确的AccessToken
+   - CalcPermType()返回SYSTEM_APP
+   - CreateSessionServer权限检查通过
+
+✅ 功能验收成功（Phase 2封板）:
+   - Session建立成功（不再 -426115004）
+   - rx > 0（至少收到一条消息）
+   - 3设备稳定运行
+
+========================================
+技术关键点
+========================================
+
+方案2解决的根本问题:
+  AccessToken未在系统数据库注册
+      ↓
+  CalcPermType()失败
+      ↓
+  CreateSessionServer权限检查失败
+      ↓
+  -426115004 (PEER_SESSION_NOT_CREATED)
+
+方案2的解决路径:
+  ohos_executable → GetAccessTokenId()
+      ↓
+  AccessToken系统注册（构建时）
+      ↓
+  刷入system.img
+      ↓
+  系统启动 → daemon获得正确token
+      ↓
+  CalcPermType()成功
+      ✅ Session建立成功
+
+========================================
+
+所有文件验证通过！可以开始编译了 🚀
+
+详细指令: rmw_dsoftbus/RUN_RPC_TEST.md

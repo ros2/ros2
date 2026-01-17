@@ -1,0 +1,108 @@
+// Copyright (c) 2024 ROS2 OpenHarmony Port Project
+// diagnostic_msgs/msg/DiagnosticStatus functions
+
+#include "diagnostic_msgs/msg/diagnostic_status.h"
+#include "rcutils/allocator.h"
+#include <string.h>
+
+bool diagnostic_msgs__msg__DiagnosticStatus__init(diagnostic_msgs__msg__DiagnosticStatus * msg)
+{
+  if (!msg) {
+    return false;
+  }
+  memset(msg, 0, sizeof(*msg));
+  msg->level = 0;
+  rosidl_runtime_c__String__init(&msg->name);
+  rosidl_runtime_c__String__init(&msg->message);
+  rosidl_runtime_c__String__init(&msg->hardware_id);
+  diagnostic_msgs__msg__KeyValue__Sequence__init(&msg->values, 0);
+  return true;
+}
+
+void diagnostic_msgs__msg__DiagnosticStatus__fini(diagnostic_msgs__msg__DiagnosticStatus * msg)
+{
+  if (!msg) {
+    return;
+  }
+  rosidl_runtime_c__String__fini(&msg->name);
+  rosidl_runtime_c__String__fini(&msg->message);
+  rosidl_runtime_c__String__fini(&msg->hardware_id);
+  diagnostic_msgs__msg__KeyValue__Sequence__fini(&msg->values);
+}
+
+diagnostic_msgs__msg__DiagnosticStatus * diagnostic_msgs__msg__DiagnosticStatus__create(void)
+{
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  diagnostic_msgs__msg__DiagnosticStatus * msg = (diagnostic_msgs__msg__DiagnosticStatus *)allocator.allocate(
+    sizeof(diagnostic_msgs__msg__DiagnosticStatus), allocator.state);
+  if (!msg) {
+    return NULL;
+  }
+  if (!diagnostic_msgs__msg__DiagnosticStatus__init(msg)) {
+    allocator.deallocate(msg, allocator.state);
+    return NULL;
+  }
+  return msg;
+}
+
+void diagnostic_msgs__msg__DiagnosticStatus__destroy(diagnostic_msgs__msg__DiagnosticStatus * msg)
+{
+  if (!msg) {
+    return;
+  }
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  diagnostic_msgs__msg__DiagnosticStatus__fini(msg);
+  allocator.deallocate(msg, allocator.state);
+}
+
+bool diagnostic_msgs__msg__DiagnosticStatus__Sequence__init(
+  diagnostic_msgs__msg__DiagnosticStatus__Sequence * array, size_t size)
+{
+  if (!array) {
+    return false;
+  }
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+
+  if (size == 0) {
+    array->data = NULL;
+    array->size = 0;
+    array->capacity = 0;
+    return true;
+  }
+
+  array->data = (diagnostic_msgs__msg__DiagnosticStatus *)allocator.zero_allocate(
+    size, sizeof(diagnostic_msgs__msg__DiagnosticStatus), allocator.state);
+  if (!array->data) {
+    return false;
+  }
+
+  for (size_t i = 0; i < size; ++i) {
+    if (!diagnostic_msgs__msg__DiagnosticStatus__init(&array->data[i])) {
+      for (size_t j = 0; j < i; ++j) {
+        diagnostic_msgs__msg__DiagnosticStatus__fini(&array->data[j]);
+      }
+      allocator.deallocate(array->data, allocator.state);
+      return false;
+    }
+  }
+
+  array->size = size;
+  array->capacity = size;
+  return true;
+}
+
+void diagnostic_msgs__msg__DiagnosticStatus__Sequence__fini(
+  diagnostic_msgs__msg__DiagnosticStatus__Sequence * array)
+{
+  if (!array || !array->data) {
+    return;
+  }
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  for (size_t i = 0; i < array->size; ++i) {
+    diagnostic_msgs__msg__DiagnosticStatus__fini(&array->data[i]);
+  }
+  allocator.deallocate(array->data, allocator.state);
+  array->data = NULL;
+  array->size = 0;
+  array->capacity = 0;
+}

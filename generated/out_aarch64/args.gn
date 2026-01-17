@@ -1,0 +1,4 @@
+target_os = "ohos"
+target_cpu = "arm64"
+is_ohos = true
+ohos_sysroot = "/home/jiusi/M-DDS/openharmony_prebuilts/sysroot"

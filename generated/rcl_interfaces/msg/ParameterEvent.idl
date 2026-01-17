@@ -1,0 +1,36 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from rcl_interfaces/rcl_interfaces/msg/ParameterEvent.msg
+// generated code does not contain a copyright notice
+
+#include "builtin_interfaces/msg/Time.idl"
+#include "rcl_interfaces/msg/Parameter.idl"
+
+module rcl_interfaces {
+  module msg {
+    @verbatim (language="comment", text=
+      "This message contains a parameter event." "\n"
+      "Because the parameter event was an atomic update, a specific parameter name" "\n"
+      "can only be in one of the three sets.")
+    struct ParameterEvent {
+      @verbatim (language="comment", text=
+        "The time stamp when this parameter event occurred.")
+      builtin_interfaces::msg::Time stamp;
+
+      @verbatim (language="comment", text=
+        "Fully qualified ROS path to node.")
+      string node;
+
+      @verbatim (language="comment", text=
+        "New parameters that have been set for this node.")
+      sequence<rcl_interfaces::msg::Parameter> new_parameters;
+
+      @verbatim (language="comment", text=
+        "Parameters that have been changed during this event.")
+      sequence<rcl_interfaces::msg::Parameter> changed_parameters;
+
+      @verbatim (language="comment", text=
+        "Parameters that have been deleted during this event.")
+      sequence<rcl_interfaces::msg::Parameter> deleted_parameters;
+    };
+  };
+};

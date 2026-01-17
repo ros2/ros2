@@ -1,0 +1,2081 @@
+// Copyright (c) 2024 ROS2 KaihongOS Port Project
+// Licensed under the Apache License, Version 2.0
+
+// dsoftbus adapter - bridges ROS2 RMW to OpenHarmony dsoftbus
+
+#include "rmw_dsoftbus/rmw_dsoftbus.h"
+#include "rmw_dsoftbus/types.h"
+#include "rmw_dsoftbus/qos_mapper.h"
+#include "rmw_dsoftbus/dsoftbus_session.h"  // Includes real dsoftbus headers when USE_REAL_SOFTBUS is defined
+#include "rmw_dsoftbus/message_header.h"
+#include "rmw_dsoftbus/transport_controller.hpp"  // Transport layer controller
+
+#include <rcutils/logging_macros.h>  // Foundation layer logging
+
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+#include <dlfcn.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <cerrno>
+#include <cstring>
+
+// ============================================================================
+// NativeToken initialization using ioctl (OpenHarmony access control)
+// ============================================================================
+#define TOKENID_DEVNODE "/dev/access_token_id"
+#define ACCESS_TOKEN_ID_IOCTL_BASE 'A'
+#define SET_TOKEN_ID 2
+#define ACCESS_TOKENID_SET_TOKENID _IOW(ACCESS_TOKEN_ID_IOCTL_BASE, SET_TOKEN_ID, uint64_t)
+
+// Token ID for ros2_rmw_dsoftbus (registered in /data/service/el0/access_token/nativetoken.json)
+static const uint64_t ROS2_RMW_TOKEN_ID = 671999888;
+
+static bool g_token_initialized = false;
+
+static bool init_native_token() {
+    if (g_token_initialized) {
+        return true;
+    }
+
+    int fd = open(TOKENID_DEVNODE, O_RDWR);
+    if (fd < 0) {
+        RCUTILS_LOG_ERROR_NAMED("rmw_dsoftbus", "Failed to open %s: %s", TOKENID_DEVNODE, strerror(errno));
+        return false;
+    }
+
+    uint64_t tokenId = ROS2_RMW_TOKEN_ID;
+    int ret = ioctl(fd, ACCESS_TOKENID_SET_TOKENID, &tokenId);
+    close(fd);
+
+    if (ret != 0) {
+        RCUTILS_LOG_ERROR_NAMED("rmw_dsoftbus", "Failed to set token ID: ioctl returned %d, errno=%d", ret, errno);
+        return false;
+    }
+
+    RCUTILS_LOG_INFO_NAMED("rmw_dsoftbus", "Successfully set token ID to %lu", (unsigned long)tokenId);
+    g_token_initialized = true;
+    return true;
+}
+
+// Function pointer types for dsoftbus API
+typedef int (*CreateSessionServerFunc)(const char*, const char*, const ISessionListener*);
+typedef int (*RemoveSessionServerFunc)(const char*, const char*);
+typedef int (*OpenSessionFunc)(const char*, const char*, const char*, const char*, const SessionAttribute*);
+typedef void (*CloseSessionFunc)(int);
+typedef int (*SendBytesFunc)(int, const void*, unsigned int);
+typedef int (*SendMessageFunc)(int, const void*, unsigned int);
+typedef int (*KhSendBytesFunc)(int32_t, const void*, unsigned int);  // KH_TRANS API with index tracking
+// KH_TRANS session API (required for KhSendBytes to work)
+typedef int (*CreateKhSessionServerFunc)(const char*, const char*, const ISessionListener*);
+typedef int (*RemoveKhSessionServerFunc)(const char*, const char*);
+typedef int (*OpenKhSessionFunc)(const char*, const char*, const char*, const char*, const SessionAttribute*);
+typedef void (*CloseKhSessionFunc)(int32_t);
+typedef int (*GetLocalNodeDeviceInfoFunc)(const char*, NodeBasicInfo*);
+typedef int (*GetAllNodeDeviceInfoFunc)(const char*, NodeBasicInfo**, int32_t*);
+typedef void (*FreeNodeInfoFunc)(NodeBasicInfo*);
+typedef int (*RegNodeDeviceStateCbFunc)(const char*, INodeStateCb*);
+typedef int (*UnregNodeDeviceStateCbFunc)(INodeStateCb*);
+typedef int (*GetMySessionNameFunc)(int, char*, unsigned int);
+typedef int (*InitSoftBusFunc)(const char*);  // InitSoftBus API for IPC initialization
+
+// Global function pointers
+static InitSoftBusFunc g_InitSoftBus = nullptr;
+static CreateSessionServerFunc g_CreateSessionServer = nullptr;
+static RemoveSessionServerFunc g_RemoveSessionServer = nullptr;
+static OpenSessionFunc g_OpenSession = nullptr;
+static CloseSessionFunc g_CloseSession = nullptr;
+static SendBytesFunc g_SendBytes = nullptr;
+static SendMessageFunc g_SendMessage = nullptr;
+static KhSendBytesFunc g_KhSendBytes = nullptr;  // KH_TRANS API (preferred)
+// KH_TRANS session API
+static CreateKhSessionServerFunc g_CreateKhSessionServer = nullptr;
+static RemoveKhSessionServerFunc g_RemoveKhSessionServer = nullptr;
+static OpenKhSessionFunc g_OpenKhSession = nullptr;
+static CloseKhSessionFunc g_CloseKhSession = nullptr;
+static GetLocalNodeDeviceInfoFunc g_GetLocalNodeDeviceInfo = nullptr;
+static GetAllNodeDeviceInfoFunc g_GetAllNodeDeviceInfo = nullptr;
+static FreeNodeInfoFunc g_FreeNodeInfo = nullptr;
+static RegNodeDeviceStateCbFunc g_RegNodeDeviceStateCb = nullptr;
+static UnregNodeDeviceStateCbFunc g_UnregNodeDeviceStateCb = nullptr;
+static GetMySessionNameFunc g_GetMySessionName = nullptr;
+static void* g_softbus_handle = nullptr;
+
+static const char* g_loaded_lib_path = nullptr;
+
+// Transport Controller flag (set by environment variable or auto-detect)
+static bool g_use_transport_controller = true;  // Default: enabled
+
+// ============================================================================
+// KH_TRANS Header Support for Message Deduplication
+// ============================================================================
+// KaihongOS dsoftbus uses KH_TRANS module which has index-based deduplication.
+// Messages without incrementing index field are dropped as duplicates.
+// We manually inject KhDataHead to work around this.
+
+#pragma pack(push, 1)
+struct KhDataHead {
+    uint32_t index;                  // Message index (must increment)
+    int32_t dataType;                // Data type (0 = KH_DATA_TYPE_NORMAL)
+    uint16_t crc;                    // CRC16 of payload
+    int32_t channelTotalPackageNum;  // Set to index
+    int32_t version;                 // Protocol version (0)
+    uint32_t len;                    // Original payload length
+};
+#pragma pack(pop)
+
+// CRC16 lookup tables (Modbus CRC16)
+static const unsigned char g_auchCRCHi[] = {
+    0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1,
+    0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01,
+    0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40,
+    0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80,
+    0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1,
+    0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01,
+    0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,
+    0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81,
+    0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1,
+    0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01,
+    0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40,
+    0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80,
+    0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1,
+    0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x01,
+    0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,
+    0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80,
+    0x41, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1,
+    0x81, 0x40
+};
+
+static const unsigned char g_auchCRCLo[] = {
+    0x00, 0xC0, 0xC1, 0x01, 0xC3, 0x03, 0x02, 0xC2, 0xC6, 0x06, 0x07, 0xC7, 0x05, 0xC5,
+    0xC4, 0x04, 0xCC, 0x0C, 0x0D, 0xCD, 0x0F, 0xCF, 0xCE, 0x0E, 0x0A, 0xCA, 0xCB, 0x0B,
+    0xC9, 0x09, 0x08, 0xC8, 0xD8, 0x18, 0x19, 0xD9, 0x1B, 0xDB, 0xDA, 0x1A, 0x1E, 0xDE,
+    0xDF, 0x1F, 0xDD, 0x1D, 0x1C, 0xDC, 0x14, 0xD4, 0xD5, 0x15, 0xD7, 0x17, 0x16, 0xD6,
+    0xD2, 0x12, 0x13, 0xD3, 0x11, 0xD1, 0xD0, 0x10, 0xF0, 0x30, 0x31, 0xF1, 0x33, 0xF3, 0xF2,
+    0x32, 0x36, 0xF6, 0xF7, 0x37, 0xF5, 0x35, 0x34, 0xF4, 0x3C, 0xFC, 0xFD, 0x3D, 0xFF, 0x3F,
+    0x3E, 0xFE, 0xFA, 0x3A, 0x3B, 0xFB, 0x39, 0xF9, 0xF8, 0x38, 0x28, 0xE8, 0xE9, 0x29, 0xEB,
+    0x2B, 0x2A, 0xEA, 0xEE, 0x2E, 0x2F, 0xEF, 0x2D, 0xED, 0xEC, 0x2C, 0xE4, 0x24, 0x25,
+    0xE5, 0x27, 0xE7, 0xE6, 0x26, 0x22, 0xE2, 0xE3, 0x23, 0xE1, 0x21, 0x20, 0xE0, 0xA0, 0x60,
+    0x61, 0xA1, 0x63, 0xA3, 0xA2, 0x62, 0x66, 0xA6, 0xA7, 0x67, 0xA5, 0x65, 0x64, 0xA4, 0x6C,
+    0xAC, 0xAD, 0x6D, 0xAF, 0x6F, 0x6E, 0xAE, 0xAA, 0x6A, 0x6B, 0xAB, 0x69, 0xA9, 0xA8,
+    0x68, 0x78, 0xB8, 0xB9, 0x79, 0xBB, 0x7B, 0x7A, 0xBA, 0xBE, 0x7E, 0x7F, 0xBF, 0x7D,
+    0xBD, 0xBC, 0x7C, 0xB4, 0x74, 0x75, 0xB5, 0x77, 0xB7, 0xB6, 0x76, 0x72, 0xB2, 0xB3, 0x73,
+    0xB1, 0x71, 0x70, 0xB0, 0x50, 0x90, 0x91, 0x51, 0x93, 0x53, 0x52, 0x92, 0x96, 0x56, 0x57,
+    0x97, 0x55, 0x95, 0x94, 0x54, 0x9C, 0x5C, 0x5D, 0x9D, 0x5F, 0x9F, 0x9E, 0x5E, 0x5A, 0x9A,
+    0x9B, 0x5B, 0x99, 0x59, 0x58, 0x98, 0x88, 0x48, 0x49, 0x89, 0x4B, 0x8B, 0x8A, 0x4A, 0x4E,
+    0x8E, 0x8F, 0x4F, 0x8D, 0x4D, 0x4C, 0x8C, 0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46, 0x86,
+    0x82, 0x42, 0x43, 0x83, 0x41, 0x81, 0x80, 0x40
+};
+
+// Calculate CRC16 (Modbus style) for KH_TRANS header
+static uint16_t kh_pack_crc(const unsigned char* data, uint16_t len) {
+    unsigned char crcHi = 0xFF;
+    unsigned char crcLo = 0xFF;
+    while (len--) {
+        unsigned char idx = crcLo ^ (*data++);
+        crcLo = crcHi ^ g_auchCRCHi[idx];
+        crcHi = g_auchCRCLo[idx];
+    }
+    return (uint16_t)((crcHi << 8) | crcLo);
+}
+
+static bool load_softbus_symbols() {
+    if (g_softbus_handle) return true;
+
+    // CRITICAL: Must use CLIENT library, not SERVER library!
+    // libsoftbus_server.z.so is for softbus_server process only
+    // libsoftbus_client.z.so communicates with softbus_server via IPC
+    const char* lib_paths[] = {
+        "/system/lib64/platformsdk/libsoftbus_client.z.so",  // Client library (KaihongOS location) - FIRST PRIORITY
+        "/system/lib64/libsoftbus_client.z.so",              // Client library (standard location)
+        "libsoftbus_client.z.so",                            // Client library (fallback)
+        // DO NOT use libsoftbus_server.z.so - it's for server process only!
+        nullptr
+    };
+
+    for (int i = 0; lib_paths[i] != nullptr; ++i) {
+        // Try RTLD_LAZY first (lazy binding), then RTLD_NOW if that fails
+        g_softbus_handle = dlopen(lib_paths[i], RTLD_LAZY | RTLD_GLOBAL);
+        if (!g_softbus_handle) {
+            g_softbus_handle = dlopen(lib_paths[i], RTLD_NOW | RTLD_GLOBAL);
+        }
+        if (g_softbus_handle) {
+            g_loaded_lib_path = lib_paths[i];
+            RCUTILS_LOG_INFO_NAMED("rmw_dsoftbus", "Loaded library: %s", lib_paths[i]);
+            break;
+        }
+    }
+
+    if (!g_softbus_handle) {
+        RCUTILS_LOG_ERROR_NAMED("rmw_dsoftbus", "Failed to load any softbus library: %s", dlerror());
+        return false;
+    }
+
+    // Load InitSoftBus first - required for IPC initialization
+    g_InitSoftBus = (InitSoftBusFunc)dlsym(g_softbus_handle, "InitSoftBus");
+    g_CreateSessionServer = (CreateSessionServerFunc)dlsym(g_softbus_handle, "CreateSessionServer");
+    g_RemoveSessionServer = (RemoveSessionServerFunc)dlsym(g_softbus_handle, "RemoveSessionServer");
+    g_OpenSession = (OpenSessionFunc)dlsym(g_softbus_handle, "OpenSession");
+    g_CloseSession = (CloseSessionFunc)dlsym(g_softbus_handle, "CloseSession");
+    g_SendBytes = (SendBytesFunc)dlsym(g_softbus_handle, "SendBytes");
+    g_SendMessage = (SendMessageFunc)dlsym(g_softbus_handle, "SendMessage");
+    g_KhSendBytes = (KhSendBytesFunc)dlsym(g_softbus_handle, "KhSendBytes");  // KH_TRANS API
+    // KH_TRANS session API
+    g_CreateKhSessionServer = (CreateKhSessionServerFunc)dlsym(g_softbus_handle, "CreateKhSessionServer");
+    g_RemoveKhSessionServer = (RemoveKhSessionServerFunc)dlsym(g_softbus_handle, "RemoveKhSessionServer");
+    g_OpenKhSession = (OpenKhSessionFunc)dlsym(g_softbus_handle, "OpenKhSession");
+    g_CloseKhSession = (CloseKhSessionFunc)dlsym(g_softbus_handle, "CloseKhSession");
+    g_GetLocalNodeDeviceInfo = (GetLocalNodeDeviceInfoFunc)dlsym(g_softbus_handle, "GetLocalNodeDeviceInfo");
+    g_GetAllNodeDeviceInfo = (GetAllNodeDeviceInfoFunc)dlsym(g_softbus_handle, "GetAllNodeDeviceInfo");
+    g_FreeNodeInfo = (FreeNodeInfoFunc)dlsym(g_softbus_handle, "FreeNodeInfo");
+    g_RegNodeDeviceStateCb = (RegNodeDeviceStateCbFunc)dlsym(g_softbus_handle, "RegNodeDeviceStateCb");
+    g_UnregNodeDeviceStateCb = (UnregNodeDeviceStateCbFunc)dlsym(g_softbus_handle, "UnregNodeDeviceStateCb");
+    g_GetMySessionName = (GetMySessionNameFunc)dlsym(g_softbus_handle, "GetMySessionName");
+
+    RCUTILS_LOG_DEBUG_NAMED("rmw_dsoftbus", "Symbol InitSoftBus: %p", (void*)g_InitSoftBus);
+    RCUTILS_LOG_DEBUG_NAMED("rmw_dsoftbus", "Symbol CreateSessionServer: %p", (void*)g_CreateSessionServer);
+    RCUTILS_LOG_DEBUG_NAMED("rmw_dsoftbus", "Symbol GetAllNodeDeviceInfo: %p", (void*)g_GetAllNodeDeviceInfo);
+    RCUTILS_LOG_DEBUG_NAMED("rmw_dsoftbus", "Symbol RegNodeDeviceStateCb: %p", (void*)g_RegNodeDeviceStateCb);
+    RCUTILS_LOG_DEBUG_NAMED("rmw_dsoftbus", "Symbol KhSendBytes: %p (KH_TRANS API)", (void*)g_KhSendBytes);
+    RCUTILS_LOG_DEBUG_NAMED("rmw_dsoftbus", "Symbol CreateKhSessionServer: %p (KH_TRANS API)", (void*)g_CreateKhSessionServer);
+    RCUTILS_LOG_DEBUG_NAMED("rmw_dsoftbus", "Symbol OpenKhSession: %p (KH_TRANS API)", (void*)g_OpenKhSession);
+
+    return g_InitSoftBus != nullptr && g_CreateSessionServer != nullptr;
+}
+#else
+// ============================================================================
+// Stub mode: Define KhDataHead for compatibility
+// ============================================================================
+#pragma pack(push, 1)
+struct KhDataHead {
+    uint32_t index;                  // Message index (must increment)
+    int32_t dataType;                // Data type (0 = KH_DATA_TYPE_NORMAL)
+    uint16_t crc;                    // CRC16 of payload
+    int32_t channelTotalPackageNum;  // Set to index
+    int32_t version;                 // Protocol version (0)
+    uint32_t len;                    // Original payload length
+};
+#pragma pack(pop)
+
+// CRC16 functions (stub)
+static uint16_t CRC16(const void* data, size_t len) {
+    (void)data; (void)len;
+    return 0;
+}
+#endif  // RMW_DSOFTBUS_USE_REAL_SOFTBUS
+
+#include <cstring>
+#include <functional>
+#include <mutex>
+#include <condition_variable>
+#include <unordered_map>
+#include <vector>
+#include <queue>
+#include <thread>
+#include <chrono>
+#include <ctime>
+
+namespace rmw_dsoftbus {
+
+// ============================================================================
+// QoS Mode and Logging Control (using qos_mapper)
+// ============================================================================
+
+// Legacy API - delegates to qos_mapper
+void set_qos_mode(QosMode mode) {
+    set_global_qos_mode(mode);
+    RCUTILS_LOG_INFO_NAMED("rmw_dsoftbus", "QoS mode set to: %s", qos_mode_to_string(mode));
+}
+
+QosMode get_qos_mode() {
+    return get_global_qos_mode();
+}
+
+// Conditional logging macro - only logs if QoS mode has logging enabled
+#define DSOFTBUS_LOG(fmt, ...) \
+    do { \
+        if (is_logging_enabled()) { \
+            RCUTILS_LOG_INFO_NAMED("rmw_dsoftbus", fmt, ##__VA_ARGS__); \
+        } \
+    } while(0)
+
+// Always log (for critical messages regardless of QoS mode)
+#define DSOFTBUS_LOG_ALWAYS(fmt, ...) \
+    RCUTILS_LOG_INFO_NAMED("rmw_dsoftbus", fmt, ##__VA_ARGS__)
+
+// Get encryption type based on QoS config
+static int get_encrypt_type_for_qos_config(const DsoftbusQosConfig& config) {
+    return config.get_dsoftbus_encrypt_type();
+}
+
+// Get encryption type based on current global QoS mode
+static int get_current_encrypt_type() {
+    DsoftbusQosConfig config = get_default_qos_config();
+    return config.get_dsoftbus_encrypt_type();
+}
+
+// ============================================================================
+// Global State Management
+// ============================================================================
+
+struct SessionInfo {
+    int session_id;
+    std::string session_name;
+    std::string peer_device_id;
+    bool is_server_side;
+    bool is_connected;
+    void* user_data;  // Points to SubscriptionImpl, ServiceImpl, or ClientImpl
+    uint32_t send_index{0};  // KH_TRANS message index (must increment for each send)
+};
+
+// Raw message received item (for simple bidirectional testing)
+struct RawReceivedMessage {
+    int session_id;
+    std::vector<uint8_t> data;
+    uint64_t timestamp_ns;
+};
+
+// Callback type for raw message reception
+typedef void (*RawMessageCallback)(int session_id, const void* data, unsigned int len, void* user_data);
+
+// Pending session open result tracking
+struct PendingSessionOpen {
+    int session_id{-1};
+    int result{-1};
+    bool completed{false};
+    std::condition_variable cv;
+};
+
+struct DsoftbusState {
+    bool initialized{false};
+    std::string package_name;
+    std::mutex mutex;
+
+    // Session servers: session_name -> listener_id
+    std::unordered_map<std::string, int> session_servers;
+
+    // Active sessions: session_id -> SessionInfo
+    std::unordered_map<int, SessionInfo> sessions;
+
+    // Pending session opens: session_id -> pending info (for async wait)
+    std::unordered_map<int, PendingSessionOpen*> pending_sessions;
+
+    // Callback registrations for routing received data
+    // topic_encoded -> subscription_impl
+    std::unordered_map<std::string, void*> topic_subscriptions;
+
+    // service_encoded -> service_impl
+    std::unordered_map<std::string, void*> service_handlers;
+
+    // Raw message reception (for simple bidirectional testing)
+    std::queue<RawReceivedMessage> raw_message_queue;
+    std::condition_variable raw_message_cv;
+    RawMessageCallback raw_callback{nullptr};
+    void* raw_callback_user_data{nullptr};
+
+    // Session ID generator (for stub mode)
+    int next_session_id{1};
+    int next_server_id{1};
+};
+
+static DsoftbusState g_state;
+
+// ============================================================================
+// Internal Helper Functions
+// ============================================================================
+
+static void notify_subscription(SubscriptionImpl* sub, const MessageItem& msg) {
+    if (!sub) return;
+
+    {
+        std::lock_guard<std::mutex> lock(sub->queue_mutex);
+
+        // Apply queue depth limit
+        while (sub->message_queue.size() >= sub->queue_depth) {
+            sub->message_queue.pop();
+        }
+
+        sub->message_queue.push(msg);
+    }
+
+    // Notify waiters via pipe
+    if (sub->pipe_fd[1] >= 0) {
+        char c = 'x';
+        write(sub->pipe_fd[1], &c, 1);
+    }
+
+    sub->queue_cv.notify_all();
+}
+
+static void notify_service(ServiceImpl* srv, const ServiceRequest& req) {
+    if (!srv) return;
+
+    {
+        std::lock_guard<std::mutex> lock(srv->queue_mutex);
+        srv->request_queue.push(req);
+    }
+
+    // Notify waiters via pipe
+    if (srv->pipe_fd[1] >= 0) {
+        char c = 'x';
+        write(srv->pipe_fd[1], &c, 1);
+    }
+}
+
+static void notify_client(ClientImpl* cli, const MessageItem& msg) {
+    if (!cli) return;
+
+    {
+        std::lock_guard<std::mutex> lock(cli->queue_mutex);
+        cli->response_queue.push(msg);
+    }
+
+    // Notify waiters via pipe
+    if (cli->pipe_fd[1] >= 0) {
+        char c = 'x';
+        write(cli->pipe_fd[1], &c, 1);
+    }
+
+    cli->response_cv.notify_all();
+}
+
+// ============================================================================
+// dsoftbus Callback Implementations
+// ============================================================================
+
+static int OnSessionOpened(int sessionId, int result) {
+    RCUTILS_LOG_INFO_NAMED("rmw_dsoftbus", "OnSessionOpened: sessionId=%d, result=%d", sessionId, result);
+
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+
+    auto it = g_state.sessions.find(sessionId);
+    if (it != g_state.sessions.end()) {
+        // Existing session (outgoing) - update connection status
+        it->second.is_connected = (result == 0);
+    } else if (result == 0) {
+        // New incoming session (server-side) - register it
+        SessionInfo info;
+        info.session_id = sessionId;
+        info.peer_device_id = "";
+        info.is_server_side = true;
+        info.is_connected = true;
+        info.user_data = nullptr;
+
+        // Get the actual session name using dsoftbus API
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+        if (g_GetMySessionName) {
+            char session_name_buf[256] = {0};
+            if (g_GetMySessionName(sessionId, session_name_buf, sizeof(session_name_buf)) == 0) {
+                info.session_name = session_name_buf;
+                fprintf(stderr, "[dsoftbus] Incoming session %d, name='%s'\n", sessionId, session_name_buf);
+            } else {
+                info.session_name = "incoming";
+                fprintf(stderr, "[dsoftbus] Could not get session name for %d\n", sessionId);
+            }
+        } else {
+            info.session_name = "incoming";
+        }
+#else
+        info.session_name = "incoming";
+#endif
+
+        g_state.sessions[sessionId] = info;
+        fprintf(stderr, "[dsoftbus] Registered incoming session %d\n", sessionId);
+    }
+
+    // Signal pending session open if waiting
+    auto pending_it = g_state.pending_sessions.find(sessionId);
+    if (pending_it != g_state.pending_sessions.end()) {
+        PendingSessionOpen* pending = pending_it->second;
+        pending->result = result;
+        pending->completed = true;
+        pending->cv.notify_all();
+    }
+
+    return 0;
+}
+
+static void OnSessionClosed(int sessionId) {
+    fprintf(stderr, "[dsoftbus] OnSessionClosed: sessionId=%d\n", sessionId);
+
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+
+    auto it = g_state.sessions.find(sessionId);
+    if (it != g_state.sessions.end()) {
+        it->second.is_connected = false;
+        g_state.sessions.erase(it);
+    }
+}
+
+static uint64_t get_current_time_ns() {
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    return static_cast<uint64_t>(ts.tv_sec) * 1000000000ULL + static_cast<uint64_t>(ts.tv_nsec);
+}
+
+static void OnBytesReceived(int sessionId, const void* data, unsigned int dataLen) {
+    fprintf(stderr, "[dsoftbus] >>> OnBytesReceived ENTER: sessionId=%d, len=%u\n", sessionId, dataLen);
+
+    if (!data || dataLen == 0) {
+        fprintf(stderr, "[dsoftbus] <<< OnBytesReceived EXIT (null data)\n");
+        return;
+    }
+
+    // KH_TRANS FIX: Strip KhDataHead if present
+    // Our send_bytes prepends KhDataHead with incrementing index.
+    // We need to strip it here to get the original payload.
+    const void* actual_data = data;
+    unsigned int actual_len = dataLen;
+
+    // Check if data has KhDataHead prefix (minimum size check)
+    if (dataLen > sizeof(KhDataHead) + 1) {
+        const KhDataHead* head = static_cast<const KhDataHead*>(data);
+        // Validate: head.len should match remaining data (minus header and padding)
+        uint32_t expected_payload = dataLen - sizeof(KhDataHead) - 1;
+        if (head->len == expected_payload || head->len == expected_payload + 1) {
+            // Valid KhDataHead detected, strip it
+            actual_data = static_cast<const uint8_t*>(data) + sizeof(KhDataHead);
+            actual_len = head->len;
+            fprintf(stderr, "[dsoftbus] KhDataHead stripped: idx=%u, payload=%u\n",
+                    head->index, actual_len);
+        }
+    }
+
+    // First, handle raw message callback if registered (for simple bidirectional testing)
+    // IMPORTANT: Get callback pointer and user_data BEFORE calling callback to avoid deadlock
+    RawMessageCallback callback_func = nullptr;
+    void* callback_user_data = nullptr;
+    {
+        std::lock_guard<std::mutex> lock(g_state.mutex);
+        callback_func = g_state.raw_callback;
+        callback_user_data = g_state.raw_callback_user_data;
+    }
+
+    // Call raw callback if registered (WITHOUT holding lock to avoid deadlock)
+    if (callback_func) {
+        fprintf(stderr, "[dsoftbus] Calling raw callback...\n");
+        callback_func(sessionId, actual_data, actual_len, callback_user_data);
+        fprintf(stderr, "[dsoftbus] Raw callback returned\n");
+    }
+
+    // Queue the raw message for polling
+    fprintf(stderr, "[dsoftbus] Queueing message (len=%u)...\n", actual_len);
+    {
+        std::lock_guard<std::mutex> lock(g_state.mutex);
+        RawReceivedMessage raw_msg;
+        raw_msg.session_id = sessionId;
+        raw_msg.data.assign(static_cast<const uint8_t*>(actual_data),
+                           static_cast<const uint8_t*>(actual_data) + actual_len);
+        raw_msg.timestamp_ns = get_current_time_ns();
+        g_state.raw_message_queue.push(std::move(raw_msg));
+        g_state.raw_message_cv.notify_all();
+    }
+    fprintf(stderr, "[dsoftbus] Message queued, checking header...\n");
+
+    // Check if this is a structured RMW message with header (using stripped data)
+    if (actual_len < sizeof(MessageHeader)) {
+        // Too small for MessageHeader - already handled as raw message above
+        fprintf(stderr, "[dsoftbus] <<< OnBytesReceived EXIT (too small for header)\n");
+        return;
+    }
+
+    // Parse message header (from stripped data)
+    const auto* header = static_cast<const MessageHeader*>(actual_data);
+    if (!header->is_valid()) {
+        // Invalid header - already handled as raw message above
+        fprintf(stderr, "[dsoftbus] <<< OnBytesReceived EXIT (invalid header)\n");
+        return;
+    }
+
+    // Extract payload
+    const uint8_t* payload = static_cast<const uint8_t*>(actual_data) + sizeof(MessageHeader);
+    size_t payload_len = actual_len - sizeof(MessageHeader);
+
+    if (payload_len != header->data_length) {
+        // Length mismatch
+        fprintf(stderr, "[dsoftbus] <<< OnBytesReceived EXIT (length mismatch)\n");
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+
+    // Find the session
+    auto session_it = g_state.sessions.find(sessionId);
+    if (session_it == g_state.sessions.end()) {
+        fprintf(stderr, "[dsoftbus] <<< OnBytesReceived EXIT (session not found)\n");
+        return;
+    }
+
+    const auto& session = session_it->second;
+
+    // Route based on message type
+    switch (header->msg_type) {
+        case MessageType::PUBLISH: {
+            // Find subscription by session name
+            auto sub_it = g_state.topic_subscriptions.find(session.session_name);
+            if (sub_it != g_state.topic_subscriptions.end()) {
+                auto* sub = static_cast<SubscriptionImpl*>(sub_it->second);
+
+                MessageItem msg;
+                msg.data.assign(payload, payload + payload_len);
+                msg.timestamp_ns = header->timestamp_ns;
+                msg.sequence_number = header->sequence_number;
+                memcpy(msg.publisher_gid.data, header->publisher_gid, sizeof(msg.publisher_gid.data));
+
+                notify_subscription(sub, msg);
+            }
+            break;
+        }
+
+        case MessageType::REQUEST: {
+            // Service request
+            if (dataLen < sizeof(ServiceHeader)) {
+                fprintf(stderr, "[dsoftbus] <<< OnBytesReceived EXIT (service header too small)\n");
+                return;
+            }
+            const auto* srv_header = static_cast<const ServiceHeader*>(data);
+            payload = static_cast<const uint8_t*>(data) + sizeof(ServiceHeader);
+            payload_len = dataLen - sizeof(ServiceHeader);
+
+            auto srv_it = g_state.service_handlers.find(session.session_name);
+            if (srv_it != g_state.service_handlers.end()) {
+                auto* srv = static_cast<ServiceImpl*>(srv_it->second);
+
+                ServiceRequest req;
+                req.message.data.assign(payload, payload + payload_len);
+                req.message.timestamp_ns = srv_header->base.timestamp_ns;
+                req.message.sequence_number = srv_header->base.sequence_number;
+                req.request_id = srv_header->request_id;
+                req.client_session_id = sessionId;
+                memcpy(req.client_gid.data, srv_header->client_gid, sizeof(req.client_gid.data));
+
+                notify_service(srv, req);
+            }
+            break;
+        }
+
+        case MessageType::RESPONSE: {
+            // Service response - route to client
+            if (session.user_data) {
+                auto* cli = static_cast<ClientImpl*>(session.user_data);
+
+                MessageItem msg;
+                msg.data.assign(payload, payload + payload_len);
+                msg.timestamp_ns = header->timestamp_ns;
+                msg.sequence_number = header->sequence_number;
+
+                notify_client(cli, msg);
+            }
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    fprintf(stderr, "[dsoftbus] <<< OnBytesReceived EXIT (normal end)\n");
+}
+
+static void OnMessageReceived(int sessionId, const void* data, unsigned int dataLen) {
+    // Treat messages same as bytes for ROS2
+    OnBytesReceived(sessionId, data, dataLen);
+}
+
+// Session listener instance
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+static ISessionListener g_sessionListener = {
+    .OnSessionOpened = OnSessionOpened,
+    .OnSessionClosed = OnSessionClosed,
+    .OnBytesReceived = OnBytesReceived,
+    .OnMessageReceived = OnMessageReceived,
+    .OnStreamReceived = nullptr,
+    .OnQosEvent = nullptr,
+};
+#endif
+
+// ============================================================================
+// Public API Implementation
+// ============================================================================
+
+bool dsoftbus_initialize(const char* pkg_name) {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+
+    if (g_state.initialized) {
+        return true;
+    }
+
+    if (!pkg_name) {
+        return false;
+    }
+
+    g_state.package_name = pkg_name;
+
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    // Initialize NativeToken first (required for dsoftbus access)
+    if (!init_native_token()) {
+        fprintf(stderr, "[dsoftbus] Warning: Failed to initialize NativeToken, dsoftbus may not work\n");
+        // Continue anyway - will fall back to stub mode if dsoftbus calls fail
+    }
+
+    // Load dsoftbus symbols at runtime
+    if (!load_softbus_symbols()) {
+        // Fall back to stub mode if library not available
+        // Log warning but continue
+    }
+
+    // Explicitly call InitSoftBus to establish IPC connection with softbus_server
+    // This is CRITICAL for CreateSessionServer to work via IPC
+    if (g_InitSoftBus) {
+        int ret = g_InitSoftBus(pkg_name);
+        if (ret != 0) {
+            fprintf(stderr, "[dsoftbus] ERROR: InitSoftBus failed with ret=%d\n", ret);
+            fprintf(stderr, "[dsoftbus]        This means IPC connection to softbus_server failed!\n");
+            fprintf(stderr, "[dsoftbus]        CreateSessionServer will not work properly.\n");
+            fprintf(stderr, "[dsoftbus]        Possible causes:\n");
+            fprintf(stderr, "[dsoftbus]          - samgr (System Ability Manager) not accessible\n");
+            fprintf(stderr, "[dsoftbus]          - Process lacks IPC context (not HAP/system service)\n");
+            fprintf(stderr, "[dsoftbus]          - softbus_server not running\n");
+            // Continue anyway to see if anything still works
+        } else {
+            fprintf(stderr, "[dsoftbus] InitSoftBus succeeded - IPC connection established\n");
+        }
+    } else {
+        fprintf(stderr, "[dsoftbus] WARNING: InitSoftBus symbol not found, IPC may not work!\n");
+    }
+
+    // Initialize TransportController (optional - enabled by default)
+    const char* use_tc_env = getenv("RMW_DSOFTBUS_USE_TRANSPORT_CONTROLLER");
+    if (use_tc_env && (strcmp(use_tc_env, "0") == 0 || strcmp(use_tc_env, "false") == 0)) {
+        g_use_transport_controller = false;
+        fprintf(stderr, "[dsoftbus] TransportController disabled by environment variable\n");
+    }
+
+    if (g_use_transport_controller) {
+        if (!rmw_dsoftbus::TransportController::instance().initialize(pkg_name)) {
+            fprintf(stderr, "[dsoftbus] WARNING: TransportController init failed, falling back to legacy mode\n");
+            g_use_transport_controller = false;
+        } else {
+            fprintf(stderr, "[dsoftbus] TransportController enabled (auto-select backend based on packet size)\n");
+        }
+    }
+#endif
+
+    g_state.initialized = true;
+    return true;
+}
+
+void dsoftbus_shutdown() {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+
+    if (!g_state.initialized) {
+        return;
+    }
+
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    // Shutdown TransportController
+    if (g_use_transport_controller) {
+        rmw_dsoftbus::TransportController::instance().shutdown();
+        fprintf(stderr, "[dsoftbus] TransportController shutdown complete\n");
+    }
+#endif
+
+    // Close all sessions
+    for (auto& pair : g_state.sessions) {
+        if (pair.second.is_connected) {
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+            if (g_CloseSession) g_CloseSession(pair.first);
+#endif
+        }
+    }
+    g_state.sessions.clear();
+
+    // Remove all session servers
+    for (auto& pair : g_state.session_servers) {
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+        if (g_RemoveSessionServer) g_RemoveSessionServer(g_state.package_name.c_str(), pair.first.c_str());
+#endif
+    }
+    g_state.session_servers.clear();
+
+    g_state.topic_subscriptions.clear();
+    g_state.service_handlers.clear();
+    g_state.initialized = false;
+}
+
+int create_session_server(const char* session_name) {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+
+    if (!g_state.initialized || !session_name) {
+        fprintf(stderr, "[dsoftbus] create_session_server: not initialized or null name\n");
+        return -1;
+    }
+
+    // Check if already exists
+    auto it = g_state.session_servers.find(session_name);
+    if (it != g_state.session_servers.end()) {
+        return it->second;
+    }
+
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    fprintf(stderr, "[dsoftbus] create_session_server: pkgName='%s', sessionName='%s'\n",
+            g_state.package_name.c_str(), session_name);
+
+    // Use standard CreateSessionServer for session management
+    // KH_TRANS session APIs (CreateKhSessionServer/OpenKhSession) have compatibility issues
+    // We'll use standard sessions but try KhSendBytes for sending (with fallback to SendBytes)
+    if (g_CreateSessionServer) {
+        int ret = g_CreateSessionServer(g_state.package_name.c_str(), session_name, &g_sessionListener);
+        fprintf(stderr, "[dsoftbus] CreateSessionServer returned: %d\n", ret);
+
+        // Handle "session name already exists" error (-426442715)
+        if (ret == -426442715 && g_RemoveSessionServer) {
+            fprintf(stderr, "[dsoftbus] Session server exists, removing and retrying...\n");
+            g_RemoveSessionServer(g_state.package_name.c_str(), session_name);
+            usleep(100000);
+            ret = g_CreateSessionServer(g_state.package_name.c_str(), session_name, &g_sessionListener);
+            fprintf(stderr, "[dsoftbus] CreateSessionServer retry returned: %d\n", ret);
+        }
+
+        if (ret != 0) {
+            fprintf(stderr, "[dsoftbus] Falling back to local stub mode (no cross-device communication)\n");
+        }
+    } else {
+        fprintf(stderr, "[dsoftbus] CreateSessionServer symbol not available, using stub\n");
+    }
+#endif
+    // Always succeed with stub/local server_id
+    int server_id = g_state.next_server_id++;
+    g_state.session_servers[session_name] = server_id;
+    return server_id;
+}
+
+void remove_session_server(const char* session_name) {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+
+    if (!g_state.initialized || !session_name) {
+        return;
+    }
+
+    auto it = g_state.session_servers.find(session_name);
+    if (it == g_state.session_servers.end()) {
+        return;
+    }
+
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    if (g_RemoveSessionServer) g_RemoveSessionServer(g_state.package_name.c_str(), session_name);
+#endif
+
+    g_state.session_servers.erase(it);
+}
+
+int open_session(const char* peer_network_id, const char* group_id, const char* session_name) {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+
+    if (!g_state.initialized || !session_name) {
+        return -1;
+    }
+
+    int session_id;
+
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    if (g_OpenSession) {
+        // Get QoS config for session parameters
+        DsoftbusQosConfig qos_config = get_default_qos_config();
+
+        SessionAttribute attr;
+        memset(&attr, 0, sizeof(attr));
+        attr.dataType = qos_config.get_dsoftbus_data_type();
+        // Try multiple link types for better compatibility
+        attr.linkTypeNum = 4;
+        attr.linkType[0] = LINK_TYPE_WIFI_WLAN_5G;
+        attr.linkType[1] = LINK_TYPE_WIFI_WLAN_2G;
+        attr.linkType[2] = LINK_TYPE_WIFI_P2P;
+        attr.linkType[3] = LINK_TYPE_BR;
+        // Set encryption based on QoS mode
+        attr.attr.bytesAttr.encryptType = qos_config.get_dsoftbus_encrypt_type();
+
+        DSOFTBUS_LOG("OpenSession with encrypt_type=%d", attr.attr.bytesAttr.encryptType);
+
+        // Use empty group_id for untrusted sessions
+        session_id = g_OpenSession(session_name, session_name,
+                                  peer_network_id ? peer_network_id : "",
+                                  "",  // Empty group_id for auto-auth
+                                  &attr);
+        if (session_id < 0) {
+            return -1;
+        }
+    } else {
+        // Fall back to stub mode
+        session_id = g_state.next_session_id++;
+    }
+#else
+    // Stub mode
+    session_id = g_state.next_session_id++;
+#endif
+
+    SessionInfo info;
+    info.session_id = session_id;
+    info.session_name = session_name;
+    info.peer_device_id = peer_network_id ? peer_network_id : "";
+    info.is_server_side = false;
+    info.is_connected = true;  // Stub assumes immediate connection
+    info.user_data = nullptr;
+    g_state.sessions[session_id] = info;
+
+    return session_id;
+}
+
+void close_session(int session_id) {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+
+    if (!g_state.initialized) {
+        return;
+    }
+
+    auto it = g_state.sessions.find(session_id);
+    if (it == g_state.sessions.end()) {
+        return;
+    }
+
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    if (g_CloseSession) g_CloseSession(session_id);
+#endif
+
+    g_state.sessions.erase(it);
+}
+
+// ============================================================================
+// Cross-Device Session Connection (with async callback wait)
+// ============================================================================
+
+int open_session_to_peer(const char* peer_network_id, const char* my_session_name,
+                         const char* peer_session_name, int timeout_ms) {
+    if (!g_state.initialized || !peer_network_id || !my_session_name) {
+        fprintf(stderr, "[dsoftbus] open_session_to_peer: invalid params\n");
+        return -1;
+    }
+
+    // Use same session name for peer if not specified
+    if (!peer_session_name) {
+        peer_session_name = my_session_name;
+    }
+
+    fprintf(stderr, "[dsoftbus] Opening session to peer: networkId=%.32s...\n", peer_network_id);
+    fprintf(stderr, "[dsoftbus]   mySession=%s, peerSession=%s\n", my_session_name, peer_session_name);
+
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    // Get QoS config for session parameters
+    DsoftbusQosConfig qos_config = get_default_qos_config();
+
+    SessionAttribute attr;
+    memset(&attr, 0, sizeof(attr));
+    attr.dataType = qos_config.get_dsoftbus_data_type();
+    // Try multiple link types for better compatibility
+    attr.linkTypeNum = 4;
+    attr.linkType[0] = LINK_TYPE_WIFI_WLAN_5G;
+    attr.linkType[1] = LINK_TYPE_WIFI_WLAN_2G;
+    attr.linkType[2] = LINK_TYPE_WIFI_P2P;
+    attr.linkType[3] = LINK_TYPE_BR;
+    // Set encryption based on QoS mode
+    attr.attr.bytesAttr.encryptType = qos_config.get_dsoftbus_encrypt_type();
+
+    DSOFTBUS_LOG("open_session_to_peer with encrypt_type=%d", attr.attr.bytesAttr.encryptType);
+
+    // Create pending session tracking
+    PendingSessionOpen pending;
+    pending.completed = false;
+    pending.result = -1;
+
+    // Use standard OpenSession for session management
+    // KH_TRANS session APIs have compatibility issues with standard session servers
+    if (!g_OpenSession) {
+        fprintf(stderr, "[dsoftbus] OpenSession symbol not available\n");
+        return -1;
+    }
+
+    int session_id = g_OpenSession(my_session_name, peer_session_name,
+                                   peer_network_id, "", &attr);
+    fprintf(stderr, "[dsoftbus] OpenSession returned: %d\n", session_id);
+
+    if (session_id <= 0) {
+        fprintf(stderr, "[dsoftbus] OpenSession failed: %d\n", session_id);
+        return session_id;
+    }
+
+    // Register pending session and wait for callback
+    {
+        std::unique_lock<std::mutex> lock(g_state.mutex);
+
+        // Check if OnSessionOpened already fired before we could register
+        // This can happen if dsoftbus processes the callback immediately
+        auto existing_it = g_state.sessions.find(session_id);
+        if (existing_it != g_state.sessions.end() && existing_it->second.is_connected) {
+            fprintf(stderr, "[dsoftbus] Session %d already connected (fast callback)\n", session_id);
+            return session_id;
+        }
+
+        // Add to pending sessions map
+        pending.session_id = session_id;
+        g_state.pending_sessions[session_id] = &pending;
+
+        // Create or update session info entry (not yet connected)
+        SessionInfo info;
+        info.session_id = session_id;
+        info.session_name = my_session_name;
+        info.peer_device_id = peer_network_id;
+        info.is_server_side = false;
+        info.is_connected = false;
+        info.user_data = nullptr;
+        g_state.sessions[session_id] = info;
+
+        // Wait for OnSessionOpened callback
+        bool wait_result = pending.cv.wait_for(lock,
+            std::chrono::milliseconds(timeout_ms > 0 ? timeout_ms : 5000),
+            [&pending]() { return pending.completed; });
+
+        // Remove from pending sessions
+        g_state.pending_sessions.erase(session_id);
+
+        if (!wait_result) {
+            fprintf(stderr, "[dsoftbus] Session open timeout (waited %d ms)\n", timeout_ms);
+            // Close the session that timed out
+            if (g_CloseSession) {
+                g_CloseSession(session_id);
+            }
+            g_state.sessions.erase(session_id);
+            return -1;
+        }
+
+        if (pending.result != 0) {
+            fprintf(stderr, "[dsoftbus] Session open failed: result=%d\n", pending.result);
+            g_state.sessions.erase(session_id);
+            return -1;
+        }
+
+        // Update session as connected
+        auto it = g_state.sessions.find(session_id);
+        if (it != g_state.sessions.end()) {
+            it->second.is_connected = true;
+        }
+    }
+
+    fprintf(stderr, "[dsoftbus] Session %d connected successfully!\n", session_id);
+    return session_id;
+#else
+    // Stub mode - simulate success with a local session ID
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+    int stub_session_id = g_state.next_session_id++;
+    SessionInfo info;
+    info.session_id = stub_session_id;
+    info.session_name = my_session_name;
+    info.peer_device_id = peer_network_id;
+    info.is_server_side = false;
+    info.is_connected = true;
+    info.user_data = nullptr;
+    g_state.sessions[stub_session_id] = info;
+    return stub_session_id;
+#endif
+}
+
+int send_bytes(int session_id, const void* data, unsigned int len) {
+    if (!g_state.initialized || !data || len == 0) {
+        return -1;
+    }
+
+    // Lock to update send_index atomically
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+    auto it = g_state.sessions.find(session_id);
+    if (it == g_state.sessions.end() || !it->second.is_connected) {
+        return -1;
+    }
+
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    // Use TransportController if enabled (auto-selects backend + handles fragmentation)
+    if (g_use_transport_controller) {
+        rmw_dsoftbus::TransportQoS qos;
+        qos.reliable = true;
+        qos.large_data = (len > 1024);
+        qos.enable_fragmentation = true;
+
+        fprintf(stderr, "[dsoftbus] Using TransportController: session=%d, len=%u\n", session_id, len);
+
+        int ret = rmw_dsoftbus::TransportController::instance().send(session_id, data, len, qos);
+        if (ret != 0) {
+            fprintf(stderr, "[dsoftbus] TransportController send FAILED: session=%d, ret=%d\n", session_id, ret);
+        } else {
+            fprintf(stderr, "[dsoftbus] TransportController send OK: session=%d\n", session_id);
+        }
+        return ret;
+    }
+
+    // Legacy mode: Try KhSendBytes first (has internal index tracking), then fall back to SendBytes+KhDataHead
+
+    if (g_KhSendBytes) {
+        // KhSendBytes has built-in index management for KH_TRANS module
+        // It handles deduplication internally without needing manual KhDataHead
+        uint32_t msg_index = ++it->second.send_index;  // Track locally for logging
+
+        fprintf(stderr, "[dsoftbus] KhSendBytes(session=%d, len=%u, local_idx=%u)\n",
+                session_id, len, msg_index);
+
+        int ret = g_KhSendBytes(session_id, data, len);
+        if (ret == 0) {
+            fprintf(stderr, "[dsoftbus] KhSendBytes OK: session=%d\n", session_id);
+            return 0;
+        }
+        // KhSendBytes failed - this is expected for standard OpenSession sessions
+        // Fall through to try SendBytes
+        fprintf(stderr, "[dsoftbus] KhSendBytes FAILED: session=%d, ret=%d (falling back to SendBytes)\n",
+                session_id, ret);
+        --it->second.send_index;  // Revert index increment for SendBytes to use
+    }
+
+    // Fallback: SendBytes with manual KhDataHead prefix
+    if (g_SendBytes) {
+        // KH_TRANS FIX: Add KhDataHead with incrementing index
+        // KaihongOS dsoftbus filters messages with same index as duplicates.
+        // Solution: Prepend KhDataHead with unique incrementing index per session.
+
+        // Increment send_index for this session
+        uint32_t msg_index = ++it->second.send_index;
+
+        // Build KhDataHead
+        KhDataHead head;
+        head.index = msg_index;
+        head.dataType = 0;  // KH_DATA_TYPE_NORMAL
+        head.crc = kh_pack_crc(static_cast<const unsigned char*>(data), static_cast<uint16_t>(len));
+        head.channelTotalPackageNum = static_cast<int32_t>(msg_index);
+        head.version = 0;
+        head.len = len;
+
+        // Allocate buffer: KhDataHead + payload + 1 byte padding
+        size_t total_len = sizeof(KhDataHead) + len + 1;
+        std::vector<uint8_t> buffer(total_len);
+        memcpy(buffer.data(), &head, sizeof(KhDataHead));
+        memcpy(buffer.data() + sizeof(KhDataHead), data, len);
+        buffer[sizeof(KhDataHead) + len] = 0;  // padding byte
+
+        fprintf(stderr, "[dsoftbus] SendBytes(session=%d, idx=%u, payload=%u, total=%zu)\n",
+                session_id, msg_index, len, total_len);
+
+        int ret = g_SendBytes(session_id, buffer.data(), static_cast<unsigned int>(total_len));
+        if (ret != 0) {
+            fprintf(stderr, "[dsoftbus] SendBytes FAILED: session=%d, ret=%d\n", session_id, ret);
+        } else {
+            fprintf(stderr, "[dsoftbus] SendBytes OK: session=%d, idx=%u\n", session_id, msg_index);
+        }
+        return ret;
+    }
+#endif
+    // Stub mode - simulate success
+    return 0;
+}
+
+int send_message(int session_id, const void* data, unsigned int len) {
+    if (!g_state.initialized || !data || len == 0) {
+        return -1;
+    }
+
+    auto it = g_state.sessions.find(session_id);
+    if (it == g_state.sessions.end() || !it->second.is_connected) {
+        return -1;
+    }
+
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    if (g_SendMessage) return g_SendMessage(session_id, data, len);
+#endif
+    // Stub mode - simulate success
+    return 0;
+}
+
+// ============================================================================
+// Registration APIs (called by rmw layer)
+// ============================================================================
+
+void register_subscription(const char* encoded_topic, void* subscription_impl) {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+    if (encoded_topic && subscription_impl) {
+        g_state.topic_subscriptions[encoded_topic] = subscription_impl;
+    }
+}
+
+void unregister_subscription(const char* encoded_topic) {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+    if (encoded_topic) {
+        g_state.topic_subscriptions.erase(encoded_topic);
+    }
+}
+
+void register_service(const char* encoded_name, void* service_impl) {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+    if (encoded_name && service_impl) {
+        g_state.service_handlers[encoded_name] = service_impl;
+    }
+}
+
+void unregister_service(const char* encoded_name) {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+    if (encoded_name) {
+        g_state.service_handlers.erase(encoded_name);
+    }
+}
+
+void set_session_user_data(int session_id, void* user_data) {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+    auto it = g_state.sessions.find(session_id);
+    if (it != g_state.sessions.end()) {
+        it->second.user_data = user_data;
+    }
+}
+
+// ============================================================================
+// Device Discovery (stub)
+// ============================================================================
+
+int get_local_device_id(char* device_id, unsigned int len) {
+    if (!device_id || len == 0) {
+        return -1;
+    }
+
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    if (g_GetLocalNodeDeviceInfo) {
+        NodeBasicInfo info;
+        int ret = g_GetLocalNodeDeviceInfo(g_state.package_name.c_str(), &info);
+        if (ret == 0) {  // SOFTBUS_OK
+            strncpy(device_id, info.networkId, len);
+            device_id[len - 1] = '\0';
+            return 0;
+        }
+        return -1;
+    }
+#endif
+    // Stub mode
+    strncpy(device_id, "local_device_stub", len);
+    device_id[len - 1] = '\0';
+    return 0;
+}
+
+int start_discovery(const char* package_name) {
+    (void)package_name;
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    // TODO: Implement discovery using PublishLNN/RefreshLNN
+#endif
+    return 0;
+}
+
+void stop_discovery(const char* package_name) {
+    (void)package_name;
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    // TODO: Stop discovery
+#endif
+}
+
+// Get local device info (network ID, device name, etc.)
+int get_local_device_info(char* network_id, unsigned int nid_len,
+                          char* device_name, unsigned int name_len) {
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    if (g_GetLocalNodeDeviceInfo) {
+        NodeBasicInfo info;
+        int ret = g_GetLocalNodeDeviceInfo(g_state.package_name.c_str(), &info);
+        if (ret == 0) {
+            if (network_id && nid_len > 0) {
+                strncpy(network_id, info.networkId, nid_len);
+                network_id[nid_len - 1] = '\0';
+            }
+            if (device_name && name_len > 0) {
+                strncpy(device_name, info.deviceName, name_len);
+                device_name[name_len - 1] = '\0';
+            }
+            fprintf(stderr, "[dsoftbus] Local device: networkId=%s, name=%s\n",
+                    info.networkId, info.deviceName);
+            return 0;
+        }
+        fprintf(stderr, "[dsoftbus] GetLocalNodeDeviceInfo failed: %d\n", ret);
+        return ret;
+    }
+#endif
+    // Stub mode
+    if (network_id && nid_len > 0) {
+        strncpy(network_id, "local_stub_network_id", nid_len);
+        network_id[nid_len - 1] = '\0';
+    }
+    if (device_name && name_len > 0) {
+        strncpy(device_name, "local_stub_device", name_len);
+        device_name[name_len - 1] = '\0';
+    }
+    return 0;
+}
+
+// Get all online devices in the network
+int get_all_online_devices(void** device_list, int* device_count) {
+    if (!device_list || !device_count) {
+        return -1;
+    }
+    *device_list = nullptr;
+    *device_count = 0;
+
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    if (g_GetAllNodeDeviceInfo) {
+        NodeBasicInfo* info = nullptr;
+        int32_t count = 0;
+        int ret = g_GetAllNodeDeviceInfo(g_state.package_name.c_str(), &info, &count);
+        if (ret == 0 && info != nullptr) {
+            fprintf(stderr, "[dsoftbus] Found %d online devices:\n", count);
+            for (int i = 0; i < count; i++) {
+                fprintf(stderr, "[dsoftbus]   [%d] networkId=%s, name=%s\n",
+                        i, info[i].networkId, info[i].deviceName);
+            }
+            *device_list = info;
+            *device_count = count;
+            return 0;
+        }
+        fprintf(stderr, "[dsoftbus] GetAllNodeDeviceInfo failed: %d\n", ret);
+        return ret;
+    }
+#endif
+    // Stub mode - return empty list
+    return 0;
+}
+
+// Free device list returned by get_all_online_devices
+void free_device_list(void* device_list) {
+#ifdef RMW_DSOFTBUS_USE_REAL_SOFTBUS
+    if (g_FreeNodeInfo && device_list) {
+        g_FreeNodeInfo(static_cast<NodeBasicInfo*>(device_list));
+    }
+#else
+    (void)device_list;
+#endif
+}
+
+// ============================================================================
+// Utility Functions
+// ============================================================================
+
+bool is_session_connected(int session_id) {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+    auto it = g_state.sessions.find(session_id);
+    return it != g_state.sessions.end() && it->second.is_connected;
+}
+
+std::vector<int> get_sessions_for_topic(const char* encoded_topic) {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+    std::vector<int> result;
+
+    for (const auto& pair : g_state.sessions) {
+        if (pair.second.session_name == encoded_topic && pair.second.is_connected) {
+            result.push_back(pair.first);
+        }
+    }
+
+    return result;
+}
+
+// ============================================================================
+// Topic-Based Pub/Sub API
+// ============================================================================
+
+// Topic subscription info for cross-device discovery
+struct TopicInfo {
+    std::string encoded_topic;
+    std::string type_name;
+    void* subscription_impl;  // SubscriptionImpl*
+    int session_server_id;
+    std::vector<int> publisher_sessions;  // Sessions from remote publishers
+};
+
+// Track all local subscriptions by topic
+static std::unordered_map<std::string, TopicInfo> g_topic_subscriptions;
+static std::mutex g_topic_mutex;
+
+// Encode topic name for dsoftbus (replace / with _ for session name compatibility)
+// CRITICAL: sessionName MUST start with pkgName for NORMAL_APP permission checks!
+std::string encode_topic_for_session(const char* topic_name) {
+    // Use package name as prefix (required by dsoftbus permission system)
+    // sessionName must start with pkgName for CreateSessionServer to work
+    std::string result = g_state.package_name.empty() ? "com.ros2.rmw_dsoftbus" : g_state.package_name;
+    result += ".";  // Add separator
+
+    if (!topic_name) return result;
+
+    const char* p = topic_name;
+    if (*p == '/') p++;  // Skip leading slash
+
+    while (*p) {
+        if (*p == '/') {
+            result += '_';
+        } else {
+            result += *p;
+        }
+        p++;
+    }
+    return result;
+}
+
+int create_topic_subscription(const char* topic_name, const char* type_name, void* subscription_impl) {
+    if (!topic_name || !subscription_impl) {
+        return -1;
+    }
+
+    std::string encoded = encode_topic_for_session(topic_name);
+
+    std::lock_guard<std::mutex> lock(g_topic_mutex);
+
+    // Check if already exists
+    auto it = g_topic_subscriptions.find(encoded);
+    if (it != g_topic_subscriptions.end()) {
+        // Topic already has subscription, just add this impl
+        // For now we only support one subscription per topic
+        return it->second.session_server_id;
+    }
+
+    // Create session server for this topic
+    int server_id = create_session_server(encoded.c_str());
+    if (server_id < 0) {
+        fprintf(stderr, "[dsoftbus] Failed to create session server for topic %s\n", topic_name);
+        return -1;
+    }
+
+    TopicInfo info;
+    info.encoded_topic = encoded;
+    info.type_name = type_name ? type_name : "";
+    info.subscription_impl = subscription_impl;
+    info.session_server_id = server_id;
+
+    g_topic_subscriptions[encoded] = info;
+
+    // Register with the routing table
+    register_subscription(encoded.c_str(), subscription_impl);
+
+    fprintf(stderr, "[dsoftbus] Created topic subscription: %s -> session '%s'\n",
+            topic_name, encoded.c_str());
+
+    return server_id;
+}
+
+void destroy_topic_subscription(const char* topic_name) {
+    if (!topic_name) return;
+
+    std::string encoded = encode_topic_for_session(topic_name);
+
+    std::lock_guard<std::mutex> lock(g_topic_mutex);
+
+    auto it = g_topic_subscriptions.find(encoded);
+    if (it == g_topic_subscriptions.end()) {
+        return;
+    }
+
+    // Close all publisher sessions
+    for (int sid : it->second.publisher_sessions) {
+        close_session(sid);
+    }
+
+    // Remove session server
+    remove_session_server(encoded.c_str());
+
+    // Unregister from routing
+    unregister_subscription(encoded.c_str());
+
+    g_topic_subscriptions.erase(it);
+
+    fprintf(stderr, "[dsoftbus] Destroyed topic subscription: %s\n", topic_name);
+}
+
+// Track publisher session servers
+static std::unordered_map<std::string, int> g_publisher_session_servers;
+
+// Publish message to a topic - connects to all peers with that topic subscription
+int publish_to_topic(const char* topic_name, const void* data, unsigned int len,
+                     uint64_t sequence_number, const uint8_t* publisher_gid) {
+    if (!topic_name || !data || len == 0) {
+        return -1;
+    }
+
+    std::string encoded = encode_topic_for_session(topic_name);
+
+    // Build message with header
+    MessageHeader header;
+    header.msg_type = MessageType::PUBLISH;
+    header.sequence_number = sequence_number;
+    header.timestamp_ns = get_current_time_ns();
+    header.data_length = len;
+    if (publisher_gid) {
+        memcpy(header.publisher_gid, publisher_gid, GID_SIZE);
+    }
+
+    // Allocate buffer for header + data
+    std::vector<uint8_t> buffer(sizeof(MessageHeader) + len);
+    memcpy(buffer.data(), &header, sizeof(MessageHeader));
+    memcpy(buffer.data() + sizeof(MessageHeader), data, len);
+
+    // ========== SOCKET_ONLY MODE: Use TransportController directly ==========
+    if (g_use_transport_controller &&
+        rmw_dsoftbus::TransportController::instance().get_mode() == rmw_dsoftbus::TransportMode::SOCKET_ONLY) {
+
+        fprintf(stderr, "[dsoftbus] publish_to_topic: SOCKET_ONLY mode - using TransportController\n");
+
+        // Get all online devices
+        void* device_list = nullptr;
+        int device_count = 0;
+        int success_count = 0;
+
+        if (get_all_online_devices(&device_list, &device_count) == 0 && device_count > 0) {
+            // Get local device info to skip self
+            char local_nid[128] = {0};
+            get_local_device_info(local_nid, sizeof(local_nid), nullptr, 0);
+
+            auto* nodes = static_cast<NodeBasicInfo*>(device_list);
+            for (int i = 0; i < device_count; i++) {
+                // Skip self
+                if (strcmp(nodes[i].networkId, local_nid) == 0) {
+                    continue;
+                }
+
+                fprintf(stderr, "[dsoftbus] SOCKET_ONLY: Attempting to connect to peer %s (%.32s...)\n",
+                        nodes[i].deviceName, nodes[i].networkId);
+
+                // Use TransportController to connect (uses Socket backend in SOCKET_ONLY mode)
+                rmw_dsoftbus::TransportQoS qos;
+                qos.reliable = true;
+                qos.large_data = (len > 1024);
+                qos.enable_fragmentation = true;
+                qos.timeout_ms = 5000;
+
+                int conn_id = rmw_dsoftbus::TransportController::instance().connect(
+                    nodes[i].networkId, qos);
+
+                if (conn_id > 0) {
+                    fprintf(stderr, "[dsoftbus] SOCKET_ONLY: Connected via TransportController, conn_id=%d\n", conn_id);
+
+                    // Send data via TransportController
+                    int ret = rmw_dsoftbus::TransportController::instance().send(
+                        conn_id, buffer.data(), buffer.size(), qos);
+
+                    if (ret == 0) {
+                        success_count++;
+                        fprintf(stderr, "[dsoftbus] SOCKET_ONLY: Sent %zu bytes to peer %s\n",
+                                buffer.size(), nodes[i].deviceName);
+                    } else {
+                        fprintf(stderr, "[dsoftbus] SOCKET_ONLY: Send failed: %d\n", ret);
+                    }
+
+                    // Note: Not disconnecting here - keep connection for future messages
+                } else {
+                    fprintf(stderr, "[dsoftbus] SOCKET_ONLY: Connection failed: %d\n", conn_id);
+                }
+            }
+            free_device_list(device_list);
+        }
+
+        fprintf(stderr, "[dsoftbus] SOCKET_ONLY: Sent to %d peers\n", success_count);
+        return success_count;
+    }
+
+    // ========== LEGACY SESSION API MODE ==========
+
+    // Ensure we have a session server for this topic (required by dsoftbus for OpenSession)
+    {
+        std::lock_guard<std::mutex> lock(g_topic_mutex);
+        if (g_publisher_session_servers.find(encoded) == g_publisher_session_servers.end()) {
+            int server_id = create_session_server(encoded.c_str());
+            if (server_id >= 0) {
+                g_publisher_session_servers[encoded] = server_id;
+                fprintf(stderr, "[dsoftbus] Publisher created session server for topic: %s\n", encoded.c_str());
+            }
+        }
+    }
+
+    // NOTE: KaihongOS uses KH_TRANS module which has index-based deduplication.
+    // Standard SendBytes() lacks index tracking, causing "data received repeat" drops.
+    // Solution: Use KhSendBytes() API which maintains sendIndex per session.
+    // See OnDataRecvFilterWithoutLock() in kh_session_message.c for dedup logic.
+    std::vector<int> sessions = get_sessions_for_topic(encoded.c_str());
+    fprintf(stderr, "[dsoftbus] publish_to_topic: found %zu existing sessions for %s\n",
+            sessions.size(), encoded.c_str());
+
+    int success_count = 0;
+    for (int sid : sessions) {
+        int ret = send_bytes(sid, buffer.data(), buffer.size());
+        fprintf(stderr, "[dsoftbus] send_bytes(session=%d, len=%zu) returned %d\n",
+                sid, buffer.size(), ret);
+        if (ret == 0) {
+            success_count++;
+        }
+    }
+
+    // If no existing sessions, try to discover peers and connect
+    if (sessions.empty()) {
+        // Get all online devices
+        void* device_list = nullptr;
+        int device_count = 0;
+        if (get_all_online_devices(&device_list, &device_count) == 0 && device_count > 0) {
+            // Get local device info to skip self
+            char local_nid[128] = {0};
+            get_local_device_info(local_nid, sizeof(local_nid), nullptr, 0);
+
+            auto* nodes = static_cast<NodeBasicInfo*>(device_list);
+            for (int i = 0; i < device_count; i++) {
+                // Skip self
+                if (strcmp(nodes[i].networkId, local_nid) == 0) {
+                    continue;
+                }
+
+                // Try to connect to peer's topic session server
+                int session_id = open_session_to_peer(nodes[i].networkId,
+                                                      encoded.c_str(),
+                                                      encoded.c_str(),
+                                                      3000);  // 3 second timeout
+                if (session_id > 0) {
+                    int ret = send_bytes(session_id, buffer.data(), buffer.size());
+                    if (ret == 0) {
+                        success_count++;
+                    }
+                    fprintf(stderr, "[dsoftbus] Connected to peer %s for topic %s, session=%d\n",
+                            nodes[i].deviceName, topic_name, session_id);
+                }
+            }
+            free_device_list(device_list);
+        }
+    }
+
+    return success_count;
+}
+
+// Check if there are messages available for a subscription
+bool has_messages_for_subscription(void* subscription_impl) {
+    if (!subscription_impl) return false;
+
+    auto* sub = static_cast<SubscriptionImpl*>(subscription_impl);
+    std::lock_guard<std::mutex> lock(sub->queue_mutex);
+    return !sub->message_queue.empty();
+}
+
+// ============================================================================
+// Service/Client API
+// ============================================================================
+
+// Service info for cross-device RPC
+struct ServiceInfo {
+    std::string encoded_name;
+    std::string type_name;
+    void* service_impl;  // ServiceImpl*
+    int session_server_id;
+    std::unordered_map<int, int64_t> client_sessions;  // session_id -> last_request_id
+};
+
+// Client info
+struct ClientInfo {
+    std::string encoded_name;
+    std::string type_name;
+    void* client_impl;  // ClientImpl*
+    int session_id;
+    std::string peer_network_id;
+};
+
+// Track services and clients
+static std::unordered_map<std::string, ServiceInfo> g_services;
+static std::unordered_map<std::string, ClientInfo> g_clients;
+static std::mutex g_service_mutex;
+
+// Encode service name for dsoftbus
+// CRITICAL: sessionName MUST start with pkgName for NORMAL_APP permission checks!
+std::string encode_service_for_session(const char* service_name) {
+    // Use package name as prefix (required by dsoftbus permission system)
+    std::string result = g_state.package_name.empty() ? "com.ros2.rmw_dsoftbus" : g_state.package_name;
+    result += ".srv.";  // Add service indicator
+
+    if (!service_name) return result;
+
+    const char* p = service_name;
+    if (*p == '/') p++;  // Skip leading slash
+
+    while (*p) {
+        if (*p == '/') {
+            result += '_';
+        } else {
+            result += *p;
+        }
+        p++;
+    }
+    return result;
+}
+
+// Create a service server
+int create_service_server(const char* service_name, const char* type_name, void* service_impl) {
+    if (!service_name || !service_impl) {
+        return -1;
+    }
+
+    std::string encoded = encode_service_for_session(service_name);
+
+    std::lock_guard<std::mutex> lock(g_service_mutex);
+
+    // Check if already exists
+    auto it = g_services.find(encoded);
+    if (it != g_services.end()) {
+        return it->second.session_server_id;
+    }
+
+    // Create session server for this service
+    int server_id = create_session_server(encoded.c_str());
+    if (server_id < 0) {
+        fprintf(stderr, "[dsoftbus] Failed to create session server for service %s\n", service_name);
+        return -1;
+    }
+
+    ServiceInfo info;
+    info.encoded_name = encoded;
+    info.type_name = type_name ? type_name : "";
+    info.service_impl = service_impl;
+    info.session_server_id = server_id;
+
+    g_services[encoded] = info;
+
+    // Register in routing table
+    register_service(encoded.c_str(), service_impl);
+
+    fprintf(stderr, "[dsoftbus] Created service server: %s -> session '%s'\n",
+            service_name, encoded.c_str());
+
+    return server_id;
+}
+
+// Destroy a service server
+void destroy_service_server(const char* service_name) {
+    if (!service_name) return;
+
+    std::string encoded = encode_service_for_session(service_name);
+
+    std::lock_guard<std::mutex> lock(g_service_mutex);
+
+    auto it = g_services.find(encoded);
+    if (it == g_services.end()) {
+        return;
+    }
+
+    // Close all client sessions
+    for (auto& pair : it->second.client_sessions) {
+        close_session(pair.first);
+    }
+
+    // Remove session server
+    remove_session_server(encoded.c_str());
+
+    // Unregister from routing
+    unregister_service(encoded.c_str());
+
+    g_services.erase(it);
+
+    fprintf(stderr, "[dsoftbus] Destroyed service server: %s\n", service_name);
+}
+
+// Send a service response back to client
+int send_service_response(const char* service_name, int client_session_id,
+                          int64_t request_id, const void* response_data, unsigned int len,
+                          const uint8_t* service_gid) {
+    if (!service_name || !response_data || len == 0) {
+        return -1;
+    }
+
+    // Build response message with ServiceHeader
+    ServiceHeader header;
+    header.base.msg_type = MessageType::RESPONSE;
+    header.base.sequence_number = static_cast<uint64_t>(request_id);
+    header.base.timestamp_ns = get_current_time_ns();
+    header.base.data_length = len;
+    header.request_id = request_id;
+    if (service_gid) {
+        memcpy(header.base.publisher_gid, service_gid, GID_SIZE);
+    }
+
+    // Allocate buffer for header + data
+    std::vector<uint8_t> buffer(sizeof(ServiceHeader) + len);
+    memcpy(buffer.data(), &header, sizeof(ServiceHeader));
+    memcpy(buffer.data() + sizeof(ServiceHeader), response_data, len);
+
+    int ret = send_bytes(client_session_id, buffer.data(), buffer.size());
+    if (ret == 0) {
+        fprintf(stderr, "[dsoftbus] Sent service response: request_id=%ld, session=%d, len=%u\n",
+                (long)request_id, client_session_id, len);
+    }
+    return ret;
+}
+
+// Create a service client (connects to remote service)
+int create_service_client(const char* service_name, const char* type_name, void* client_impl) {
+    if (!service_name) {
+        return -1;
+    }
+
+    std::string encoded = encode_service_for_session(service_name);
+
+    std::lock_guard<std::mutex> lock(g_service_mutex);
+
+    // Check if already exists
+    auto it = g_clients.find(encoded);
+    if (it != g_clients.end()) {
+        return it->second.session_id;
+    }
+
+    // First, create our own session server (required by dsoftbus for OpenSession)
+    static std::unordered_map<std::string, int> client_session_servers;
+    if (client_session_servers.find(encoded) == client_session_servers.end()) {
+        int server_id = create_session_server(encoded.c_str());
+        if (server_id >= 0) {
+            client_session_servers[encoded] = server_id;
+            fprintf(stderr, "[dsoftbus] Client created session server for service: %s\n", encoded.c_str());
+        }
+    }
+
+    ClientInfo info;
+    info.encoded_name = encoded;
+    info.type_name = type_name ? type_name : "";
+    info.client_impl = client_impl;
+    info.session_id = -1;  // Will be set when connected
+
+    g_clients[encoded] = info;
+
+    fprintf(stderr, "[dsoftbus] Created service client: %s -> session '%s'\n",
+            service_name, encoded.c_str());
+
+    return 0;  // Return 0 for success, actual session_id will be set on first request
+}
+
+// Destroy a service client
+void destroy_service_client(const char* service_name) {
+    if (!service_name) return;
+
+    std::string encoded = encode_service_for_session(service_name);
+
+    std::lock_guard<std::mutex> lock(g_service_mutex);
+
+    auto it = g_clients.find(encoded);
+    if (it == g_clients.end()) {
+        return;
+    }
+
+    if (it->second.session_id >= 0) {
+        close_session(it->second.session_id);
+    }
+
+    g_clients.erase(it);
+
+    fprintf(stderr, "[dsoftbus] Destroyed service client: %s\n", service_name);
+}
+
+// Send a service request to server
+int send_service_request(const char* service_name, int64_t request_id,
+                         const void* request_data, unsigned int len,
+                         const uint8_t* client_gid) {
+    if (!service_name || !request_data || len == 0) {
+        return -1;
+    }
+
+    std::string encoded = encode_service_for_session(service_name);
+
+    // Find or establish connection to service
+    int session_id = -1;
+    {
+        std::lock_guard<std::mutex> lock(g_service_mutex);
+        auto it = g_clients.find(encoded);
+        if (it != g_clients.end()) {
+            session_id = it->second.session_id;
+        }
+    }
+
+    // If no session, try to discover and connect
+    if (session_id < 0) {
+        void* device_list = nullptr;
+        int device_count = 0;
+        if (get_all_online_devices(&device_list, &device_count) == 0 && device_count > 0) {
+            char local_nid[128] = {0};
+            get_local_device_info(local_nid, sizeof(local_nid), nullptr, 0);
+
+            auto* nodes = static_cast<NodeBasicInfo*>(device_list);
+            for (int i = 0; i < device_count; i++) {
+                if (strcmp(nodes[i].networkId, local_nid) == 0) {
+                    continue;  // Skip self
+                }
+
+                // Try to connect to peer's service session server
+                int sid = open_session_to_peer(nodes[i].networkId,
+                                               encoded.c_str(),
+                                               encoded.c_str(),
+                                               5000);  // 5 second timeout
+                if (sid > 0) {
+                    session_id = sid;
+
+                    // Store session and link to client impl
+                    std::lock_guard<std::mutex> lock(g_service_mutex);
+                    auto it = g_clients.find(encoded);
+                    if (it != g_clients.end()) {
+                        it->second.session_id = sid;
+                        it->second.peer_network_id = nodes[i].networkId;
+
+                        // Set user data on session for response routing
+                        set_session_user_data(sid, it->second.client_impl);
+                    }
+
+                    fprintf(stderr, "[dsoftbus] Connected to service %s on peer %s, session=%d\n",
+                            service_name, nodes[i].deviceName, sid);
+                    break;
+                }
+            }
+            free_device_list(device_list);
+        }
+    }
+
+    if (session_id < 0) {
+        fprintf(stderr, "[dsoftbus] Failed to find service: %s\n", service_name);
+        return -1;
+    }
+
+    // Build request message with ServiceHeader
+    ServiceHeader header;
+    header.base.msg_type = MessageType::REQUEST;
+    header.base.sequence_number = static_cast<uint64_t>(request_id);
+    header.base.timestamp_ns = get_current_time_ns();
+    header.base.data_length = len;
+    header.request_id = request_id;
+    if (client_gid) {
+        memcpy(header.client_gid, client_gid, GID_SIZE);
+    }
+
+    // Allocate buffer for header + data
+    std::vector<uint8_t> buffer(sizeof(ServiceHeader) + len);
+    memcpy(buffer.data(), &header, sizeof(ServiceHeader));
+    memcpy(buffer.data() + sizeof(ServiceHeader), request_data, len);
+
+    int ret = send_bytes(session_id, buffer.data(), buffer.size());
+    if (ret == 0) {
+        fprintf(stderr, "[dsoftbus] Sent service request: request_id=%ld, session=%d, len=%u\n",
+                (long)request_id, session_id, len);
+    }
+    return ret;  // Return 0 on success, non-zero on failure
+}
+
+// Check if service server is available on any peer
+bool is_service_available(const char* service_name) {
+    if (!service_name) return false;
+
+    std::string encoded = encode_service_for_session(service_name);
+
+    // Check if we already have a connection
+    {
+        std::lock_guard<std::mutex> lock(g_service_mutex);
+        auto it = g_clients.find(encoded);
+        if (it != g_clients.end() && it->second.session_id >= 0) {
+            return is_session_connected(it->second.session_id);
+        }
+    }
+
+    // Try to discover peers with the service
+    void* device_list = nullptr;
+    int device_count = 0;
+    if (get_all_online_devices(&device_list, &device_count) != 0 || device_count == 0) {
+        return false;
+    }
+
+    bool available = false;
+    char local_nid[128] = {0};
+    get_local_device_info(local_nid, sizeof(local_nid), nullptr, 0);
+
+    auto* nodes = static_cast<NodeBasicInfo*>(device_list);
+    for (int i = 0; i < device_count && !available; i++) {
+        if (strcmp(nodes[i].networkId, local_nid) == 0) {
+            continue;
+        }
+
+        // Try a quick connection test
+        int sid = open_session_to_peer(nodes[i].networkId,
+                                       encoded.c_str(),
+                                       encoded.c_str(),
+                                       2000);  // 2 second timeout
+        if (sid > 0) {
+            available = true;
+            close_session(sid);  // Close test connection
+        }
+    }
+
+    free_device_list(device_list);
+    return available;
+}
+
+// Check if there are pending requests for a service
+bool has_pending_requests(void* service_impl) {
+    if (!service_impl) return false;
+
+    auto* srv = static_cast<ServiceImpl*>(service_impl);
+    std::lock_guard<std::mutex> lock(srv->queue_mutex);
+    return !srv->request_queue.empty();
+}
+
+// Check if there are pending responses for a client
+bool has_pending_responses(void* client_impl) {
+    if (!client_impl) return false;
+
+    auto* cli = static_cast<ClientImpl*>(client_impl);
+    std::lock_guard<std::mutex> lock(cli->queue_mutex);
+    return !cli->response_queue.empty();
+}
+
+// ============================================================================
+// Raw Message API (for bidirectional testing)
+// ============================================================================
+
+void set_raw_message_callback(void (*callback)(int, const void*, unsigned int, void*), void* user_data) {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+    g_state.raw_callback = callback;
+    g_state.raw_callback_user_data = user_data;
+}
+
+int receive_raw_message(int* session_id, void* buffer, unsigned int buffer_len, int timeout_ms) {
+    std::unique_lock<std::mutex> lock(g_state.mutex);
+
+    // Wait for message with timeout
+    if (g_state.raw_message_queue.empty()) {
+        if (timeout_ms > 0) {
+            g_state.raw_message_cv.wait_for(lock, std::chrono::milliseconds(timeout_ms),
+                []() { return !g_state.raw_message_queue.empty(); });
+        } else if (timeout_ms < 0) {
+            // Wait indefinitely
+            g_state.raw_message_cv.wait(lock,
+                []() { return !g_state.raw_message_queue.empty(); });
+        }
+    }
+
+    if (g_state.raw_message_queue.empty()) {
+        return 0;  // No message available
+    }
+
+    // Get the front message
+    RawReceivedMessage& msg = g_state.raw_message_queue.front();
+
+    if (session_id) {
+        *session_id = msg.session_id;
+    }
+
+    int copy_len = 0;
+    if (buffer && buffer_len > 0) {
+        copy_len = std::min(static_cast<unsigned int>(msg.data.size()), buffer_len);
+        memcpy(buffer, msg.data.data(), copy_len);
+    } else {
+        copy_len = static_cast<int>(msg.data.size());
+    }
+
+    g_state.raw_message_queue.pop();
+    return copy_len;
+}
+
+int get_pending_message_count() {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+    return static_cast<int>(g_state.raw_message_queue.size());
+}
+
+void clear_raw_message_queue() {
+    std::lock_guard<std::mutex> lock(g_state.mutex);
+    while (!g_state.raw_message_queue.empty()) {
+        g_state.raw_message_queue.pop();
+    }
+}
+
+}  // namespace rmw_dsoftbus

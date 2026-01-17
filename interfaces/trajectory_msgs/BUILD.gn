@@ -1,0 +1,155 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# trajectory_msgs - ROS2 trajectory message types
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+_package_name = "trajectory_msgs"
+
+# ============================================================================
+# trajectory_msgs message types:
+#
+# Joint Trajectories:
+#   JointTrajectoryPoint - Single point on a joint trajectory
+#   JointTrajectory - Trajectory for a set of joints
+#
+# Multi-DOF Joint Trajectories:
+#   MultiDOFJointTrajectoryPoint - Single point on a multi-DOF trajectory
+#   MultiDOFJointTrajectory - Trajectory for multi-DOF joints
+# ============================================================================
+
+# ============================================================================
+# trajectory_msgs C generator library
+# ============================================================================
+ros2_shared_library("trajectory_msgs__rosidl_generator_c") {
+  sources = [
+    "src/msg/joint_trajectory_point__functions.c",
+    "src/msg/joint_trajectory__functions.c",
+    "src/msg/multi_dof_joint_trajectory_point__functions.c",
+    "src/msg/multi_dof_joint_trajectory__functions.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_generator_c",
+    "//interfaces/std_msgs:std_msgs__rosidl_generator_c",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_generator_c",
+  ]
+
+  defines = [ "ROSIDL_GENERATOR_C_BUILDING_DLL_${_package_name}" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# trajectory_msgs type support C library
+# ============================================================================
+ros2_shared_library("trajectory_msgs__rosidl_typesupport_c") {
+  sources = [
+    "src/msg/joint_trajectory_point__type_support.c",
+    "src/msg/joint_trajectory__type_support.c",
+    "src/msg/multi_dof_joint_trajectory_point__type_support.c",
+    "src/msg/multi_dof_joint_trajectory__type_support.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":trajectory_msgs__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//foundation/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_c",
+    "//interfaces/std_msgs:std_msgs__rosidl_typesupport_c",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_typesupport_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_C_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# trajectory_msgs FastRTPS type support
+# ============================================================================
+ros2_shared_library("trajectory_msgs__rosidl_typesupport_fastrtps_c") {
+  sources = [
+    "src/msg/joint_trajectory_point__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/joint_trajectory__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/multi_dof_joint_trajectory_point__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/multi_dof_joint_trajectory__rosidl_typesupport_fastrtps_c.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":trajectory_msgs__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_fastrtps_c:rosidl_typesupport_fastrtps_c",
+    "//vendor/fastdds/fastcdr:fastcdr",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_fastrtps_c",
+    "//interfaces/std_msgs:std_msgs__rosidl_typesupport_fastrtps_c",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_typesupport_fastrtps_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_FASTRTPS_C_BUILDING_DLL_${_package_name}" ]
+
+  cflags_cc = [ "-Wno-unused-parameter" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# trajectory_msgs C++ type support
+# ============================================================================
+config("trajectory_msgs_cpp_config") {
+  include_dirs = [ "include" ]
+}
+
+ros2_shared_library("trajectory_msgs__rosidl_typesupport_cpp") {
+  sources = [
+    "src/msg/joint_trajectory_point__type_support.cpp",
+    "src/msg/joint_trajectory__type_support.cpp",
+    "src/msg/multi_dof_joint_trajectory_point__type_support.cpp",
+    "src/msg/multi_dof_joint_trajectory__type_support.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":trajectory_msgs__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//foundation/rosidl/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//foundation/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_cpp",
+    "//interfaces/std_msgs:std_msgs__rosidl_typesupport_cpp",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_typesupport_cpp",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_CPP_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# Package group target
+# ============================================================================
+group("trajectory_msgs") {
+  public_deps = [
+    ":trajectory_msgs__rosidl_generator_c",
+    ":trajectory_msgs__rosidl_typesupport_c",
+    ":trajectory_msgs__rosidl_typesupport_cpp",
+    ":trajectory_msgs__rosidl_typesupport_fastrtps_c",
+  ]
+
+  public_configs = [ ":trajectory_msgs_cpp_config" ]
+}

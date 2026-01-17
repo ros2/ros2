@@ -1,0 +1,146 @@
+rule cxx
+  command = /home/jiusi/M-DDS/OpenHarmony/prebuilts/clang/ohos/linux-x86_64/llvm/bin/clang++ -MMD -MF ${out}.d --target=aarch64-linux-ohos --sysroot=/home/jiusi/M-DDS/OpenHarmony/prebuilts/ohos-sdk/linux/11/native/sysroot -I/home/jiusi/M-DDS/OpenHarmony/prebuilts/clang/ohos/linux-x86_64/llvm/include/libcxx-ohos/include/c++/v1 ${defines} ${include_dirs} ${cflags} ${cflags_cc} -c ${in} -o ${out}
+  description = CXX ${out}
+  depfile = ${out}.d
+  deps = gcc
+rule alink
+  command = rm -f ${out} && /home/jiusi/M-DDS/OpenHarmony/prebuilts/clang/ohos/linux-x86_64/llvm/bin/llvm-ar rcs ${out} @${out}.rsp
+  description = AR ${out}
+  rspfile = ${out}.rsp
+  rspfile_content = ${in}
+rule link
+  command = /home/jiusi/M-DDS/OpenHarmony/prebuilts/clang/ohos/linux-x86_64/llvm/bin/clang++ --target=aarch64-linux-ohos --sysroot=/home/jiusi/M-DDS/OpenHarmony/prebuilts/ohos-sdk/linux/11/native/sysroot -L/home/jiusi/M-DDS/OpenHarmony/prebuilts/clang/ohos/linux-x86_64/libcxx-ndk/lib/aarch64-linux-ohos -lc++ -lc++abi ${ldflags} -o ${output_dir}/${target_output_name}${output_extension} -Wl,--start-group @${output_dir}/${target_output_name}${output_extension}.rsp ${libs} -Wl,--end-group
+  description = LINK ${output_dir}/${target_output_name}${output_extension}
+  rspfile = ${output_dir}/${target_output_name}${output_extension}.rsp
+  rspfile_content = ${in}
+rule solink
+  command = /home/jiusi/M-DDS/OpenHarmony/prebuilts/clang/ohos/linux-x86_64/llvm/bin/clang++ -shared --target=aarch64-linux-ohos --sysroot=/home/jiusi/M-DDS/OpenHarmony/prebuilts/ohos-sdk/linux/11/native/sysroot -L/home/jiusi/M-DDS/OpenHarmony/prebuilts/clang/ohos/linux-x86_64/libcxx-ndk/lib/aarch64-linux-ohos -lc++ -lc++abi ${ldflags} -o ${output_dir}/${target_output_name}${output_extension} -Wl,-soname=${target_output_name}${output_extension} @${target_output_name}${output_extension}.rsp
+  description = SOLINK ${output_dir}/${target_output_name}${output_extension}
+  rspfile = ${target_output_name}${output_extension}.rsp
+  rspfile_content = ${in} ${libs}
+rule stamp
+  command = touch ${out}
+  description = STAMP ${out}
+rule cc
+  command = /home/jiusi/M-DDS/OpenHarmony/prebuilts/clang/ohos/linux-x86_64/llvm/bin/clang -MMD -MF ${out}.d --target=aarch64-linux-ohos --sysroot=/home/jiusi/M-DDS/OpenHarmony/prebuilts/ohos-sdk/linux/11/native/sysroot -I/home/jiusi/M-DDS/OpenHarmony/prebuilts/clang/ohos/linux-x86_64/llvm/include/libcxx-ohos/include/c++/v1 ${defines} ${include_dirs} ${cflags} ${cflags_c} -c ${in} -o ${out}
+  description = CC ${out}
+  depfile = ${out}.d
+  deps = gcc
+rule copy
+  command = cp -af ${in} ${out}
+  description = COPY ${in} ${out}
+
+build obj/default.stamp: stamp ./libfastcdr.so obj/src/eclipse-cyclonedds/cyclonedds/cyclonedds.stamp ./librcutils.so ./librcpputils.so ./librosidl_runtime_c.so obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp ./librosidl_typesupport_introspection_c.so ./librosidl_dynamic_typesupport.so ./librmw.so ./librmw_dds_common_library.so ./librmw_cyclonedds_cpp.so ./librcl_logging_interface.so ./librcl_logging_noop.so obj/src/ros2/libyaml_vendor/libyaml_vendor.stamp ./librcl_yaml_param_parser.so ./librmw_implementation.so obj/src/ros2/ros2_tracing/tracetools/tracetools.stamp ./libbuiltin_interfaces.so ./libunique_identifier_msgs.so ./libaction_msgs.so ./liblifecycle_msgs.so ./librcl_interfaces.so ./libtype_description_interfaces.so ./libservice_msgs.so ./libstd_msgs.so ./librmw_dds_common.so ./librcl.so ./librcl_action.so ./librcl_lifecycle.so ./librosidl_typesupport_c.so ./librosidl_typesupport_cpp.so ./libament_index_cpp.so ./librosgraph_msgs.so ./libstatistics_msgs.so ./libstatistics_collector.so ./librclcpp.so ./librclcpp_action.so ./librclcpp_lifecycle.so ./talker ./listener
+build obj/fastdds.stamp: stamp obj/vendor.stamp ./libfastrtps.so
+build obj/ros2_foundation.stamp: stamp ./librcutils.so ./librcpputils.so ./librosidl_runtime_c.so ./librosidl_typesupport_introspection_c.so ./librosidl_dynamic_typesupport.so
+build obj/ros2_middleware.stamp: stamp obj/ros2_foundation.stamp ./librmw.so ./librcl_logging_interface.so ./librcl_logging_noop.so
+build obj/tests.stamp: stamp tests/cyclonedds_test tests/cross_device_publisher_v2 tests/cross_device_subscriber_v2 obj/test/foundation_test/foundation_tests.stamp obj/test/introspection_test/introspection_tests.stamp obj/test/rcpputils_test/rcpputils_tests.stamp ./test_rcl_basic
+build obj/vendor.stamp: stamp ./libfastcdr.so
+subninja obj/demo_cpp/listener.ninja
+subninja obj/demo_cpp/talker.ninja
+subninja obj/generated/action_msgs/action_msgs.ninja
+subninja obj/generated/action_msgs/action_msgs_type_support_cpp.ninja
+subninja obj/generated/builtin_interfaces/builtin_interfaces.ninja
+subninja obj/generated/builtin_interfaces/builtin_interfaces_type_support_cpp.ninja
+subninja obj/generated/lifecycle_msgs/lifecycle_msgs.ninja
+subninja obj/generated/lifecycle_msgs/lifecycle_msgs_type_support_cpp.ninja
+subninja obj/generated/rcl_interfaces/rcl_interfaces.ninja
+subninja obj/generated/rcl_interfaces/rcl_interfaces_type_support_cpp.ninja
+subninja obj/generated/rmw_dds_common/rmw_dds_common.ninja
+subninja obj/generated/rmw_dds_common/rmw_dds_common_type_support_cpp.ninja
+subninja obj/generated/rosgraph_msgs/rosgraph_msgs.ninja
+subninja obj/generated/rosgraph_msgs/rosgraph_msgs_type_support_cpp.ninja
+subninja obj/generated/service_msgs/service_msgs.ninja
+subninja obj/generated/service_msgs/service_msgs_type_support_cpp.ninja
+subninja obj/generated/statistics_msgs/statistics_msgs.ninja
+subninja obj/generated/statistics_msgs/statistics_msgs_type_support_cpp.ninja
+subninja obj/generated/std_msgs/std_msgs.ninja
+subninja obj/generated/std_msgs/std_msgs_type_support_cpp.ninja
+subninja obj/generated/type_description_interfaces/type_description_interfaces.ninja
+subninja obj/generated/type_description_interfaces/type_description_interfaces_type_support_cpp.ninja
+subninja obj/generated/unique_identifier_msgs/unique_identifier_msgs.ninja
+subninja obj/generated/unique_identifier_msgs/unique_identifier_msgs_type_support_cpp.ninja
+subninja obj/src/ament/ament_index/ament_index_cpp/ament_index_cpp.ninja
+subninja obj/src/eProsima/Fast-CDR/fastcdr.ninja
+rule __src_eProsima_Fast-CDR_fastcdr_config_gen___build_config_toolchain_target__rule
+  command = python ../../build_config/scripts/generate_config.py --input ../../src/eProsima/Fast-CDR/include/fastcdr/config.h.in --output gen/src/eProsima/Fast-CDR/fastcdr/include/fastcdr/config.h --version-major 2 --version-minor 2 --version-patch 6 --have-cxx11 1 --is-big-endian 0 --have-float128 0 --sizeof-long-double 16
+  description = ACTION //src/eProsima/Fast-CDR:fastcdr_config_gen(//build_config/toolchain:target)
+  restat = 1
+
+build gen/src/eProsima/Fast-CDR/fastcdr/include/fastcdr/config.h: __src_eProsima_Fast-CDR_fastcdr_config_gen___build_config_toolchain_target__rule | ../../build_config/scripts/generate_config.py ../../src/eProsima/Fast-CDR/include/fastcdr/config.h.in
+
+build obj/src/eProsima/Fast-CDR/fastcdr_config_gen.stamp: stamp gen/src/eProsima/Fast-CDR/fastcdr/include/fastcdr/config.h
+subninja obj/src/eProsima/Fast-CDR/fastcdr_static.ninja
+rule __src_eProsima_Fast-DDS_fastdds_config_gen___build_config_toolchain_target__rule
+  command = python ../../build_config/scripts/generate_fastdds_config.py --input ../../src/eProsima/Fast-DDS/include/fastrtps/config.h.in --output gen/src/eProsima/Fast-DDS/fastdds/include/fastrtps/config.h --version-major 2 --version-minor 14 --version-patch 5
+  description = ACTION //src/eProsima/Fast-DDS:fastdds_config_gen(//build_config/toolchain:target)
+  restat = 1
+
+build gen/src/eProsima/Fast-DDS/fastdds/include/fastrtps/config.h: __src_eProsima_Fast-DDS_fastdds_config_gen___build_config_toolchain_target__rule | ../../build_config/scripts/generate_fastdds_config.py ../../src/eProsima/Fast-DDS/include/fastrtps/config.h.in
+
+build obj/src/eProsima/Fast-DDS/fastdds_config_gen.stamp: stamp gen/src/eProsima/Fast-DDS/fastdds/include/fastrtps/config.h
+subninja obj/src/eProsima/Fast-DDS/fastrtps.ninja
+build obj/src/eProsima/Fast-DDS/thirdparty/asio/asio.stamp: stamp
+subninja obj/src/eProsima/Fast-DDS/thirdparty/tinyxml2/tinyxml2.ninja
+rule __src_eclipse-cyclonedds_cyclonedds_cyclone_config_gen___build_config_toolchain_target__rule
+  command = python ../../build_config/scripts/generate_cyclone_config.py --config gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/config.h --version gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/version.h --features gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/features.h --export gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/export.h
+  description = ACTION //src/eclipse-cyclonedds/cyclonedds:cyclone_config_gen(//build_config/toolchain:target)
+  restat = 1
+
+build gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/config.h gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/version.h gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/features.h gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/export.h: __src_eclipse-cyclonedds_cyclonedds_cyclone_config_gen___build_config_toolchain_target__rule | ../../build_config/scripts/generate_cyclone_config.py
+
+build obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp: stamp gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/config.h gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/version.h gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/features.h gen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include/dds/export.h
+build obj/src/eclipse-cyclonedds/cyclonedds/cyclonedds.stamp: stamp ./libddsc.so
+subninja obj/src/eclipse-cyclonedds/cyclonedds/ddsc.ninja
+subninja obj/src/eclipse-cyclonedds/cyclonedds/ddsi_sources.ninja
+subninja obj/src/eclipse-cyclonedds/cyclonedds/ddsrt.ninja
+subninja obj/src/ros-tooling/libstatistics_collector/libstatistics_collector.ninja
+build obj/src/ros2/libyaml_vendor/libyaml_vendor.stamp: stamp ./libyaml.so
+subninja obj/src/ros2/rcl/rcl/rcl.ninja
+subninja obj/src/ros2/rcl/rcl_action/rcl_action.ninja
+subninja obj/src/ros2/rcl/rcl_lifecycle/rcl_lifecycle.ninja
+subninja obj/src/ros2/rcl/rcl_yaml_param_parser/rcl_yaml_param_parser.ninja
+subninja obj/src/ros2/rcl_logging/rcl_logging_interface/rcl_logging_interface.ninja
+subninja obj/src/ros2/rcl_logging/rcl_logging_noop/rcl_logging_noop.ninja
+subninja obj/src/ros2/rclcpp/rclcpp/rclcpp.ninja
+subninja obj/src/ros2/rclcpp/rclcpp_action/rclcpp_action.ninja
+subninja obj/src/ros2/rclcpp/rclcpp_lifecycle/rclcpp_lifecycle.ninja
+subninja obj/src/ros2/rcpputils/rcpputils.ninja
+rule __src_ros2_rcutils_logging_macros_gen___build_config_toolchain_target__rule
+  command = python ../../build_config/scripts/generate_logging_macros.py --template ../../src/ros2/rcutils/resource/logging_macros.h.em --output gen/src/ros2/rcutils/rcutils/include/rcutils/logging_macros.h
+  description = ACTION //src/ros2/rcutils:logging_macros_gen(//build_config/toolchain:target)
+  restat = 1
+
+build gen/src/ros2/rcutils/rcutils/include/rcutils/logging_macros.h: __src_ros2_rcutils_logging_macros_gen___build_config_toolchain_target__rule | ../../build_config/scripts/generate_logging_macros.py ../../src/ros2/rcutils/resource/logging_macros.h.em
+
+build obj/src/ros2/rcutils/logging_macros_gen.stamp: stamp gen/src/ros2/rcutils/rcutils/include/rcutils/logging_macros.h
+subninja obj/src/ros2/rcutils/rcutils.ninja
+build obj/src/ros2/rcutils/rcutils_deploy.stamp: stamp ./librcutils.so
+subninja obj/src/ros2/rmw/rmw/rmw.ninja
+subninja obj/src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/rmw_cyclonedds_cpp.ninja
+subninja obj/src/ros2/rmw_dds_common/rmw_dds_common/rmw_dds_common_library.ninja
+subninja obj/src/ros2/rmw_implementation/rmw_implementation/rmw_implementation.ninja
+subninja obj/src/ros2/ros2_tracing/tracetools/tracetools.ninja
+subninja obj/src/ros2/rosidl/rosidl_runtime_c/rosidl_runtime_c.ninja
+subninja obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.ninja
+subninja obj/src/ros2/rosidl/rosidl_typesupport_interface/rosidl_typesupport_interface.ninja
+subninja obj/src/ros2/rosidl/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c.ninja
+subninja obj/src/ros2/rosidl/rosidl_typesupport_introspection_c/rosidl_typesupport_introspection_c_headers.ninja
+subninja obj/src/ros2/rosidl/rosidl_typesupport_introspection_cpp/rosidl_typesupport_introspection_cpp.ninja
+subninja obj/src/ros2/rosidl_dynamic_typesupport/rosidl_dynamic_typesupport.ninja
+subninja obj/src/ros2/rosidl_typesupport/rosidl_typesupport_c/rosidl_typesupport_c.ninja
+subninja obj/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/rosidl_typesupport_cpp.ninja
+subninja obj/test/cross_device/cross_device_publisher_v2.ninja
+subninja obj/test/cross_device/cross_device_subscriber_v2.ninja
+subninja obj/test/cross_device/minimal_test.ninja
+subninja obj/test/cross_device/simple_msg_v2.ninja
+subninja obj/test/cyclonedds_test/cyclonedds_test.ninja
+build obj/test/foundation_test/foundation_tests.stamp: stamp tests/test_rcutils tests/test_rosidl_runtime_c
+subninja obj/test/foundation_test/test_rcutils.ninja
+subninja obj/test/foundation_test/test_rosidl_runtime_c.ninja
+build obj/test/introspection_test/introspection_tests.stamp: stamp ./test_introspection_c
+subninja obj/test/introspection_test/test_introspection_c.ninja
+subninja obj/test/rcl_test/test_rcl_basic.ninja
+build obj/test/rcpputils_test/rcpputils_tests.stamp: stamp ./test_rcpputils
+subninja obj/test/rcpputils_test/test_rcpputils.ninja
+subninja obj/third_party/libyaml/libyaml-0.2.5/yaml.ninja

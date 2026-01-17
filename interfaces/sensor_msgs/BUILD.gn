@@ -1,0 +1,261 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# sensor_msgs - ROS2 sensor message types
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+_package_name = "sensor_msgs"
+
+# ============================================================================
+# sensor_msgs message types:
+#
+# Image/Camera:
+#   Image, CompressedImage, CameraInfo, RegionOfInterest
+#
+# Point Cloud:
+#   PointCloud2, PointField, ChannelFloat32
+#
+# Laser:
+#   LaserScan, MultiEchoLaserScan, LaserEcho
+#
+# IMU/Navigation:
+#   Imu, MagneticField, NavSatFix, NavSatStatus
+#
+# Range/Environment:
+#   Range, Temperature, RelativeHumidity, FluidPressure, Illuminance
+#
+# Battery/Power:
+#   BatteryState
+#
+# Input:
+#   Joy, JoyFeedback, JoyFeedbackArray
+#
+# Joint:
+#   JointState, MultiDOFJointState
+#
+# Time:
+#   TimeReference
+# ============================================================================
+
+# ============================================================================
+# sensor_msgs C generator library
+# ============================================================================
+ros2_shared_library("sensor_msgs__rosidl_generator_c") {
+  sources = [
+    # Image/Camera types
+    "src/msg/image__functions.c",
+    "src/msg/compressed_image__functions.c",
+    "src/msg/camera_info__functions.c",
+    "src/msg/region_of_interest__functions.c",
+
+    # Point Cloud types
+    "src/msg/point_cloud2__functions.c",
+    "src/msg/point_field__functions.c",
+    "src/msg/channel_float32__functions.c",
+
+    # Laser types
+    "src/msg/laser_scan__functions.c",
+    "src/msg/multi_echo_laser_scan__functions.c",
+    "src/msg/laser_echo__functions.c",
+
+    # IMU/Navigation types
+    "src/msg/imu__functions.c",
+    "src/msg/magnetic_field__functions.c",
+    "src/msg/nav_sat_fix__functions.c",
+    "src/msg/nav_sat_status__functions.c",
+
+    # Range/Environment types
+    "src/msg/range__functions.c",
+    "src/msg/temperature__functions.c",
+    "src/msg/relative_humidity__functions.c",
+    "src/msg/fluid_pressure__functions.c",
+    "src/msg/illuminance__functions.c",
+
+    # Battery/Power types
+    "src/msg/battery_state__functions.c",
+
+    # Input types
+    "src/msg/joy__functions.c",
+    "src/msg/joy_feedback__functions.c",
+    "src/msg/joy_feedback_array__functions.c",
+
+    # Joint types
+    "src/msg/joint_state__functions.c",
+    "src/msg/multi_dof_joint_state__functions.c",
+
+    # Time types
+    "src/msg/time_reference__functions.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_generator_c",
+    "//interfaces/std_msgs:std_msgs__rosidl_generator_c",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_generator_c",
+  ]
+
+  defines = [ "ROSIDL_GENERATOR_C_BUILDING_DLL_${_package_name}" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# sensor_msgs type support C library
+# ============================================================================
+ros2_shared_library("sensor_msgs__rosidl_typesupport_c") {
+  sources = [
+    # Image/Camera types
+    "src/msg/image__type_support.c",
+    "src/msg/compressed_image__type_support.c",
+    "src/msg/camera_info__type_support.c",
+    "src/msg/region_of_interest__type_support.c",
+
+    # Point Cloud types
+    "src/msg/point_cloud2__type_support.c",
+    "src/msg/point_field__type_support.c",
+    "src/msg/channel_float32__type_support.c",
+
+    # Laser types
+    "src/msg/laser_scan__type_support.c",
+    "src/msg/multi_echo_laser_scan__type_support.c",
+    "src/msg/laser_echo__type_support.c",
+
+    # IMU/Navigation types
+    "src/msg/imu__type_support.c",
+    "src/msg/magnetic_field__type_support.c",
+    "src/msg/nav_sat_fix__type_support.c",
+    "src/msg/nav_sat_status__type_support.c",
+
+    # Range/Environment types
+    "src/msg/range__type_support.c",
+    "src/msg/temperature__type_support.c",
+    "src/msg/relative_humidity__type_support.c",
+    "src/msg/fluid_pressure__type_support.c",
+    "src/msg/illuminance__type_support.c",
+
+    # Battery/Power types
+    "src/msg/battery_state__type_support.c",
+
+    # Input types
+    "src/msg/joy__type_support.c",
+    "src/msg/joy_feedback__type_support.c",
+    "src/msg/joy_feedback_array__type_support.c",
+
+    # Joint types
+    "src/msg/joint_state__type_support.c",
+    "src/msg/multi_dof_joint_state__type_support.c",
+
+    # Time types
+    "src/msg/time_reference__type_support.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":sensor_msgs__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//foundation/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_c",
+    "//interfaces/std_msgs:std_msgs__rosidl_typesupport_c",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_typesupport_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_C_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# sensor_msgs FastRTPS type support
+# ============================================================================
+ros2_shared_library("sensor_msgs__rosidl_typesupport_fastrtps_c") {
+  sources = [
+    # Key sensor types for FastRTPS serialization
+    "src/msg/image__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/compressed_image__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/point_cloud2__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/laser_scan__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/imu__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/nav_sat_fix__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/joint_state__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/joy__rosidl_typesupport_fastrtps_c.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":sensor_msgs__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_fastrtps_c:rosidl_typesupport_fastrtps_c",
+    "//vendor/fastdds/fastcdr:fastcdr",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_fastrtps_c",
+    "//interfaces/std_msgs:std_msgs__rosidl_typesupport_fastrtps_c",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_typesupport_fastrtps_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_FASTRTPS_C_BUILDING_DLL_${_package_name}" ]
+
+  cflags_cc = [ "-Wno-unused-parameter" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# sensor_msgs C++ type support
+# ============================================================================
+config("sensor_msgs_cpp_config") {
+  include_dirs = [ "include" ]
+}
+
+ros2_shared_library("sensor_msgs__rosidl_typesupport_cpp") {
+  sources = [
+    "src/msg/image__type_support.cpp",
+    "src/msg/compressed_image__type_support.cpp",
+    "src/msg/point_cloud2__type_support.cpp",
+    "src/msg/laser_scan__type_support.cpp",
+    "src/msg/imu__type_support.cpp",
+    "src/msg/nav_sat_fix__type_support.cpp",
+    "src/msg/joint_state__type_support.cpp",
+    "src/msg/joy__type_support.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":sensor_msgs__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//foundation/rosidl/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//foundation/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_cpp",
+    "//interfaces/std_msgs:std_msgs__rosidl_typesupport_cpp",
+    "//interfaces/geometry_msgs:geometry_msgs__rosidl_typesupport_cpp",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_CPP_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# Package group target
+# ============================================================================
+group("sensor_msgs") {
+  public_deps = [
+    ":sensor_msgs__rosidl_generator_c",
+    ":sensor_msgs__rosidl_typesupport_c",
+    ":sensor_msgs__rosidl_typesupport_cpp",
+    ":sensor_msgs__rosidl_typesupport_fastrtps_c",
+  ]
+
+  public_configs = [ ":sensor_msgs_cpp_config" ]
+}

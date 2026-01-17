@@ -1,0 +1,62 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DROSIDL_GENERATOR_C_BUILDING_DLL_type_description_interfaces -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL -DROSIDL_GENERATOR_C_BUILDING_DLL_service_msgs -DROSIDL_GENERATOR_C_BUILDING_DLL_builtin_interfaces
+include_dirs = -I../../generated -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include
+cflags = -Wno-unused-parameter -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -std=c11 -std=c11 -fPIC
+target_output_name = libtype_description_interfaces
+
+build obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.field__functions.o: cc ../../generated/type_description_interfaces/msg/detail/field__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field__functions.c
+  source_name_part = field__functions
+build obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.field_type__functions.o: cc ../../generated/type_description_interfaces/msg/detail/field_type__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field_type__functions.c
+  source_name_part = field_type__functions
+build obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.individual_type_description__functions.o: cc ../../generated/type_description_interfaces/msg/detail/individual_type_description__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = individual_type_description__functions.c
+  source_name_part = individual_type_description__functions
+build obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.key_value__functions.o: cc ../../generated/type_description_interfaces/msg/detail/key_value__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = key_value__functions.c
+  source_name_part = key_value__functions
+build obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.type_description__functions.o: cc ../../generated/type_description_interfaces/msg/detail/type_description__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description__functions.c
+  source_name_part = type_description__functions
+build obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.type_source__functions.o: cc ../../generated/type_description_interfaces/msg/detail/type_source__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_source__functions.c
+  source_name_part = type_source__functions
+build obj/generated/type_description_interfaces/srv/detail/libtype_description_interfaces.get_type_description__functions.o: cc ../../generated/type_description_interfaces/srv/detail/get_type_description__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_type_description__functions.c
+  source_name_part = get_type_description__functions
+build obj/generated/type_description_interfaces/srv/libtype_description_interfaces.get_type_description__type_support.o: cc ../../generated/type_description_interfaces/srv/get_type_description__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_type_description__type_support.c
+  source_name_part = get_type_description__type_support
+build obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.field__type_support.o: cc ../../generated/type_description_interfaces/msg/detail/field__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field__type_support.c
+  source_name_part = field__type_support
+build obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.field_type__type_support.o: cc ../../generated/type_description_interfaces/msg/detail/field_type__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field_type__type_support.c
+  source_name_part = field_type__type_support
+build obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.individual_type_description__type_support.o: cc ../../generated/type_description_interfaces/msg/detail/individual_type_description__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = individual_type_description__type_support.c
+  source_name_part = individual_type_description__type_support
+build obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.key_value__type_support.o: cc ../../generated/type_description_interfaces/msg/detail/key_value__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = key_value__type_support.c
+  source_name_part = key_value__type_support
+build obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.type_description__type_support.o: cc ../../generated/type_description_interfaces/msg/detail/type_description__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description__type_support.c
+  source_name_part = type_description__type_support
+build obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.type_source__type_support.o: cc ../../generated/type_description_interfaces/msg/detail/type_source__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_source__type_support.c
+  source_name_part = type_source__type_support
+build obj/generated/type_description_interfaces/srv/detail/libtype_description_interfaces.get_type_description__type_support.o: cc ../../generated/type_description_interfaces/srv/detail/get_type_description__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_type_description__type_support.c
+  source_name_part = get_type_description__type_support
+build obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.type_description_stubs.o: cc ../../generated/type_description_interfaces/msg/detail/type_description_stubs.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description_stubs.c
+  source_name_part = type_description_stubs
+
+build ./libtype_description_interfaces.so: solink obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.field__functions.o obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.field_type__functions.o obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.individual_type_description__functions.o obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.key_value__functions.o obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.type_description__functions.o obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.type_source__functions.o obj/generated/type_description_interfaces/srv/detail/libtype_description_interfaces.get_type_description__functions.o obj/generated/type_description_interfaces/srv/libtype_description_interfaces.get_type_description__type_support.o obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.field__type_support.o obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.field_type__type_support.o obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.individual_type_description__type_support.o obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.key_value__type_support.o obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.type_description__type_support.o obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.type_source__type_support.o obj/generated/type_description_interfaces/srv/detail/libtype_description_interfaces.get_type_description__type_support.o obj/generated/type_description_interfaces/msg/detail/libtype_description_interfaces.type_description_stubs.o obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.field__type_support.o obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.field_type__type_support.o obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.individual_type_description__type_support.o obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.key_value__type_support.o obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.type_description__type_support.o obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.type_source__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.field__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.field_type__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.individual_type_description__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.key_value__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.type_description__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.type_source__type_support.o obj/generated/type_description_interfaces/srv/detail/type_description_interfaces_type_support_cpp.get_type_description__type_support.o obj/generated/type_description_interfaces/srv/type_description_interfaces_type_support_cpp.get_type_description__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.field__type_support_c.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.field_type__type_support_c.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.individual_type_description__type_support_c.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.key_value__type_support_c.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.type_description__type_support_c.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.type_source__type_support_c.o obj/generated/type_description_interfaces/srv/type_description_interfaces_type_support_cpp.get_type_description__type_support_c.o obj/generated/service_msgs/msg/detail/service_msgs_type_support_cpp.service_event_info__type_support.o obj/generated/service_msgs/msg/service_msgs_type_support_cpp.service_event_info__type_support.o obj/generated/service_msgs/msg/service_msgs_type_support_cpp.service_event_info__type_support_c.o obj/generated/builtin_interfaces/msg/detail/builtin_interfaces_type_support_cpp.duration__type_support.o obj/generated/builtin_interfaces/msg/detail/builtin_interfaces_type_support_cpp.time__type_support.o obj/generated/builtin_interfaces/msg/builtin_interfaces_type_support_cpp.duration__type_support.o obj/generated/builtin_interfaces/msg/builtin_interfaces_type_support_cpp.time__type_support.o obj/generated/builtin_interfaces/msg/builtin_interfaces_type_support_cpp.duration__type_support_c.o obj/generated/builtin_interfaces/msg/builtin_interfaces_type_support_cpp.time__type_support_c.o ./librosidl_runtime_c.so ./librosidl_typesupport_introspection_c.so ./librcutils.so ./libservice_msgs.so ./librosidl_typesupport_c.so ./librosidl_typesupport_cpp.so ./librosidl_typesupport_introspection_cpp.so ./libbuiltin_interfaces.so || obj/generated/type_description_interfaces/type_description_interfaces_type_support_cpp.stamp obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp obj/generated/service_msgs/service_msgs_type_support_cpp.stamp obj/generated/builtin_interfaces/builtin_interfaces_type_support_cpp.stamp
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

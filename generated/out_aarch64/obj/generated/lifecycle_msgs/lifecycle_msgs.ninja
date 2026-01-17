@@ -1,0 +1,77 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DROSIDL_GENERATOR_C_BUILDING_DLL_lifecycle_msgs -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../generated -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include
+cflags = -Wno-unused-parameter -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -std=c11 -std=c11 -fPIC
+target_output_name = liblifecycle_msgs
+
+build obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.state__functions.o: cc ../../generated/lifecycle_msgs/msg/detail/state__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = state__functions.c
+  source_name_part = state__functions
+build obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.transition__functions.o: cc ../../generated/lifecycle_msgs/msg/detail/transition__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = transition__functions.c
+  source_name_part = transition__functions
+build obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.transition_description__functions.o: cc ../../generated/lifecycle_msgs/msg/detail/transition_description__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = transition_description__functions.c
+  source_name_part = transition_description__functions
+build obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.transition_event__functions.o: cc ../../generated/lifecycle_msgs/msg/detail/transition_event__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = transition_event__functions.c
+  source_name_part = transition_event__functions
+build obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.change_state__functions.o: cc ../../generated/lifecycle_msgs/srv/detail/change_state__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = change_state__functions.c
+  source_name_part = change_state__functions
+build obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.get_available_states__functions.o: cc ../../generated/lifecycle_msgs/srv/detail/get_available_states__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_available_states__functions.c
+  source_name_part = get_available_states__functions
+build obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.get_available_transitions__functions.o: cc ../../generated/lifecycle_msgs/srv/detail/get_available_transitions__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_available_transitions__functions.c
+  source_name_part = get_available_transitions__functions
+build obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.get_state__functions.o: cc ../../generated/lifecycle_msgs/srv/detail/get_state__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_state__functions.c
+  source_name_part = get_state__functions
+build obj/generated/lifecycle_msgs/srv/liblifecycle_msgs.change_state__type_support.o: cc ../../generated/lifecycle_msgs/srv/change_state__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = change_state__type_support.c
+  source_name_part = change_state__type_support
+build obj/generated/lifecycle_msgs/srv/liblifecycle_msgs.get_available_states__type_support.o: cc ../../generated/lifecycle_msgs/srv/get_available_states__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_available_states__type_support.c
+  source_name_part = get_available_states__type_support
+build obj/generated/lifecycle_msgs/srv/liblifecycle_msgs.get_available_transitions__type_support.o: cc ../../generated/lifecycle_msgs/srv/get_available_transitions__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_available_transitions__type_support.c
+  source_name_part = get_available_transitions__type_support
+build obj/generated/lifecycle_msgs/srv/liblifecycle_msgs.get_state__type_support.o: cc ../../generated/lifecycle_msgs/srv/get_state__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_state__type_support.c
+  source_name_part = get_state__type_support
+build obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.state__type_support.o: cc ../../generated/lifecycle_msgs/msg/detail/state__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = state__type_support.c
+  source_name_part = state__type_support
+build obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.transition__type_support.o: cc ../../generated/lifecycle_msgs/msg/detail/transition__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = transition__type_support.c
+  source_name_part = transition__type_support
+build obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.transition_description__type_support.o: cc ../../generated/lifecycle_msgs/msg/detail/transition_description__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = transition_description__type_support.c
+  source_name_part = transition_description__type_support
+build obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.transition_event__type_support.o: cc ../../generated/lifecycle_msgs/msg/detail/transition_event__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = transition_event__type_support.c
+  source_name_part = transition_event__type_support
+build obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.change_state__type_support.o: cc ../../generated/lifecycle_msgs/srv/detail/change_state__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = change_state__type_support.c
+  source_name_part = change_state__type_support
+build obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.get_available_states__type_support.o: cc ../../generated/lifecycle_msgs/srv/detail/get_available_states__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_available_states__type_support.c
+  source_name_part = get_available_states__type_support
+build obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.get_available_transitions__type_support.o: cc ../../generated/lifecycle_msgs/srv/detail/get_available_transitions__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_available_transitions__type_support.c
+  source_name_part = get_available_transitions__type_support
+build obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.get_state__type_support.o: cc ../../generated/lifecycle_msgs/srv/detail/get_state__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_state__type_support.c
+  source_name_part = get_state__type_support
+build obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.type_description_stubs.o: cc ../../generated/lifecycle_msgs/msg/detail/type_description_stubs.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description_stubs.c
+  source_name_part = type_description_stubs
+
+build ./liblifecycle_msgs.so: solink obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.state__functions.o obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.transition__functions.o obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.transition_description__functions.o obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.transition_event__functions.o obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.change_state__functions.o obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.get_available_states__functions.o obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.get_available_transitions__functions.o obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.get_state__functions.o obj/generated/lifecycle_msgs/srv/liblifecycle_msgs.change_state__type_support.o obj/generated/lifecycle_msgs/srv/liblifecycle_msgs.get_available_states__type_support.o obj/generated/lifecycle_msgs/srv/liblifecycle_msgs.get_available_transitions__type_support.o obj/generated/lifecycle_msgs/srv/liblifecycle_msgs.get_state__type_support.o obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.state__type_support.o obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.transition__type_support.o obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.transition_description__type_support.o obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.transition_event__type_support.o obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.change_state__type_support.o obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.get_available_states__type_support.o obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.get_available_transitions__type_support.o obj/generated/lifecycle_msgs/srv/detail/liblifecycle_msgs.get_state__type_support.o obj/generated/lifecycle_msgs/msg/detail/liblifecycle_msgs.type_description_stubs.o obj/generated/lifecycle_msgs/msg/detail/lifecycle_msgs_type_support_cpp.state__type_support.o obj/generated/lifecycle_msgs/msg/detail/lifecycle_msgs_type_support_cpp.transition__type_support.o obj/generated/lifecycle_msgs/msg/detail/lifecycle_msgs_type_support_cpp.transition_description__type_support.o obj/generated/lifecycle_msgs/msg/detail/lifecycle_msgs_type_support_cpp.transition_event__type_support.o obj/generated/lifecycle_msgs/msg/lifecycle_msgs_type_support_cpp.state__type_support.o obj/generated/lifecycle_msgs/msg/lifecycle_msgs_type_support_cpp.transition__type_support.o obj/generated/lifecycle_msgs/msg/lifecycle_msgs_type_support_cpp.transition_description__type_support.o obj/generated/lifecycle_msgs/msg/lifecycle_msgs_type_support_cpp.transition_event__type_support.o obj/generated/lifecycle_msgs/srv/lifecycle_msgs_type_support_cpp.change_state__type_support.o obj/generated/lifecycle_msgs/srv/detail/lifecycle_msgs_type_support_cpp.change_state__type_support.o obj/generated/lifecycle_msgs/srv/detail/lifecycle_msgs_type_support_cpp.get_available_states__type_support.o obj/generated/lifecycle_msgs/srv/detail/lifecycle_msgs_type_support_cpp.get_available_transitions__type_support.o obj/generated/lifecycle_msgs/srv/detail/lifecycle_msgs_type_support_cpp.get_state__type_support.o obj/generated/lifecycle_msgs/srv/lifecycle_msgs_type_support_cpp.get_available_states__type_support.o obj/generated/lifecycle_msgs/srv/lifecycle_msgs_type_support_cpp.get_available_transitions__type_support.o obj/generated/lifecycle_msgs/srv/lifecycle_msgs_type_support_cpp.get_state__type_support.o obj/generated/lifecycle_msgs/msg/lifecycle_msgs_type_support_cpp.state__type_support_c.o obj/generated/lifecycle_msgs/msg/lifecycle_msgs_type_support_cpp.transition__type_support_c.o obj/generated/lifecycle_msgs/msg/lifecycle_msgs_type_support_cpp.transition_description__type_support_c.o obj/generated/lifecycle_msgs/msg/lifecycle_msgs_type_support_cpp.transition_event__type_support_c.o obj/generated/lifecycle_msgs/srv/lifecycle_msgs_type_support_cpp.change_state__type_support_c.o obj/generated/lifecycle_msgs/srv/lifecycle_msgs_type_support_cpp.get_available_states__type_support_c.o obj/generated/lifecycle_msgs/srv/lifecycle_msgs_type_support_cpp.get_available_transitions__type_support_c.o obj/generated/lifecycle_msgs/srv/lifecycle_msgs_type_support_cpp.get_state__type_support_c.o ./librosidl_runtime_c.so ./librosidl_typesupport_introspection_c.so ./librcutils.so ./librosidl_typesupport_c.so ./librosidl_typesupport_cpp.so ./librosidl_typesupport_introspection_cpp.so || obj/generated/lifecycle_msgs/lifecycle_msgs_type_support_cpp.stamp obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

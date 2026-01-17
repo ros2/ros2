@@ -1,0 +1,42 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# Global build configuration for ROS2 cross-compilation
+
+# Toolchain setup
+set_default_toolchain("//build_config/toolchain:target")
+
+# Global variables
+if (target_os == "") {
+  target_os = "ohos"
+}
+
+if (target_cpu == "") {
+  target_cpu = "arm64"
+}
+
+# Architecture mapping
+if (target_cpu == "arm64") {
+  target_cpu = "aarch64"
+}
+
+# Default configs for all targets
+_native_compiler_configs = [
+  "//build_config:compiler_defaults",
+  "//build_config:ohos_defaults",
+]
+
+# Set default configs
+set_defaults("executable") {
+  configs = _native_compiler_configs
+}
+
+set_defaults("static_library") {
+  configs = _native_compiler_configs
+}
+
+set_defaults("shared_library") {
+  configs = _native_compiler_configs
+}
+
+set_defaults("source_set") {
+  configs = _native_compiler_configs
+}

@@ -1,0 +1,199 @@
+# Copyright (c) 2024 ROS2 KaihongOS Port Project  
+# BUILD.gn for generated std_msgs
+
+import("//gn_templates/ros2_library.gni")
+
+_gen_base = "//generated/std_msgs"
+
+config("std_msgs_public_config") {
+  include_dirs = [ "//generated" ]
+  defines = [ "ROSIDL_GENERATOR_C_BUILDING_DLL_std_msgs" ]
+}
+
+# C++ type support introspection + dispatch (combined)
+source_set("std_msgs_type_support_cpp") {
+  sources = [
+    "${_gen_base}/msg/detail/bool__type_support.cpp",
+    "${_gen_base}/msg/detail/byte__type_support.cpp",
+    "${_gen_base}/msg/detail/byte_multi_array__type_support.cpp",
+    "${_gen_base}/msg/detail/char__type_support.cpp",
+    "${_gen_base}/msg/detail/color_rgba__type_support.cpp",
+    "${_gen_base}/msg/detail/empty__type_support.cpp",
+    "${_gen_base}/msg/detail/float32__type_support.cpp",
+    "${_gen_base}/msg/detail/float32_multi_array__type_support.cpp",
+    "${_gen_base}/msg/detail/float64__type_support.cpp",
+    "${_gen_base}/msg/detail/float64_multi_array__type_support.cpp",
+    "${_gen_base}/msg/detail/header__type_support.cpp",
+    "${_gen_base}/msg/detail/int16__type_support.cpp",
+    "${_gen_base}/msg/detail/int16_multi_array__type_support.cpp",
+    "${_gen_base}/msg/detail/int32__type_support.cpp",
+    "${_gen_base}/msg/detail/int32_multi_array__type_support.cpp",
+    "${_gen_base}/msg/detail/int64__type_support.cpp",
+    "${_gen_base}/msg/detail/int64_multi_array__type_support.cpp",
+    "${_gen_base}/msg/detail/int8__type_support.cpp",
+    "${_gen_base}/msg/detail/int8_multi_array__type_support.cpp",
+    "${_gen_base}/msg/detail/multi_array_dimension__type_support.cpp",
+    "${_gen_base}/msg/detail/multi_array_layout__type_support.cpp",
+    "${_gen_base}/msg/detail/string__type_support.cpp",
+    "${_gen_base}/msg/detail/u_int16__type_support.cpp",
+    "${_gen_base}/msg/detail/u_int16_multi_array__type_support.cpp",
+    "${_gen_base}/msg/detail/u_int32__type_support.cpp",
+    "${_gen_base}/msg/detail/u_int32_multi_array__type_support.cpp",
+    "${_gen_base}/msg/detail/u_int64__type_support.cpp",
+    "${_gen_base}/msg/detail/u_int64_multi_array__type_support.cpp",
+    "${_gen_base}/msg/detail/u_int8__type_support.cpp",
+    "${_gen_base}/msg/detail/u_int8_multi_array__type_support.cpp",
+    "${_gen_base}/msg/bool__type_support.cpp",
+    "${_gen_base}/msg/byte__type_support.cpp",
+    "${_gen_base}/msg/byte_multi_array__type_support.cpp",
+    "${_gen_base}/msg/char__type_support.cpp",
+    "${_gen_base}/msg/color_rgba__type_support.cpp",
+    "${_gen_base}/msg/empty__type_support.cpp",
+    "${_gen_base}/msg/float32__type_support.cpp",
+    "${_gen_base}/msg/float32_multi_array__type_support.cpp",
+    "${_gen_base}/msg/float64__type_support.cpp",
+    "${_gen_base}/msg/float64_multi_array__type_support.cpp",
+    "${_gen_base}/msg/header__type_support.cpp",
+    "${_gen_base}/msg/int16__type_support.cpp",
+    "${_gen_base}/msg/int16_multi_array__type_support.cpp",
+    "${_gen_base}/msg/int32__type_support.cpp",
+    "${_gen_base}/msg/int32_multi_array__type_support.cpp",
+    "${_gen_base}/msg/int64__type_support.cpp",
+    "${_gen_base}/msg/int64_multi_array__type_support.cpp",
+    "${_gen_base}/msg/int8__type_support.cpp",
+    "${_gen_base}/msg/int8_multi_array__type_support.cpp",
+    "${_gen_base}/msg/multi_array_dimension__type_support.cpp",
+    "${_gen_base}/msg/multi_array_layout__type_support.cpp",
+    "${_gen_base}/msg/string__type_support.cpp",
+    "${_gen_base}/msg/u_int16__type_support.cpp",
+    "${_gen_base}/msg/u_int16_multi_array__type_support.cpp",
+    "${_gen_base}/msg/u_int32__type_support.cpp",
+    "${_gen_base}/msg/u_int32_multi_array__type_support.cpp",
+    "${_gen_base}/msg/u_int64__type_support.cpp",
+    "${_gen_base}/msg/u_int64_multi_array__type_support.cpp",
+    "${_gen_base}/msg/u_int8__type_support.cpp",
+    "${_gen_base}/msg/u_int8_multi_array__type_support.cpp",
+    # C typesupport dispatch (separate from C++)
+    "${_gen_base}/msg/bool__type_support_c.cpp",
+    "${_gen_base}/msg/byte__type_support_c.cpp",
+    "${_gen_base}/msg/byte_multi_array__type_support_c.cpp",
+    "${_gen_base}/msg/char__type_support_c.cpp",
+    "${_gen_base}/msg/color_rgba__type_support_c.cpp",
+    "${_gen_base}/msg/empty__type_support_c.cpp",
+    "${_gen_base}/msg/float32__type_support_c.cpp",
+    "${_gen_base}/msg/float32_multi_array__type_support_c.cpp",
+    "${_gen_base}/msg/float64__type_support_c.cpp",
+    "${_gen_base}/msg/float64_multi_array__type_support_c.cpp",
+    "${_gen_base}/msg/header__type_support_c.cpp",
+    "${_gen_base}/msg/int16__type_support_c.cpp",
+    "${_gen_base}/msg/int16_multi_array__type_support_c.cpp",
+    "${_gen_base}/msg/int32__type_support_c.cpp",
+    "${_gen_base}/msg/int32_multi_array__type_support_c.cpp",
+    "${_gen_base}/msg/int64__type_support_c.cpp",
+    "${_gen_base}/msg/int64_multi_array__type_support_c.cpp",
+    "${_gen_base}/msg/int8__type_support_c.cpp",
+    "${_gen_base}/msg/int8_multi_array__type_support_c.cpp",
+    "${_gen_base}/msg/multi_array_dimension__type_support_c.cpp",
+    "${_gen_base}/msg/multi_array_layout__type_support_c.cpp",
+    "${_gen_base}/msg/string__type_support_c.cpp",
+    "${_gen_base}/msg/u_int16__type_support_c.cpp",
+    "${_gen_base}/msg/u_int16_multi_array__type_support_c.cpp",
+    "${_gen_base}/msg/u_int32__type_support_c.cpp",
+    "${_gen_base}/msg/u_int32_multi_array__type_support_c.cpp",
+    "${_gen_base}/msg/u_int64__type_support_c.cpp",
+    "${_gen_base}/msg/u_int64_multi_array__type_support_c.cpp",
+    "${_gen_base}/msg/u_int8__type_support_c.cpp",
+    "${_gen_base}/msg/u_int8_multi_array__type_support_c.cpp",
+  ]
+
+  include_dirs = [ "//generated" ]
+
+  deps = [
+    "//src/ros2/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//src/ros2/rosidl_typesupport/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//src/ros2/rosidl_typesupport/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+  ]
+
+  cflags_cc = [ "-std=c++17", "-Wno-unused-parameter" ]
+}
+
+ros2_shared_library("std_msgs") {
+  sources = [
+    "${_gen_base}/msg/detail/type_description_stubs.c",
+    # "${_gen_base}/msg/detail/std_msgs_String_type_description_v5lite_d.c",  # TEST: v5-lite-d (type_id=17, no nested_type_name)
+    "${_gen_base}/msg/detail/std_msgs_String_type_description.c",  # FULL v5 - re-testing
+    "${_gen_base}/msg/detail/bool__functions.c",
+    "${_gen_base}/msg/detail/byte__functions.c",
+    "${_gen_base}/msg/detail/byte_multi_array__functions.c",
+    "${_gen_base}/msg/detail/char__functions.c",
+    "${_gen_base}/msg/detail/color_rgba__functions.c",
+    "${_gen_base}/msg/detail/empty__functions.c",
+    "${_gen_base}/msg/detail/float32__functions.c",
+    "${_gen_base}/msg/detail/float32_multi_array__functions.c",
+    "${_gen_base}/msg/detail/float64__functions.c",
+    "${_gen_base}/msg/detail/float64_multi_array__functions.c",
+    "${_gen_base}/msg/detail/header__functions.c",
+    "${_gen_base}/msg/detail/int16__functions.c",
+    "${_gen_base}/msg/detail/int16_multi_array__functions.c",
+    "${_gen_base}/msg/detail/int32__functions.c",
+    "${_gen_base}/msg/detail/int32_multi_array__functions.c",
+    "${_gen_base}/msg/detail/int64__functions.c",
+    "${_gen_base}/msg/detail/int64_multi_array__functions.c",
+    "${_gen_base}/msg/detail/int8__functions.c",
+    "${_gen_base}/msg/detail/int8_multi_array__functions.c",
+    "${_gen_base}/msg/detail/multi_array_dimension__functions.c",
+    "${_gen_base}/msg/detail/multi_array_layout__functions.c",
+    "${_gen_base}/msg/detail/string__functions.c",
+    "${_gen_base}/msg/detail/u_int16__functions.c",
+    "${_gen_base}/msg/detail/u_int16_multi_array__functions.c",
+    "${_gen_base}/msg/detail/u_int32__functions.c",
+    "${_gen_base}/msg/detail/u_int32_multi_array__functions.c",
+    "${_gen_base}/msg/detail/u_int64__functions.c",
+    "${_gen_base}/msg/detail/u_int64_multi_array__functions.c",
+    "${_gen_base}/msg/detail/u_int8__functions.c",
+    "${_gen_base}/msg/detail/u_int8_multi_array__functions.c",
+    "${_gen_base}/msg/detail/bool__type_support.c",
+    "${_gen_base}/msg/detail/byte__type_support.c",
+    "${_gen_base}/msg/detail/byte_multi_array__type_support.c",
+    "${_gen_base}/msg/detail/char__type_support.c",
+    "${_gen_base}/msg/detail/color_rgba__type_support.c",
+    "${_gen_base}/msg/detail/empty__type_support.c",
+    "${_gen_base}/msg/detail/float32__type_support.c",
+    "${_gen_base}/msg/detail/float32_multi_array__type_support.c",
+    "${_gen_base}/msg/detail/float64__type_support.c",
+    "${_gen_base}/msg/detail/float64_multi_array__type_support.c",
+    "${_gen_base}/msg/detail/header__type_support.c",
+    "${_gen_base}/msg/detail/int16__type_support.c",
+    "${_gen_base}/msg/detail/int16_multi_array__type_support.c",
+    "${_gen_base}/msg/detail/int32__type_support.c",
+    "${_gen_base}/msg/detail/int32_multi_array__type_support.c",
+    "${_gen_base}/msg/detail/int64__type_support.c",
+    "${_gen_base}/msg/detail/int64_multi_array__type_support.c",
+    "${_gen_base}/msg/detail/int8__type_support.c",
+    "${_gen_base}/msg/detail/int8_multi_array__type_support.c",
+    "${_gen_base}/msg/detail/multi_array_dimension__type_support.c",
+    "${_gen_base}/msg/detail/multi_array_layout__type_support.c",
+    "${_gen_base}/msg/detail/string__type_support.c",
+    "${_gen_base}/msg/detail/u_int16__type_support.c",
+    "${_gen_base}/msg/detail/u_int16_multi_array__type_support.c",
+    "${_gen_base}/msg/detail/u_int32__type_support.c",
+    "${_gen_base}/msg/detail/u_int32_multi_array__type_support.c",
+    "${_gen_base}/msg/detail/u_int64__type_support.c",
+    "${_gen_base}/msg/detail/u_int64_multi_array__type_support.c",
+    "${_gen_base}/msg/detail/u_int8__type_support.c",
+    "${_gen_base}/msg/detail/u_int8_multi_array__type_support.c",
+  ]
+
+  public_configs = [ ":std_msgs_public_config" ]
+
+  public_deps = [
+    ":std_msgs_type_support_cpp",
+    "//src/ros2/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//src/ros2/rcutils:rcutils",
+    "//generated/builtin_interfaces:builtin_interfaces",
+  ]
+
+  cflags = [ "-Wno-unused-parameter" ]
+}

@@ -1,0 +1,22 @@
+{
+  "package_name": "rosgraph_msgs",
+  "idl_tuples": [
+    "/home/jiusi/M-DDS/ros2/generated/rosgraph_msgs:msg/Clock.idl"
+  ],
+  "ros_interface_files": [
+    "/home/jiusi/M-DDS/ros2/generated/rosgraph_msgs/msg/Clock.idl"
+  ],
+  "output_dir": "/home/jiusi/M-DDS/ros2/generated/rosgraph_msgs",
+  "template_dir": "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_c/resource",
+  "target_dependencies": [
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_c/resource/srv__type_support.cpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_c/resource/action__type_support.c.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_c/resource/msg__type_support.cpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_c/resource/idl__type_support.cpp.em",
+    "/home/jiusi/M-DDS/ros2/generated/rosgraph_msgs/msg/Clock.idl"
+  ],
+  "ros_interface_dependencies": [
+    "builtin_interfaces"
+  ],
+  "type_description_tuples": []
+}

@@ -1,0 +1,13 @@
+{
+  "SESSION_NAME": ".*",
+  "REGEXP": "true",
+  "DEVID": "NETWORKID",
+  "SEC_LEVEL": "public",
+  "APP_INFO": [
+    {
+      "TYPE": "normal_app",
+      "PKG_NAME": "",
+      "ACTIONS": "create,open"
+    }
+  ]
+}

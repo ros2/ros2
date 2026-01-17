@@ -1,0 +1,21 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from rcl_interfaces/rcl_interfaces/srv/SetLoggerLevels.srv
+// generated code does not contain a copyright notice
+
+#include "rcl_interfaces/msg/LoggerLevel.idl"
+#include "rcl_interfaces/msg/SetLoggerLevelsResult.idl"
+
+module rcl_interfaces {
+  module srv {
+    @verbatim (language="comment", text=
+      "A list of loggers to set.")
+    struct SetLoggerLevels_Request {
+      sequence<rcl_interfaces::msg::LoggerLevel> levels;
+    };
+    @verbatim (language="comment", text=
+      "Indicates whether setting each logger succeeded or not and why.")
+    struct SetLoggerLevels_Response {
+      sequence<rcl_interfaces::msg::SetLoggerLevelsResult> results;
+    };
+  };
+};

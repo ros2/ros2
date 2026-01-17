@@ -1,0 +1,47 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from action_msgs/action_msgs/msg/GoalStatus.msg
+// generated code does not contain a copyright notice
+
+#include "action_msgs/msg/GoalInfo.idl"
+
+module action_msgs {
+  module msg {
+    module GoalStatus_Constants {
+      @verbatim (language="comment", text=
+        "Indicates status has not been properly set.")
+      const int8 STATUS_UNKNOWN = 0;
+      @verbatim (language="comment", text=
+        "The goal has been accepted and is awaiting execution.")
+      const int8 STATUS_ACCEPTED = 1;
+      @verbatim (language="comment", text=
+        "The goal is currently being executed by the action server.")
+      const int8 STATUS_EXECUTING = 2;
+      @verbatim (language="comment", text=
+        "The client has requested that the goal be canceled and the action server has" "\n"        "accepted the cancel request.")
+      const int8 STATUS_CANCELING = 3;
+      @verbatim (language="comment", text=
+        "The goal was achieved successfully by the action server.")
+      const int8 STATUS_SUCCEEDED = 4;
+      @verbatim (language="comment", text=
+        "The goal was canceled after an external request from an action client.")
+      const int8 STATUS_CANCELED = 5;
+      @verbatim (language="comment", text=
+        "The goal was terminated by the action server without an external request.")
+      const int8 STATUS_ABORTED = 6;
+    };
+    @verbatim (language="comment", text=
+      "An action goal can be in one of these states after it is accepted by an action" "\n"
+      "server." "\n"
+      "" "\n"
+      "For more information, see http://design.ros2.org/articles/actions.html")
+    struct GoalStatus {
+      @verbatim (language="comment", text=
+        "Goal info (contains ID and timestamp).")
+      action_msgs::msg::GoalInfo goal_info;
+
+      @verbatim (language="comment", text=
+        "Action goal state-machine status.")
+      int8 status;
+    };
+  };
+};

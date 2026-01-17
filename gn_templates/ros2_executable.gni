@@ -1,0 +1,118 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# ROS2 Executable Build Template
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_config.gni")
+
+# ============================================================================
+# ros2_executable - Create a ROS2 executable
+# ============================================================================
+#
+# Parameters:
+#   sources - Source files list (required)
+#   include_dirs - Include directories (optional)
+#   deps - Dependencies (optional)
+#   defines - Preprocessor defines (optional)
+#   cflags_c - Additional C compiler flags (optional)
+#   cflags_cc - Additional C++ compiler flags (optional)
+#   ldflags - Additional linker flags (optional)
+#   libs - System libraries to link (optional)
+#   external_deps - OpenHarmony external dependencies (optional)
+#   part_name - Component name (optional)
+#   subsystem_name - Subsystem name (optional)
+#
+template("ros2_executable") {
+  ohos_executable(target_name) {
+    forward_variables_from(invoker, [
+      "sources",
+      "include_dirs",
+      "deps",
+      "defines",
+      "external_deps",
+      "libs",
+    ])
+
+    if (!defined(include_dirs)) {
+      include_dirs = []
+    }
+
+    if (!defined(cflags_c)) {
+      cflags_c = []
+    }
+    cflags_c += ros2_cflags_c
+    if (defined(invoker.cflags_c)) {
+      cflags_c += invoker.cflags_c
+    }
+
+    if (!defined(cflags_cc)) {
+      cflags_cc = []
+    }
+    cflags_cc += ros2_cflags_cc
+    if (defined(invoker.cflags_cc)) {
+      cflags_cc += invoker.cflags_cc
+    }
+
+    if (!defined(ldflags)) {
+      ldflags = []
+    }
+    ldflags += ros2_ldflags
+    if (defined(invoker.ldflags)) {
+      ldflags += invoker.ldflags
+    }
+
+    if (defined(invoker.part_name)) {
+      part_name = invoker.part_name
+    } else {
+      part_name = "ros2_foundation"
+    }
+
+    if (defined(invoker.subsystem_name)) {
+      subsystem_name = invoker.subsystem_name
+    } else {
+      subsystem_name = "ros2"
+    }
+  }
+}
+
+# ============================================================================
+# ros2_test - Create a ROS2 test executable
+# ============================================================================
+template("ros2_test") {
+  ros2_executable(target_name) {
+    forward_variables_from(invoker, "*")
+
+    if (!defined(deps)) {
+      deps = []
+    }
+
+    # Add Google Test dependencies
+    external_deps = []
+    if (defined(invoker.external_deps)) {
+      external_deps = invoker.external_deps
+    }
+    external_deps += [
+      "googletest:gtest",
+      "googletest:gtest_main",
+    ]
+
+    testonly = true
+  }
+}
+
+# ============================================================================
+# ros2_node - Create a ROS2 node executable
+# ============================================================================
+template("ros2_node") {
+  ros2_executable(target_name) {
+    forward_variables_from(invoker, "*")
+
+    if (!defined(deps)) {
+      deps = []
+    }
+
+    # Add rclcpp dependency for nodes
+    deps += [
+      "//foundation/rclcpp:rclcpp",
+    ]
+  }
+}

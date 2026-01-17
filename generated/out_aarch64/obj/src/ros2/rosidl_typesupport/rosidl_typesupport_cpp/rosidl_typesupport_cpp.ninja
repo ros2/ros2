@@ -1,0 +1,23 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DROSIDL_TYPESUPPORT_CPP_BUILDING_DLL -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../src/ros2/rosidl_typesupport/rosidl_typesupport_c/include -I../../src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rcpputils/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_cc = -std=c++17 -Wall -Wextra -Wpedantic -std=c++17 -Wno-psabi -std=c++17 -fPIC
+target_output_name = librosidl_typesupport_cpp
+
+build obj/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/src/librosidl_typesupport_cpp.identifier.o: cxx ../../src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/src/identifier.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = identifier.cpp
+  source_name_part = identifier
+build obj/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/src/librosidl_typesupport_cpp.message_type_support_dispatch.o: cxx ../../src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/src/message_type_support_dispatch.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = message_type_support_dispatch.cpp
+  source_name_part = message_type_support_dispatch
+build obj/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/src/librosidl_typesupport_cpp.service_type_support_dispatch.o: cxx ../../src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/src/service_type_support_dispatch.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = service_type_support_dispatch.cpp
+  source_name_part = service_type_support_dispatch
+
+build ./librosidl_typesupport_cpp.so: solink obj/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/src/librosidl_typesupport_cpp.identifier.o obj/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/src/librosidl_typesupport_cpp.message_type_support_dispatch.o obj/src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/src/librosidl_typesupport_cpp.service_type_support_dispatch.o ./librosidl_runtime_c.so ./librosidl_typesupport_c.so ./librcpputils.so ./librcutils.so
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

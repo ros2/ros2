@@ -1,0 +1,19 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from rmw_dds_common/msg/NodeEntitiesInfo.msg
+// generated code does not contain a copyright notice
+
+#include "rmw_dds_common/msg/Gid.idl"
+
+module rmw_dds_common {
+  module msg {
+    struct NodeEntitiesInfo {
+      string<256> node_namespace;
+
+      string<256> node_name;
+
+      sequence<rmw_dds_common::msg::Gid> reader_gid_seq;
+
+      sequence<rmw_dds_common::msg::Gid> writer_gid_seq;
+    };
+  };
+};

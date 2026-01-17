@@ -1,0 +1,41 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# Simplified root BUILD.gn for rmw_dsoftbus cross-device testing
+#
+# Build command:
+#   gn gen out/ohos_aarch64 --args='target_os="ohos" target_cpu="arm64"'
+#   ninja -C out/ohos_aarch64
+
+# Default target: build rmw_dsoftbus and test programs
+group("default") {
+  deps = [
+    # RMW DSoftBus implementation
+    "//src/ros2/rmw_dsoftbus:rmw_dsoftbus",
+
+    # Test programs
+    "//src/ros2/rmw_dsoftbus:minimal_talker",
+    "//src/ros2/rmw_dsoftbus:minimal_listener",
+  ]
+}
+
+# RMW DSoftBus library only
+group("rmw_dsoftbus") {
+  deps = [
+    "//src/ros2/rmw_dsoftbus:rmw_dsoftbus",
+  ]
+}
+
+# All rmw_dsoftbus test programs
+group("rmw_tests") {
+  testonly = true
+  deps = [
+    "//src/ros2/rmw_dsoftbus:rmw_dsoftbus_tests",
+  ]
+}
+
+# Cross-device communication test programs
+group("cross_device_tests") {
+  deps = [
+    "//src/ros2/rmw_dsoftbus:minimal_talker",
+    "//src/ros2/rmw_dsoftbus:minimal_listener",
+  ]
+}

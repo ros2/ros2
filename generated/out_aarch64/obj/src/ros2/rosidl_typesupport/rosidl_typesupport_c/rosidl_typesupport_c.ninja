@@ -1,0 +1,24 @@
+defines = -DROSIDL_TYPESUPPORT_C_BUILDING_DLL -D__OHOS__ -D_GNU_SOURCE -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../src/ros2/rosidl_typesupport/rosidl_typesupport_c/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rcpputils/include
+cflags = -std=c11 -Wno-unused-parameter -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -std=c11
+cflags_cc = -std=c++17 -Wall -Wextra -Wpedantic -std=c++17 -Wno-psabi -std=c++17 -fPIC
+target_output_name = librosidl_typesupport_c
+
+build obj/src/ros2/rosidl_typesupport/rosidl_typesupport_c/src/librosidl_typesupport_c.identifier.o: cc ../../src/ros2/rosidl_typesupport/rosidl_typesupport_c/src/identifier.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = identifier.c
+  source_name_part = identifier
+build obj/src/ros2/rosidl_typesupport/rosidl_typesupport_c/src/librosidl_typesupport_c.message_type_support_dispatch.o: cxx ../../src/ros2/rosidl_typesupport/rosidl_typesupport_c/src/message_type_support_dispatch.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = message_type_support_dispatch.cpp
+  source_name_part = message_type_support_dispatch
+build obj/src/ros2/rosidl_typesupport/rosidl_typesupport_c/src/librosidl_typesupport_c.service_type_support_dispatch.o: cxx ../../src/ros2/rosidl_typesupport/rosidl_typesupport_c/src/service_type_support_dispatch.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = service_type_support_dispatch.cpp
+  source_name_part = service_type_support_dispatch
+
+build ./librosidl_typesupport_c.so: solink obj/src/ros2/rosidl_typesupport/rosidl_typesupport_c/src/librosidl_typesupport_c.identifier.o obj/src/ros2/rosidl_typesupport/rosidl_typesupport_c/src/librosidl_typesupport_c.message_type_support_dispatch.o obj/src/ros2/rosidl_typesupport/rosidl_typesupport_c/src/librosidl_typesupport_c.service_type_support_dispatch.o ./librosidl_runtime_c.so ./librcpputils.so ./librcutils.so
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

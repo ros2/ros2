@@ -1,0 +1,40 @@
+# Copyright 2026 KaihongOS ROS2 Porting Project
+# libyaml 0.2.5 - YAML parser and emitter library
+
+config("libyaml_public_config") {
+  include_dirs = [ "include" ]
+  cflags = [
+    "-std=c99",
+    "-DYAML_DECLARE_EXPORT",
+  ]
+}
+
+config("libyaml_private_config") {
+  cflags = [
+    "-Wno-unused-parameter",
+    "-Wno-sign-compare",
+  ]
+}
+
+shared_library("yaml") {
+  sources = [
+    "src/api.c",
+    "src/dumper.c",
+    "src/emitter.c",
+    "src/loader.c",
+    "src/parser.c",
+    "src/reader.c",
+    "src/scanner.c",
+    "src/writer.c",
+  ]
+
+  include_dirs = [
+    "src",  # For yaml_private.h
+    ".",    # For config.h
+  ]
+
+  public_configs = [ ":libyaml_public_config" ]
+  configs += [ ":libyaml_private_config" ]
+
+  defines = [ "HAVE_CONFIG_H" ]
+}

@@ -1,0 +1,24 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rosidl_runtime_cpp - ROS IDL runtime support for C++ (header-only)
+
+import("//build/ohos.gni")
+
+# Source directory
+_rosidl_runtime_cpp_src = "//ros2/src/ros2/rosidl/rosidl_runtime_cpp"
+
+# ============================================================================
+# rosidl_runtime_cpp (header-only library)
+# ============================================================================
+config("rosidl_runtime_cpp_config") {
+  include_dirs = [
+    "${_rosidl_runtime_cpp_src}/include",
+  ]
+}
+
+group("rosidl_runtime_cpp") {
+  public_configs = [ ":rosidl_runtime_cpp_config" ]
+  public_deps = [
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_interface:rosidl_typesupport_interface",
+  ]
+}

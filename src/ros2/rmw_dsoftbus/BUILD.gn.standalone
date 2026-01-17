@@ -1,0 +1,100 @@
+# Standalone BUILD.gn for rmw_dsoftbus (Phase 3)
+# Using OHOS prebuilts gcc-linaro toolchain
+
+shared_library("rmw_dsoftbus") {
+  sources = [
+    # Core RMW API implementation
+    "src/rmw_init.cpp",
+    "src/rmw_node.cpp",
+    "src/rmw_publisher.cpp",
+    "src/rmw_subscription.cpp",
+    "src/rmw_wait.cpp",
+    "src/rmw_service.cpp",
+    "src/rmw_client.cpp",
+    "src/rmw_guard_condition.cpp",
+    "src/rmw_get_info.cpp",
+    "src/rmw_event.cpp",
+    "src/rmw_qos.cpp",
+    "src/rmw_serialize.cpp",
+    "src/rmw_allocation.cpp",
+    "src/rmw_logging.cpp",
+    "src/rmw_missing_apis.cpp",
+
+    # Session management
+    "src/session_manager.cpp",
+    "src/native_token.cpp",
+    "src/dsoftbus_stubs.cpp",
+
+    # Graph Discovery (Phase 2)
+    "src/graph_cache.cpp",
+    "src/discovery_manager.cpp",
+    "src/service_client_manager.cpp",
+    "src/ipc_client.cpp",
+    "src/ipc_server.cpp",
+    "src/ipc_handlers.cpp",
+
+    # Serialization
+    "src/cdr_serializer.cpp",
+    "src/qos_mapper.cpp",
+    "src/rmw_typesupport_serializer.cpp",
+    "src/service_typesupport_serializer.cpp",  # Phase 3
+    "src/rosidl_introspection_stub.c",
+  ]
+
+  include_dirs = [
+    "include",
+    "mock_includes",
+  ]
+
+  cflags_cc = [
+    "-std=c++17",
+    "-Wall",
+    "-Wextra",
+    "-fPIC",
+    "-fvisibility=hidden",
+    "-DRMW_DSOFTBUS_STUB_MODE=1",
+  ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+    "-Wl,-soname,librmw_dsoftbus.so.0",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+
+  output_name = "librmw_dsoftbus"
+}
+
+# Phase 3 Service/Client RPC test
+executable("phase3_service_test") {
+  sources = [
+    "test/phase3_service_rpc_test.cpp",
+  ]
+
+  include_dirs = [
+    "include",
+  ]
+
+  cflags_cc = [
+    "-std=c++17",
+  ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+    "-Wl,-rpath,/system/lib64",
+  ]
+
+  deps = [
+    ":rmw_dsoftbus",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}

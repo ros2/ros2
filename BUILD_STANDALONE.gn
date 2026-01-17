@@ -1,0 +1,21 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# Minimal BUILD.gn for rmw_dsoftbus only
+
+# ==============================================================================
+# RMW DSoftBus - Core RMW implementation
+# ==============================================================================
+group("rmw_dsoftbus_group") {
+  deps = [
+    "//foundation/ros2/foundation/rmw_dsoftbus:rmw_dsoftbus",
+    "//foundation/ros2/foundation/rmw_dsoftbus:rmw_discovery_daemon",
+    "//foundation/ros2/foundation/rmw_dsoftbus:rmw_daemon_init",
+    "//foundation/ros2/foundation/rmw_dsoftbus:softbus_permission_json",
+  ]
+}
+
+# ==============================================================================
+# Default target
+# ==============================================================================
+group("default") {
+  deps = [ ":rmw_dsoftbus_group" ]
+}

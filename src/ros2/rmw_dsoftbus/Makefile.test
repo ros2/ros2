@@ -1,0 +1,172 @@
+# ============================================================================
+# Makefile for rmw_dsoftbus Test Binaries - GCC Linaro Cross-Compilation
+# ============================================================================
+# Target: aarch64-linux-gnu (KaihongOS rk3588s)
+# Host: x86-64 (WSL Ubuntu 20.04)
+# Purpose: Cross-compile test executables for OpenHarmony dsoftbus
+# ============================================================================
+
+# Toolchain paths
+TOOLCHAIN_ROOT := /home/jiusi/M-DDS/openharmony_prebuilts/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu
+CC             := $(TOOLCHAIN_ROOT)/bin/aarch64-linux-gnu-gcc
+CXX            := $(TOOLCHAIN_ROOT)/bin/aarch64-linux-gnu-g++
+AR             := $(TOOLCHAIN_ROOT)/bin/aarch64-linux-gnu-ar
+STRIP          := $(TOOLCHAIN_ROOT)/bin/aarch64-linux-gnu-strip
+
+# Build directories
+BUILD_DIR      = build-test
+OUT_DIR        = $(BUILD_DIR)/bin
+TEST_BUILD_DIR = $(BUILD_DIR)/obj
+
+# Compilation flags
+CFLAGS = -std=c99 -O2 -Wall -Wextra -fPIC -D_GNU_SOURCE
+CXXFLAGS = -std=c++17 -O2 -Wall -Wextra -fPIC -fvisibility=default -D_GNU_SOURCE
+
+# Include paths
+INCLUDE_FLAGS = \
+	-I./include \
+	-I./mock_includes \
+	-I./mock_includes/rmw \
+	-I./mock_includes/rcutils \
+	-I./mock_includes/rosidl_runtime_c \
+	-I./mock_includes/rosidl_typesupport_interface \
+	-I./test \
+	-I$(TOOLCHAIN_ROOT)/aarch64-linux-gnu/include \
+	-I$(TOOLCHAIN_ROOT)/aarch64-linux-gnu/include/c++/7.5.0 \
+	-I$(TOOLCHAIN_ROOT)/aarch64-linux-gnu/include/c++/7.5.0/aarch64-linux-gnu
+
+# Linker flags - Static C++ runtime
+LDFLAGS = \
+	-static-libstdc++ \
+	-static-libgcc \
+	-Wl,-rpath,/data:/system/lib64
+
+# Pthread and dynamic loading libraries
+LIBS = -pthread -ldl
+
+# Test source files
+TEST_SOURCES = \
+	diagnose_initialize \
+	discovery_final_test \
+	get_network_id \
+	message_send_recv_test \
+	phase2_udp_discovery_test \
+	session_tracking_fix_test
+
+# Core library sources (needed for tests)
+LIB_SOURCES = $(wildcard src/*.cpp)
+LIB_OBJECTS = $(patsubst src/%.cpp,$(TEST_BUILD_DIR)/%.o,$(LIB_SOURCES))
+
+# Test executable targets
+TEST_EXES = $(addprefix $(OUT_DIR)/,$(TEST_SOURCES))
+
+# ============================================================================
+# Build Rules
+# ============================================================================
+
+.PHONY: all clean help verify toolchain-info
+
+all: $(OUT_DIR) $(TEST_BUILD_DIR) $(TEST_EXES)
+	@echo ""
+	@echo "✅ Test compilation successful!"
+	@echo "===================================="
+	@ls -lh $(OUT_DIR)/*
+	@echo ""
+	@echo "📝 Generated test binaries:"
+	@for exe in $(TEST_EXES); do echo "   - $$exe"; done
+
+$(OUT_DIR) $(TEST_BUILD_DIR):
+	@mkdir -p $@
+
+# Compile library objects
+$(TEST_BUILD_DIR)/%.o: src/%.cpp
+	@echo "🔨 [LIB] Compiling: $<"
+	@$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) -c -o $@ $<
+
+# diagnose_initialize test
+$(OUT_DIR)/diagnose_initialize: $(LIB_OBJECTS) test/diagnose_initialize.cpp
+	@echo "🔗 [TEST] Linking: diagnose_initialize"
+	@$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+
+# discovery_final_test
+$(OUT_DIR)/discovery_final_test: $(LIB_OBJECTS) test/discovery_final_test.cpp
+	@echo "🔗 [TEST] Linking: discovery_final_test"
+	@$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+
+# get_network_id utility
+$(OUT_DIR)/get_network_id: $(LIB_OBJECTS) test/get_network_id.cpp
+	@echo "🔗 [TEST] Linking: get_network_id"
+	@$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+
+# message_send_recv_test
+$(OUT_DIR)/message_send_recv_test: $(LIB_OBJECTS) test/message_send_recv_test.cpp
+	@echo "🔗 [TEST] Linking: message_send_recv_test"
+	@$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+
+# phase2_udp_discovery_test (special: includes extra sources)
+$(OUT_DIR)/phase2_udp_discovery_test: $(LIB_OBJECTS) test/softbus_dlopen_shim.cpp test/udp_discovery.cpp test/phase2_udp_discovery_test.cpp
+	@echo "🔗 [TEST] Linking: phase2_udp_discovery_test (with dlopen support)"
+	@$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+
+# session_tracking_fix_test
+$(OUT_DIR)/session_tracking_fix_test: $(LIB_OBJECTS) test/session_tracking_fix_test.cpp
+	@echo "🔗 [TEST] Linking: session_tracking_fix_test"
+	@$(CXX) $(CXXFLAGS) $(INCLUDE_FLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+
+clean:
+	@echo "🧹 Cleaning test artifacts..."
+	@rm -rf $(BUILD_DIR)
+	@echo "✅ Clean complete"
+
+# Verify cross-compilation
+verify: all
+	@echo ""
+	@echo "🔍 Test Binary Verification Report"
+	@echo "===================================="
+	@echo ""
+	@for exe in $(TEST_EXES); do \
+		echo "📋 Binary: $$(basename $$exe)"; \
+		echo "   Format: $$(file $$exe | cut -d: -f2-)"; \
+		echo "   Size: $$(ls -lh $$exe | awk '{print $$5}')"; \
+		echo ""; \
+	done
+
+toolchain-info:
+	@echo "Toolchain Information"
+	@echo "===================="
+	@echo ""
+	@echo "GCC Version:"
+	@$(CXX) --version | head -1
+	@echo ""
+	@echo "Target:"
+	@$(CXX) -v 2>&1 | grep -i "target" | head -1
+	@echo ""
+	@echo "Compiler paths:"
+	@echo "  CC  = $(CC)"
+	@echo "  CXX = $(CXX)"
+	@echo ""
+	@echo "Linking mode: Static C++ runtime (-static-libstdc++ -static-libgcc)"
+	@echo "Compatibility: Maximum (works on any glibc/musl system)"
+	@echo ""
+
+help:
+	@echo "RMW_DSOFTBUS - Test Binary Cross-Compilation Makefile"
+	@echo "========================================================"
+	@echo ""
+	@echo "Usage: make -f Makefile.test [target]"
+	@echo ""
+	@echo "Targets:"
+	@echo "  all              - Compile all test binaries"
+	@echo "  clean            - Remove build artifacts"
+	@echo "  verify           - Verify compiled binaries"
+	@echo "  toolchain-info   - Show compiler information"
+	@echo "  help             - Show this help message"
+	@echo ""
+	@echo "Test binaries to be compiled:"
+	@for test in $(TEST_SOURCES); do echo "  - $$test"; done
+	@echo ""
+	@echo "Examples:"
+	@echo "  make -f Makefile.test all       # Compile all tests"
+	@echo "  make -f Makefile.test verify    # Build and verify"
+	@echo "  make -f Makefile.test clean all # Clean and rebuild"
+	@echo ""

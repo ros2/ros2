@@ -1,0 +1,94 @@
+# Makefile for RMW DSoftBus Standalone Test
+# Target: aarch64 (rk3588s KaihongOS)
+
+# Toolchain
+TOOLCHAIN_ROOT = /home/jiusi/M-DDS/openharmony_prebuilts/gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu
+CC = $(TOOLCHAIN_ROOT)/bin/aarch64-linux-gnu-gcc
+CXX = $(TOOLCHAIN_ROOT)/bin/aarch64-linux-gnu-g++
+SYSROOT = $(TOOLCHAIN_ROOT)/aarch64-linux-gnu/libc
+
+# Paths
+RMW_ROOT = ..
+BUILD_DIR = build-standalone
+LIB_DIR = ../build-aarch64/lib
+
+# Compiler flags
+CXXFLAGS = \
+	-std=c++17 \
+	-O2 \
+	-Wall -Wextra \
+	--sysroot=$(SYSROOT) \
+	-I$(RMW_ROOT)/include \
+	-I$(RMW_ROOT)/mock_includes
+
+# Linker flags
+LDFLAGS = \
+	$(LIB_DIR)/librmw_dsoftbus.so.0.1.0 \
+	-Wl,-rpath,/data \
+	-Wl,-rpath,/system/lib64 \
+	-ldl -lpthread
+
+# Targets
+TARGET_FULL = $(BUILD_DIR)/rmw_dsoftbus_standalone_test
+TARGET_SIMPLE = $(BUILD_DIR)/rmw_simple_test
+TARGET_DIRECT = $(BUILD_DIR)/rmw_direct_test
+TARGET_PUBSUB = $(BUILD_DIR)/rmw_pubsub_real_test
+
+.PHONY: all clean simple direct pubsub
+
+all: $(TARGET_PUBSUB)
+
+simple: $(TARGET_SIMPLE)
+
+direct: $(TARGET_DIRECT)
+
+pubsub: $(TARGET_PUBSUB)
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+$(TARGET_SIMPLE): rmw_simple_test.cpp $(BUILD_DIR)
+	@echo "🔨 Compiling simple test (static)..."
+	$(CXX) $(CXXFLAGS) -static -o $@ $< -ldl -lpthread
+	@echo "✅ Build complete: $@"
+	@file $@
+	@ls -lh $@
+
+$(TARGET_DIRECT): rmw_direct_test.cpp $(BUILD_DIR)
+	@echo "🔨 Compiling direct test (PIE, musl-compatible, static libstdc++)..."
+	$(CXX) $(CXXFLAGS) -fPIE -pie -Wl,-dynamic-linker,/lib/ld-musl-aarch64.so.1 -o $@ $< $(LDFLAGS) -static-libstdc++ -static-libgcc
+	@echo "✅ Build complete: $@"
+	@file $@
+	@ls -lh $@
+
+$(TARGET_PUBSUB): rmw_pubsub_real_test.cpp $(BUILD_DIR)
+	@echo "🔨 Compiling pub/sub real test (musl-compatible)..."
+	$(CXX) $(CXXFLAGS) -fPIE -pie -Wl,-dynamic-linker,/lib/ld-musl-aarch64.so.1 -o $@ $< $(LDFLAGS) -static-libstdc++ -static-libgcc
+	@echo "✅ Build complete: $@"
+	@file $@
+	@ls -lh $@
+
+$(TARGET_FULL): rmw_dsoftbus_standalone_test.cpp $(BUILD_DIR)
+	@echo "🔨 Compiling full test..."
+	$(CXX) $(CXXFLAGS) -o $@ $< $(LDFLAGS)
+	@echo "✅ Build complete: $@"
+	@file $@
+	@ls -lh $@
+
+clean:
+	rm -rf $(BUILD_DIR)
+
+# Deploy to device
+deploy: $(TARGET_SIMPLE)
+	@echo "📦 Deploying to rk3588s..."
+	@mkdir -p /mnt/c/tmp/hdc_transfer
+	@cp $(TARGET_SIMPLE) /mnt/c/tmp/hdc_transfer/
+	@cp $(LIB_DIR)/librmw_dsoftbus.so.0.1.0 /mnt/c/tmp/hdc_transfer/
+	@echo "✅ Files copied to /mnt/c/tmp/hdc_transfer/"
+	@echo ""
+	@echo "Next steps:"
+	@echo "1. Get device ID: powershell.exe -Command \"hdc list targets\""
+	@echo "2. Deploy test:   powershell.exe -Command \"hdc -t <DEVICE_ID> file send C:\\tmp\\hdc_transfer\\rmw_simple_test /data/test/\""
+	@echo "3. Deploy lib:    powershell.exe -Command \"hdc -t <DEVICE_ID> file send C:\\tmp\\hdc_transfer\\librmw_dsoftbus.so.0.1.0 /data/\""
+	@echo "4. Set perms:     powershell.exe -Command \"hdc -t <DEVICE_ID> shell 'chmod +x /data/test/rmw_simple_test'\""
+	@echo "5. Run test:      powershell.exe -Command \"hdc -t <DEVICE_ID> shell 'LD_LIBRARY_PATH=/data:/system/lib64 /data/test/rmw_simple_test'\""

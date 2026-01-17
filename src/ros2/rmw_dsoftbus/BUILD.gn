@@ -1,0 +1,204 @@
+##
+# @file BUILD.gn
+# @brief Build configuration for ROS2 RMW dsoftbus implementation.
+#
+# This module provides ROS2 RMW (ROS Middleware) implementation using
+# OpenHarmony dsoftbus for inter-device communication.
+#
+# Features:
+# - RMW core API implementation (publisher, subscriber, service, client)
+# - Session-based communication using dsoftbus
+# - Graph discovery for node/endpoint discovery
+# - CDR serialization for message handling
+# - QoS management (Reliability, Durability, History, LivelinessLease)
+#
+# Configuration:
+# - Standalone build using dlopen for dsoftbus APIs
+# - Targets ARM64 (aarch64) architecture
+# - Runtime loading of libsoftbus_client.z.so
+##
+
+import("//build/ohos.gni")
+
+# Compiler configuration shared across RMW dsoftbus targets
+config("rmw_dsoftbus_config") {
+  include_dirs = [
+    "include",
+    "mock_includes",  # ROS2 RMW/rcutils/rosidl mock headers
+  ]
+
+  cflags_cc = [
+    "-std=c++17",
+    "-Wall",
+    "-Wextra",
+    "-fPIC",
+    "-fvisibility=default",  # Export all C++ symbols for testing
+  ]
+}
+
+# ROS2 RMW implementation library (standalone build with dlopen)
+ohos_shared_library("rmw_dsoftbus") {
+  sources = [
+    # === Core RMW API Implementation ===
+    "src/rmw_allocation.cpp",
+    "src/rmw_client.cpp",
+    "src/rmw_event.cpp",
+    "src/rmw_get_info.cpp",
+    "src/rmw_guard_condition.cpp",
+    "src/rmw_init.cpp",
+    "src/rmw_logging.cpp",
+    "src/rmw_missing_apis.cpp",
+    "src/rmw_node.cpp",
+    "src/rmw_publisher.cpp",
+    "src/rmw_qos.cpp",
+    "src/rmw_serialize.cpp",
+    "src/rmw_service.cpp",
+    "src/rmw_subscription.cpp",
+    "src/rmw_wait.cpp",
+
+    # === Session Management ===
+    "src/native_token.cpp",
+    "src/session_manager.cpp",
+    "src/session_pool.cpp",  # Phase 3 session pool (replaces/extends session_manager)
+    "src/dsoftbus_dlopen_shim.cpp",  # DSoftBus Session API dlopen shim
+
+    # === Graph Discovery (Phase 2+) ===
+    "src/discovery_manager.cpp",
+    "src/graph_cache.cpp",
+    "src/ipc_client.cpp",
+    "src/ipc_handlers.cpp",
+    "src/ipc_server.cpp",
+    "src/service_client_manager.cpp",
+
+    # === Phase 4: 1:N Auto-Routing ===
+    "src/publisher_discovery_handler.cpp",
+
+    # === Pub/Sub Management (Phase 3) ===
+    "src/pubsub_manager.cpp",
+
+    # === Message Serialization ===
+    "src/message_serializer.cpp",  # Phase 3 message serialization (CRC32, JSON encoding)
+    "src/cdr_serializer.cpp",
+    "src/qos_mapper.cpp",
+    "src/rmw_typesupport_serializer.cpp",
+    # Note: rosidl_introspection_stub.c removed - identifier defined in mock header
+    "src/service_typesupport_serializer.cpp",
+  ]
+
+  public_configs = [ ":rmw_dsoftbus_config" ]
+
+  # Standalone build: use dlopen for dsoftbus APIs at runtime
+  # No external_deps needed - dsoftbus_stubs.cpp handles runtime loading
+
+  ldflags = [
+    "-Wl,-soname,librmw_dsoftbus.so.0",
+  ]
+
+  libs = [
+    "dl",       # dlopen for runtime library loading
+    "pthread",  # threading support
+  ]
+
+  # OHOS component metadata (ignored in standalone build)
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+}
+
+# === Test Executables ===
+
+# Discovery acceptance and final test
+executable("discovery_final_test") {
+  sources = [ "test/discovery_final_test.cpp" ]
+
+  configs += [ ":rmw_dsoftbus_config" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# Session ID tracking fix verification test
+executable("session_tracking_fix_test") {
+  sources = [ "test/session_tracking_fix_test.cpp" ]
+
+  configs += [ ":rmw_dsoftbus_config" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# Message send/receive test
+executable("message_send_recv_test") {
+  sources = [ "test/message_send_recv_test.cpp" ]
+
+  configs += [ ":rmw_dsoftbus_config" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# Minimal Talker test (cross-device communication)
+executable("minimal_talker") {
+  sources = [ "test/minimal_talker.cpp" ]
+
+  configs += [ ":rmw_dsoftbus_config" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# Minimal Listener test (cross-device communication)
+executable("minimal_listener") {
+  sources = [ "test/minimal_listener.cpp" ]
+
+  configs += [ ":rmw_dsoftbus_config" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# Group target for all tests
+group("rmw_dsoftbus_tests") {
+  testonly = true
+  deps = [
+    ":discovery_final_test",
+    ":session_tracking_fix_test",
+    ":message_send_recv_test",
+    ":minimal_talker",
+    ":minimal_listener",
+  ]
+}

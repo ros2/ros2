@@ -1,0 +1,32 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../src/ros2/rcpputils/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_cc = -std=c++17 -Wno-psabi -std=c++17 -fPIC
+target_output_name = librcpputils
+
+build obj/src/ros2/rcpputils/src/librcpputils.asserts.o: cxx ../../src/ros2/rcpputils/src/asserts.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = asserts.cpp
+  source_name_part = asserts
+build obj/src/ros2/rcpputils/src/librcpputils.env.o: cxx ../../src/ros2/rcpputils/src/env.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = env.cpp
+  source_name_part = env
+build obj/src/ros2/rcpputils/src/librcpputils.filesystem_helper.o: cxx ../../src/ros2/rcpputils/src/filesystem_helper.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = filesystem_helper.cpp
+  source_name_part = filesystem_helper
+build obj/src/ros2/rcpputils/src/librcpputils.find_library.o: cxx ../../src/ros2/rcpputils/src/find_library.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = find_library.cpp
+  source_name_part = find_library
+build obj/src/ros2/rcpputils/src/librcpputils.process.o: cxx ../../src/ros2/rcpputils/src/process.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = process.cpp
+  source_name_part = process
+build obj/src/ros2/rcpputils/src/librcpputils.shared_library.o: cxx ../../src/ros2/rcpputils/src/shared_library.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = shared_library.cpp
+  source_name_part = shared_library
+
+build ./librcpputils.so: solink obj/src/ros2/rcpputils/src/librcpputils.asserts.o obj/src/ros2/rcpputils/src/librcpputils.env.o obj/src/ros2/rcpputils/src/librcpputils.filesystem_helper.o obj/src/ros2/rcpputils/src/librcpputils.find_library.o obj/src/ros2/rcpputils/src/librcpputils.process.o obj/src/ros2/rcpputils/src/librcpputils.shared_library.o ./librcutils.so
+  ldflags =
+  libs = -lpthread -ldl -lc -lm
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

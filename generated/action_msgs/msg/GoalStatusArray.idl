@@ -1,0 +1,15 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from action_msgs/action_msgs/msg/GoalStatusArray.msg
+// generated code does not contain a copyright notice
+
+#include "action_msgs/msg/GoalStatus.idl"
+
+module action_msgs {
+  module msg {
+    @verbatim (language="comment", text=
+      "An array of goal statuses.")
+    struct GoalStatusArray {
+      sequence<action_msgs::msg::GoalStatus> status_list;
+    };
+  };
+};

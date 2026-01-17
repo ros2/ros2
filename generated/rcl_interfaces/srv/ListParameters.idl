@@ -1,0 +1,31 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from rcl_interfaces/rcl_interfaces/srv/ListParameters.srv
+// generated code does not contain a copyright notice
+
+#include "rcl_interfaces/msg/ListParametersResult.idl"
+
+module rcl_interfaces {
+  module srv {
+    module ListParameters_Request_Constants {
+      const uint64 DEPTH_RECURSIVE = 0;
+    };
+    @verbatim (language="comment", text=
+      "Recursively get parameters with unlimited depth.")
+    struct ListParameters_Request {
+      @verbatim (language="comment", text=
+        "The list of parameter prefixes to query.")
+      sequence<string> prefixes;
+
+      @verbatim (language="comment", text=
+        "Relative depth from given prefixes to return." "\n"
+        "" "\n"
+        "Use DEPTH_RECURSIVE to get the recursive parameters and prefixes for each prefix.")
+      uint64 depth;
+    };
+    @verbatim (language="comment", text=
+      "The list of parameter names and their prefixes.")
+    struct ListParameters_Response {
+      rcl_interfaces::msg::ListParametersResult result;
+    };
+  };
+};

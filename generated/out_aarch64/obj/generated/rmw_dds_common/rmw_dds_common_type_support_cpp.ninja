@@ -1,0 +1,26 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL -DROSIDL_TYPESUPPORT_CPP_BUILDING_DLL -DROSIDL_TYPESUPPORT_INTROSPECTION_CPP_BUILDING_DLL
+include_dirs = -I../../generated -I../../src/ros2/rosidl/rosidl_runtime_cpp/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/include -I../../src/ros2/rosidl_typesupport/rosidl_typesupport_c/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_cpp/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_cc = -std=c++17 -Wno-unused-parameter -std=c++17 -Wno-psabi -std=c++17
+target_output_name = rmw_dds_common_type_support_cpp
+
+build obj/generated/rmw_dds_common/msg/detail/rmw_dds_common_type_support_cpp.gid__type_support.o: cxx ../../generated/rmw_dds_common/msg/detail/gid__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = gid__type_support.cpp
+  source_name_part = gid__type_support
+build obj/generated/rmw_dds_common/msg/detail/rmw_dds_common_type_support_cpp.node_entities_info__type_support.o: cxx ../../generated/rmw_dds_common/msg/detail/node_entities_info__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = node_entities_info__type_support.cpp
+  source_name_part = node_entities_info__type_support
+build obj/generated/rmw_dds_common/msg/detail/rmw_dds_common_type_support_cpp.participant_entities_info__type_support.o: cxx ../../generated/rmw_dds_common/msg/detail/participant_entities_info__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = participant_entities_info__type_support.cpp
+  source_name_part = participant_entities_info__type_support
+build obj/generated/rmw_dds_common/msg/rmw_dds_common_type_support_cpp.gid__type_support.o: cxx ../../generated/rmw_dds_common/msg/gid__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = gid__type_support.cpp
+  source_name_part = gid__type_support
+build obj/generated/rmw_dds_common/msg/rmw_dds_common_type_support_cpp.node_entities_info__type_support.o: cxx ../../generated/rmw_dds_common/msg/node_entities_info__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = node_entities_info__type_support.cpp
+  source_name_part = node_entities_info__type_support
+build obj/generated/rmw_dds_common/msg/rmw_dds_common_type_support_cpp.participant_entities_info__type_support.o: cxx ../../generated/rmw_dds_common/msg/participant_entities_info__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = participant_entities_info__type_support.cpp
+  source_name_part = participant_entities_info__type_support
+
+build obj/generated/rmw_dds_common/rmw_dds_common_type_support_cpp.stamp: stamp obj/generated/rmw_dds_common/msg/detail/rmw_dds_common_type_support_cpp.gid__type_support.o obj/generated/rmw_dds_common/msg/detail/rmw_dds_common_type_support_cpp.node_entities_info__type_support.o obj/generated/rmw_dds_common/msg/detail/rmw_dds_common_type_support_cpp.participant_entities_info__type_support.o obj/generated/rmw_dds_common/msg/rmw_dds_common_type_support_cpp.gid__type_support.o obj/generated/rmw_dds_common/msg/rmw_dds_common_type_support_cpp.node_entities_info__type_support.o obj/generated/rmw_dds_common/msg/rmw_dds_common_type_support_cpp.participant_entities_info__type_support.o || obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp ./librosidl_typesupport_cpp.so ./librosidl_typesupport_introspection_cpp.so ./librosidl_runtime_c.so ./librcutils.so ./librosidl_typesupport_c.so ./librosidl_typesupport_introspection_c.so

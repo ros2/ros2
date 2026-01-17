@@ -1,0 +1,163 @@
+# Copyright (c) 2024 ROS2 KaihongOS Port Project
+# rmw_dsoftbus - ROS2 RMW implementation using OpenHarmony dsoftbus
+
+import("//build/ohos.gni")
+
+config("rmw_dsoftbus_config") {
+  include_dirs = [
+    "include",
+    "mock_includes",  # ROS2 RMW/rcutils/rosidl mock headers (standalone build)
+  ]
+
+  defines = [ "RMW_DSOFTBUS_BUILDING_LIBRARY" ]
+
+  cflags_cc = [
+    "-std=c++17",
+    "-Wall",
+    "-Wextra",
+    # Note: OpenHarmony uses -fno-exceptions, avoid throw/try/catch
+    "-fvisibility=default",  # Export symbols for test linkage
+  ]
+}
+
+ohos_shared_library("rmw_dsoftbus") {
+  sources = [
+    # Core RMW API implementation
+    "src/rmw_init.cpp",
+    "src/rmw_node.cpp",
+    "src/rmw_publisher.cpp",
+    "src/rmw_subscription.cpp",
+    "src/rmw_wait.cpp",
+    "src/rmw_service.cpp",
+    "src/rmw_client.cpp",
+    "src/rmw_guard_condition.cpp",
+    "src/rmw_get_info.cpp",
+    "src/rmw_event.cpp",
+    "src/rmw_qos.cpp",
+    "src/rmw_serialize.cpp",
+    "src/rmw_allocation.cpp",
+    "src/rmw_logging.cpp",
+
+    # Session management
+    "src/session_manager.cpp",
+    "src/native_token.cpp",
+    "src/dsoftbus_stubs.cpp",  # Weak symbols + Service/Client stubs
+    # src/dsoftbus_adapter.cpp removed - obsolete TransportController code
+
+    # Serialization
+    "src/cdr_serializer.cpp",
+    "src/qos_mapper.cpp",
+    "src/rmw_typesupport_serializer.cpp",
+    "src/service_typesupport_serializer.cpp",  # Phase 3: Service RPC
+
+    # Graph Discovery (Phase 2)
+    "src/graph_cache.cpp",
+    "src/discovery_manager.cpp",
+    "src/service_client_manager.cpp",
+    "src/ipc_client.cpp",
+    "src/ipc_server.cpp",
+    "src/ipc_handlers.cpp",
+  ]
+
+  public_configs = [ ":rmw_dsoftbus_config" ]
+
+  # No deps on ros2 - using mock_includes for ROS2 type definitions
+
+  external_deps = [
+    "c_utils:utils",
+    "dsoftbus:softbus_client",
+    "hilog:libhilog",
+    "access_token:libnativetoken",  # Native Token API for system service
+  ]
+
+  install_images = [
+    system_base_dir,
+    updater_base_dir,
+  ]
+
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+  output_name = "librmw_dsoftbus"
+}
+
+# Disabled: googletest not available in standard OHOS build
+# ohos_executable("rmw_dsoftbus_test") {
+#   sources = [
+#     "test/test_init.cpp",
+#     "test/test_main.cpp",
+#     "test/test_node.cpp",
+#     "test/test_pubsub.cpp",
+#     "test/service_rpc_test.cpp",
+#   ]
+#   deps = [ ":rmw_dsoftbus" ]
+#   external_deps = [
+#     "googletest:gtest",
+#     "googletest:gtest_main",
+#   ]
+#   part_name = "rmw_dsoftbus"
+#   subsystem_name = "ros2"
+# }
+
+# Session RMW Talker Test (NEW)
+ohos_executable("session_talker") {
+  sources = [ "test/simple_session_talker.cpp" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+}
+
+# Session RMW Listener Test (NEW)
+ohos_executable("session_listener") {
+  sources = [ "test/simple_session_listener.cpp" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+}
+
+# RMW Discovery Daemon (System Service)
+ohos_executable("rmw_discovery_daemon") {
+  sources = [
+    "system_service/rmw_discovery_daemon.cpp",
+  ]
+
+  deps = [
+    ":rmw_dsoftbus",
+  ]
+
+  external_deps = [
+    "dsoftbus:softbus_client",
+    "hilog:libhilog",
+    "access_token:libnativetoken",
+    "access_token:libtoken_setproc",  # SetSelfTokenID API
+  ]
+
+  install_enable = true
+  install_images = [
+    system_base_dir,
+  ]
+
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+}
+
+# Init configuration file for rmw_discovery_daemon
+ohos_prebuilt_etc("rmw_daemon_init") {
+  relative_install_dir = "init"
+  source = "system_service/init/rmw_discovery_daemon.cfg"
+
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+}
+
+# SoftBus permission configuration
+ohos_prebuilt_etc("softbus_permission_json") {
+  relative_install_dir = "communication/softbus"
+  source = "system_service/config/softbus_trans_permission.json"
+
+  part_name = "dsoftbus"
+  subsystem_name = "communication"
+}

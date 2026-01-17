@@ -1,0 +1,80 @@
+// Copyright (c) 2024 ROS2 OpenHarmony Port Project
+// visualization_msgs/msg/InteractiveMarkerControl type
+
+#ifndef VISUALIZATION_MSGS__MSG__INTERACTIVEMARKERCONTROL_H_
+#define VISUALIZATION_MSGS__MSG__INTERACTIVEMARKERCONTROL_H_
+
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+
+#include "rosidl_runtime_c/message_type_support_struct.h"
+#include "rosidl_runtime_c/visibility_control.h"
+#include "visualization_msgs/msg/rosidl_generator_c__visibility_control.h"
+#include "rosidl_runtime_c/string.h"
+#include "geometry_msgs/msg/quaternion.h"
+#include "visualization_msgs/msg/marker.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// Constants
+#define VISUALIZATION_MSGS__MSG__InteractiveMarkerControl_INHERIT 0
+#define VISUALIZATION_MSGS__MSG__InteractiveMarkerControl_FIXED 1
+#define VISUALIZATION_MSGS__MSG__InteractiveMarkerControl_VIEW_FACING 2
+#define VISUALIZATION_MSGS__MSG__InteractiveMarkerControl_NONE 0
+#define VISUALIZATION_MSGS__MSG__InteractiveMarkerControl_MENU 1
+#define VISUALIZATION_MSGS__MSG__InteractiveMarkerControl_BUTTON 2
+#define VISUALIZATION_MSGS__MSG__InteractiveMarkerControl_MOVE_AXIS 3
+#define VISUALIZATION_MSGS__MSG__InteractiveMarkerControl_MOVE_PLANE 4
+#define VISUALIZATION_MSGS__MSG__InteractiveMarkerControl_ROTATE_AXIS 5
+#define VISUALIZATION_MSGS__MSG__InteractiveMarkerControl_MOVE_ROTATE 6
+#define VISUALIZATION_MSGS__MSG__InteractiveMarkerControl_MOVE_3D 7
+#define VISUALIZATION_MSGS__MSG__InteractiveMarkerControl_ROTATE_3D 8
+#define VISUALIZATION_MSGS__MSG__InteractiveMarkerControl_MOVE_ROTATE_3D 9
+
+typedef struct visualization_msgs__msg__InteractiveMarkerControl
+{
+  rosidl_runtime_c__String name;
+  geometry_msgs__msg__Quaternion orientation;
+  uint8_t orientation_mode;
+  uint8_t interaction_mode;
+  bool always_visible;
+  visualization_msgs__msg__Marker__Sequence markers;
+  bool independent_marker_orientation;
+  rosidl_runtime_c__String description;
+} visualization_msgs__msg__InteractiveMarkerControl;
+
+typedef struct visualization_msgs__msg__InteractiveMarkerControl__Sequence
+{
+  visualization_msgs__msg__InteractiveMarkerControl * data;
+  size_t size;
+  size_t capacity;
+} visualization_msgs__msg__InteractiveMarkerControl__Sequence;
+
+ROSIDL_GENERATOR_C_PUBLIC_visualization_msgs
+bool visualization_msgs__msg__InteractiveMarkerControl__init(visualization_msgs__msg__InteractiveMarkerControl * msg);
+
+ROSIDL_GENERATOR_C_PUBLIC_visualization_msgs
+void visualization_msgs__msg__InteractiveMarkerControl__fini(visualization_msgs__msg__InteractiveMarkerControl * msg);
+
+ROSIDL_GENERATOR_C_PUBLIC_visualization_msgs
+visualization_msgs__msg__InteractiveMarkerControl * visualization_msgs__msg__InteractiveMarkerControl__create(void);
+
+ROSIDL_GENERATOR_C_PUBLIC_visualization_msgs
+void visualization_msgs__msg__InteractiveMarkerControl__destroy(visualization_msgs__msg__InteractiveMarkerControl * msg);
+
+ROSIDL_GENERATOR_C_PUBLIC_visualization_msgs
+bool visualization_msgs__msg__InteractiveMarkerControl__Sequence__init(
+  visualization_msgs__msg__InteractiveMarkerControl__Sequence * array, size_t size);
+
+ROSIDL_GENERATOR_C_PUBLIC_visualization_msgs
+void visualization_msgs__msg__InteractiveMarkerControl__Sequence__fini(
+  visualization_msgs__msg__InteractiveMarkerControl__Sequence * array);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif  // VISUALIZATION_MSGS__MSG__INTERACTIVEMARKERCONTROL_H_

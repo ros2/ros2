@@ -1,0 +1,159 @@
+# Copyright (c) 2024 ROS2 KaihongOS Port Project
+# BUILD.gn for generated rcl_interfaces
+
+import("//gn_templates/ros2_library.gni")
+
+_gen_base = "//generated/rcl_interfaces"
+
+config("rcl_interfaces_public_config") {
+  include_dirs = [ "//generated" ]
+  defines = [ "ROSIDL_GENERATOR_C_BUILDING_DLL_rcl_interfaces" ]
+}
+
+# C++ type support introspection + dispatch
+source_set("rcl_interfaces_type_support_cpp") {
+  sources = [
+    "${_gen_base}/msg/detail/floating_point_range__type_support.cpp",
+    "${_gen_base}/msg/detail/integer_range__type_support.cpp",
+    "${_gen_base}/msg/detail/list_parameters_result__type_support.cpp",
+    "${_gen_base}/msg/detail/log__type_support.cpp",
+    "${_gen_base}/msg/detail/logger_level__type_support.cpp",
+    "${_gen_base}/msg/detail/parameter__type_support.cpp",
+    "${_gen_base}/msg/detail/parameter_descriptor__type_support.cpp",
+    "${_gen_base}/msg/detail/parameter_event__type_support.cpp",
+    "${_gen_base}/msg/detail/parameter_event_descriptors__type_support.cpp",
+    "${_gen_base}/msg/detail/parameter_type__type_support.cpp",
+    "${_gen_base}/msg/detail/parameter_value__type_support.cpp",
+    "${_gen_base}/msg/detail/set_logger_levels_result__type_support.cpp",
+    "${_gen_base}/msg/detail/set_parameters_result__type_support.cpp",
+    "${_gen_base}/msg/floating_point_range__type_support.cpp",
+    "${_gen_base}/msg/integer_range__type_support.cpp",
+    "${_gen_base}/msg/list_parameters_result__type_support.cpp",
+    "${_gen_base}/msg/log__type_support.cpp",
+    "${_gen_base}/msg/logger_level__type_support.cpp",
+    "${_gen_base}/msg/parameter__type_support.cpp",
+    "${_gen_base}/msg/parameter_descriptor__type_support.cpp",
+    "${_gen_base}/msg/parameter_event__type_support.cpp",
+    "${_gen_base}/msg/parameter_event_descriptors__type_support.cpp",
+    "${_gen_base}/msg/parameter_type__type_support.cpp",
+    "${_gen_base}/msg/parameter_value__type_support.cpp",
+    "${_gen_base}/msg/set_logger_levels_result__type_support.cpp",
+    "${_gen_base}/msg/set_parameters_result__type_support.cpp",
+    "${_gen_base}/srv/describe_parameters__type_support.cpp",
+    "${_gen_base}/srv/detail/describe_parameters__type_support.cpp",
+    "${_gen_base}/srv/detail/get_logger_levels__type_support.cpp",
+    "${_gen_base}/srv/detail/get_parameter_types__type_support.cpp",
+    "${_gen_base}/srv/detail/get_parameters__type_support.cpp",
+    "${_gen_base}/srv/detail/list_parameters__type_support.cpp",
+    "${_gen_base}/srv/detail/set_logger_levels__type_support.cpp",
+    "${_gen_base}/srv/detail/set_parameters__type_support.cpp",
+    "${_gen_base}/srv/detail/set_parameters_atomically__type_support.cpp",
+    "${_gen_base}/srv/get_logger_levels__type_support.cpp",
+    "${_gen_base}/srv/get_parameter_types__type_support.cpp",
+    "${_gen_base}/srv/get_parameters__type_support.cpp",
+    "${_gen_base}/srv/list_parameters__type_support.cpp",
+    "${_gen_base}/srv/set_logger_levels__type_support.cpp",
+    "${_gen_base}/srv/set_parameters__type_support.cpp",
+    "${_gen_base}/srv/set_parameters_atomically__type_support.cpp",
+    # C typesupport dispatch (separate from C++)
+    "${_gen_base}/msg/floating_point_range__type_support_c.cpp",
+    "${_gen_base}/msg/integer_range__type_support_c.cpp",
+    "${_gen_base}/msg/list_parameters_result__type_support_c.cpp",
+    "${_gen_base}/msg/log__type_support_c.cpp",
+    "${_gen_base}/msg/logger_level__type_support_c.cpp",
+    "${_gen_base}/msg/parameter__type_support_c.cpp",
+    "${_gen_base}/msg/parameter_descriptor__type_support_c.cpp",
+    "${_gen_base}/msg/parameter_event__type_support_c.cpp",
+    "${_gen_base}/msg/parameter_event_descriptors__type_support_c.cpp",
+    "${_gen_base}/msg/parameter_type__type_support_c.cpp",
+    "${_gen_base}/msg/parameter_value__type_support_c.cpp",
+    "${_gen_base}/msg/set_logger_levels_result__type_support_c.cpp",
+    "${_gen_base}/msg/set_parameters_result__type_support_c.cpp",
+    "${_gen_base}/srv/describe_parameters__type_support_c.cpp",
+    "${_gen_base}/srv/get_logger_levels__type_support_c.cpp",
+    "${_gen_base}/srv/get_parameter_types__type_support_c.cpp",
+    "${_gen_base}/srv/get_parameters__type_support_c.cpp",
+    "${_gen_base}/srv/list_parameters__type_support_c.cpp",
+    "${_gen_base}/srv/set_logger_levels__type_support_c.cpp",
+    "${_gen_base}/srv/set_parameters__type_support_c.cpp",
+    "${_gen_base}/srv/set_parameters_atomically__type_support_c.cpp",
+  ]
+
+  include_dirs = [ "//generated" ]
+
+  deps = [
+    "//src/ros2/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//src/ros2/rosidl_typesupport/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//src/ros2/rosidl_typesupport/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+  ]
+
+  cflags_cc = [ "-std=c++17", "-Wno-unused-parameter" ]
+}
+
+ros2_shared_library("rcl_interfaces") {
+  sources = [
+    "${_gen_base}/msg/detail/floating_point_range__functions.c",
+    "${_gen_base}/msg/detail/integer_range__functions.c",
+    "${_gen_base}/msg/detail/list_parameters_result__functions.c",
+    "${_gen_base}/msg/detail/log__functions.c",
+    "${_gen_base}/msg/detail/logger_level__functions.c",
+    "${_gen_base}/msg/detail/parameter__functions.c",
+    "${_gen_base}/msg/detail/parameter_descriptor__functions.c",
+    "${_gen_base}/msg/detail/parameter_event__functions.c",
+    "${_gen_base}/msg/detail/parameter_event_descriptors__functions.c",
+    "${_gen_base}/msg/detail/parameter_type__functions.c",
+    "${_gen_base}/msg/detail/parameter_value__functions.c",
+    "${_gen_base}/msg/detail/set_logger_levels_result__functions.c",
+    "${_gen_base}/msg/detail/set_parameters_result__functions.c",
+    "${_gen_base}/srv/detail/describe_parameters__functions.c",
+    "${_gen_base}/srv/detail/get_logger_levels__functions.c",
+    "${_gen_base}/srv/detail/get_parameter_types__functions.c",
+    "${_gen_base}/srv/detail/get_parameters__functions.c",
+    "${_gen_base}/srv/detail/list_parameters__functions.c",
+    "${_gen_base}/srv/detail/set_logger_levels__functions.c",
+    "${_gen_base}/srv/detail/set_parameters__functions.c",
+    "${_gen_base}/srv/detail/set_parameters_atomically__functions.c",
+    "${_gen_base}/srv/describe_parameters__type_support.c",  # Service event message functions
+    "${_gen_base}/srv/get_logger_levels__type_support.c",
+    "${_gen_base}/srv/get_parameter_types__type_support.c",
+    "${_gen_base}/srv/get_parameters__type_support.c",
+    "${_gen_base}/srv/list_parameters__type_support.c",
+    "${_gen_base}/srv/set_logger_levels__type_support.c",
+    "${_gen_base}/srv/set_parameters__type_support.c",
+    "${_gen_base}/srv/set_parameters_atomically__type_support.c",
+    "${_gen_base}/msg/detail/floating_point_range__type_support.c",
+    "${_gen_base}/msg/detail/integer_range__type_support.c",
+    "${_gen_base}/msg/detail/list_parameters_result__type_support.c",
+    "${_gen_base}/msg/detail/log__type_support.c",
+    "${_gen_base}/msg/detail/logger_level__type_support.c",
+    "${_gen_base}/msg/detail/parameter__type_support.c",
+    "${_gen_base}/msg/detail/parameter_descriptor__type_support.c",
+    "${_gen_base}/msg/detail/parameter_event__type_support.c",
+    "${_gen_base}/msg/detail/parameter_event_descriptors__type_support.c",
+    "${_gen_base}/msg/detail/parameter_type__type_support.c",
+    "${_gen_base}/msg/detail/parameter_value__type_support.c",
+    "${_gen_base}/msg/detail/set_logger_levels_result__type_support.c",
+    "${_gen_base}/msg/detail/set_parameters_result__type_support.c",
+    "${_gen_base}/srv/detail/describe_parameters__type_support.c",
+    "${_gen_base}/srv/detail/get_logger_levels__type_support.c",
+    "${_gen_base}/srv/detail/get_parameter_types__type_support.c",
+    "${_gen_base}/srv/detail/get_parameters__type_support.c",
+    "${_gen_base}/srv/detail/list_parameters__type_support.c",
+    "${_gen_base}/srv/detail/set_logger_levels__type_support.c",
+    "${_gen_base}/srv/detail/set_parameters__type_support.c",
+    "${_gen_base}/srv/detail/set_parameters_atomically__type_support.c",
+    "${_gen_base}/msg/detail/type_description_stubs.c",
+  ]
+
+  public_configs = [ ":rcl_interfaces_public_config" ]
+
+  public_deps = [
+    ":rcl_interfaces_type_support_cpp",
+    "//src/ros2/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//src/ros2/rcutils:rcutils",
+  ]
+
+  cflags = [ "-Wno-unused-parameter" ]
+}

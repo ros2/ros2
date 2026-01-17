@@ -1,0 +1,55 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rmw_implementation - RMW Implementation Loader
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+import("//gn_templates/ros2_config.gni")
+
+# Source directory
+_rmw_implementation_src = "//ros2/src/ros2/rmw_implementation/rmw_implementation"
+
+# ============================================================================
+# rmw_implementation shared library
+# ============================================================================
+ros2_shared_library("rmw_implementation") {
+  sources = [
+    "${_rmw_implementation_src}/src/functions.cpp",
+  ]
+
+  include_dirs = [
+    "${_rmw_implementation_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rcpputils:rcpputils",
+    "//foundation/rmw:rmw",
+  ]
+
+  # Default to FastRTPS implementation
+  if (ros2_default_rmw == "rmw_fastrtps_cpp") {
+    deps += [
+      "//foundation/rmw_fastrtps/rmw_fastrtps_cpp:rmw_fastrtps_cpp",
+    ]
+    defines = [
+      "RMW_IMPLEMENTATION_DEFAULT_LIBRARY=\"librmw_fastrtps_cpp.so\"",
+    ]
+  } else if (ros2_default_rmw == "rmw_dsoftbus_cpp") {
+    # RMW DSoftBus implementation for OpenHarmony
+    deps += [
+      "//src/ros2/rmw_dsoftbus:rmw_dsoftbus",  # Target name is rmw_dsoftbus not rmw_dsoftbus_cpp
+    ]
+    defines += [
+      "RMW_IMPLEMENTATION_DEFAULT_LIBRARY=\"librmw_dsoftbus.z.so\"",  # OHOS shared library suffix
+    ]
+  }
+
+  defines += [
+    "RMW_IMPLEMENTATION_BUILDING_DLL",
+  ]
+
+  libs = [ "dl" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

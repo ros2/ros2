@@ -1,0 +1,42 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rosidl_typesupport_fastrtps_c - FastRTPS type support for C
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory
+_rosidl_typesupport_fastrtps_c_src = "//ros2/src/ros2/rosidl_typesupport_fastrtps/rosidl_typesupport_fastrtps_c"
+
+# ============================================================================
+# rosidl_typesupport_fastrtps_c shared library
+# ============================================================================
+ros2_shared_library("rosidl_typesupport_fastrtps_c") {
+  sources = [
+    "${_rosidl_typesupport_fastrtps_c_src}/src/identifier.cpp",
+    "${_rosidl_typesupport_fastrtps_c_src}/src/wstring_conversion.cpp",
+  ]
+
+  include_dirs = [
+    "${_rosidl_typesupport_fastrtps_c_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rmw:rmw",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_interface:rosidl_typesupport_interface",
+    "//vendor/fastdds/fastcdr:fastcdr",
+    "//vendor/fastdds/fastrtps:fastrtps",
+  ]
+
+  defines = [
+    "ROSIDL_TYPESUPPORT_FASTRTPS_C_BUILDING_DLL",
+  ]
+
+  cflags_cc = [
+    "-Wno-unused-parameter",
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

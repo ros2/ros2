@@ -1,0 +1,17 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DDDS_HAS_LIFESPAN=1 -DDDS_HAS_DEADLINE_MISSED=1 -DDDS_HAS_TYPE_DISCOVERY=1 -DDDS_HAS_TOPIC_DISCOVERY=1
+include_dirs = -I../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsc/include -I../../src/eclipse-cyclonedds/cyclonedds/src/core/ddsi/include -I../../src/eclipse-cyclonedds/cyclonedds/stubs -I../../src/eclipse-cyclonedds/cyclonedds/src/ddsrt/include -Igen/src/eclipse-cyclonedds/cyclonedds/cyclonedds/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -std=c11
+target_output_name = cross_device_subscriber_v2
+
+build obj/test/cross_device/cross_device_subscriber_v2.subscriber_v2.o: cc ../../test/cross_device/subscriber_v2.c || obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp
+  source_file_part = subscriber_v2.c
+  source_name_part = subscriber_v2
+
+build tests/cross_device_subscriber_v2: link obj/test/cross_device/cross_device_subscriber_v2.subscriber_v2.o tests/libsimple_msg_v2.so ./libddsc.so
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = 
+  output_dir = tests

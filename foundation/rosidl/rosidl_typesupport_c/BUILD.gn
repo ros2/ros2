@@ -1,0 +1,39 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rosidl_typesupport_c - ROS IDL type support for C
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory
+_rosidl_typesupport_c_src = "//ros2/src/ros2/rosidl_typesupport/rosidl_typesupport_c"
+
+# ============================================================================
+# rosidl_typesupport_c shared library
+# ============================================================================
+ros2_shared_library("rosidl_typesupport_c") {
+  sources = [
+    "${_rosidl_typesupport_c_src}/src/identifier.c",
+    "${_rosidl_typesupport_c_src}/src/message_type_support_dispatch.cpp",
+    "${_rosidl_typesupport_c_src}/src/service_type_support_dispatch.cpp",
+  ]
+
+  include_dirs = [
+    "${_rosidl_typesupport_c_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rcpputils:rcpputils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_interface:rosidl_typesupport_interface",
+  ]
+
+  defines = [
+    "ROSIDL_TYPESUPPORT_C_BUILDING_DLL",
+  ]
+
+  libs = [ "dl" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

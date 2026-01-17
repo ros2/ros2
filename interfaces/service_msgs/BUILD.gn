@@ -1,0 +1,127 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# service_msgs - ROS2 service event messages (Humble+)
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Message definitions:
+# - ServiceEventInfo: Metadata about service call events
+
+###############################################
+# rosidl_generator_c: C message definitions
+###############################################
+
+ros2_library("service_msgs__rosidl_generator_c") {
+  sources = [
+    "src/msg/service_event_info__functions.c",
+  ]
+
+  include_dirs = [
+    "include",
+    "//interfaces/builtin_interfaces/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_generator_c",
+  ]
+
+  cflags = [
+    "-DROS_PACKAGE_NAME=\"service_msgs\"",
+    "-DROSIDL_GENERATOR_C_BUILDING_DLL",
+  ]
+}
+
+###############################################
+# rosidl_typesupport_c: C type support
+###############################################
+
+ros2_library("service_msgs__rosidl_typesupport_c") {
+  sources = [
+    "src/msg/service_event_info__type_support.c",
+  ]
+
+  include_dirs = [
+    "include",
+    "//interfaces/builtin_interfaces/include",
+  ]
+
+  deps = [
+    ":service_msgs__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_c",
+  ]
+
+  cflags = [
+    "-DROS_PACKAGE_NAME=\"service_msgs\"",
+  ]
+}
+
+###############################################
+# rosidl_typesupport_fastrtps_c: FastRTPS C type support
+###############################################
+
+ros2_library("service_msgs__rosidl_typesupport_fastrtps_c") {
+  sources = [
+    "src/msg/service_event_info__rosidl_typesupport_fastrtps_c.cpp",
+  ]
+
+  include_dirs = [
+    "include",
+    "//interfaces/builtin_interfaces/include",
+  ]
+
+  deps = [
+    ":service_msgs__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_fastrtps_c:rosidl_typesupport_fastrtps_c",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_fastrtps_c",
+  ]
+
+  cflags_cc = [
+    "-DROS_PACKAGE_NAME=\"service_msgs\"",
+    "-std=c++17",
+  ]
+}
+
+###############################################
+# rosidl_typesupport_cpp: C++ type support
+###############################################
+
+ros2_library("service_msgs__rosidl_typesupport_cpp") {
+  sources = [
+    "src/msg/service_event_info__type_support.cpp",
+  ]
+
+  include_dirs = [
+    "include",
+    "//interfaces/builtin_interfaces/include",
+  ]
+
+  deps = [
+    ":service_msgs__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//interfaces/builtin_interfaces:builtin_interfaces__rosidl_typesupport_cpp",
+  ]
+
+  cflags_cc = [
+    "-DROS_PACKAGE_NAME=\"service_msgs\"",
+    "-std=c++17",
+  ]
+}
+
+###############################################
+# Convenience group target
+###############################################
+
+group("service_msgs") {
+  deps = [
+    ":service_msgs__rosidl_generator_c",
+    ":service_msgs__rosidl_typesupport_c",
+    ":service_msgs__rosidl_typesupport_fastrtps_c",
+    ":service_msgs__rosidl_typesupport_cpp",
+  ]
+}

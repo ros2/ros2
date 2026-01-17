@@ -1,0 +1,102 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# ROS2 Global Configuration for OpenHarmony GN Build
+
+declare_args() {
+  # ROS2 version
+  ros2_version = "jazzy"
+
+  # Enable debug build
+  ros2_debug = false
+
+  # Enable tracing (tracetools)
+  ros2_enable_tracing = false
+
+  # Enable statistics collector
+  ros2_enable_statistics = false
+
+  # Default RMW implementation
+  ros2_default_rmw = "rmw_dsoftbus_cpp"  # Changed from rmw_fastrtps_cpp to rmw_dsoftbus_cpp
+
+  # ROS2 source root (original ROS2 source)
+  ros2_source_root = "//ros2/src"
+
+  # Enable DDS Security (requires OpenSSL)
+  ros2_enable_security = false
+
+  # Enable shared memory transport
+  ros2_enable_shm = false
+}
+
+# ============================================================================
+# Compiler Flags
+# ============================================================================
+
+# C compiler flags
+ros2_cflags_c = [
+  "-std=c11",
+  "-D_GNU_SOURCE",
+  "-Wall",
+  "-Wextra",
+  "-fPIC",
+  "-fvisibility=hidden",
+]
+
+# C++ compiler flags
+ros2_cflags_cc = [
+  "-std=c++17",
+  "-Wall",
+  "-Wextra",
+  "-Wpedantic",
+  "-Wconversion",
+  "-Wno-sign-conversion",
+  "-fPIC",
+  "-fvisibility=hidden",
+  "-fexceptions",
+  "-frtti",
+]
+
+# Linker flags
+ros2_ldflags = [
+  "-fuse-ld=lld",
+  "-stdlib=libc++",
+]
+
+# ============================================================================
+# FastDDS Specific Configuration
+# ============================================================================
+
+fastdds_defines = [
+  "FASTRTPS_DYN_LINK",
+  "FASTCDR_DYN_LINK",
+  "ASIO_STANDALONE",
+  "ASIO_DISABLE_VISIBILITY",
+  "HAVE_CXX17",
+  "_ENABLE_ATOMIC_ALIGNMENT_FIX",
+]
+
+# Disabled features for initial porting
+fastdds_disabled_defines = [
+  "SHM_TRANSPORT_DISABLED",
+  "SQLITE3_SUPPORT_DISABLED",
+]
+
+# ============================================================================
+# Common Include Directories
+# ============================================================================
+
+ros2_common_include_dirs = [
+  "//foundation/rcutils/include",
+  "//foundation/rcpputils/include",
+  "//foundation/rosidl/rosidl_runtime_c/include",
+  "//foundation/rosidl/rosidl_runtime_cpp/include",
+  "//foundation/rosidl/rosidl_typesupport_interface/include",
+  "//foundation/rmw/include",
+]
+
+# FastDDS include directories
+fastdds_include_dirs = [
+  "//vendor/fastdds/fastrtps/include",
+  "//vendor/fastdds/fastcdr/include",
+  "//vendor/asio/include",
+  "//vendor/tinyxml2",
+]

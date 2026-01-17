@@ -1,0 +1,15 @@
+[
+  {
+    "SESSION_NAME": "com.huawei.ros2_rmw_dsoftbus.*",
+    "REGEXP": "true",
+    "DEVID": "NETWORKID",
+    "SEC_LEVEL": "public",
+    "APP_INFO": [
+      {
+        "TYPE": "native_app",
+        "PKG_NAME": "com.huawei.ros2_rmw_dsoftbus",
+        "ACTIONS": "create,open"
+      }
+    ]
+  }
+]

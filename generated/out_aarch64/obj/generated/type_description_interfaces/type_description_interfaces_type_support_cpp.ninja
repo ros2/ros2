@@ -1,0 +1,71 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL -DROSIDL_TYPESUPPORT_CPP_BUILDING_DLL -DROSIDL_TYPESUPPORT_INTROSPECTION_CPP_BUILDING_DLL
+include_dirs = -I../../generated -I../../src/ros2/rosidl/rosidl_runtime_cpp/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl_typesupport/rosidl_typesupport_c/include -I../../src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_cpp/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_cc = -std=c++17 -Wno-unused-parameter -std=c++17 -Wno-psabi -std=c++17
+target_output_name = type_description_interfaces_type_support_cpp
+
+build obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.field__type_support.o: cxx ../../generated/type_description_interfaces/msg/detail/field__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field__type_support.cpp
+  source_name_part = field__type_support
+build obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.field_type__type_support.o: cxx ../../generated/type_description_interfaces/msg/detail/field_type__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field_type__type_support.cpp
+  source_name_part = field_type__type_support
+build obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.individual_type_description__type_support.o: cxx ../../generated/type_description_interfaces/msg/detail/individual_type_description__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = individual_type_description__type_support.cpp
+  source_name_part = individual_type_description__type_support
+build obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.key_value__type_support.o: cxx ../../generated/type_description_interfaces/msg/detail/key_value__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = key_value__type_support.cpp
+  source_name_part = key_value__type_support
+build obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.type_description__type_support.o: cxx ../../generated/type_description_interfaces/msg/detail/type_description__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description__type_support.cpp
+  source_name_part = type_description__type_support
+build obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.type_source__type_support.o: cxx ../../generated/type_description_interfaces/msg/detail/type_source__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_source__type_support.cpp
+  source_name_part = type_source__type_support
+build obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.field__type_support.o: cxx ../../generated/type_description_interfaces/msg/field__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field__type_support.cpp
+  source_name_part = field__type_support
+build obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.field_type__type_support.o: cxx ../../generated/type_description_interfaces/msg/field_type__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field_type__type_support.cpp
+  source_name_part = field_type__type_support
+build obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.individual_type_description__type_support.o: cxx ../../generated/type_description_interfaces/msg/individual_type_description__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = individual_type_description__type_support.cpp
+  source_name_part = individual_type_description__type_support
+build obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.key_value__type_support.o: cxx ../../generated/type_description_interfaces/msg/key_value__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = key_value__type_support.cpp
+  source_name_part = key_value__type_support
+build obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.type_description__type_support.o: cxx ../../generated/type_description_interfaces/msg/type_description__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description__type_support.cpp
+  source_name_part = type_description__type_support
+build obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.type_source__type_support.o: cxx ../../generated/type_description_interfaces/msg/type_source__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_source__type_support.cpp
+  source_name_part = type_source__type_support
+build obj/generated/type_description_interfaces/srv/detail/type_description_interfaces_type_support_cpp.get_type_description__type_support.o: cxx ../../generated/type_description_interfaces/srv/detail/get_type_description__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_type_description__type_support.cpp
+  source_name_part = get_type_description__type_support
+build obj/generated/type_description_interfaces/srv/type_description_interfaces_type_support_cpp.get_type_description__type_support.o: cxx ../../generated/type_description_interfaces/srv/get_type_description__type_support.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_type_description__type_support.cpp
+  source_name_part = get_type_description__type_support
+build obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.field__type_support_c.o: cxx ../../generated/type_description_interfaces/msg/field__type_support_c.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field__type_support_c.cpp
+  source_name_part = field__type_support_c
+build obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.field_type__type_support_c.o: cxx ../../generated/type_description_interfaces/msg/field_type__type_support_c.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = field_type__type_support_c.cpp
+  source_name_part = field_type__type_support_c
+build obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.individual_type_description__type_support_c.o: cxx ../../generated/type_description_interfaces/msg/individual_type_description__type_support_c.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = individual_type_description__type_support_c.cpp
+  source_name_part = individual_type_description__type_support_c
+build obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.key_value__type_support_c.o: cxx ../../generated/type_description_interfaces/msg/key_value__type_support_c.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = key_value__type_support_c.cpp
+  source_name_part = key_value__type_support_c
+build obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.type_description__type_support_c.o: cxx ../../generated/type_description_interfaces/msg/type_description__type_support_c.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description__type_support_c.cpp
+  source_name_part = type_description__type_support_c
+build obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.type_source__type_support_c.o: cxx ../../generated/type_description_interfaces/msg/type_source__type_support_c.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_source__type_support_c.cpp
+  source_name_part = type_source__type_support_c
+build obj/generated/type_description_interfaces/srv/type_description_interfaces_type_support_cpp.get_type_description__type_support_c.o: cxx ../../generated/type_description_interfaces/srv/get_type_description__type_support_c.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = get_type_description__type_support_c.cpp
+  source_name_part = get_type_description__type_support_c
+
+build obj/generated/type_description_interfaces/type_description_interfaces_type_support_cpp.stamp: stamp obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.field__type_support.o obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.field_type__type_support.o obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.individual_type_description__type_support.o obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.key_value__type_support.o obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.type_description__type_support.o obj/generated/type_description_interfaces/msg/detail/type_description_interfaces_type_support_cpp.type_source__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.field__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.field_type__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.individual_type_description__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.key_value__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.type_description__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.type_source__type_support.o obj/generated/type_description_interfaces/srv/detail/type_description_interfaces_type_support_cpp.get_type_description__type_support.o obj/generated/type_description_interfaces/srv/type_description_interfaces_type_support_cpp.get_type_description__type_support.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.field__type_support_c.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.field_type__type_support_c.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.individual_type_description__type_support_c.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.key_value__type_support_c.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.type_description__type_support_c.o obj/generated/type_description_interfaces/msg/type_description_interfaces_type_support_cpp.type_source__type_support_c.o obj/generated/type_description_interfaces/srv/type_description_interfaces_type_support_cpp.get_type_description__type_support_c.o || obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp ./librosidl_typesupport_c.so ./librosidl_typesupport_cpp.so ./librosidl_typesupport_introspection_cpp.so obj/generated/service_msgs/service_msgs_type_support_cpp.stamp ./librosidl_runtime_c.so ./librcutils.so ./librosidl_typesupport_introspection_c.so obj/generated/builtin_interfaces/builtin_interfaces_type_support_cpp.stamp

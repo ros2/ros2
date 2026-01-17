@@ -1,0 +1,34 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rosidl_typesupport_introspection_c - ROS IDL introspection type support for C
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory
+_rosidl_typesupport_introspection_c_src = "//ros2/src/ros2/rosidl/rosidl_typesupport_introspection_c"
+
+# ============================================================================
+# rosidl_typesupport_introspection_c shared library
+# ============================================================================
+ros2_shared_library("rosidl_typesupport_introspection_c") {
+  sources = [
+    "${_rosidl_typesupport_introspection_c_src}/src/identifier.c",
+  ]
+
+  include_dirs = [
+    "${_rosidl_typesupport_introspection_c_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_interface:rosidl_typesupport_interface",
+  ]
+
+  defines = [
+    "ROSIDL_TYPESUPPORT_INTROSPECTION_C_BUILDING_DLL",
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

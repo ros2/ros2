@@ -1,0 +1,15 @@
+{
+  "subsystem": "ros2",
+  "parts": {
+    "rmw_dsoftbus": {
+      "module_list": [
+        "//rmw_dsoftbus:rmw_dsoftbus",
+        "//rmw_dsoftbus:rmw_dsoftbus_test"
+      ],
+      "inner_kits": [],
+      "test_list": [
+        "//rmw_dsoftbus:rmw_dsoftbus_test"
+      ]
+    }
+  }
+}

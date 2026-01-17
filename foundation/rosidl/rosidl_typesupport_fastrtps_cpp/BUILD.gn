@@ -1,0 +1,37 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rosidl_typesupport_fastrtps_cpp - FastRTPS type support for C++
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory
+_rosidl_typesupport_fastrtps_cpp_src = "//ros2/src/ros2/rosidl_typesupport_fastrtps/rosidl_typesupport_fastrtps_cpp"
+
+# ============================================================================
+# rosidl_typesupport_fastrtps_cpp shared library
+# ============================================================================
+ros2_shared_library("rosidl_typesupport_fastrtps_cpp") {
+  sources = [
+    "${_rosidl_typesupport_fastrtps_cpp_src}/src/identifier.cpp",
+  ]
+
+  include_dirs = [
+    "${_rosidl_typesupport_fastrtps_cpp_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rmw:rmw",
+    "//foundation/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//foundation/rosidl/rosidl_typesupport_interface:rosidl_typesupport_interface",
+    "//vendor/fastdds/fastcdr:fastcdr",
+    "//vendor/fastdds/fastrtps:fastrtps",
+  ]
+
+  defines = [
+    "ROSIDL_TYPESUPPORT_FASTRTPS_CPP_BUILDING_DLL",
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

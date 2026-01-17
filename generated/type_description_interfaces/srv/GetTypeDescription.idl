@@ -1,0 +1,54 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from type_description_interfaces/type_description_interfaces/srv/GetTypeDescription.srv
+// generated code does not contain a copyright notice
+
+#include "type_description_interfaces/msg/KeyValue.idl"
+#include "type_description_interfaces/msg/TypeDescription.idl"
+#include "type_description_interfaces/msg/TypeSource.idl"
+
+module type_description_interfaces {
+  module srv {
+    @verbatim (language="comment", text=
+      "ROS interface type name, in PACKAGE/NAMESPACE/TYPENAME format.")
+    struct GetTypeDescription_Request {
+      string type_name;
+
+      @verbatim (language="comment", text=
+        "REP-2011 RIHS hash string.")
+      string type_hash;
+
+      @verbatim (language="comment", text=
+        "Whether to return the original idl/msg/etc. source file(s) in the response.")
+      @default (value=TRUE)
+      boolean include_type_sources;
+    };
+    @verbatim (language="comment", text=
+      "True if the type description information is available and populated in the response." "\n"
+      "If false, all other fields except `failure_reason` are considered undefined.")
+    struct GetTypeDescription_Response {
+      boolean successful;
+
+      @verbatim (language="comment", text=
+        "If `successful` is false, contains a reason for failure." "\n"
+        "If `successful` is true, this is left empty.")
+      string failure_reason;
+
+      @verbatim (language="comment", text=
+        "The parsed type description which can be used programmatically.")
+      type_description_interfaces::msg::TypeDescription type_description;
+
+      @verbatim (language="comment", text=
+        "A list containing the interface definition source text of the requested type," "\n"
+        "plus all types it recursively depends on." "\n"
+        "Each source text is a copy of the original contents of the" "\n"
+        ".msg, .srv, .action, .idl, or other file if it exists, including comments and whitespace." "\n"
+        "Sources can be matched with IndividualTypeDescriptions by their `type_name`." "\n"
+        "The `encoding` field of each entry informs how to interpret its contents.")
+      sequence<type_description_interfaces::msg::TypeSource> type_sources;
+
+      @verbatim (language="comment", text=
+        "Key-value pairs of extra information.")
+      sequence<type_description_interfaces::msg::KeyValue> extra_information;
+    };
+  };
+};

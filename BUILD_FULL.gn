@@ -1,0 +1,118 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# Top-level BUILD.gn for ROS2 on OpenHarmony
+
+import("//build/ohos.gni")
+
+# ============================================================================
+# ROS2 Foundation Group - Core libraries required for any ROS2 application
+# ============================================================================
+group("ros2_foundation") {
+  deps = [
+    # Vendor dependencies (removed fastdds - using dsoftbus only)
+    # "//foundation/ros2/vendor/fastdds/fastcdr:fastcdr",
+    # "//foundation/ros2/vendor/fastdds/fastrtps:fastrtps",
+    # "//foundation/ros2/vendor/asio:asio",  # FastDDS dependency, not needed for rmw_dsoftbus
+    # "//foundation/ros2/vendor/tinyxml2:tinyxml2",  # FastDDS dependency, not needed for rmw_dsoftbus
+
+    # Foundation libraries
+    "//foundation/rcutils:rcutils",
+    "//foundation/rcpputils:rcpputils",
+    "//foundation/tracing:tracetools",
+
+    # rosidl core
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//foundation/rosidl/rosidl_typesupport_interface:rosidl_typesupport_interface",
+    "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//foundation/rosidl/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//foundation/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//foundation/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+
+    # RMW layer
+    "//foundation/rmw:rmw",
+    "//foundation/rmw_implementation:rmw_implementation",
+    # rmw_fastrtps removed - using rmw_dsoftbus only
+    # "//foundation/rmw_fastrtps/rmw_fastrtps_shared_cpp:rmw_fastrtps_shared_cpp",
+    # "//foundation/rmw_fastrtps/rmw_fastrtps_cpp:rmw_fastrtps_cpp",
+    "//src/ros2/rmw_dsoftbus:rmw_dsoftbus",
+
+    # RCL layer
+    "//foundation/rcl/rcl_yaml_param_parser:rcl_yaml_param_parser",
+    "//foundation/rcl/rcl:rcl",
+    "//foundation/rcl/rcl_action:rcl_action",
+    "//foundation/rcl/rcl_lifecycle:rcl_lifecycle",
+
+    # rclcpp
+    "//foundation/rclcpp:rclcpp",
+    "//foundation/rclcpp:rclcpp_action",
+    "//foundation/rclcpp:rclcpp_lifecycle",
+  ]
+}
+
+# ============================================================================
+# Common Message Packages
+# ============================================================================
+group("ros2_common_interfaces") {
+  deps = [
+    "//foundation/ros2/interfaces/builtin_interfaces:builtin_interfaces",
+    "//foundation/ros2/interfaces/std_msgs:std_msgs",
+    "//foundation/ros2/interfaces/std_srvs:std_srvs",
+    "//foundation/ros2/interfaces/rcl_interfaces:rcl_interfaces",
+    "//foundation/ros2/interfaces/rosgraph_msgs:rosgraph_msgs",
+    "//foundation/ros2/interfaces/geometry_msgs:geometry_msgs",
+    "//foundation/ros2/interfaces/sensor_msgs:sensor_msgs",
+    "//foundation/ros2/interfaces/nav_msgs:nav_msgs",
+    "//foundation/ros2/interfaces/action_msgs:action_msgs",
+    "//foundation/ros2/interfaces/unique_identifier_msgs:unique_identifier_msgs",
+  ]
+}
+
+# ============================================================================
+# Full ROS2 Stack
+# ============================================================================
+group("ros2") {
+  deps = [
+    ":ros2_foundation",
+    ":ros2_common_interfaces",
+  ]
+}
+
+# ============================================================================
+# Minimal ROS2 (for testing/development)
+# ============================================================================
+group("ros2_minimal") {
+  deps = [
+    # Only essential vendor deps (removed fastdds - using dsoftbus only)
+    # "//foundation/ros2/vendor/fastdds/fastcdr:fastcdr",
+    # "//foundation/ros2/vendor/fastdds/fastrtps:fastrtps",
+
+    # Foundation
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_interface:rosidl_typesupport_interface",
+
+    # RMW
+    "//foundation/rmw:rmw",
+    # "//foundation/rmw_fastrtps/rmw_fastrtps_cpp:rmw_fastrtps_cpp",  # Removed - using rmw_dsoftbus
+    "//src/ros2/rmw_dsoftbus:rmw_dsoftbus",
+
+    # RCL
+    "//foundation/rcl/rcl:rcl",
+
+    # Basic interfaces
+    "//foundation/ros2/interfaces/builtin_interfaces:builtin_interfaces",
+    "//foundation/ros2/interfaces/std_msgs:std_msgs",
+  ]
+}
+
+# ============================================================================
+# Test targets
+# ============================================================================
+group("ros2_tests") {
+  testonly = true
+  deps = [
+    "//foundation/rcutils:rcutils_test",
+    "//foundation/rmw:rmw_test",
+    "//foundation/rcl/rcl:rcl_test",
+  ]
+}

@@ -1,0 +1,21 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from type_description_interfaces/type_description_interfaces/msg/TypeDescription.msg
+// generated code does not contain a copyright notice
+
+#include "type_description_interfaces/msg/IndividualTypeDescription.idl"
+
+module type_description_interfaces {
+  module msg {
+    @verbatim (language="comment", text=
+      "Represents a complete type description, including the type itself as well as the types it references.")
+    struct TypeDescription {
+      @verbatim (language="comment", text=
+        "Description of the type.")
+      type_description_interfaces::msg::IndividualTypeDescription type_description;
+
+      @verbatim (language="comment", text=
+        "Descriptions of all referenced types, recursively.")
+      sequence<type_description_interfaces::msg::IndividualTypeDescription> referenced_type_descriptions;
+    };
+  };
+};

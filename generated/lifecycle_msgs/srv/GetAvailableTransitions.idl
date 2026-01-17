@@ -1,0 +1,18 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from lifecycle_msgs/lifecycle_msgs/srv/GetAvailableTransitions.srv
+// generated code does not contain a copyright notice
+
+#include "lifecycle_msgs/msg/TransitionDescription.idl"
+
+module lifecycle_msgs {
+  module srv {
+    struct GetAvailableTransitions_Request {
+      uint8 structure_needs_at_least_one_member;
+    };
+    @verbatim (language="comment", text=
+      "An array of the possible start_state-goal_state transitions")
+    struct GetAvailableTransitions_Response {
+      sequence<lifecycle_msgs::msg::TransitionDescription> available_transitions;
+    };
+  };
+};

@@ -1,0 +1,82 @@
+# Copyright (c) 2024 ROS2 KaihongOS Port Project
+# BUILD.gn for ROS2 C++ demo applications (talker/listener)
+
+import("//gn_templates/ros2_library.gni")
+
+_demo_src = "//demo_cpp"
+
+# Talker executable - ROS2 publisher demo
+executable("talker") {
+  sources = [
+    "${_demo_src}/src/talker.cpp",
+  ]
+
+  include_dirs = [
+    "//generated",  # For std_msgs headers
+  ]
+
+  deps = [
+    "//src/ros2/rclcpp/rclcpp:rclcpp",
+    "//generated/std_msgs:std_msgs",
+    "//src/ros2/rosidl_typesupport/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+  ]
+
+  cflags_cc = [
+    "-std=c++17",
+    "-Wall",
+    "-Wextra",
+  ]
+
+  # Link with pthread for threading support
+  libs = [ "pthread" ]
+}
+
+# Listener executable - ROS2 subscriber demo
+executable("listener") {
+  sources = [
+    "${_demo_src}/src/listener.cpp",
+  ]
+
+  include_dirs = [
+    "//generated",  # For std_msgs headers
+  ]
+
+  deps = [
+    "//src/ros2/rclcpp/rclcpp:rclcpp",
+    "//generated/std_msgs:std_msgs",
+    "//src/ros2/rosidl_typesupport/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+  ]
+
+  cflags_cc = [
+    "-std=c++17",
+    "-Wall",
+    "-Wextra",
+  ]
+
+  # Link with pthread for threading support
+  libs = [ "pthread" ]
+}
+
+# Direct RMW API test - bypasses rclcpp/RCL complexity
+executable("test_rmw_direct") {
+  sources = [
+    "//test_direct/test_rmw_direct.c",
+  ]
+
+  include_dirs = []
+
+  deps = [
+    "//src/ros2/rmw/rmw:rmw",
+    "//src/ros2/rcutils:rcutils",
+    "//src/ros2/rmw_dsoftbus/rmw_dsoftbus_cpp:rmw_dsoftbus_cpp",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Wextra",
+  ]
+
+  libs = [ "pthread" ]
+}

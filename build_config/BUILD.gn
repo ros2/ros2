@@ -1,0 +1,64 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# Build configuration targets
+
+# ============================================================================
+# Compiler defaults
+# ============================================================================
+config("compiler_defaults") {
+  cflags = [
+    "-Wall",
+    "-Wextra",
+    "-Wno-unused-parameter",
+    "-fPIC",  # Position-independent code for shared libraries
+  ]
+
+  cflags_c = [ "-std=c11" ]
+
+  cflags_cc = [
+    "-std=c++17",
+    "-Wno-psabi",  # Suppress ABI warnings for ARM
+  ]
+
+  defines = []
+}
+
+# ============================================================================
+# OpenHarmony specific defaults
+# ============================================================================
+config("ohos_defaults") {
+  defines = [
+    "__OHOS__",
+    "_GNU_SOURCE",
+  ]
+
+  # Runtime library configuration
+  libs = [
+    "c",
+    "m",
+    "dl",
+    "pthread",
+  ]
+}
+
+# ============================================================================
+# Optimization levels
+# ============================================================================
+config("optimize_default") {
+  cflags = [ "-O2" ]
+}
+
+config("optimize_debug") {
+  cflags = [
+    "-O0",
+    "-g",
+  ]
+}
+
+config("optimize_size") {
+  cflags = [
+    "-Os",
+    "-fdata-sections",
+    "-ffunction-sections",
+  ]
+  ldflags = [ "-Wl,--gc-sections" ]
+}

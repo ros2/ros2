@@ -1,0 +1,17 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../src/ros2/rcutils/include -I../../gen/src/ros2/rcutils/rcutils/include -Igen/src/ros2/rcutils/rcutils/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -std=c11
+target_output_name = test_rcutils
+
+build obj/test/foundation_test/test_rcutils.test_rcutils.o: cc ../../test/foundation_test/test_rcutils.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = test_rcutils.c
+  source_name_part = test_rcutils
+
+build tests/test_rcutils: link obj/test/foundation_test/test_rcutils.test_rcutils.o ./librcutils.so
+  ldflags =
+  libs = -lpthread -ldl -lm -lc
+  frameworks =
+  swiftmodules =
+  output_extension = 
+  output_dir = tests

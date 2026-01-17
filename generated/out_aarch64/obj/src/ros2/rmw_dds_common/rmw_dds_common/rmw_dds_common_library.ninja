@@ -1,0 +1,32 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DRCUTILS_BUILDING_DLL -DROSIDL_RUNTIME_C_BUILDING_DLL -DROSIDL_GENERATOR_C_BUILDING_DLL_rmw_dds_common
+include_dirs = -I../../src/ros2/rmw_dds_common/rmw_dds_common/include -I../../src/ros2/rmw/rmw/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl_dynamic_typesupport/include -I../../src/ros2/rcpputils/include -I../../src/ros2/rosidl/rosidl_runtime_cpp/include -I../../generated
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC -std=c99 -std=c99
+cflags_cc = -std=c++17 -Wall -Wextra -Wno-unused-parameter -std=c++17 -Wno-psabi -std=c++17 -fPIC -std=c++17
+target_output_name = librmw_dds_common_library
+
+build obj/src/ros2/rmw_dds_common/rmw_dds_common/src/librmw_dds_common_library.context.o: cxx ../../src/ros2/rmw_dds_common/rmw_dds_common/src/context.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = context.cpp
+  source_name_part = context
+build obj/src/ros2/rmw_dds_common/rmw_dds_common/src/librmw_dds_common_library.gid_utils.o: cxx ../../src/ros2/rmw_dds_common/rmw_dds_common/src/gid_utils.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = gid_utils.cpp
+  source_name_part = gid_utils
+build obj/src/ros2/rmw_dds_common/rmw_dds_common/src/librmw_dds_common_library.graph_cache.o: cxx ../../src/ros2/rmw_dds_common/rmw_dds_common/src/graph_cache.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = graph_cache.cpp
+  source_name_part = graph_cache
+build obj/src/ros2/rmw_dds_common/rmw_dds_common/src/librmw_dds_common_library.qos.o: cxx ../../src/ros2/rmw_dds_common/rmw_dds_common/src/qos.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = qos.cpp
+  source_name_part = qos
+build obj/src/ros2/rmw_dds_common/rmw_dds_common/src/librmw_dds_common_library.security.o: cxx ../../src/ros2/rmw_dds_common/rmw_dds_common/src/security.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = security.cpp
+  source_name_part = security
+build obj/src/ros2/rmw_dds_common/rmw_dds_common/src/librmw_dds_common_library.time_utils.o: cxx ../../src/ros2/rmw_dds_common/rmw_dds_common/src/time_utils.cpp || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = time_utils.cpp
+  source_name_part = time_utils
+
+build ./librmw_dds_common_library.so: solink obj/src/ros2/rmw_dds_common/rmw_dds_common/src/librmw_dds_common_library.context.o obj/src/ros2/rmw_dds_common/rmw_dds_common/src/librmw_dds_common_library.gid_utils.o obj/src/ros2/rmw_dds_common/rmw_dds_common/src/librmw_dds_common_library.graph_cache.o obj/src/ros2/rmw_dds_common/rmw_dds_common/src/librmw_dds_common_library.qos.o obj/src/ros2/rmw_dds_common/rmw_dds_common/src/librmw_dds_common_library.security.o obj/src/ros2/rmw_dds_common/rmw_dds_common/src/librmw_dds_common_library.time_utils.o ./librmw.so ./librcutils.so ./librcpputils.so ./librosidl_runtime_c.so ./librmw_dds_common.so ./librosidl_dynamic_typesupport.so || obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

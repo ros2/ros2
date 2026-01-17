@@ -1,0 +1,309 @@
+# Copyright (c) 2024 ROS2 KaihongOS Port Project
+# Makefile for rmw_dsoftbus GN build
+#
+# Usage:
+#   make -f Makefile.gn help           # Show help
+#   make -f Makefile.gn build          # Build rmw_dsoftbus
+#   make -f Makefile.gn deploy         # Deploy to device
+#   make -f Makefile.gn test           # Run tests
+#   make -f Makefile.gn clean          # Clean build
+#
+# Environment Variables:
+#   OHOS_ROOT     - OpenHarmony source root (default: ../../OpenHarmony)
+#   PRODUCT_NAME  - Product name (default: rk3588)
+#   DEVICE_ID     - Target device ID (auto-detected)
+
+# ============================================================================
+# Configuration
+# ============================================================================
+
+OHOS_ROOT ?= ../../OpenHarmony
+PRODUCT_NAME ?= rk3588
+BUILD_DIR = $(OHOS_ROOT)/out/$(PRODUCT_NAME)
+
+# Auto-detect device ID
+DEVICE_ID ?= $(shell powershell.exe -NoProfile -Command "hdc list targets" 2>/dev/null | head -1 | awk '{print $$1}' | tr -d '\r\n')
+
+# Build targets
+RMW_DSOFTBUS_TARGET = //rmw_dsoftbus:rmw_dsoftbus
+RMW_DSOFTBUS_CPP_TARGET = //rmw_dsoftbus:rmw_dsoftbus_cpp
+RMW_ALL_TARGET = //rmw_dsoftbus:rmw_dsoftbus_all
+
+# Output files
+LIB_DIR = $(BUILD_DIR)/packages/phone/system/lib64
+TEST_DIR = $(BUILD_DIR)/tests/unittest/rmw_dsoftbus
+
+LIBS = $(LIB_DIR)/librmw_dsoftbus.so
+LIBS_CPP = $(LIB_DIR)/librmw_dsoftbus_cpp.so
+
+TESTS = $(TEST_DIR)/rmw_verify_test \
+        $(TEST_DIR)/socket_direct_test \
+        $(TEST_DIR)/rmw_socket_pub_test \
+        $(TEST_DIR)/rmw_socket_sub_test
+
+# Transfer directory
+TRANSFER_DIR = /mnt/c/tmp/hdc_transfer
+
+# Colors
+RED = \033[0;31m
+GREEN = \033[0;32m
+YELLOW = \033[0;33m
+BLUE = \033[0;34m
+NC = \033[0m # No Color
+
+# ============================================================================
+# Targets
+# ============================================================================
+
+.PHONY: help
+help:
+	@echo "$(BLUE)rmw_dsoftbus GN Build System$(NC)"
+	@echo ""
+	@echo "$(GREEN)Build Targets:$(NC)"
+	@echo "  make -f Makefile.gn build         - Build rmw_dsoftbus (Session-based)"
+	@echo "  make -f Makefile.gn build-cpp     - Build rmw_dsoftbus_cpp (Clean RMW)"
+	@echo "  make -f Makefile.gn build-all     - Build all (libs + tests)"
+	@echo "  make -f Makefile.gn build-debug   - Build with debug logging"
+	@echo ""
+	@echo "$(GREEN)Deploy Targets:$(NC)"
+	@echo "  make -f Makefile.gn deploy        - Deploy librmw_dsoftbus.so to device"
+	@echo "  make -f Makefile.gn deploy-cpp    - Deploy librmw_dsoftbus_cpp.so to device"
+	@echo "  make -f Makefile.gn deploy-tests  - Deploy test programs to device"
+	@echo "  make -f Makefile.gn deploy-all    - Deploy everything"
+	@echo ""
+	@echo "$(GREEN)Test Targets:$(NC)"
+	@echo "  make -f Makefile.gn test-verify   - Run rmw_verify_test (52 tests)"
+	@echo "  make -f Makefile.gn test-socket   - Run socket_direct_test"
+	@echo ""
+	@echo "$(GREEN)Utility Targets:$(NC)"
+	@echo "  make -f Makefile.gn check         - Check build artifacts"
+	@echo "  make -f Makefile.gn info          - Show build information"
+	@echo "  make -f Makefile.gn clean         - Clean build directory"
+	@echo "  make -f Makefile.gn device-status - Check device status"
+	@echo ""
+	@echo "$(GREEN)Environment:$(NC)"
+	@echo "  OHOS_ROOT    = $(OHOS_ROOT)"
+	@echo "  PRODUCT_NAME = $(PRODUCT_NAME)"
+	@echo "  DEVICE_ID    = $(DEVICE_ID)"
+	@echo ""
+
+# ============================================================================
+# Build Targets
+# ============================================================================
+
+.PHONY: build
+build:
+	@echo "$(BLUE)Building rmw_dsoftbus...$(NC)"
+	cd $(OHOS_ROOT) && ./build.sh --product-name $(PRODUCT_NAME) --build-target $(RMW_DSOFTBUS_TARGET)
+	@echo "$(GREEN)Build complete: $(LIBS)$(NC)"
+
+.PHONY: build-cpp
+build-cpp:
+	@echo "$(BLUE)Building rmw_dsoftbus_cpp (Clean RMW)...$(NC)"
+	cd $(OHOS_ROOT) && ./build.sh --product-name $(PRODUCT_NAME) --build-target $(RMW_DSOFTBUS_CPP_TARGET)
+	@echo "$(GREEN)Build complete: $(LIBS_CPP)$(NC)"
+
+.PHONY: build-all
+build-all:
+	@echo "$(BLUE)Building all targets...$(NC)"
+	cd $(OHOS_ROOT) && ./build.sh --product-name $(PRODUCT_NAME) --build-target $(RMW_ALL_TARGET)
+	@echo "$(GREEN)Build complete$(NC)"
+
+.PHONY: build-debug
+build-debug:
+	@echo "$(BLUE)Building with debug logging...$(NC)"
+	cd $(OHOS_ROOT) && ./build.sh --product-name $(PRODUCT_NAME) \
+		--build-target $(RMW_DSOFTBUS_TARGET) \
+		--gn-args enable_debug_logging=true
+	@echo "$(GREEN)Debug build complete$(NC)"
+
+.PHONY: build-fast
+build-fast:
+	@echo "$(BLUE)Building with ccache and parallel jobs...$(NC)"
+	cd $(OHOS_ROOT) && ./build.sh --product-name $(PRODUCT_NAME) \
+		--build-target $(RMW_DSOFTBUS_TARGET) \
+		--ccache -j$$(nproc)
+	@echo "$(GREEN)Fast build complete$(NC)"
+
+# ============================================================================
+# Deploy Targets
+# ============================================================================
+
+.PHONY: deploy
+deploy: check-device
+	@echo "$(BLUE)Deploying librmw_dsoftbus.so to device $(DEVICE_ID)...$(NC)"
+	@mkdir -p $(TRANSFER_DIR)
+	@cp $(LIBS) $(TRANSFER_DIR)/
+	@powershell.exe -NoProfile -Command "hdc -t $(DEVICE_ID) file send 'C:\tmp\hdc_transfer\librmw_dsoftbus.so' '/system/lib64/'"
+	@echo "$(GREEN)Deployed successfully$(NC)"
+	@$(MAKE) -f Makefile.gn verify-deploy
+
+.PHONY: deploy-cpp
+deploy-cpp: check-device
+	@echo "$(BLUE)Deploying librmw_dsoftbus_cpp.so to device $(DEVICE_ID)...$(NC)"
+	@mkdir -p $(TRANSFER_DIR)
+	@cp $(LIBS_CPP) $(TRANSFER_DIR)/
+	@powershell.exe -NoProfile -Command "hdc -t $(DEVICE_ID) file send 'C:\tmp\hdc_transfer\librmw_dsoftbus_cpp.so' '/system/lib64/'"
+	@echo "$(GREEN)Deployed successfully$(NC)"
+
+.PHONY: deploy-tests
+deploy-tests: check-device
+	@echo "$(BLUE)Deploying test programs to device $(DEVICE_ID)...$(NC)"
+	@mkdir -p $(TRANSFER_DIR)
+	@for test in $(TESTS); do \
+		if [ -f $$test ]; then \
+			echo "Deploying $$(basename $$test)..."; \
+			cp $$test $(TRANSFER_DIR)/; \
+			powershell.exe -NoProfile -Command "hdc -t $(DEVICE_ID) file send 'C:\tmp\hdc_transfer\\$$(basename $$test)' '/data/local/tmp/'"; \
+		fi; \
+	done
+	@echo "$(GREEN)Tests deployed to /data/local/tmp/$(NC)"
+
+.PHONY: deploy-all
+deploy-all: deploy deploy-cpp deploy-tests
+	@echo "$(GREEN)All deployments complete$(NC)"
+
+.PHONY: verify-deploy
+verify-deploy:
+	@echo "$(BLUE)Verifying deployment...$(NC)"
+	@powershell.exe -NoProfile -Command "hdc -t $(DEVICE_ID) shell 'ls -lh /system/lib64/librmw_dsoftbus.so'"
+	@powershell.exe -NoProfile -Command "hdc -t $(DEVICE_ID) shell 'readelf -s /system/lib64/librmw_dsoftbus.so | grep rmw_init | head -1'"
+
+# ============================================================================
+# Test Targets
+# ============================================================================
+
+.PHONY: test-verify
+test-verify: check-device
+	@echo "$(BLUE)Running rmw_verify_test on device $(DEVICE_ID)...$(NC)"
+	@powershell.exe -NoProfile -Command "hdc -t $(DEVICE_ID) shell 'cd /data/local/tmp && LD_LIBRARY_PATH=/system/lib64 ./rmw_verify_test'"
+
+.PHONY: test-socket
+test-socket: check-device
+	@echo "$(BLUE)Running socket_direct_test on device $(DEVICE_ID)...$(NC)"
+	@powershell.exe -NoProfile -Command "hdc -t $(DEVICE_ID) shell 'cd /data/local/tmp && LD_LIBRARY_PATH=/system/lib64 ./socket_direct_test'"
+
+# ============================================================================
+# Utility Targets
+# ============================================================================
+
+.PHONY: check
+check:
+	@echo "$(BLUE)Checking build artifacts...$(NC)"
+	@echo ""
+	@echo "$(YELLOW)Libraries:$(NC)"
+	@ls -lh $(LIBS) 2>/dev/null || echo "  $(RED)librmw_dsoftbus.so not found$(NC)"
+	@ls -lh $(LIBS_CPP) 2>/dev/null || echo "  $(RED)librmw_dsoftbus_cpp.so not found$(NC)"
+	@echo ""
+	@echo "$(YELLOW)Tests:$(NC)"
+	@for test in $(TESTS); do \
+		ls -lh $$test 2>/dev/null || echo "  $(RED)$$(basename $$test) not found$(NC)"; \
+	done
+	@echo ""
+
+.PHONY: info
+info:
+	@echo "$(BLUE)Build Information$(NC)"
+	@echo "$(YELLOW)Configuration:$(NC)"
+	@echo "  OpenHarmony Root: $(OHOS_ROOT)"
+	@echo "  Product Name:     $(PRODUCT_NAME)"
+	@echo "  Build Directory:  $(BUILD_DIR)"
+	@echo ""
+	@echo "$(YELLOW)Device:$(NC)"
+	@echo "  Device ID:        $(DEVICE_ID)"
+	@echo ""
+	@echo "$(YELLOW)Build Targets:$(NC)"
+	@echo "  rmw_dsoftbus:     $(RMW_DSOFTBUS_TARGET)"
+	@echo "  rmw_dsoftbus_cpp: $(RMW_DSOFTBUS_CPP_TARGET)"
+	@echo "  all:              $(RMW_ALL_TARGET)"
+	@echo ""
+	@echo "$(YELLOW)Output Files:$(NC)"
+	@echo "  Libraries:        $(LIB_DIR)/"
+	@echo "  Tests:            $(TEST_DIR)/"
+	@echo ""
+
+.PHONY: clean
+clean:
+	@echo "$(YELLOW)Cleaning build directory...$(NC)"
+	@rm -rf $(BUILD_DIR)
+	@echo "$(GREEN)Clean complete$(NC)"
+
+.PHONY: device-status
+device-status:
+	@echo "$(BLUE)Device Status$(NC)"
+	@echo ""
+	@echo "$(YELLOW)Connected devices:$(NC)"
+	@powershell.exe -NoProfile -Command "hdc list targets -v" || echo "$(RED)No devices found$(NC)"
+	@echo ""
+	@if [ -n "$(DEVICE_ID)" ]; then \
+		echo "$(YELLOW)Selected device: $(DEVICE_ID)$(NC)"; \
+		echo "$(YELLOW)Library status:$(NC)"; \
+		powershell.exe -NoProfile -Command "hdc -t $(DEVICE_ID) shell 'ls -lh /system/lib64/librmw_dsoftbus.so'" 2>/dev/null || echo "  $(RED)Not deployed$(NC)"; \
+	fi
+
+.PHONY: check-device
+check-device:
+	@if [ -z "$(DEVICE_ID)" ]; then \
+		echo "$(RED)Error: No device found$(NC)"; \
+		echo "Please connect a device and try again."; \
+		exit 1; \
+	fi
+
+# ============================================================================
+# GN Utility Targets
+# ============================================================================
+
+.PHONY: gn-desc
+gn-desc:
+	@echo "$(BLUE)Describing target $(RMW_DSOFTBUS_TARGET)...$(NC)"
+	cd $(OHOS_ROOT) && gn desc $(BUILD_DIR) $(RMW_DSOFTBUS_TARGET)
+
+.PHONY: gn-deps
+gn-deps:
+	@echo "$(BLUE)Dependency tree for $(RMW_DSOFTBUS_TARGET)...$(NC)"
+	cd $(OHOS_ROOT) && gn desc $(BUILD_DIR) $(RMW_DSOFTBUS_TARGET) deps --tree
+
+.PHONY: gn-format
+gn-format:
+	@echo "$(BLUE)Formatting BUILD.gn...$(NC)"
+	gn format BUILD.gn
+	@echo "$(GREEN)Format complete$(NC)"
+
+.PHONY: gn-check
+gn-check:
+	@echo "$(BLUE)Checking BUILD.gn syntax...$(NC)"
+	cd $(OHOS_ROOT) && gn check $(BUILD_DIR) $(RMW_DSOFTBUS_TARGET)
+	@echo "$(GREEN)Check complete$(NC)"
+
+# ============================================================================
+# Advanced Targets
+# ============================================================================
+
+.PHONY: symbols
+symbols:
+	@echo "$(BLUE)Exported symbols in librmw_dsoftbus.so:$(NC)"
+	@readelf -s $(LIBS) | grep -E "GLOBAL.*DEFAULT" | grep rmw_ | awk '{print "  " $$8}'
+
+.PHONY: deps-runtime
+deps-runtime:
+	@echo "$(BLUE)Runtime dependencies:$(NC)"
+	@readelf -d $(LIBS) | grep NEEDED
+
+.PHONY: size-report
+size-report:
+	@echo "$(BLUE)Size Report$(NC)"
+	@echo ""
+	@echo "$(YELLOW)Libraries:$(NC)"
+	@ls -lh $(LIBS) 2>/dev/null | awk '{print "  librmw_dsoftbus.so:     " $$5}'
+	@ls -lh $(LIBS_CPP) 2>/dev/null | awk '{print "  librmw_dsoftbus_cpp.so: " $$5}'
+	@echo ""
+	@echo "$(YELLOW)Tests:$(NC)"
+	@for test in $(TESTS); do \
+		ls -lh $$test 2>/dev/null | awk '{print "  " substr($$9, index($$9, "/")+1) ": " $$5}'; \
+	done
+
+# ============================================================================
+# Default Target
+# ============================================================================
+
+.DEFAULT_GOAL := help

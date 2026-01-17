@@ -1,0 +1,2 @@
+# Root config for rmw_dsoftbus standalone GN build
+buildconfig = "//build/config/BUILDCONFIG.gn"

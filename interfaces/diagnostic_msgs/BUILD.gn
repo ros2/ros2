@@ -1,0 +1,162 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# diagnostic_msgs - ROS2 diagnostic message types
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+_package_name = "diagnostic_msgs"
+
+# ============================================================================
+# diagnostic_msgs message types:
+#
+# Core:
+#   KeyValue - Key-value pair for additional data
+#   DiagnosticStatus - Status of a single component
+#   DiagnosticArray - Array of diagnostic statuses with header
+#
+# Services:
+#   AddDiagnostics - Add a diagnostic task
+#   SelfTest - Run component self-test
+# ============================================================================
+
+# ============================================================================
+# diagnostic_msgs C generator library
+# ============================================================================
+ros2_shared_library("diagnostic_msgs__rosidl_generator_c") {
+  sources = [
+    # Message types
+    "src/msg/key_value__functions.c",
+    "src/msg/diagnostic_status__functions.c",
+    "src/msg/diagnostic_array__functions.c",
+
+    # Service types
+    "src/srv/add_diagnostics__request__functions.c",
+    "src/srv/add_diagnostics__response__functions.c",
+    "src/srv/self_test__request__functions.c",
+    "src/srv/self_test__response__functions.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//interfaces/std_msgs:std_msgs__rosidl_generator_c",
+  ]
+
+  defines = [ "ROSIDL_GENERATOR_C_BUILDING_DLL_${_package_name}" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# diagnostic_msgs type support C library
+# ============================================================================
+ros2_shared_library("diagnostic_msgs__rosidl_typesupport_c") {
+  sources = [
+    # Message types
+    "src/msg/key_value__type_support.c",
+    "src/msg/diagnostic_status__type_support.c",
+    "src/msg/diagnostic_array__type_support.c",
+
+    # Service types
+    "src/srv/add_diagnostics__request__type_support.c",
+    "src/srv/add_diagnostics__response__type_support.c",
+    "src/srv/self_test__request__type_support.c",
+    "src/srv/self_test__response__type_support.c",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":diagnostic_msgs__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_c:rosidl_typesupport_c",
+    "//foundation/rosidl/rosidl_typesupport_introspection_c:rosidl_typesupport_introspection_c",
+    "//interfaces/std_msgs:std_msgs__rosidl_typesupport_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_C_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# diagnostic_msgs FastRTPS type support
+# ============================================================================
+ros2_shared_library("diagnostic_msgs__rosidl_typesupport_fastrtps_c") {
+  sources = [
+    "src/msg/key_value__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/diagnostic_status__rosidl_typesupport_fastrtps_c.cpp",
+    "src/msg/diagnostic_array__rosidl_typesupport_fastrtps_c.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":diagnostic_msgs__rosidl_generator_c",
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+    "//foundation/rosidl/rosidl_typesupport_fastrtps_c:rosidl_typesupport_fastrtps_c",
+    "//vendor/fastdds/fastcdr:fastcdr",
+    "//interfaces/std_msgs:std_msgs__rosidl_typesupport_fastrtps_c",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_FASTRTPS_C_BUILDING_DLL_${_package_name}" ]
+
+  cflags_cc = [ "-Wno-unused-parameter" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# diagnostic_msgs C++ type support
+# ============================================================================
+config("diagnostic_msgs_cpp_config") {
+  include_dirs = [ "include" ]
+}
+
+ros2_shared_library("diagnostic_msgs__rosidl_typesupport_cpp") {
+  sources = [
+    "src/msg/key_value__type_support.cpp",
+    "src/msg/diagnostic_status__type_support.cpp",
+    "src/msg/diagnostic_array__type_support.cpp",
+    "src/srv/add_diagnostics__request__type_support.cpp",
+    "src/srv/add_diagnostics__response__type_support.cpp",
+    "src/srv/self_test__request__type_support.cpp",
+    "src/srv/self_test__response__type_support.cpp",
+  ]
+
+  include_dirs = [ "include" ]
+
+  deps = [
+    ":diagnostic_msgs__rosidl_generator_c",
+    "//foundation/rosidl/rosidl_runtime_cpp:rosidl_runtime_cpp",
+    "//foundation/rosidl/rosidl_typesupport_cpp:rosidl_typesupport_cpp",
+    "//foundation/rosidl/rosidl_typesupport_introspection_cpp:rosidl_typesupport_introspection_cpp",
+    "//interfaces/std_msgs:std_msgs__rosidl_typesupport_cpp",
+  ]
+
+  defines = [ "ROSIDL_TYPESUPPORT_CPP_BUILDING_DLL" ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}
+
+# ============================================================================
+# Package group target
+# ============================================================================
+group("diagnostic_msgs") {
+  public_deps = [
+    ":diagnostic_msgs__rosidl_generator_c",
+    ":diagnostic_msgs__rosidl_typesupport_c",
+    ":diagnostic_msgs__rosidl_typesupport_cpp",
+    ":diagnostic_msgs__rosidl_typesupport_fastrtps_c",
+  ]
+
+  public_configs = [ ":diagnostic_msgs_cpp_config" ]
+}

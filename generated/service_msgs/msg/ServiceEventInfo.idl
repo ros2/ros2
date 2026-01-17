@@ -1,0 +1,39 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from service_msgs/service_msgs/msg/ServiceEventInfo.msg
+// generated code does not contain a copyright notice
+
+#include "builtin_interfaces/msg/Time.idl"
+
+module service_msgs {
+  module msg {
+    typedef uint8 uint8__16[16];
+    module ServiceEventInfo_Constants {
+      const uint8 REQUEST_SENT = 0;
+      const uint8 REQUEST_RECEIVED = 1;
+      const uint8 RESPONSE_SENT = 2;
+      const uint8 RESPONSE_RECEIVED = 3;
+    };
+    struct ServiceEventInfo {
+      @verbatim (language="comment", text=
+        "The type of event this message represents")
+      uint8 event_type;
+
+      @verbatim (language="comment", text=
+        "Timestamp for when the event occurred (sent or received time)")
+      builtin_interfaces::msg::Time stamp;
+
+      @verbatim (language="comment", text=
+        "Unique identifier for the client that sent the service request" "\n"
+        "Note, this is only unique for the current session." "\n"
+        "The size here has to match the size of rmw_dds_common/msg/Gid," "\n"
+        "but unfortunately we cannot use that message directly due to a" "\n"
+        "circular dependency.")
+      uint8__16 client_gid;
+
+      @verbatim (language="comment", text=
+        "Sequence number for the request" "\n"
+        "Combined with the client ID, this creates a unique ID for the service transaction")
+      int64 sequence_number;
+    };
+  };
+};

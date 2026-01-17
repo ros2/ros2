@@ -1,0 +1,44 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DROSIDL_GENERATOR_C_BUILDING_DLL_action_msgs -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL
+include_dirs = -I../../generated -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include
+cflags = -Wno-unused-parameter -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_c = -std=c11 -std=c11 -fPIC
+target_output_name = libaction_msgs
+
+build obj/generated/action_msgs/msg/detail/libaction_msgs.goal_info__functions.o: cc ../../generated/action_msgs/msg/detail/goal_info__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = goal_info__functions.c
+  source_name_part = goal_info__functions
+build obj/generated/action_msgs/msg/detail/libaction_msgs.goal_status__functions.o: cc ../../generated/action_msgs/msg/detail/goal_status__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = goal_status__functions.c
+  source_name_part = goal_status__functions
+build obj/generated/action_msgs/msg/detail/libaction_msgs.goal_status_array__functions.o: cc ../../generated/action_msgs/msg/detail/goal_status_array__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = goal_status_array__functions.c
+  source_name_part = goal_status_array__functions
+build obj/generated/action_msgs/srv/detail/libaction_msgs.cancel_goal__functions.o: cc ../../generated/action_msgs/srv/detail/cancel_goal__functions.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = cancel_goal__functions.c
+  source_name_part = cancel_goal__functions
+build obj/generated/action_msgs/srv/libaction_msgs.cancel_goal__type_support.o: cc ../../generated/action_msgs/srv/cancel_goal__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = cancel_goal__type_support.c
+  source_name_part = cancel_goal__type_support
+build obj/generated/action_msgs/msg/detail/libaction_msgs.goal_info__type_support.o: cc ../../generated/action_msgs/msg/detail/goal_info__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = goal_info__type_support.c
+  source_name_part = goal_info__type_support
+build obj/generated/action_msgs/msg/detail/libaction_msgs.goal_status__type_support.o: cc ../../generated/action_msgs/msg/detail/goal_status__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = goal_status__type_support.c
+  source_name_part = goal_status__type_support
+build obj/generated/action_msgs/msg/detail/libaction_msgs.goal_status_array__type_support.o: cc ../../generated/action_msgs/msg/detail/goal_status_array__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = goal_status_array__type_support.c
+  source_name_part = goal_status_array__type_support
+build obj/generated/action_msgs/srv/detail/libaction_msgs.cancel_goal__type_support.o: cc ../../generated/action_msgs/srv/detail/cancel_goal__type_support.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = cancel_goal__type_support.c
+  source_name_part = cancel_goal__type_support
+build obj/generated/action_msgs/msg/detail/libaction_msgs.type_description_stubs.o: cc ../../generated/action_msgs/msg/detail/type_description_stubs.c || obj/src/ros2/rcutils/logging_macros_gen.stamp
+  source_file_part = type_description_stubs.c
+  source_name_part = type_description_stubs
+
+build ./libaction_msgs.so: solink obj/generated/action_msgs/msg/detail/libaction_msgs.goal_info__functions.o obj/generated/action_msgs/msg/detail/libaction_msgs.goal_status__functions.o obj/generated/action_msgs/msg/detail/libaction_msgs.goal_status_array__functions.o obj/generated/action_msgs/srv/detail/libaction_msgs.cancel_goal__functions.o obj/generated/action_msgs/srv/libaction_msgs.cancel_goal__type_support.o obj/generated/action_msgs/msg/detail/libaction_msgs.goal_info__type_support.o obj/generated/action_msgs/msg/detail/libaction_msgs.goal_status__type_support.o obj/generated/action_msgs/msg/detail/libaction_msgs.goal_status_array__type_support.o obj/generated/action_msgs/srv/detail/libaction_msgs.cancel_goal__type_support.o obj/generated/action_msgs/msg/detail/libaction_msgs.type_description_stubs.o obj/generated/action_msgs/msg/detail/action_msgs_type_support_cpp.goal_info__type_support.o obj/generated/action_msgs/msg/detail/action_msgs_type_support_cpp.goal_status__type_support.o obj/generated/action_msgs/msg/detail/action_msgs_type_support_cpp.goal_status_array__type_support.o obj/generated/action_msgs/msg/action_msgs_type_support_cpp.goal_info__type_support.o obj/generated/action_msgs/msg/action_msgs_type_support_cpp.goal_status__type_support.o obj/generated/action_msgs/msg/action_msgs_type_support_cpp.goal_status_array__type_support.o obj/generated/action_msgs/srv/action_msgs_type_support_cpp.cancel_goal__type_support.o obj/generated/action_msgs/srv/detail/action_msgs_type_support_cpp.cancel_goal__type_support.o obj/generated/action_msgs/msg/action_msgs_type_support_cpp.goal_info__type_support_c.o obj/generated/action_msgs/msg/action_msgs_type_support_cpp.goal_status__type_support_c.o obj/generated/action_msgs/msg/action_msgs_type_support_cpp.goal_status_array__type_support_c.o obj/generated/action_msgs/srv/action_msgs_type_support_cpp.cancel_goal__type_support_c.o ./librosidl_runtime_c.so ./librosidl_typesupport_introspection_c.so ./librcutils.so ./librosidl_typesupport_c.so ./librosidl_typesupport_cpp.so ./librosidl_typesupport_introspection_cpp.so || obj/generated/action_msgs/action_msgs_type_support_cpp.stamp obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

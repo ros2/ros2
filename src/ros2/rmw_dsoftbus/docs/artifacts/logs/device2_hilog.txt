@@ -1,0 +1,52 @@
+01-16 12:58:20.003     0     0 I I00000/HiLog: ========Zeroth log of type: init
+01-16 17:40:00.956  1062 18659 I C02d13/HDC_LOG: [async_cmd.cpp:84] FinishShellProc finish pipeRead fd:35 pid:18657
+01-16 17:40:00.956  1062 18659 I C02d13/HDC_LOG: [task.cpp:50] HdcTaskBase::TaskFinish notify begin channelId:1217420714
+01-16 17:40:00.956  1062 18659 I C02d13/HDC_LOG: [task.cpp:52] HdcTaskBase::TaskFinish notify end channelId:1217420714
+01-16 17:40:00.956  1062  1390 I C02d13/HDC_LOG: [daemon.cpp:397] FetchCommand channelId:1217420714 command:2
+01-16 17:40:00.956  1062  1390 I C02d13/HDC_LOG: [session.cpp:107] BeginRemoveTask taskType:0 channelId:1217420714
+01-16 17:40:00.956  1062  1390 I C02d13/HDC_LOG: [session.cpp:161] ClearOwnTasks OP_CLEAR finish, sessionId:2060127930 channelIDInput:1217420714
+01-16 17:40:00.957  1062  1390 I C02d13/HDC_LOG: [session.cpp:119] TaskDelay task remove retry count 0/30, taskType:0 channelId:1217420714, sessionId:2060127930
+01-16 17:40:00.957  1062  1390 I C02d13/HDC_LOG: [async_cmd.cpp:53] ReadyForRelease close fd:-1 pid:18657
+01-16 17:40:00.957  1062  1390 I C02d13/HDC_LOG: [daemon_unity.cpp:27] ~HdcDaemonUnity channelId:1217420714
+01-16 17:40:00.957  1062  1390 I C02d13/HDC_LOG: [task.cpp:37] ~HdcTaskBase channelId:1217420714
+01-16 17:40:00.957  1062  1390 I C02d13/HDC_LOG: [session.cpp:127] TaskDelay task remove finish, channelId:1217420714
+01-16 17:40:00.973  1062  1390 I C02d13/HDC_LOG: [daemon.cpp:397] FetchCommand channelId:1217420714 command:2
+01-16 17:40:01.294  1470  1845 I C01560/OHWIFI_STATE_MACHINE: ExecuteTreeStateMsg, State machine: LinkedState execute Cmd:2
+01-16 17:40:01.295   721   721 I C05200/wpa_supplicant: wpa_ctrl_request send success!
+01-16 17:40:01.295  1881  1895 I C05200/wpa_supplicant: Processing message
+01-16 17:40:01.302  1011  1289 I C05743/TransCtrl: [softbus_proxychannel_manager.c:1509] TransProxyTimerItemProc# enter.
+01-16 17:40:01.312   721   721 I C05200/wpa_supplicant: wpa_ctrl_request recv success!
+01-16 17:40:01.312  1470  1845 I C01560/WifiFrameWork: SignalPoll, bssid:c4:d4:**:**:**:40, freq:5785, rssi:-53, noise:-92, chload:0, snr:0, ulDelay:0, txLinkSpeed:150, rxLinkSpeed:0, txBytes:0, rxBytes:0, txFailed:0, txPackets:0, rxPackets:0.
+01-16 17:40:01.318  1470  1845 I C01560/WifiFrameWork: SignalPoll, networkId:0, ssid:K***ong, rssi:-53, band:2, connState:4, detailedState:10, currentSignal:3, lastSignal:3.
+01-16 17:40:01.522  1011  1343 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:405] OnLaneDataReceived# [KHHB]recv hb lane data success, laneId:5, connectionId:131104, data:{"ltype":0,"seq":9635,"ptype":0,"intvl":1000}
+01-16 17:40:01.522  1011  1343 I C05781/LnnHeartBeat: [kh_heartbeat_service.c:129] LnnKhHbPostMessageDelay# [KHHB]LnnKhHbPostMessageDelay:type=2 delayMillis=15000!
+01-16 17:40:01.524  1011  1343 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:704] PostHbData# [KHHB]PostHbData success, laneId:5, data:{"ltype":0,"seq":9635,"ptype":1,"intvl":1000}
+01-16 17:40:01.540  1011  1343 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:405] OnLaneDataReceived# [KHHB]recv hb lane data success, laneId:5, connectionId:131104, data:{"ltype":0,"seq":9635,"ptype":2,"intvl":1000}
+01-16 17:40:01.540  1011  1343 I C05781/LnnHeartBeat: [kh_heartbeat_service.c:129] LnnKhHbPostMessageDelay# [KHHB]LnnKhHbPostMessageDelay:type=2 delayMillis=15000!
+01-16 17:40:01.697   278 18645 I C01719/ffrt: 30335:Detach:114 qos 2 thread not joinable.
+01-16 17:40:01.929  1011  1343 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:405] OnLaneDataReceived# [KHHB]recv hb lane data success, laneId:6, connectionId:131100, data:{"ltype":0,"seq":4400,"ptype":0,"intvl":1000}
+01-16 17:40:01.929  1011  1343 I C05781/LnnHeartBeat: [kh_heartbeat_service.c:129] LnnKhHbPostMessageDelay# [KHHB]LnnKhHbPostMessageDelay:type=2 delayMillis=15000!
+01-16 17:40:01.929  1011  1343 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:704] PostHbData# [KHHB]PostHbData success, laneId:6, data:{"ltype":0,"seq":4400,"ptype":1,"intvl":1000}
+01-16 17:40:01.945  1011  1343 I C05781/LnnHeartBeat: [kh_heartbeat_conn_adapter.c:405] OnLaneDataReceived# [KHHB]recv hb lane data success, laneId:6, connectionId:131100, data:{"ltype":0,"seq":4400,"ptype":2,"intvl":1000}
+01-16 17:40:01.946  1011  1343 I C05781/LnnHeartBeat: [kh_heartbeat_service.c:129] LnnKhHbPostMessageDelay# [KHHB]LnnKhHbPostMessageDelay:type=2 delayMillis=15000!
+01-16 17:40:02.242  1062  1390 I C02d13/HDC_LOG: [daemon.cpp:397] FetchCommand channelId:1001099260 command:1001
+01-16 17:40:02.242  1062  1390 E C02c02/PARAM: [param_manager.c:736]SystemReadParam failed! name is:persist.hdc.control.shell, errNum is:106!
+01-16 17:40:02.242  1062  1390 I C02d13/HDC_LOG: [session.cpp:1335] New HTaskInfo channelId:1001099260 command:1001
+01-16 17:40:02.242  1062  1390 I C02d13/HDC_LOG: [session.cpp:750] AdminTask add session 2060127930, channelId 1001099260, mapTask size: 1
+01-16 17:40:02.242  1062  1390 I C02d13/HDC_LOG: [task.cpp:32] HdcTaskBase channelId:1001099260
+01-16 17:40:02.242  1062  1390 E C02c02/PARAM: [param_manager.c:736]SystemReadParam failed! name is:persist.hdc.root, errNum is:106!
+01-16 17:40:02.242  1062  1390 W C02d13/HDC_LOG: [async_cmd.cpp:110] GetDevItem false key:persist.hdc.root
+01-16 17:40:02.242  1062 18661 I C02d13/HDC_LOG: [async_cmd.cpp:212] Popen pipe fds[pipeRead]:35 fds[pipeWrite]:36, mode 0
+01-16 17:40:02.243  1062  1390 I C02d13/HDC_LOG: [async_cmd.cpp:262] ExecuteCommand cmd:hilog -x > /data/test/device2_hilog.txt 2>&1 & fd:35 pid:18662
+01-16 17:40:02.250  1062 18664 I C02d13/HDC_LOG: [async_cmd.cpp:84] FinishShellProc finish pipeRead fd:35 pid:18662
+01-16 17:40:02.250  1062 18664 I C02d13/HDC_LOG: [task.cpp:50] HdcTaskBase::TaskFinish notify begin channelId:1001099260
+01-16 17:40:02.250  1062 18664 I C02d13/HDC_LOG: [task.cpp:52] HdcTaskBase::TaskFinish notify end channelId:1001099260
+01-16 17:40:02.251  1062  1390 I C02d13/HDC_LOG: [daemon.cpp:397] FetchCommand channelId:1001099260 command:2
+01-16 17:40:02.251  1062  1390 I C02d13/HDC_LOG: [session.cpp:107] BeginRemoveTask taskType:0 channelId:1001099260
+01-16 17:40:02.251  1062  1390 I C02d13/HDC_LOG: [session.cpp:161] ClearOwnTasks OP_CLEAR finish, sessionId:2060127930 channelIDInput:1001099260
+01-16 17:40:02.251  1062  1390 I C02d13/HDC_LOG: [session.cpp:119] TaskDelay task remove retry count 0/30, taskType:0 channelId:1001099260, sessionId:2060127930
+01-16 17:40:02.251  1062  1390 I C02d13/HDC_LOG: [async_cmd.cpp:53] ReadyForRelease close fd:-1 pid:18662
+01-16 17:40:02.251  1062  1390 I C02d13/HDC_LOG: [daemon_unity.cpp:27] ~HdcDaemonUnity channelId:1001099260
+01-16 17:40:02.251  1062  1390 I C02d13/HDC_LOG: [task.cpp:37] ~HdcTaskBase channelId:1001099260
+01-16 17:40:02.251  1062  1390 I C02d13/HDC_LOG: [session.cpp:127] TaskDelay task remove finish, channelId:1001099260
+01-16 17:40:02.256  1062  1390 I C02d13/HDC_LOG: [daemon.cpp:397] FetchCommand channelId:1001099260 command:2

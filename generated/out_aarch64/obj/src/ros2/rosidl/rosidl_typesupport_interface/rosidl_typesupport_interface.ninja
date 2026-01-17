@@ -1,0 +1,6 @@
+defines = -D__OHOS__ -D_GNU_SOURCE
+include_dirs = -I../../src/ros2/rosidl/rosidl_typesupport_interface/include
+target_output_name = rosidl_typesupport_interface
+
+
+build obj/src/ros2/rosidl/rosidl_typesupport_interface/rosidl_typesupport_interface.stamp: stamp

@@ -1,0 +1,90 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# Standalone build configuration (替代 //build/ohos.gni)
+
+# ==============================================================================
+# ohos_shared_library - OpenHarmony shared library (simplified for standalone)
+# ==============================================================================
+template("ohos_shared_library") {
+  # Capture OpenHarmony-specific variables (ignored in standalone build)
+  if (defined(invoker.part_name)) {
+    _ignored_part_name = invoker.part_name
+    not_needed([ "_ignored_part_name" ])
+  }
+  if (defined(invoker.subsystem_name)) {
+    _ignored_subsystem_name = invoker.subsystem_name
+    not_needed([ "_ignored_subsystem_name" ])
+  }
+
+  shared_library(target_name) {
+    forward_variables_from(invoker, "*", [ "part_name", "subsystem_name" ])
+  }
+}
+
+# ==============================================================================
+# ohos_static_library - OpenHarmony static library (simplified for standalone)
+# ==============================================================================
+template("ohos_static_library") {
+  # Capture OpenHarmony-specific variables (ignored in standalone build)
+  if (defined(invoker.part_name)) {
+    _ignored_part_name = invoker.part_name
+    not_needed([ "_ignored_part_name" ])
+  }
+  if (defined(invoker.subsystem_name)) {
+    _ignored_subsystem_name = invoker.subsystem_name
+    not_needed([ "_ignored_subsystem_name" ])
+  }
+
+  static_library(target_name) {
+    forward_variables_from(invoker, "*", [ "part_name", "subsystem_name" ])
+  }
+}
+
+# ==============================================================================
+# ohos_executable - OpenHarmony executable (simplified for standalone)
+# ==============================================================================
+template("ohos_executable") {
+  executable(target_name) {
+    forward_variables_from(invoker, "*", [ "part_name", "subsystem_name" ])
+
+    # Acknowledge OpenHarmony-specific variables (ignored in standalone build)
+    not_needed(invoker, [ "part_name", "subsystem_name" ])
+  }
+}
+
+# ==============================================================================
+# ohos_source_set - OpenHarmony source set (simplified for standalone)
+# ==============================================================================
+template("ohos_source_set") {
+  # Capture OpenHarmony-specific variables (ignored in standalone build)
+  if (defined(invoker.part_name)) {
+    _ignored_part_name = invoker.part_name
+    not_needed([ "_ignored_part_name" ])
+  }
+  if (defined(invoker.subsystem_name)) {
+    _ignored_subsystem_name = invoker.subsystem_name
+    not_needed([ "_ignored_subsystem_name" ])
+  }
+
+  source_set(target_name) {
+    forward_variables_from(invoker, "*", [ "part_name", "subsystem_name" ])
+  }
+}
+
+# ==============================================================================
+# ohos_action - OpenHarmony action (simplified for standalone)
+# ==============================================================================
+template("ohos_action") {
+  # Capture OpenHarmony-specific variables (ignored in standalone build)
+  if (defined(invoker.part_name)) {
+    _ignored_part_name = invoker.part_name
+    not_needed([ "_ignored_part_name" ])
+  }
+  if (defined(invoker.subsystem_name)) {
+    _ignored_subsystem_name = invoker.subsystem_name
+    not_needed([ "_ignored_subsystem_name" ])
+  }
+
+  action(target_name) {
+    forward_variables_from(invoker, "*", [ "part_name", "subsystem_name" ])
+  }
+}

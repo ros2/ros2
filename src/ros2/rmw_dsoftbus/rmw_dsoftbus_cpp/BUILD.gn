@@ -1,0 +1,213 @@
+# Copyright (c) 2024 ROS2 KaihongOS Port Project
+# BUILD.gn for rmw_dsoftbus_cpp (CLEAN VERSION)
+#
+# This is the clean, minimal RMW implementation with ZERO DDS dependencies.
+# Architecture:
+#   - rmw_api_clean.cpp:    Thin RMW API adapter (ROS2 compliant)
+#   - transport_simple.cpp: Pure UDP socket backend (proven logic)
+#   - rcutils_stub.c:       Minimal rcutils symbols (no external lib)
+
+import("//gn_templates/ros2_library.gni")
+
+_rmw_dsoftbus_src = "//src/ros2/rmw_dsoftbus"
+
+config("rmw_dsoftbus_cpp_public_config") {
+  include_dirs = [
+    "${_rmw_dsoftbus_src}/include",  # Session-based RMW headers
+  ]
+
+  defines = [
+    "RMW_VERSION_MAJOR=0",
+    "RMW_VERSION_MINOR=1",
+    "RMW_VERSION_PATCH=0",
+  ]
+}
+
+ros2_shared_library("rmw_dsoftbus_cpp") {
+  # Session-based RMW implementation (Phase 1 complete)
+  sources = [
+    # Core RMW APIs (Session-based)
+    "${_rmw_dsoftbus_src}/src/rmw_init.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_node.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_publisher.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_subscription.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_wait.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_event.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_get_info.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_guard_condition.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_serialize.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_qos.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_logging.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_client.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_service.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_allocation.cpp",
+
+    # Serialization (Phase 2.1 complete)
+    "${_rmw_dsoftbus_src}/src/cdr_serializer.cpp",
+    "${_rmw_dsoftbus_src}/src/qos_mapper.cpp",
+
+    # Session management
+    "${_rmw_dsoftbus_src}/src/session_manager.cpp",
+    "${_rmw_dsoftbus_src}/src/native_token.cpp",
+    "${_rmw_dsoftbus_src}/src/dsoftbus_stubs.cpp",
+
+    # Discovery (Phase 2 complete)
+    "${_rmw_dsoftbus_src}/src/discovery_manager.cpp",
+    "${_rmw_dsoftbus_src}/src/graph_cache.cpp",
+  ]
+
+  public_configs = [ ":rmw_dsoftbus_cpp_public_config" ]
+
+  # Public dependencies (exported to consumers)
+  public_deps = [
+    "//src/ros2/rmw/rmw:rmw",
+    "//src/ros2/rcutils:rcutils",
+  ]
+
+  # ROS2 headers ONLY (absolute header-only includes)
+  include_dirs = [
+    "//src/ros2/rmw/rmw/include",
+    "//src/ros2/rcutils/include",
+    "//out/gen/src/ros2/rcutils/rcutils/include",  # Generated headers
+    "//src/ros2/rosidl/rosidl_runtime_c/include",
+    "//src/ros2/rosidl/rosidl_typesupport_interface/include",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_c/include",
+    "//src/ros2/rosidl/rosidl_typesupport_introspection_cpp/include",
+    "//src/ros2/rosidl/rosidl_runtime_cpp/include",
+    "//src/ros2/rosidl_dynamic_typesupport/include",
+  ]
+
+  # NO dsoftbus libraries
+  # NO DDS libraries
+  # NO external ROS2 libraries (except rmw headers)
+  # ONLY system libraries: pthread, dl (automatically linked)
+
+  cflags_cc = [
+    "-std=c++17",
+    "-Wall",
+    "-Wextra",
+    "-Wno-unused-parameter",
+    "-fPIC",
+  ]
+
+  cflags_c = [
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-fPIC",
+  ]
+
+  # Link only system libraries
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# ============================================================================
+# FULL RMW implementation (with Session API support)
+# ============================================================================
+# This version includes:
+#   - dsoftbus Session API (cross-device communication)
+#   - Multiple transport backends (Session/KhTrans/Socket)
+#   - TransportController architecture
+#   - Full ROS2 dependencies (rcutils, rosidl, etc.)
+
+config("rmw_dsoftbus_full_public_config") {
+  include_dirs = [
+    "${_rmw_dsoftbus_src}/include",
+    "${_rmw_dsoftbus_src}/include/rmw_dsoftbus",
+  ]
+
+  defines = [
+    "RMW_DSOFTBUS_BUILDING_LIBRARY",
+    "RMW_VERSION_MAJOR=0",
+    "RMW_VERSION_MINOR=1",
+    "RMW_VERSION_PATCH=0",
+    "RMW_DSOFTBUS_USE_REAL_SOFTBUS=1",  # Enable Session API
+  ]
+}
+
+ros2_shared_library("rmw_dsoftbus_full") {
+  # FULL RMW implementation - all source files from src/
+  sources = [
+    # Core RMW APIs
+    "${_rmw_dsoftbus_src}/src/rmw_init.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_node.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_publisher.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_subscription.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_wait.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_event.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_get_info.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_guard_condition.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_serialize.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_qos.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_logging.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_client.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_service.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_allocation.cpp",
+    "${_rmw_dsoftbus_src}/src/rmw_missing_apis.cpp",
+
+    # Serialization
+    "${_rmw_dsoftbus_src}/src/cdr_serializer.cpp",
+    "${_rmw_dsoftbus_src}/src/qos_mapper.cpp",
+
+    # dsoftbus adapter
+    "${_rmw_dsoftbus_src}/src/dsoftbus_adapter.cpp",
+
+    # Transport layer - multiple backends
+    "${_rmw_dsoftbus_src}/src/transport_backends.cpp",
+    "${_rmw_dsoftbus_src}/src/transport_controller.cpp",
+    "${_rmw_dsoftbus_src}/src/transport_manager.cpp",
+    "${_rmw_dsoftbus_src}/src/transport_session_backend.cpp",  # ★ Session API
+    "${_rmw_dsoftbus_src}/src/transport_khtrans_backend.cpp",
+    "${_rmw_dsoftbus_src}/src/transport_socket_backend.cpp",
+    "${_rmw_dsoftbus_src}/src/socket_direct.cpp",
+  ]
+
+  public_configs = [ ":rmw_dsoftbus_full_public_config" ]
+
+  # USE MOCK INCLUDES - compatible with Full RMW source code
+  # Order matters: mock_includes first for RMW types, then standard headers
+  include_dirs = [
+    # Mock headers (compatible with Full RMW code)
+    "${_rmw_dsoftbus_src}/mock_includes",
+
+    # ROS2 headers for non-conflicting types
+    "//src/ros2/rcutils/include",
+    "//out/gen/src/ros2/rcutils/rcutils/include",
+
+    # OpenHarmony dsoftbus SDK headers
+    "//OpenHarmony/foundation/communication/dsoftbus/interfaces/kits",
+    "//OpenHarmony/foundation/communication/dsoftbus/interfaces/kits/transport",
+    "//OpenHarmony/foundation/communication/dsoftbus/interfaces/kits/bus_center",
+    "//OpenHarmony/foundation/communication/dsoftbus/interfaces/kits/common",
+    "//OpenHarmony/foundation/communication/dsoftbus/interfaces/kits/discovery",
+    "//OpenHarmony/foundation/communication/dsoftbus/interfaces/kits/kh_trans",  # KH_TRANS API
+  ]
+
+  # NO public_deps to avoid ABI conflicts
+  # Full RMW uses internal type definitions
+
+  # dsoftbus libraries are loaded dynamically via dlopen/dlsym
+  # No explicit linking needed - symbols resolved at runtime
+  libs = [
+    "pthread",
+    "dl",
+  ]
+
+  cflags_cc = [
+    "-std=c++17",
+    "-Wall",
+    "-Wextra",
+    "-Wno-unused-parameter",
+    "-fPIC",
+  ]
+
+  cflags_c = [
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-fPIC",
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "package_name": "service_msgs",
+  "idl_tuples": [
+    "/home/jiusi/M-DDS/ros2/generated/service_msgs:msg/ServiceEventInfo.idl"
+  ],
+  "ros_interface_files": [
+    "/home/jiusi/M-DDS/ros2/generated/service_msgs/msg/ServiceEventInfo.idl"
+  ],
+  "output_dir": "/home/jiusi/M-DDS/ros2/generated/service_msgs",
+  "template_dir": "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource",
+  "target_dependencies": [
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/msg__traits.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/msg__builder.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/srv__traits.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/msg__struct.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/idl.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/msg__type_support.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/idl__traits.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/srv__type_support.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/srv__struct.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/action__struct.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/action__builder.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/srv__builder.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/idl__builder.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/idl__struct.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/action__traits.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/action__type_support.hpp.em",
+    "/home/jiusi/M-DDS/ros2/src/ros2/rosidl/rosidl_generator_cpp/resource/idl__type_support.hpp.em",
+    "/home/jiusi/M-DDS/ros2/generated/service_msgs/msg/ServiceEventInfo.idl"
+  ],
+  "ros_interface_dependencies": [],
+  "type_description_tuples": []
+}

@@ -1,0 +1,279 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DRCLCPP_BUILDING_LIBRARY -DROSIDL_GENERATOR_C_BUILDING_DLL_builtin_interfaces -DROSIDL_RUNTIME_C_BUILDING_DLL -DRCUTILS_BUILDING_DLL -DLIBSTATISTICS_COLLECTOR_BUILDING_LIBRARY -DRCL_BUILDING_DLL -DRMW_VERSION_MAJOR=2 -DRMW_VERSION_MINOR=0 -DRMW_VERSION_PATCH=0 -DROSIDL_GENERATOR_C_BUILDING_DLL_rcl_interfaces -DROSIDL_GENERATOR_C_BUILDING_DLL_type_description_interfaces -DROSIDL_GENERATOR_C_BUILDING_DLL_service_msgs -DROSIDL_GENERATOR_C_BUILDING_DLL_statistics_msgs -DROSIDL_GENERATOR_C_BUILDING_DLL_rosgraph_msgs -DROSIDL_TYPESUPPORT_CPP_BUILDING_DLL -DROSIDL_TYPESUPPORT_INTROSPECTION_CPP_BUILDING_DLL -DTRACETOOLS_DISABLED -DTRACETOOLS_TRACEPOINTS_EXCLUDED -DAMENT_INDEX_CPP_BUILDING_DLL
+include_dirs = -I../../generated -I../../src/ros2/rclcpp/rclcpp/include -I../../src/ros2/rosidl/rosidl_runtime_c/include -I../../src/ros2/rcutils/include -Igen/src/ros2/rcutils/rcutils/include -I../../src/ros2/rosidl/rosidl_typesupport_interface/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_c/include -I../../src/ros-tooling/libstatistics_collector/include -I../../src/ros2/rcl/rcl/include -I../../src/ros2/rmw/rmw/include -I../../src/ros2/rosidl_dynamic_typesupport/include -I../../src/ros2/rcl_logging/rcl_logging_interface/include -I../../src/ros2/rcl/rcl_yaml_param_parser/include -I../../src/ros2/rmw_cyclonedds/rmw_cyclonedds_cpp/include -I../../src/ros2/rcpputils/include -I../../src/ros2/rosidl/rosidl_runtime_cpp/include -I../../src/ros2/rosidl_typesupport/rosidl_typesupport_cpp/include -I../../src/ros2/rosidl_typesupport/rosidl_typesupport_c/include -I../../src/ros2/rosidl/rosidl_typesupport_introspection_cpp/include -I../../src/ros2/ros2_tracing/tracetools/include -I../../src/ament/ament_index/ament_index_cpp/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC -std=c99 -std=c99 -std=c11 -std=c11
+cflags_cc = -std=c++17 -Wall -Wextra -Wconversion -Wno-sign-conversion -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual -std=c++17 -Wno-psabi -std=c++17 -fPIC -std=c++17
+target_output_name = librclcpp
+
+build obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp: stamp obj/src/eclipse-cyclonedds/cyclonedds/cyclone_config_gen.stamp obj/src/ros2/rcutils/logging_macros_gen.stamp
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.any_executable.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/any_executable.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = any_executable.cpp
+  source_name_part = any_executable
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.callback_group.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/callback_group.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = callback_group.cpp
+  source_name_part = callback_group
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.client.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/client.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = client.cpp
+  source_name_part = client
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.clock.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/clock.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = clock.cpp
+  source_name_part = clock
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.context.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/context.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = context.cpp
+  source_name_part = context
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/contexts/librclcpp.default_context.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/contexts/default_context.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = default_context.cpp
+  source_name_part = default_context
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.create_generic_client.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/create_generic_client.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = create_generic_client.cpp
+  source_name_part = create_generic_client
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.add_guard_condition_to_rcl_wait_set.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/detail/add_guard_condition_to_rcl_wait_set.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = add_guard_condition_to_rcl_wait_set.cpp
+  source_name_part = add_guard_condition_to_rcl_wait_set
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.resolve_intra_process_buffer_type.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/detail/resolve_intra_process_buffer_type.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = resolve_intra_process_buffer_type.cpp
+  source_name_part = resolve_intra_process_buffer_type
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.resolve_parameter_overrides.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/detail/resolve_parameter_overrides.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = resolve_parameter_overrides.cpp
+  source_name_part = resolve_parameter_overrides
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.rmw_implementation_specific_payload.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/detail/rmw_implementation_specific_payload.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = rmw_implementation_specific_payload.cpp
+  source_name_part = rmw_implementation_specific_payload
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.rmw_implementation_specific_publisher_payload.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/detail/rmw_implementation_specific_publisher_payload.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = rmw_implementation_specific_publisher_payload.cpp
+  source_name_part = rmw_implementation_specific_publisher_payload
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.rmw_implementation_specific_subscription_payload.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/detail/rmw_implementation_specific_subscription_payload.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = rmw_implementation_specific_subscription_payload.cpp
+  source_name_part = rmw_implementation_specific_subscription_payload
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.utilities.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/detail/utilities.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = utilities.cpp
+  source_name_part = utilities
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.duration.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/duration.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = duration.cpp
+  source_name_part = duration
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/librclcpp.dynamic_message.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/dynamic_message.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = dynamic_message.cpp
+  source_name_part = dynamic_message
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/librclcpp.dynamic_message_type.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/dynamic_message_type.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = dynamic_message_type.cpp
+  source_name_part = dynamic_message_type
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/librclcpp.dynamic_message_type_builder.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/dynamic_message_type_builder.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = dynamic_message_type_builder.cpp
+  source_name_part = dynamic_message_type_builder
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/librclcpp.dynamic_message_type_support.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/dynamic_message_type_support.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = dynamic_message_type_support.cpp
+  source_name_part = dynamic_message_type_support
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/librclcpp.dynamic_serialization_support.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/dynamic_serialization_support.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = dynamic_serialization_support.cpp
+  source_name_part = dynamic_serialization_support
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.event.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/event.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = event.cpp
+  source_name_part = event
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/exceptions/librclcpp.exceptions.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/exceptions/exceptions.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = exceptions.cpp
+  source_name_part = exceptions
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.executable_list.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/executable_list.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = executable_list.cpp
+  source_name_part = executable_list
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.executor.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/executor.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = executor.cpp
+  source_name_part = executor
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.executor_options.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/executor_options.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = executor_options.cpp
+  source_name_part = executor_options
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.executors.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/executors.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = executors.cpp
+  source_name_part = executors
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/executors/librclcpp.executor_entities_collection.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/executors/executor_entities_collection.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = executor_entities_collection.cpp
+  source_name_part = executor_entities_collection
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/executors/librclcpp.executor_entities_collector.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/executors/executor_entities_collector.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = executor_entities_collector.cpp
+  source_name_part = executor_entities_collector
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/executors/librclcpp.executor_notify_waitable.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/executors/executor_notify_waitable.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = executor_notify_waitable.cpp
+  source_name_part = executor_notify_waitable
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/executors/librclcpp.multi_threaded_executor.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/executors/multi_threaded_executor.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = multi_threaded_executor.cpp
+  source_name_part = multi_threaded_executor
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/executors/librclcpp.single_threaded_executor.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/executors/single_threaded_executor.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = single_threaded_executor.cpp
+  source_name_part = single_threaded_executor
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/executors/librclcpp.static_single_threaded_executor.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/executors/static_single_threaded_executor.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = static_single_threaded_executor.cpp
+  source_name_part = static_single_threaded_executor
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.expand_topic_or_service_name.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/expand_topic_or_service_name.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = expand_topic_or_service_name.cpp
+  source_name_part = expand_topic_or_service_name
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/experimental/executors/events_executor/librclcpp.events_executor.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/experimental/executors/events_executor/events_executor.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = events_executor.cpp
+  source_name_part = events_executor
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/experimental/librclcpp.timers_manager.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/experimental/timers_manager.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = timers_manager.cpp
+  source_name_part = timers_manager
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.future_return_code.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/future_return_code.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = future_return_code.cpp
+  source_name_part = future_return_code
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.generic_client.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/generic_client.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = generic_client.cpp
+  source_name_part = generic_client
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.generic_publisher.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/generic_publisher.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = generic_publisher.cpp
+  source_name_part = generic_publisher
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.generic_subscription.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/generic_subscription.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = generic_subscription.cpp
+  source_name_part = generic_subscription
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.graph_listener.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/graph_listener.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = graph_listener.cpp
+  source_name_part = graph_listener
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.guard_condition.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/guard_condition.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = guard_condition.cpp
+  source_name_part = guard_condition
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.init_options.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/init_options.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = init_options.cpp
+  source_name_part = init_options
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.intra_process_manager.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/intra_process_manager.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = intra_process_manager.cpp
+  source_name_part = intra_process_manager
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.logger.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/logger.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = logger.cpp
+  source_name_part = logger
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.logging_mutex.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/logging_mutex.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = logging_mutex.cpp
+  source_name_part = logging_mutex
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.memory_strategies.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/memory_strategies.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = memory_strategies.cpp
+  source_name_part = memory_strategies
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.memory_strategy.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/memory_strategy.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = memory_strategy.cpp
+  source_name_part = memory_strategy
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.message_info.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/message_info.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = message_info.cpp
+  source_name_part = message_info
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.network_flow_endpoint.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/network_flow_endpoint.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = network_flow_endpoint.cpp
+  source_name_part = network_flow_endpoint
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.node.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/node.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = node.cpp
+  source_name_part = node
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_base.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/node_base.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = node_base.cpp
+  source_name_part = node_base
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_clock.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/node_clock.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = node_clock.cpp
+  source_name_part = node_clock
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_graph.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/node_graph.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = node_graph.cpp
+  source_name_part = node_graph
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_logging.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/node_logging.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = node_logging.cpp
+  source_name_part = node_logging
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_parameters.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/node_parameters.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = node_parameters.cpp
+  source_name_part = node_parameters
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_services.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/node_services.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = node_services.cpp
+  source_name_part = node_services
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_time_source.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/node_time_source.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = node_time_source.cpp
+  source_name_part = node_time_source
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_timers.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/node_timers.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = node_timers.cpp
+  source_name_part = node_timers
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_topics.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/node_topics.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = node_topics.cpp
+  source_name_part = node_topics
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_type_descriptions.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/node_type_descriptions.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = node_type_descriptions.cpp
+  source_name_part = node_type_descriptions
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_waitables.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/node_waitables.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = node_waitables.cpp
+  source_name_part = node_waitables
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.node_options.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/node_options.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = node_options.cpp
+  source_name_part = node_options
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/parameter.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = parameter.cpp
+  source_name_part = parameter
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter_client.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/parameter_client.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = parameter_client.cpp
+  source_name_part = parameter_client
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter_event_handler.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/parameter_event_handler.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = parameter_event_handler.cpp
+  source_name_part = parameter_event_handler
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter_events_filter.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/parameter_events_filter.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = parameter_events_filter.cpp
+  source_name_part = parameter_events_filter
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter_map.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/parameter_map.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = parameter_map.cpp
+  source_name_part = parameter_map
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter_service.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/parameter_service.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = parameter_service.cpp
+  source_name_part = parameter_service
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter_value.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/parameter_value.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = parameter_value.cpp
+  source_name_part = parameter_value
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.publisher_base.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/publisher_base.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = publisher_base.cpp
+  source_name_part = publisher_base
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.qos.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/qos.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = qos.cpp
+  source_name_part = qos
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.event_handler.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/event_handler.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = event_handler.cpp
+  source_name_part = event_handler
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.qos_overriding_options.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/qos_overriding_options.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = qos_overriding_options.cpp
+  source_name_part = qos_overriding_options
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.rate.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/rate.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = rate.cpp
+  source_name_part = rate
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.serialization.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/serialization.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = serialization.cpp
+  source_name_part = serialization
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.serialized_message.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/serialized_message.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = serialized_message.cpp
+  source_name_part = serialized_message
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.service.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/service.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = service.cpp
+  source_name_part = service
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.signal_handler.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/signal_handler.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = signal_handler.cpp
+  source_name_part = signal_handler
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.subscription_base.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/subscription_base.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = subscription_base.cpp
+  source_name_part = subscription_base
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.subscription_intra_process_base.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/subscription_intra_process_base.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = subscription_intra_process_base.cpp
+  source_name_part = subscription_intra_process_base
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.time.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/time.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = time.cpp
+  source_name_part = time
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.time_source.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/time_source.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = time_source.cpp
+  source_name_part = time_source
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.timer.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/timer.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = timer.cpp
+  source_name_part = timer
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.type_support.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/type_support.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = type_support.cpp
+  source_name_part = type_support
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.typesupport_helpers.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/typesupport_helpers.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = typesupport_helpers.cpp
+  source_name_part = typesupport_helpers
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.utilities.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/utilities.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = utilities.cpp
+  source_name_part = utilities
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/wait_set_policies/detail/librclcpp.write_preferring_read_write_lock.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/wait_set_policies/detail/write_preferring_read_write_lock.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = write_preferring_read_write_lock.cpp
+  source_name_part = write_preferring_read_write_lock
+build obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.waitable.o: cxx ../../src/ros2/rclcpp/rclcpp/src/rclcpp/waitable.cpp || obj/src/ros2/rclcpp/rclcpp/rclcpp.inputdeps.stamp
+  source_file_part = waitable.cpp
+  source_name_part = waitable
+
+build ./librclcpp.so: solink obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.any_executable.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.callback_group.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.client.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.clock.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.context.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/contexts/librclcpp.default_context.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.create_generic_client.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.add_guard_condition_to_rcl_wait_set.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.resolve_intra_process_buffer_type.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.resolve_parameter_overrides.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.rmw_implementation_specific_payload.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.rmw_implementation_specific_publisher_payload.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.rmw_implementation_specific_subscription_payload.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/detail/librclcpp.utilities.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.duration.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/librclcpp.dynamic_message.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/librclcpp.dynamic_message_type.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/librclcpp.dynamic_message_type_builder.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/librclcpp.dynamic_message_type_support.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/dynamic_typesupport/librclcpp.dynamic_serialization_support.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.event.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/exceptions/librclcpp.exceptions.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.executable_list.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.executor.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.executor_options.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.executors.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/executors/librclcpp.executor_entities_collection.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/executors/librclcpp.executor_entities_collector.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/executors/librclcpp.executor_notify_waitable.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/executors/librclcpp.multi_threaded_executor.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/executors/librclcpp.single_threaded_executor.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/executors/librclcpp.static_single_threaded_executor.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.expand_topic_or_service_name.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/experimental/executors/events_executor/librclcpp.events_executor.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/experimental/librclcpp.timers_manager.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.future_return_code.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.generic_client.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.generic_publisher.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.generic_subscription.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.graph_listener.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.guard_condition.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.init_options.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.intra_process_manager.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.logger.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.logging_mutex.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.memory_strategies.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.memory_strategy.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.message_info.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.network_flow_endpoint.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.node.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_base.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_clock.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_graph.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_logging.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_parameters.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_services.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_time_source.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_timers.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_topics.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_type_descriptions.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/node_interfaces/librclcpp.node_waitables.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.node_options.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter_client.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter_event_handler.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter_events_filter.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter_map.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter_service.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.parameter_value.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.publisher_base.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.qos.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.event_handler.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.qos_overriding_options.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.rate.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.serialization.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.serialized_message.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.service.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.signal_handler.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.subscription_base.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.subscription_intra_process_base.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.time.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.time_source.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.timer.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.type_support.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.typesupport_helpers.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.utilities.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/wait_set_policies/detail/librclcpp.write_preferring_read_write_lock.o obj/src/ros2/rclcpp/rclcpp/src/rclcpp/librclcpp.waitable.o ./libbuiltin_interfaces.so ./libstatistics_collector.so ./librcl.so ./librcl_interfaces.so ./librcl_yaml_param_parser.so ./librcpputils.so ./librcutils.so ./librmw.so ./librosgraph_msgs.so ./librosidl_dynamic_typesupport.so ./librosidl_runtime_c.so ./librosidl_typesupport_cpp.so ./librosidl_typesupport_introspection_cpp.so ./libstatistics_msgs.so ./libament_index_cpp.so ./librcl_logging_interface.so ./librosidl_typesupport_introspection_c.so ./librmw_implementation.so ./librmw_cyclonedds_cpp.so ./libtype_description_interfaces.so ./libservice_msgs.so ./librosidl_typesupport_c.so || obj/src/ros2/rosidl/rosidl_runtime_cpp/rosidl_runtime_cpp.stamp obj/src/ros2/ros2_tracing/tracetools/tracetools.stamp
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

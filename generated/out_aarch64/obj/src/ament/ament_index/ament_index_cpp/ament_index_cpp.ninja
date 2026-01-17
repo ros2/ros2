@@ -1,0 +1,35 @@
+defines = -D__OHOS__ -D_GNU_SOURCE -DAMENT_INDEX_CPP_BUILDING_DLL
+include_dirs = -I../../src/ament/ament_index/ament_index_cpp/include
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_cc = -std=c++17 -Wall -Wextra -Wpedantic -std=c++17 -Wno-psabi
+target_output_name = libament_index_cpp
+
+build obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.get_package_prefix.o: cxx ../../src/ament/ament_index/ament_index_cpp/src/get_package_prefix.cpp
+  source_file_part = get_package_prefix.cpp
+  source_name_part = get_package_prefix
+build obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.get_package_share_directory.o: cxx ../../src/ament/ament_index/ament_index_cpp/src/get_package_share_directory.cpp
+  source_file_part = get_package_share_directory.cpp
+  source_name_part = get_package_share_directory
+build obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.get_packages_with_prefixes.o: cxx ../../src/ament/ament_index/ament_index_cpp/src/get_packages_with_prefixes.cpp
+  source_file_part = get_packages_with_prefixes.cpp
+  source_name_part = get_packages_with_prefixes
+build obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.get_resource.o: cxx ../../src/ament/ament_index/ament_index_cpp/src/get_resource.cpp
+  source_file_part = get_resource.cpp
+  source_name_part = get_resource
+build obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.get_resources.o: cxx ../../src/ament/ament_index/ament_index_cpp/src/get_resources.cpp
+  source_file_part = get_resources.cpp
+  source_name_part = get_resources
+build obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.get_search_paths.o: cxx ../../src/ament/ament_index/ament_index_cpp/src/get_search_paths.cpp
+  source_file_part = get_search_paths.cpp
+  source_name_part = get_search_paths
+build obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.has_resource.o: cxx ../../src/ament/ament_index/ament_index_cpp/src/has_resource.cpp
+  source_file_part = has_resource.cpp
+  source_name_part = has_resource
+
+build ./libament_index_cpp.so: solink obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.get_package_prefix.o obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.get_package_share_directory.o obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.get_packages_with_prefixes.o obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.get_resource.o obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.get_resources.o obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.get_search_paths.o obj/src/ament/ament_index/ament_index_cpp/src/libament_index_cpp.has_resource.o
+  ldflags =
+  libs = -lc -lm -ldl -lpthread
+  frameworks =
+  swiftmodules =
+  output_extension = .so
+  output_dir = .

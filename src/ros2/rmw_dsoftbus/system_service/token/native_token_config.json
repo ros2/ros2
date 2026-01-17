@@ -1,0 +1,26 @@
+{
+  "processName": "com.huawei.dmsdp",
+  "APL": "system_basic",
+  "version": 1,
+  "tokenId": 671999888,
+  "tokenAttr": 0,
+  "dcaps": [],
+  "permissions": [
+    {
+      "name": "ohos.permission.DISTRIBUTED_DATASYNC",
+      "granted": true,
+      "grantMode": 0
+    },
+    {
+      "name": "ohos.permission.DISTRIBUTED_SOFTBUS_CENTER",
+      "granted": true,
+      "grantMode": 0
+    },
+    {
+      "name": "ohos.permission.ACCESS_SERVICE_DM",
+      "granted": true,
+      "grantMode": 0
+    }
+  ],
+  "nativeAcls": []
+}

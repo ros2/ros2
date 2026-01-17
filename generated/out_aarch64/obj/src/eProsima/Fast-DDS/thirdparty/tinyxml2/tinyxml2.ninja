@@ -1,0 +1,14 @@
+defines = -D__OHOS__ -D_GNU_SOURCE
+include_dirs = -I../../src/eProsima/Fast-DDS/thirdparty/tinyxml2
+cflags = -Wall -Wextra -Wno-unused-parameter -fPIC
+cflags_cc = -Wno-implicit-fallthrough -std=c++17 -Wno-psabi
+target_output_name = libtinyxml2
+
+build obj/src/eProsima/Fast-DDS/thirdparty/tinyxml2/libtinyxml2.tinyxml2.o: cxx ../../src/eProsima/Fast-DDS/thirdparty/tinyxml2/tinyxml2.cpp
+  source_file_part = tinyxml2.cpp
+  source_name_part = tinyxml2
+
+build ./libtinyxml2.a: alink obj/src/eProsima/Fast-DDS/thirdparty/tinyxml2/libtinyxml2.tinyxml2.o
+  arflags =
+  output_extension = .a
+  output_dir = .

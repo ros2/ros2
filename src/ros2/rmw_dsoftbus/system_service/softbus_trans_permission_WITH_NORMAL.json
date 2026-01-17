@@ -1,0 +1,28 @@
+{
+  "SESSION_NAME": "com\\.huawei\\.dmsdp\\..*",
+  "REGEXP": "true",
+  "DEVID": "NETWORKID",
+  "SEC_LEVEL": "public",
+  "APP_INFO": [
+    {
+      "TYPE": "native_app",
+      "PKG_NAME": "com.huawei.dmsdp",
+      "ACTIONS": "create,open"
+    },
+    {
+      "TYPE": "self_app",
+      "PKG_NAME": "com.huawei.dmsdp",
+      "ACTIONS": "create,open"
+    },
+    {
+      "TYPE": "system_app",
+      "PKG_NAME": "com.huawei.dmsdp",
+      "ACTIONS": "create,open"
+    },
+    {
+      "TYPE": "normal_app",
+      "PKG_NAME": "com.huawei.dmsdp",
+      "ACTIONS": "create,open"
+    }
+  ]
+}

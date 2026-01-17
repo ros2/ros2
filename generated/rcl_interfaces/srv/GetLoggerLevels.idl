@@ -1,0 +1,21 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from rcl_interfaces/rcl_interfaces/srv/GetLoggerLevels.srv
+// generated code does not contain a copyright notice
+
+#include "rcl_interfaces/msg/LoggerLevel.idl"
+
+module rcl_interfaces {
+  module srv {
+    @verbatim (language="comment", text=
+      "A list of logger names to get.")
+    struct GetLoggerLevels_Request {
+      sequence<string> names;
+    };
+    @verbatim (language="comment", text=
+      "List of logger levels which is the same order as the provided names. If a" "\n"
+      "logger was not yet set, the value will have 'unknown' as the value.")
+    struct GetLoggerLevels_Response {
+      sequence<rcl_interfaces::msg::LoggerLevel> levels;
+    };
+  };
+};

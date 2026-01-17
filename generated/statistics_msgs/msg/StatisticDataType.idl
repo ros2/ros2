@@ -1,0 +1,30 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from statistics_msgs/statistics_msgs/msg/StatisticDataType.msg
+// generated code does not contain a copyright notice
+
+
+module statistics_msgs {
+  module msg {
+    module StatisticDataType_Constants {
+      @verbatim (language="comment", text=
+        "Constant for uninitialized")
+      const uint8 STATISTICS_DATA_TYPE_UNINITIALIZED = 0;
+      @verbatim (language="comment", text=
+        "Allowed values")
+      const uint8 STATISTICS_DATA_TYPE_AVERAGE = 1;
+      const uint8 STATISTICS_DATA_TYPE_MINIMUM = 2;
+      const uint8 STATISTICS_DATA_TYPE_MAXIMUM = 3;
+      const uint8 STATISTICS_DATA_TYPE_STDDEV = 4;
+      const uint8 STATISTICS_DATA_TYPE_SAMPLE_COUNT = 5;
+    };
+    @verbatim (language="comment", text=
+      "This file contains the commonly used constants for the statistics data type." "\n"
+      "" "\n"
+      "The value 0 is reserved for unitialized statistic message data type." "\n"
+      "Range of values: [0, 255]." "\n"
+      "Unallowed values: any value that is not specified in this file.")
+    struct StatisticDataType {
+      uint8 structure_needs_at_least_one_member;
+    };
+  };
+};

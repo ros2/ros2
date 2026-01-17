@@ -1,0 +1,55 @@
+# Copyright (c) 2024 ROS2 OpenHarmony Port Project
+# rmw - ROS Middleware Interface
+
+import("//build/ohos.gni")
+import("//gn_templates/ros2_library.gni")
+
+# Source directory
+_rmw_src = "//ros2/src/ros2/rmw/rmw"
+
+# ============================================================================
+# rmw shared library
+# ============================================================================
+ros2_shared_library("rmw") {
+  sources = [
+    "${_rmw_src}/src/allocators.c",
+    "${_rmw_src}/src/convert_rcutils_ret_to_rmw_ret.c",
+    "${_rmw_src}/src/discovery_options.c",
+    "${_rmw_src}/src/event.c",
+    "${_rmw_src}/src/init.c",
+    "${_rmw_src}/src/init_options.c",
+    "${_rmw_src}/src/message_sequence.c",
+    "${_rmw_src}/src/names_and_types.c",
+    "${_rmw_src}/src/network_flow_endpoint.c",
+    "${_rmw_src}/src/network_flow_endpoint_array.c",
+    "${_rmw_src}/src/publisher_options.c",
+    "${_rmw_src}/src/qos_string_conversions.c",
+    "${_rmw_src}/src/sanity_checks.c",
+    "${_rmw_src}/src/security_options.c",
+    "${_rmw_src}/src/subscription_content_filter_options.c",
+    "${_rmw_src}/src/subscription_options.c",
+    "${_rmw_src}/src/time.c",
+    "${_rmw_src}/src/topic_endpoint_info.c",
+    "${_rmw_src}/src/topic_endpoint_info_array.c",
+    "${_rmw_src}/src/types.c",
+    "${_rmw_src}/src/validate_full_topic_name.c",
+    "${_rmw_src}/src/validate_namespace.c",
+    "${_rmw_src}/src/validate_node_name.c",
+  ]
+
+  include_dirs = [
+    "${_rmw_src}/include",
+  ]
+
+  deps = [
+    "//foundation/rcutils:rcutils",
+    "//foundation/rosidl/rosidl_runtime_c:rosidl_runtime_c",
+  ]
+
+  defines = [
+    "RMW_BUILDING_DLL",
+  ]
+
+  part_name = "ros2_foundation"
+  subsystem_name = "ros2"
+}

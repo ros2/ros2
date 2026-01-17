@@ -1,0 +1,87 @@
+╔════════════════════════════════════════════════════════════╗
+[DEBUG][rmw_init] called: options=0x7ffe460400, context=0x7ffe460500
+[rmw_dsoftbus] NativeToken: set token_id=671361873 (verify=671361873)
+[INFO][rmw_dsoftbus] No peer network ID configured (local only)
+[SessionManager] Initializing dsoftbus session layer
+[SessionManager] Attempting AccessToken API initialization...
+[NativeToken API] Loading AccessToken libraries...
+[NativeToken API] Loaded: /system/lib64/chipset-pub-sdk/libaccesstoken_sdk.z.so
+[NativeToken API] ❌ Required symbols not found in library
+  GetAccessTokenId: 0
+  SetSelfTokenID: 0
+[rmw_dsoftbus] InitializeNativeToken: GetAccessTokenId() failed for process 'rmw_discovery_daemon'
+[SessionManager] AccessToken API initialization failed, falling back to ioctl method
+[GraphCache] Initializing local graph cache
+[DiscoveryManager] Initializing discovery subsystem
+[DiscoveryManager] Initializing NativeToken via system API...
+[DiscoveryManager] WARNING: NativeToken init failed, fallback to ioctl
+[dsoftbus_shim] Trying to load: /system/lib64/platformsdk/libsoftbus_client.z.so
+[dsoftbus_shim] Successfully loaded: /system/lib64/platformsdk/libsoftbus_client.z.so
+[dsoftbus_shim] Loaded: CreateSessionServer @ 0x7f8b780168
+[dsoftbus_shim] Loaded: RemoveSessionServer @ 0x7f8b7804e8
+[dsoftbus_shim] Loaded: OpenSession @ 0x7f8b780704
+[dsoftbus_shim] Loaded: CloseSession @ 0x7f8b781ea8
+[dsoftbus_shim] Loaded: SendBytes @ 0x7f8b77f80c
+[dsoftbus_shim] Loaded: SendMessage @ 0x7f8b77fa4c
+[dsoftbus_shim] Loaded: GetLocalNodeDeviceInfo @ 0x7f8b753d18
+[dsoftbus_shim] Loaded: GetAllNodeDeviceInfo @ 0x7f8b753bcc
+[dsoftbus_shim] Loaded: FreeNodeInfo @ 0x7f8b753d0c
+[dsoftbus_shim] Loaded: GetPeerDeviceId @ 0x7f8b78223c
+[dsoftbus_shim] Loaded: GetPeerSessionName @ 0x7f8b7821b4
+[dsoftbus_shim] Loaded: GetSessionSide @ 0x7f8b7822c4
+[dsoftbus_shim] Loaded: GetMySessionName @ 0x7f8b78212c
+[dsoftbus_shim] DSoftBus library initialization complete
+[DiscoveryManager] Using fallback network_id: local_pid_7086
+[DiscoveryManager] Local identity: network_id=local_pid_7086, instance_id=1768581877983274057
+[DiscoveryManager] Creating SessionServer: name=com.huawei.dmsdp.ros2_discovery
+[DiscoveryManager] CreateSessionServer failed: -426442706
+[WARN][rmw_dsoftbus] DiscoveryManager initialization failed (cross-device discovery disabled)
+[PublisherDiscovery] Discovery handler initialized (Phase 2.2 stub)
+[INFO] Phase 3: Will register GraphCache callbacks for auto-discovery
+[GraphCache] Subscriber callbacks registered: discovered=0x7f8bbcb0b0, removed=0x7f8bbcac58
+[INFO][rmw_dsoftbus] Phase 4: 1:N auto-routing enabled
+[INFO][rmw_dsoftbus] Initialized with dsoftbus Session backend (GraphCache + Discovery enabled)
+[DEBUG][rmw_create_node] called: context=0x7ffe460500, name=sub_node, namespace=/
+[DEBUG][rmw_create_node] context->impl_id=0x7f8bbe8820 (rmw_dsoftbus)
+[DEBUG][rmw_create_node] our_impl_id=0x7f8bbe8820 (rmw_dsoftbus)
+[INFO][rmw_create_node] Created node: //sub_node
+[DEBUG][rmw_create_node] graph_guard_condition created and registered: 0x7f8bc5af10
+[GraphCache] Registered local node: sub_node (namespace: /)
+[DEBUG][rmw_create_node] Registered node with GraphCache: //sub_node
+  ❌ Failed to create subscription
+[DEBUG][rmw_destroy_node] called: node=0x7f8bc206b0
+[GraphCache] Unregistered local node: sub_node (namespace: /)
+[DEBUG][rmw_destroy_node] Unregistered node from GraphCache: //sub_node
+[DEBUG][rmw_shutdown] called: context=0x7ffe460500
+[GraphCache] Subscriber callbacks registered: discovered=0, removed=0
+[PublisherDiscovery] Discovery handler shutdown
+[GraphCache] Shutting down, clearing 0 local nodes, 0 local endpoints
+║   RMW DSoftBus 1:N Routing & QoS Test                     ║
+╚════════════════════════════════════════════════════════════╝
+  Mode:         Subscriber 1
+  Topic:        /test
+  QoS:          RELIABLE (depth=10)
+════════════════════════════════════════════════════════════
+
+[Info] RMW Implementation: rmw_dsoftbus
+
+[QoS] Configured:
+  - History: KEEP_LAST
+  - Depth: 10
+  - Reliability: RELIABLE
+  - Durability: VOLATILE
+
+[Step 1] Initializing RMW...
+  ✅ RMW initialized
+
+[Step 2] Creating node...
+  ✅ Node created: sub_node
+
+[Step 3] Creating subscription...
+
+[Cleanup] Shutting down...
+  ✅ Cleanup complete
+
+════════════════════════════════════════════════════════════
+  Test completed
+════════════════════════════════════════════════════════════

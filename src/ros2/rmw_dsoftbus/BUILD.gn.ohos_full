@@ -1,0 +1,566 @@
+##
+# @file BUILD.gn
+# @brief Build configuration for ROS2 RMW dsoftbus implementation.
+#
+# This module provides ROS2 RMW (ROS Middleware) implementation using
+# OpenHarmony dsoftbus for inter-device communication.
+#
+# Features:
+# - RMW core API implementation (publisher, subscriber, service, client)
+# - Session-based communication using dsoftbus
+# - Graph discovery for node/endpoint discovery
+# - CDR serialization for message handling
+# - QoS management (Reliability, Durability, History, LivelinessLease)
+#
+# Configuration:
+# - Uses OpenHarmony OHOS build system
+# - Targets ARM64 (aarch64) architecture
+# - Direct linking to dsoftbus and AccessToken libraries
+##
+
+import("//build/ohos.gni")
+
+# Compiler configuration shared across RMW dsoftbus targets
+config("rmw_dsoftbus_config") {
+  include_dirs = [
+    "include",
+    "mock_includes",  # ROS2 RMW/rcutils/rosidl mock headers
+  ]
+
+  cflags_cc = [
+    "-std=c++17",
+    "-Wall",
+    "-Wextra",
+    "-fPIC",
+    "-fvisibility=default",  # Export all C++ symbols for testing
+  ]
+}
+
+# ROS2 RMW implementation library
+ohos_shared_library("rmw_dsoftbus") {
+  sources = [
+    # === Core RMW API Implementation ===
+    "src/rmw_allocation.cpp",
+    "src/rmw_client.cpp",
+    "src/rmw_event.cpp",
+    "src/rmw_get_info.cpp",
+    "src/rmw_guard_condition.cpp",
+    "src/rmw_init.cpp",
+    "src/rmw_logging.cpp",
+    "src/rmw_missing_apis.cpp",
+    "src/rmw_node.cpp",
+    "src/rmw_publisher.cpp",
+    "src/rmw_qos.cpp",
+    "src/rmw_serialize.cpp",
+    "src/rmw_service.cpp",
+    "src/rmw_subscription.cpp",
+    "src/rmw_wait.cpp",
+
+    # === Session Management ===
+    "src/native_token.cpp",
+    "src/session_manager.cpp",
+    "src/session_pool.cpp",  # Phase 3 session pool (replaces/extends session_manager)
+    "src/dsoftbus_stubs.cpp",  # DSoftBus Session API stub implementations
+
+    # === Graph Discovery (Phase 2+) ===
+    "src/discovery_manager.cpp",
+    "src/graph_cache.cpp",
+    "src/ipc_client.cpp",
+    "src/ipc_handlers.cpp",
+    "src/ipc_server.cpp",
+    "src/service_client_manager.cpp",
+
+    # === Phase 4: 1:N Auto-Routing ===
+    "src/publisher_discovery_handler.cpp",
+
+    # === Pub/Sub Management (Phase 3) ===
+    "src/pubsub_manager.cpp",
+
+    # === Message Serialization ===
+    "src/message_serializer.cpp",  # Phase 3 message serialization (CRC32, JSON encoding)
+    "src/cdr_serializer.cpp",
+    "src/qos_mapper.cpp",
+    "src/rmw_typesupport_serializer.cpp",
+    "src/rosidl_introspection_stub.c",
+    "src/service_typesupport_serializer.cpp",
+  ]
+
+  public_configs = [ ":rmw_dsoftbus_config" ]
+
+  # OHOS system dependencies
+  external_deps = [
+    "access_token:libaccesstoken_sdk",
+    "access_token:libnativetoken",
+    "access_token:libtoken_setproc",
+    "c_utils:utils",
+    "dsoftbus:softbus_client",
+    "hilog:libhilog",
+  ]
+
+  ldflags = [
+    "-Wl,-soname,librmw_dsoftbus.so.0",
+  ]
+
+  # OHOS component metadata
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+  install_enable = true
+  install_images = [ "system" ]
+  module_install_dir = "lib64"
+
+  output_name = "librmw_dsoftbus"
+}
+
+# System service daemon for rmw_dsoftbus
+ohos_executable("rmw_discovery_daemon") {
+  sources = [ "system_service/rmw_discovery_daemon.cpp" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  external_deps = [
+    "access_token:libaccesstoken_sdk",
+    "access_token:libnativetoken",
+    "access_token:libtoken_setproc",
+    "dsoftbus:softbus_client",
+    "hilog:libhilog",
+  ]
+
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+  install_enable = true
+  install_images = [ "system" ]
+  module_install_dir = "bin"
+}
+
+# Init configuration for rmw_discovery_daemon
+ohos_prebuilt_etc("rmw_daemon_init") {
+  source = "system_service/init/rmw_discovery_daemon.cfg"
+  install_images = [ "system" ]
+  module_install_dir = "etc/init"
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+}
+
+# Permission configuration for softbus
+ohos_prebuilt_etc("softbus_permission_json") {
+  source = "config/softbus_trans_permission.json"
+  install_images = [ "system" ]
+  module_install_dir = "etc/communication/softbus"
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+}
+
+# Utility to get device network ID
+ohos_executable("get_network_id") {
+  sources = [ "test/get_network_id.cpp" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  external_deps = [
+    "dsoftbus:softbus_client",
+    "hilog:libhilog",
+  ]
+
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+  install_enable = true
+  install_images = [ "system" ]
+  module_install_dir = "bin"
+}
+
+# === Test Executables ===
+
+# Discovery acceptance and final test
+executable("discovery_final_test") {
+  sources = [ "test/discovery_final_test.cpp" ]
+
+  configs += [ ":rmw_dsoftbus_config" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# Session ID tracking fix verification test
+executable("session_tracking_fix_test") {
+  sources = [ "test/session_tracking_fix_test.cpp" ]
+
+  configs += [ ":rmw_dsoftbus_config" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# Message send/receive test
+executable("message_send_recv_test") {
+  sources = [ "test/message_send_recv_test.cpp" ]
+
+  configs += [ ":rmw_dsoftbus_config" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# Diagnose initialization utility
+executable("diagnose_initialize") {
+  sources = [ "test/diagnose_initialize.cpp" ]
+
+  configs += [ ":rmw_dsoftbus_config" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# Phase 2 Graph Discovery Test with Permission Bypass (official dsoftbus approach)
+executable("phase2_graph_discovery_with_permission_bypass") {
+  sources = [
+    "test/phase2_graph_discovery_with_permission_bypass.cpp",
+    "test/softbus_permission_bypass.cpp",  # Official dsoftbus permission bypass
+  ]
+
+  include_dirs = [
+    "include",
+    "test",
+    "mock_includes",
+  ]
+
+  configs += [ ":rmw_dsoftbus_config" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# Phase 2 UDP Discovery Test - Bypass Bus Center IPC via UDP broadcast
+executable("phase2_udp_discovery_test") {
+  sources = [
+    "src/native_token.cpp",
+    "test/phase2_udp_discovery_test.cpp",
+    "test/softbus_dlopen_shim.cpp",
+    "test/udp_discovery.cpp",
+    "test/softbus_permission_bypass.cpp",  # Official dsoftbus permission bypass
+  ]
+
+  include_dirs = [
+    "include",
+    "mock_includes",
+    "test",
+  ]
+
+  cflags_cc = [
+    "-fvisibility=default",
+    "-std=c++17",
+    "-Wall",
+    "-Wextra",
+  ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# Permission Bypass Demo - Official dsoftbus test approach with system_basic APL
+ohos_executable("permission_bypass_demo") {
+  sources = [
+    "test/permission_bypass_demo.cpp",
+    "test/softbus_permission_bypass.cpp",
+  ]
+
+  include_dirs = [
+    "include",
+    "test",
+  ]
+
+  cflags_cc = [
+    "-std=c++17",
+    "-Wall",
+    "-Wextra",
+  ]
+
+  external_deps = [
+    "access_token:libaccesstoken_sdk",
+    "access_token:libnativetoken",
+    "access_token:libtoken_setproc",
+    "dsoftbus:softbus_client",
+    "hilog:libhilog",
+  ]
+
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+  install_enable = true
+  install_images = [ "system" ]
+  module_install_dir = "bin"
+}
+
+# === Phase 3 Unit Tests ===
+
+# Protocol encoding/decoding unit test
+executable("test_protocol") {
+  sources = [
+    "test/test_protocol.cpp",
+    "src/message_serializer.cpp",
+  ]
+
+  include_dirs = [
+    "include",
+    "mock_includes",
+  ]
+
+  configs += [ ":rmw_dsoftbus_config" ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# GraphCache unit test
+executable("test_graph_cache") {
+  sources = [
+    "test/test_graph_cache.cpp",
+  ]
+
+  configs += [ ":rmw_dsoftbus_config" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# Discovery + GraphCache integration test
+executable("test_discovery_integration") {
+  sources = [
+    "test/test_discovery_integration.cpp",
+    "src/graph_cache.cpp",
+    "src/discovery_manager.cpp",
+  ]
+
+  include_dirs = [
+    "include",
+    "mock_includes",
+  ]
+
+  configs += [ ":rmw_dsoftbus_config" ]
+
+  deps = [ ":rmw_dsoftbus" ]
+
+  ldflags = [
+    "-static-libstdc++",
+    "-static-libgcc",
+  ]
+
+  libs = [
+    "pthread",
+    "dl",
+  ]
+}
+
+# === Phase 3 Token Injection Tests (OHOS Build System) ===
+
+# Phase 3G: OpenAuthSession Test (Official API, Short Package Name)
+ohos_executable("phase3g_openauthsession") {
+  sources = [ "test/phase3g_openauthsession.c" ]
+
+  include_dirs = [
+    "//foundation/communication/dsoftbus/interfaces/kits/common",
+    "//foundation/communication/dsoftbus/interfaces/inner_kits/transport",
+    "//foundation/communication/dsoftbus/core/common/include",
+    "//base/security/access_token/interfaces/innerkits/nativetoken/include",
+    "//base/security/access_token/interfaces/innerkits/token_setproc/include",
+    "//base/security/access_token/interfaces/innerkits/accesstoken/include",
+  ]
+
+  external_deps = [
+    "access_token:libaccesstoken_sdk",
+    "access_token:libnativetoken",
+    "access_token:libtoken_setproc",
+    "c_utils:utils",
+    "dsoftbus:softbus_client",
+    "hilog:libhilog",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Wextra",
+    "-fPIC",
+    "-std=c99",
+  ]
+
+  ldflags = [
+    "-Wl,-rpath,/system/lib64",
+  ]
+
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+  install_enable = true
+  install_images = [ "system" ]
+  module_install_dir = "bin"
+}
+
+# Phase 3: Graph Discovery with Token Injection (Proper Static Linking)
+# Uses GN build system for correct static linking of token libraries
+ohos_executable("phase3_graph_discovery_with_token_injection") {
+  sources = [ "test/phase3_graph_discovery_with_token_injection_gn.c" ]
+
+  include_dirs = [
+    "//foundation/communication/dsoftbus/interfaces/kits/common",
+    "//foundation/communication/dsoftbus/core/common/include",
+    "//base/security/access_token/interfaces/innerkits/nativetoken/include",
+    "//base/security/access_token/interfaces/innerkits/token_setproc/include",
+    "//base/security/access_token/interfaces/innerkits/accesstoken/include",
+  ]
+
+  # CRITICAL: Statically link token management libraries
+  # This is the correct way - NOT dlopen/dlsym
+  external_deps = [
+    "access_token:libaccesstoken_sdk",
+    "access_token:libnativetoken",
+    "access_token:libtoken_setproc",
+    "c_utils:utils",
+    "dsoftbus:softbus_client",
+    "hilog:libhilog",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Wextra",
+    "-fPIC",
+    "-std=c99",
+  ]
+
+  ldflags = [
+    "-Wl,-rpath,/system/lib64",
+  ]
+
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+  install_enable = true
+  install_images = [ "system" ]
+  module_install_dir = "bin"
+}
+
+# Phase 3: Basic Graph Discovery Test (No Token Injection)
+executable("phase3_graph_discovery_test") {
+  sources = [ "test/phase3_graph_discovery_test.c" ]
+
+  include_dirs = [
+    "//foundation/communication/dsoftbus/interfaces/kits/common",
+    "//foundation/communication/dsoftbus/core/common/include",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Wextra",
+    "-fPIC",
+    "-std=c99",
+  ]
+
+  ldflags = [
+    "-Wl,-rpath,/system/lib64",
+  ]
+
+  libs = [
+    "dl",
+  ]
+}
+
+# APL Debug Test - Test system_core vs system_basic APL levels
+ohos_executable("apl_debug_test") {
+  sources = [ "test/apl_debug_test.c" ]
+
+  include_dirs = [
+    "//foundation/communication/dsoftbus/interfaces/kits/common",
+    "//foundation/communication/dsoftbus/core/common/include",
+    "//base/security/access_token/interfaces/innerkits/nativetoken/include",
+    "//base/security/access_token/interfaces/innerkits/token_setproc/include",
+    "//base/security/access_token/interfaces/innerkits/accesstoken/include",
+  ]
+
+  external_deps = [
+    "access_token:libaccesstoken_sdk",
+    "access_token:libnativetoken",
+    "access_token:libtoken_setproc",
+    "c_utils:utils",
+    "dsoftbus:softbus_client",
+    "hilog:libhilog",
+  ]
+
+  cflags = [
+    "-Wall",
+    "-Wextra",
+    "-fPIC",
+    "-std=c99",
+  ]
+
+  ldflags = [
+    "-Wl,-rpath,/system/lib64",
+  ]
+
+  part_name = "rmw_dsoftbus"
+  subsystem_name = "communication"
+  install_enable = true
+  install_images = [ "system" ]
+  module_install_dir = "bin"
+}

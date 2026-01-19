@@ -129,8 +129,8 @@ jobs:
     steps:
       - name: Download artifacts
         run: | 
-            echo "⬇️ Downloading artifacts for ${{ matrix.target_url }}" 
-            JOB_NAME=$(echo "${{matrix.target_url}}" | cut -d'/' -f5)
+            echo "⬇️ Downloading artifacts for ${MATRIX_TARGET_URL}" 
+            JOB_NAME=$(echo "${MATRIX_TARGET_URL}" | cut -d'/' -f5)
             OS=$(echo "$JOB_NAME" | sed 's/packaging_//; s/-aarch64//')
 
             if [[ "$JOB_NAME" == *"aarch64"* ]]; then 
@@ -146,10 +146,11 @@ jobs:
             fi 
             ARTIFACT_NAME=ros2-rolling-nightly-$OS-$ARCH.$EXT
             echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
-            curl -u "$GH_USER:$GH_TOKEN" --silent --globoff  "${{ matrix.target_url }}" -o "$ARTIFACT_NAME"
+            curl -u "$GH_USER:$GH_TOKEN" --silent --globoff  "${MATRIX_TARGET_URL}" -o "$ARTIFACT_NAME"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_USER: ${{secrets.GH_USER}}
+          MATRIX_TARGET_URL: ${{ matrix.target_url }}
       - name: Upload artifacts to GH workflow storage
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with: 

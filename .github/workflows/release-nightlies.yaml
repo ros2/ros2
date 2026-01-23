@@ -161,7 +161,7 @@ jobs:
         with: 
           retention-days: 1
           name: ${{env.ARTIFACT_NAME}} 
-          path: .
+          path: ${{env.ARTIFACT_NAME}} 
   update-release: 
     name: Update GH release
     if: github.repository == 'ros2/ros2' && needs.verify-release-nightlies.outputs.should_update == 'true'

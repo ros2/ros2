@@ -54,6 +54,7 @@ jobs:
             if [ "$ASSET_TS" -gt "$THRESHOLD" ]; then
               echo "✅ Artifact $NAME was updated recently (at $TIME). Skipping release."
               echo "should_update=false" >> "$GITHUB_OUTPUT"
+              break
             fi
           done <<< "$ARTIFACTS"
         env:

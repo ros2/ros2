@@ -57,7 +57,8 @@ jobs:
               break
             fi
           done <<< "$ARTIFACTS"  
-
+        env:
+          GH_TOKEN: ${{ github.token }}
       # Verify that all nightlies have passed and have been built in the last 24 hours
       - name: Verify conditions for update of artifacts
         id: verification

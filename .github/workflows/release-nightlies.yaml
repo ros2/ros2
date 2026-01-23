@@ -71,7 +71,7 @@ jobs:
 
           # curl needs --globoff to avoid having to escape all brackets in the url
           
-          JOBS_STATUS=$(curl  -H "Authorization: Bearer $JENKINS_AUTH" --silent --globoff 'https://ci.ros2.org/api/xml?tree=jobs[name,lastBuild[number,timestamp,result,artifacts[relativePath],actions[parameters[name,value]]]]&xpath=/hudson/job[(name="packaging_linux"+or+name="packaging_windows"+or+name="packaging_linux-rhel"+or+name="packaging_linux-aarch64")+and+lastBuild/action/parameter[name="CI_ROS_DISTRO"+and+value="rolling"]]&wrapper=nightlies')
+          JOBS_STATUS=$(curl  -u ":$JENKINS_AUTH" --silent --globoff 'https://ci.ros2.org/api/xml?tree=jobs[name,lastBuild[number,timestamp,result,artifacts[relativePath],actions[parameters[name,value]]]]&xpath=/hudson/job[(name="packaging_linux"+or+name="packaging_windows"+or+name="packaging_linux-rhel"+or+name="packaging_linux-aarch64")+and+lastBuild/action/parameter[name="CI_ROS_DISTRO"+and+value="rolling"]]&wrapper=nightlies')
           # the XML returned have a <nightlies /> tag that needs to be cleaned to be able to split each job into a new line
 
           JOBS=$(echo "$JOBS_STATUS" |sed 's|<nightlies[^>]*>||g; s|</nightlies>||g' | sed 's|</job>|</job>\n|g' | sed '/^$/d')
@@ -149,7 +149,7 @@ jobs:
             fi 
             ARTIFACT_NAME=ros2-rolling-nightly-$OS-$ARCH.$EXT
             echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
-            curl  -H "Authorization: Bearer $JENKINS_AUTH" --retry 3 --retry-delay 5 --silent --globoff  "${MATRIX_TARGET_URL}" -o "$ARTIFACT_NAME"
+            curl  -u ":$JENKINS_AUTH" --retry 3 --retry-delay 5 --silent --globoff  "${MATRIX_TARGET_URL}" -o "$ARTIFACT_NAME"
             # Check if file is empty
             if [ ! -s "$ARTIFACT_NAME" ]; then
                 echo "ERROR: Downloaded file $ARTIFACT_NAME is empty!"

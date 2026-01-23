@@ -152,7 +152,7 @@ jobs:
             fi 
             ARTIFACT_NAME=ros2-rolling-nightly-$OS-$ARCH.$EXT
             echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
-            curl -u "$GH_USER:$GH_TOKEN" --silent --globoff  "${MATRIX_TARGET_URL}" -o "$ARTIFACT_NAME"
+            curl -u "$GH_USER:$GH_TOKEN" --retry 3 --retry-delay 5 --silent --globoff  "${MATRIX_TARGET_URL}" -o "$ARTIFACT_NAME"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_USER: ${{secrets.GH_USER}}

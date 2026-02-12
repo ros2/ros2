@@ -22,7 +22,7 @@ Once you've installed ROS start by learning some [basic concepts](https://docs.r
 
 ## Developer Resources
 * [ROS 2 Documentation](https://docs.ros.org/)
-* [ROS Package API reference](https://docs.ros.org/en/rolling/p/)
+* [ROS 2 API docs (rclcpp, rclpy, packages)](https://docs.ros.org/en/rolling/p/)
 * [ROS Package Index](https://index.ros.org/)
 * [ROS on Docker Hub](https://hub.docker.com/_/ros/)
 * [ROS Resource Status Page](https://status.openrobotics.org/)

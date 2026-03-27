@@ -1,19 +1,41 @@
 [workspace]
 name = "pixi_ros2_rolling"
 version = "0.1.0"
-description = "Dependencies to build ROS 2 on Windows"
+description = "Dependencies to build ROS 2 on Windows and Linux"
 authors = ["Chris Lalancette <clalancette@gmail.com>"]
 channels = ["conda-forge"]
-platforms = ["win-64"]
+platforms = ["win-64", "linux-64"]
+
+[target.win-64.dependencies]
+7zip = ">=23.1,<24"
 
 [target.win-64.activation.env]
 QT_QPA_PLATFORM_PLUGIN_PATH="%cd%\\.pixi\\envs\\default\\Library\\plugins\\platforms"
+
+[target.linux-64.dependencies]
+binutils_linux-64 = "==2.44"
+freeglut = "==3.2.2"
+freeimage = "==3.18.0"
+gcc_linux-64 = "==13.3.0"
+glew = "==2.1.0"
+gxx_linux-64 = "==13.3.0"
+libacl = "==2.3.2"
+libgles-devel = "==1.7.0"
+libgl-devel = "==1.7.0"
+libglx-devel = "==1.7.0"
+libglu = "==9.0.3"
+libopengl-devel = "==1.7.0"
+lttng-ust = "==2.13.9"
+make = "==4.3"
+mesalib = "==23.3.2"
+pkgconfig = "==1.5.5"
+xorg-libxaw = "==1.0.14"
+zziplib = "==0.13.69"
 
 [dependencies]
 # The following are "tooling" dependencies, used to install or initiate builds.
 # We pin them less aggressively since they will presumably continue to their job,
 # and we don't rely on any particular API or ABI for them to be stable.
-7zip = ">=23.1,<24"
 colcon-cmake = ">=0.2.28,<0.3"
 colcon-core = ">=0.17.1,<0.18"
 colcon-defaults = ">=0.2.8,<0.3"

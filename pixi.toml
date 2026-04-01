@@ -8,6 +8,7 @@ platforms = ["win-64", "linux-64"]
 
 [target.win-64.dependencies]
 7zip = ">=23.1,<24"
+osrf_pycommon = "==0.2.1"
 
 [target.win-64.activation.env]
 QT_QPA_PLATFORM_PLUGIN_PATH="%cd%\\.pixi\\envs\\default\\Library\\plugins\\platforms"

@@ -34,7 +34,7 @@ repositories:
   eProsima/Fast-DDS:
     type: git
     url: https://github.com/eProsima/Fast-DDS.git
-    version: 3.2.x
+    version: 3.6.x
   eProsima/foonathan_memory_vendor:
     type: git
     url: https://github.com/eProsima/foonathan_memory_vendor.git
@@ -59,10 +59,6 @@ repositories:
     type: git
     url: https://github.com/gazebo-release/gz_utils_vendor.git
     version: rolling
-  osrf/osrf_pycommon:
-    type: git
-    url: https://github.com/osrf/osrf_pycommon.git
-    version: master
   osrf/osrf_testing_tools_cpp:
     type: git
     url: https://github.com/osrf/osrf_testing_tools_cpp.git
@@ -255,17 +251,9 @@ repositories:
     type: git
     url: https://github.com/ros2/mimick_vendor.git
     version: rolling
-  ros2/orocos_kdl_vendor:
-    type: git
-    url: https://github.com/ros2/orocos_kdl_vendor.git
-    version: rolling
   ros2/performance_test_fixture:
     type: git
     url: https://github.com/ros2/performance_test_fixture.git
-    version: rolling
-  ros2/pybind11_vendor:
-    type: git
-    url: https://github.com/ros2/pybind11_vendor.git
     version: rolling
   ros2/rcl:
     type: git
@@ -410,10 +398,6 @@ repositories:
   ros2/test_interface_files:
     type: git
     url: https://github.com/ros2/test_interface_files.git
-    version: rolling
-  ros2/tinyxml2_vendor:
-    type: git
-    url: https://github.com/ros2/tinyxml2_vendor.git
     version: rolling
   ros2/tlsf:
     type: git

@@ -1,4 +1,4 @@
-[project]
+[workspace]
 name = "pixi_ros2_rolling"
 version = "0.1.0"
 description = "Dependencies to build ROS 2 on Windows and Linux"
@@ -63,6 +63,8 @@ assimp = "==5.3.1"
 benchmark = "==1.8.3"
 bullet = "==3.25"  # TODO: Conda has 3.24, but it is not installable with Python 3.12
 catkin_pkg = "==1.0.0"
+cli11 = "==2.4.1"
+clang-format = "==18.1.8"
 cmake = "==3.28.3"
 console_bridge = "==1.0.1"
 coverage = "==7.4.4"
@@ -80,11 +82,13 @@ flake8-builtins = "==2.1.0"
 flake8-class-newline = "==1.6.0"
 flake8-comprehensions = "==3.14.0"
 flake8-deprecated = "==2.2.1"
-flake8-docstrings = "==1.6.0"
 flake8-import-order = "==0.18.2"
 flake8-quotes = "==3.4.0"
+freetype = "==2.13.3"
 git = "==2.43.0"
+gmock = "==1.17.0"
 graphviz = "==9.0.0"  # TODO: pygraphviz 1.11 needs at least graphviz 9.0.0
+gtest = "==1.17.0"
 importlib-metadata = "==4.13.0"  # TODO: Conda doesn't have 4.12.0
 iniconfig = "==1.1.1"
 lark = "==1.1.9"
@@ -96,9 +100,10 @@ mypy = "==1.9.0"
 mypy_extensions = "==1.0.0"
 nlohmann_json = "==3.11.3"
 numpy = "==1.26.4"
-opencv = "==4.9.0"  # TODO: Conda has 4.6.0, but it is not installable with Python 3.12
+opencv = "==4.10.0"  # TODO: Conda has 4.6.0, but it is not installable with Python 3.12
 openssl = "==3.3.2"  # TODO: Conda has 3.0.13, but it is not installable with Python 3.12
 orocos-kdl = "==1.5.1"
+osrf_pycommon = "==0.2.1"
 packaging = "==24.0"
 pathspec = "==0.12.1"
 pip = "==24.0"
@@ -128,13 +133,14 @@ python-orocos-kdl = "==1.5.1"
 pyyaml = "==6.0.1"
 qt = "==5.15.8"  # TODO: Conda doesn't have 5.15.13
 rosdistro = "==1.0.0"
-rust = "==1.75.0"
+rust = "==1.85.0"
 setuptools = "==68.1.2"
 six = "==1.16.0"
 snowballstemmer = "==2.2.0"
 spdlog = "==1.12.0"
 sqlite = "==3.45.2"  # TODO: Conda has 3.45.1, but it is not installable with Python 3.12
 tinyxml2 = "==10.0.0"
+types-pyyaml = "==6.0.1"
 typing_extensions = "==4.10.0"
 uncrustify = "==0.78.1"
 vcstool = "==0.3.0"

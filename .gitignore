@@ -6,3 +6,7 @@ log
 # Ignore everything in src except a .gitkeep file
 src/*
 !src/.gitkeep
+
+# pixi environments
+.pixi
+*.egg-info

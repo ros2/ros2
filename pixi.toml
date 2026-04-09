@@ -9,6 +9,8 @@ platforms = ["win-64", "linux-64"]
 [target.win-64.dependencies]
 7zip = ">=23.1,<24"
 osrf_pycommon = "==0.2.1"
+pyqt6 = ">=6.7,<7"
+pyqt6-sip = ">=13.0,<14"
 
 [target.win-64.activation.env]
 QT_QPA_PLATFORM_PLUGIN_PATH="%cd%\\.pixi\\envs\\default\\Library\\plugins\\platforms"
@@ -28,7 +30,7 @@ libglu = "==9.0.3"
 libopengl-devel = "==1.7.0"
 lttng-ust = "==2.13.9"
 make = "==4.3"
-mesalib = "==23.3.2"
+mesalib = ">=24.0,<26"
 pkgconfig = "==1.5.5"
 xorg-libxaw = "==1.0.14"
 zziplib = "==0.13.69"
@@ -85,7 +87,7 @@ flake8-deprecated = "==2.2.1"
 flake8-import-order = "==0.18.2"
 flake8-quotes = "==3.4.0"
 freetype = "==2.13.3"
-git = "==2.43.0"
+git = ">=2.43.0"
 gmock = "==1.17.0"
 graphviz = "==9.0.0"  # TODO: pygraphviz 1.11 needs at least graphviz 9.0.0
 gtest = "==1.17.0"

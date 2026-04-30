@@ -1,7 +1,7 @@
 # ROS Lyrical release distribution file
-# Generated on 2026-04-30 22:27:29
+# Generated on 2026-04-30 22:34:54
 # --pin eclipse-iceoryx/iceoryx=41b69258cf486685f23bd9cc256888aad99b9d9e
-# WARNING: Did not find a release for: https://github.com/ros2/system_tests.git in lyrical
+# WARNING: Did not find a release for: ros2/system_tests in lyrical
 repositories:
   ament/ament_cmake:
     type: git

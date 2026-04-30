@@ -1,5 +1,5 @@
-# ROS Lyrical release distribution file
-# Generated on 2026-04-30 22:39:21
+# ROS Lyrical repos file
+# Generated on 2026-04-30 22:41:43
 # --pin eclipse-iceoryx/iceoryx=41b69258cf486685f23bd9cc256888aad99b9d9e
 # --pin ros2/system_tests=cc976b51fe8c82b368cdb0b99d5467c2c3be6217
 repositories:

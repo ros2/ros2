@@ -14,7 +14,7 @@ jobs:
       - name: Clone project
         uses: actions/checkout@v2
       - name: Install dependencies
-        run: python3 -m pip install vcstool yamllint
+        run: python3 -m pip install vcs2l yamllint
       - name: Validate formatting
         run: >
           yamllint ros2.repos

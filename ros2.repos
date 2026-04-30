@@ -1,7 +1,7 @@
 # ROS Lyrical release distribution file
-# Generated on 2026-04-30 22:34:54
+# Generated on 2026-04-30 22:39:21
 # --pin eclipse-iceoryx/iceoryx=41b69258cf486685f23bd9cc256888aad99b9d9e
-# WARNING: Did not find a release for: ros2/system_tests in lyrical
+# --pin ros2/system_tests=cc976b51fe8c82b368cdb0b99d5467c2c3be6217
 repositories:
   ament/ament_cmake:
     type: git
@@ -399,6 +399,10 @@ repositories:
     type: git
     url: https://github.com/ros2/sros2.git
     version: 0.16.5
+  ros2/system_tests:
+    type: git
+    url: https://github.com/ros2/system_tests.git
+    version: cc976b51fe8c82b368cdb0b99d5467c2c3be6217
   ros2/test_interface_files:
     type: git
     url: https://github.com/ros2/test_interface_files.git

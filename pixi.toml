@@ -13,7 +13,7 @@ pyqt6 = ">=6.7,<7"
 pyqt6-sip = ">=13.0,<14"
 
 [target.win-64.activation.env]
-QT_QPA_PLATFORM_PLUGIN_PATH="%cd%\\.pixi\\envs\\default\\Library\\plugins\\platforms"
+QT_QPA_PLATFORM_PLUGIN_PATH="%cd%\\.pixi\\envs\\default\\Library\\lib\\qt6\\plugins\\platforms"
 
 [target.linux-64.dependencies]
 binutils_linux-64 = "==2.44"

@@ -40,7 +40,14 @@ zziplib = "==0.13.69"
 # We pin them less aggressively since they will presumably continue to their job,
 # and we don't rely on any particular API or ABI for them to be stable.
 colcon-cmake = ">=0.2.28,<0.3"
-colcon-core = ">=0.17.1,<0.18"
+# 0.18.2 is the first release that copes with Python 3.14's argparse.  colcon
+# overrides argparse's _parse_optional() so that '--cmake-args -DFOO=BAR' works
+# at all, and it recognises the "could not classify" case by comparing against
+# the exact value argparse returns.  python/cpython#124631 changed that value
+# to a list of tuples, so on 3.14 the override silently stops matching, every
+# -D argument is treated as an unknown option, and colcon exits with
+# 'unrecognized arguments'.
+colcon-core = ">=0.18.2,<0.22"
 colcon-defaults = ">=0.2.8,<0.3"
 colcon-library-path = ">=0.2.1,<0.3"
 colcon-metadata = ">=0.2.5,<0.3"

@@ -39,29 +39,30 @@ zziplib = "==0.13.69"
 # The following are "tooling" dependencies, used to install or initiate builds.
 # We pin them less aggressively since they will presumably continue to their job,
 # and we don't rely on any particular API or ABI for them to be stable.
-colcon-cmake = ">=0.2.28,<0.3"
-# 0.18.2 is the first release that copes with Python 3.14's argparse.  colcon
-# overrides argparse's _parse_optional() so that '--cmake-args -DFOO=BAR' works
-# at all, and it recognises the "could not classify" case by comparing against
-# the exact value argparse returns.  python/cpython#124631 changed that value
-# to a list of tuples, so on 3.14 the override silently stops matching, every
-# -D argument is treated as an unknown option, and colcon exits with
-# 'unrecognized arguments'.
-colcon-core = ">=0.18.2,<0.22"
-colcon-defaults = ">=0.2.8,<0.3"
+colcon-cmake = ">=0.2.30,<0.3"
+# Python 3.14 needs at least 0.18.2 here, even though the bound below is
+# higher.  colcon overrides argparse's _parse_optional() so that
+# '--cmake-args -DFOO=BAR' works at all, and it recognises the "could not
+# classify" case by comparing against the exact value argparse returns.
+# python/cpython#124631 changed that value to a list of tuples, so on 3.14 the
+# override silently stops matching, every -D argument is treated as an unknown
+# option, and colcon exits with 'unrecognized arguments'.  0.18.2 added the
+# list form to that comparison; do not lower this bound past it.
+colcon-core = ">=0.21.1,<0.22"
+colcon-defaults = ">=0.2.9,<0.3"
 colcon-library-path = ">=0.2.1,<0.3"
 colcon-metadata = ">=0.2.5,<0.3"
 colcon-mixin = ">=0.2.3,<0.3"
-colcon-output = ">=0.2.13,<0.3"
-colcon-package-information = ">=0.4.0,<0.5"
+colcon-output = ">=0.2.14,<0.3"
+colcon-package-information = ">=0.4.1,<0.5"
 colcon-package-selection = ">=0.2.10,<0.3"
-colcon-parallel-executor = ">=0.2.4,<0.3"
+colcon-parallel-executor = ">=0.4.0,<0.5"
 colcon-pkg-config = ">=0.1.0,<0.2"
-colcon-powershell = ">=0.4.0,<0.5"
-colcon-python-setup-py = ">=0.2.7,<0.3"
+colcon-powershell = ">=0.5.0,<0.6"
+colcon-python-setup-py = ">=0.2.9,<0.3"
 colcon-recursive-crawl = ">=0.2.3,<0.3"
 colcon-ros = ">=0.5.0,<0.6"
-colcon-ros-domain-id-coordinator = ">=0.2.1,<0.3"
+colcon-ros-domain-id-coordinator = ">=0.2.4,<0.3"
 colcon-test-result = ">=0.3.8,<0.4"
 
 # The rest of the dependencies here are used by one or more ROS packages.  We aggressively

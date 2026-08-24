@@ -125,10 +125,14 @@ pydot = "==4.0.1"
 pyflakes = "==3.4.0"
 pygraphviz = "==1.14"
 pyparsing = "==3.3.2"
-# qt_gui_cpp generates its Python bindings with SIP and fails to configure
-# without these -- "PyQt6 SIP bindings are required but were not found".  An
-# apt-provisioned Ubuntu gets them from python3-pyqt6, so the gap only shows up
-# in a pixi environment, and only once the build reaches qt_gui_cpp.
+# qt_gui_cpp generates its Python bindings with SIP and needs all three of
+# these.  Without pyqt6 it cannot configure at all -- "PyQt6 SIP bindings are
+# required but were not found" -- and without pyqt-builder it configures,
+# compiles, and then dies in sip-build with "Unable to import 'pyqtbuild'".
+# An apt-provisioned Ubuntu gets them from python3-pyqt6 and pyqt-builder, so
+# the gap only shows up in a pixi environment, and only once the build reaches
+# qt_gui_cpp.
+pyqt-builder = ">=1.15,<2"  # No Ubuntu counterpart to pin against; provides the pyqtbuild module
 pyqt6 = "==6.11.0"  # TODO: Ubuntu has 6.10.2, but conda-forge only builds 6.11.0 for Python 3.14
 pyqt6-sip = "==13.10.0"  # TODO: Ubuntu has 13.11.0, which conda-forge does not have
 pytest = "==9.0.2"

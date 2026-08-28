@@ -68,6 +68,7 @@ catkin_pkg = "==1.0.0"
 cli11 = "==2.4.1"
 clang-format = "==18.1.8"
 cmake = "==3.28.3"
+colorama = "==0.4.6"
 console_bridge = "==1.0.1"
 coverage = "==7.4.4"
 cppcheck = "==2.15.0"  # TODO: This version doesn't actually work, so we should just remove ament_cppcheck

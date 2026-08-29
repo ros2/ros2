@@ -5,6 +5,7 @@ description = "Dependencies to build ROS 2 on Windows and Linux"
 authors = ["Chris Lalancette <clalancette@gmail.com>"]
 channels = ["conda-forge"]
 platforms = ["win-64", "linux-64"]
+requires-pixi = ">=0.78"
 
 [target.win-64.dependencies]
 7zip = "==26.00"

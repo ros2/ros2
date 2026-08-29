@@ -75,6 +75,7 @@ catkin_pkg = "==1.1.0"
 cli11 = "==2.6.2"  # TODO: Ubuntu has 2.6.1, which conda-forge does not have
 clang-format = "==21.1.6"
 cmake = "==4.2.3"
+colorama = "==0.4.6"
 console_bridge = "==1.0.1"
 coverage = "==7.13.5"
 cppcheck = "==2.20.1"  # TODO: Ubuntu has 2.19.0, and this version does not actually work, so we should just remove ament_cppcheck

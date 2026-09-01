@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Dependencies to build ROS 2 on Windows and Linux"
 authors = ["Chris Lalancette <clalancette@gmail.com>"]
 channels = ["conda-forge"]
-platforms = ["win-64", "linux-64"]
+platforms = ["win-64", "linux-64", "linux-aarch64"]
 requires-pixi = ">=0.78"
 
 [target.win-64.dependencies]
@@ -14,13 +14,11 @@ osrf_pycommon = "==0.2.1"
 [target.win-64.activation.env]
 QT_QPA_PLATFORM_PLUGIN_PATH="%cd%\\.pixi\\envs\\default\\Library\\lib\\qt6\\plugins\\platforms"
 
-[target.linux-64.dependencies]
-binutils_linux-64 = "==2.46.1"  # Ubuntu has 2.46
+# Dependencies common to every Linux platform we build on.
+[target.linux.dependencies]
 freeglut = "==3.2.2"
 freeimage = "==3.18.0"
-gcc_linux-64 = "==15.2.0"
 glew = "==2.2.0"
-gxx_linux-64 = "==15.2.0"
 libacl = "==2.3.2"
 libgles-devel = "==1.7.0"
 libgl-devel = "==1.7.0"
@@ -33,6 +31,18 @@ mesalib = ">=24.0,<26"
 pkgconfig = "==1.5.5"
 xorg-libxaw = "==1.0.14"
 zziplib = "==0.13.69"
+
+# The conda-forge compiler packages are named per subdir, so they have to be
+# listed once per Linux architecture.
+[target.linux-64.dependencies]
+binutils_linux-64 = "==2.46.1"  # Ubuntu has 2.46
+gcc_linux-64 = "==15.2.0"
+gxx_linux-64 = "==15.2.0"
+
+[target.linux-aarch64.dependencies]
+binutils_linux-aarch64 = "==2.46.1"  # Ubuntu has 2.46
+gcc_linux-aarch64 = "==15.2.0"
+gxx_linux-aarch64 = "==15.2.0"
 
 [dependencies]
 # The following are "tooling" dependencies, used to install or initiate builds.

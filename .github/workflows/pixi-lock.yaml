@@ -1,0 +1,152 @@
+---
+name: Pixi Lock
+
+# Checks that pixi.toml still solves on every platform it declares, and that the
+# pixi.lock committed alongside it is the lock file that solve produces.  A pull
+# request that changes pixi.toml has to carry the matching pixi.lock.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pixi-lock-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    name: Detect pixi changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      pixi: ${{ steps.changes.outputs.pixi }}
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v7
+
+      - name: Look for pixi files in the pull request
+        id: changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: .github/scripts/pixi-lock-changed-files.sh
+
+  lint:
+    name: Shellcheck
+    needs: changes
+    if: needs.changes.outputs.pixi == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v7
+
+      # Preinstalled on the GitHub-hosted Ubuntu runners.
+      - name: Lint the check scripts
+        run: shellcheck .github/scripts/*.sh
+
+  lock:
+    name: Solve
+    needs: changes
+    if: needs.changes.outputs.pixi == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.platforms.outputs.matrix }}
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v7
+
+      - name: Install pixi
+        uses: prefix-dev/setup-pixi@v0.10.2
+        with:
+          # A lock file is only byte-identical to one another pixi produced if
+          # the two are the same version.  Bump this and regenerate pixi.lock
+          # together.
+          pixi-version: v0.78.0
+          run-install: false
+
+      - name: Solve every platform and check the lock file
+        id: check
+        run: .github/scripts/pixi-lock-check.sh
+
+      - name: Upload the lock file that pixi.toml actually produces
+        if: failure() && steps.check.outputs.outcome == 'stale'
+        uses: actions/upload-artifact@v7
+        with:
+          name: pixi-lock-suggested
+          path: pixi.lock
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Work out which runner covers each platform
+        id: platforms
+        run: .github/scripts/pixi-lock-matrix.sh
+
+  install:
+    name: Install (${{ matrix.platform }})
+    needs:
+      - changes
+      - lock
+    if: needs.changes.outputs.pixi == 'true'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.lock.outputs.matrix) }}
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v7
+
+      # `locked: true` refuses to relax the committed lock file, so this proves
+      # the solution is usable on this platform rather than merely satisfiable.
+      - name: Install the environment
+        uses: prefix-dev/setup-pixi@v0.10.2
+        with:
+          pixi-version: v0.78.0
+          locked: true
+          cache: false
+
+  # Always runs, so it is safe to mark as a required status check.
+  result:
+    name: Pixi lock is valid
+    needs:
+      - changes
+      - lint
+      - lock
+      - install
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report
+        env:
+          PIXI_CHANGED: ${{ needs.changes.outputs.pixi }}
+          CHANGES_RESULT: ${{ needs.changes.result }}
+          LINT_RESULT: ${{ needs.lint.result }}
+          LOCK_RESULT: ${{ needs.lock.result }}
+          INSTALL_RESULT: ${{ needs.install.result }}
+        run: |
+          set -euo pipefail
+          if [ "${CHANGES_RESULT}" != 'success' ]; then
+            echo '::error::Could not determine which files this pull request changes.'
+            exit 1
+          fi
+          if [ "${PIXI_CHANGED}" != 'true' ]; then
+            echo 'This pull request does not touch pixi.toml or pixi.lock.'
+            exit 0
+          fi
+          status=0
+          if [ "${LINT_RESULT}" != 'success' ]; then
+            echo "::error::The check scripts did not pass shellcheck (${LINT_RESULT})."
+            status=1
+          fi
+          if [ "${LOCK_RESULT}" != 'success' ]; then
+            echo "::error::The solve and lock file check did not pass (${LOCK_RESULT})."
+            status=1
+          fi
+          if [ "${INSTALL_RESULT}" != 'success' ]; then
+            echo "::error::The lock file did not install on every platform (${INSTALL_RESULT})."
+            status=1
+          fi
+          exit "${status}"

@@ -1,2 +1,5 @@
 # SCM syntax highlighting & preventing 3-way merges
 pixi.lock merge=binary linguist-language=YAML linguist-generated=true
+
+# Shell scripts must keep LF endings to run on Linux runners.
+*.sh text eol=lf

@@ -1,16 +1,9 @@
 ---
 name: Pixi Lock
 
-# Checks that pixi.toml still solves on every platform it declares, and that
-# the pixi.lock committed alongside it is the lock file that solve produces.
-# Nothing is written back: a pull request that changes pixi.toml has to carry
-# the matching pixi.lock, and this workflow is what refuses to let it merge
-# otherwise.
-#
-# There is deliberately no `paths:` filter.  A required check that is filtered
-# out never reports, which leaves unrelated pull requests waiting on a status
-# that will never arrive, so the workflow always runs and decides internally
-# whether there is any work to do.
+# Checks that pixi.toml still solves on every platform it declares, and that the
+# pixi.lock committed alongside it is the lock file that solve produces.  A pull
+# request that changes pixi.toml has to carry the matching pixi.lock.
 
 on:
   pull_request:
@@ -32,22 +25,15 @@ jobs:
     outputs:
       pixi: ${{ steps.changes.outputs.pixi }}
     steps:
+      - name: Clone project
+        uses: actions/checkout@v7
+
       - name: Look for pixi files in the pull request
         id: changes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          set -euo pipefail
-          gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files" \
-            --paginate --jq '.[].filename' > files.txt
-          if grep -qxE 'pixi\.(toml|lock)|\.github/workflows/pixi-lock\.yaml' \
-              files.txt; then
-            echo 'pixi=true' >> "${GITHUB_OUTPUT}"
-          else
-            echo 'pixi=false' >> "${GITHUB_OUTPUT}"
-            echo 'No pixi files changed.' >> "${GITHUB_STEP_SUMMARY}"
-          fi
+        run: .github/scripts/pixi-lock-changed-files.sh
 
   lock:
     name: Solve
@@ -63,62 +49,15 @@ jobs:
       - name: Install pixi
         uses: prefix-dev/setup-pixi@v0.10.2
         with:
-          # Pinned so the check is reproducible: a lock file is only
-          # byte-identical to the one another pixi produced if the two are the
-          # same version. Bump this and regenerate pixi.lock together.
+          # A lock file is only byte-identical to one another pixi produced if
+          # the two are the same version.  Bump this and regenerate pixi.lock
+          # together.
           pixi-version: v0.78.0
           run-install: false
 
-      - name: Require a committed lock file
-        run: |
-          if [ ! -f pixi.lock ]; then
-            echo '::error::pixi.lock is missing. Run `pixi lock` and commit' \
-                 'the result alongside pixi.toml.'
-            exit 1
-          fi
-
-      # `pixi lock --check` solves every platform listed under
-      # `workspace.platforms` and exits non-zero either because a platform has
-      # no solution or because the result differs from the committed lock file.
-      # It rewrites pixi.lock as it goes, so the two cases are told apart by
-      # whether the working tree moved: an unsolvable manifest leaves the file
-      # untouched, a stale lock file does not.
       - name: Solve every platform and check the lock file
         id: check
-        run: |
-          set -uo pipefail
-          if pixi lock --check --no-progress; then
-            echo 'outcome=current' >> "${GITHUB_OUTPUT}"
-            echo '`pixi.lock` is current and solves on every platform.' \
-              >> "${GITHUB_STEP_SUMMARY}"
-            exit 0
-          fi
-          if git diff --quiet -- pixi.lock; then
-            echo 'outcome=unsolvable' >> "${GITHUB_OUTPUT}"
-            {
-              echo '### `pixi.toml` cannot be solved'
-              echo ''
-              echo 'At least one platform in `workspace.platforms` has no'
-              echo 'solution. See the log above for the conflicting package.'
-            } >> "${GITHUB_STEP_SUMMARY}"
-            echo '::error::pixi.toml does not solve on every platform.'
-            exit 1
-          fi
-          echo 'outcome=stale' >> "${GITHUB_OUTPUT}"
-          {
-            echo '### `pixi.lock` does not match `pixi.toml`'
-            echo ''
-            echo 'This pull request changes the dependencies but does not'
-            echo 'carry the lock file they produce. Run `pixi lock` and commit'
-            echo 'the result, or download the `pixi-lock-suggested` artifact'
-            echo 'from this run and commit that file.'
-            echo ''
-            echo '```'
-            git --no-pager diff --stat -- pixi.lock
-            echo '```'
-          } >> "${GITHUB_STEP_SUMMARY}"
-          echo '::error::pixi.lock is out of date with pixi.toml.'
-          exit 1
+        run: .github/scripts/pixi-lock-check.sh
 
       - name: Upload the lock file that pixi.toml actually produces
         if: failure() && steps.check.outputs.outcome == 'stale'
@@ -129,44 +68,11 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-      # The install matrix is built from the manifest rather than hard-coded,
-      # so adding a platform to `workspace.platforms` starts testing it here
-      # instead of quietly going untested.  An unmapped platform is an error:
-      # failing loudly beats silently covering less than the name claims.
       - name: Work out which runner covers each platform
         id: platforms
-        run: |
-          set -euo pipefail
-          # The list carries a synthetic "current" entry for the running
-          # machine alongside the declared ones; only the declared
-          # platforms belong to an environment.
-          pixi workspace platform list --json \
-            | jq -r '.platforms[]
-                     | select(.environments | length > 0) | .name' \
-            | sort -u > platforms.txt
-          : > include.jsonl
-          while read -r platform; do
-            case "${platform}" in
-              linux-64) runner=ubuntu-latest ;;
-              linux-aarch64) runner=ubuntu-24.04-arm ;;
-              win-64) runner=windows-latest ;;
-              osx-64) runner=macos-15-intel ;;
-              osx-arm64) runner=macos-latest ;;
-              *)
-                echo "::error::No runner is mapped for platform" \
-                     "'${platform}'. Add one to this workflow."
-                exit 1
-                ;;
-            esac
-            jq -nc --arg p "${platform}" --arg r "${runner}" \
-              '{platform: $p, runner: $r}' >> include.jsonl
-          done < platforms.txt
-          matrix="$(jq -sc '{include: .}' include.jsonl)"
-          echo "matrix=${matrix}" >> "${GITHUB_OUTPUT}"
-          echo "${matrix}"
+        run: .github/scripts/pixi-lock-matrix.sh
 
   install:
-
     name: Install (${{ matrix.platform }})
     needs:
       - changes
@@ -180,10 +86,8 @@ jobs:
       - name: Clone project
         uses: actions/checkout@v7
 
-      # `--locked`, which setup-pixi passes for `locked: true`, refuses to
-      # relax the committed lock file.  This installs exactly what the pull
-      # request proposes to merge and so proves the solution is usable on this
-      # platform, not merely satisfiable on paper.
+      # `locked: true` refuses to relax the committed lock file, so this proves
+      # the solution is usable on this platform rather than merely satisfiable.
       - name: Install the environment
         uses: prefix-dev/setup-pixi@v0.10.2
         with:
@@ -210,8 +114,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${CHANGES_RESULT}" != 'success' ]; then
-            echo '::error::Could not determine which files this pull request' \
-                 'changes.'
+            echo '::error::Could not determine which files this pull request changes.'
             exit 1
           fi
           if [ "${PIXI_CHANGED}" != 'true' ]; then
@@ -220,13 +123,11 @@ jobs:
           fi
           status=0
           if [ "${LOCK_RESULT}" != 'success' ]; then
-            echo "::error::The solve and lock file check did not pass" \
-                 "(${LOCK_RESULT})."
+            echo "::error::The solve and lock file check did not pass (${LOCK_RESULT})."
             status=1
           fi
           if [ "${INSTALL_RESULT}" != 'success' ]; then
-            echo "::error::The lock file did not install on every platform" \
-                 "(${INSTALL_RESULT})."
+            echo "::error::The lock file did not install on every platform (${INSTALL_RESULT})."
             status=1
           fi
           exit "${status}"

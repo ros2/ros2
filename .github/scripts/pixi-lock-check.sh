@@ -4,6 +4,9 @@
 # `outcome=current|unsolvable|stale` on ${GITHUB_OUTPUT} and leaves the
 # regenerated pixi.lock in the working tree.
 
+# The backticks below are Markdown for the step summary, not command
+# substitution.
+# shellcheck disable=SC2016
 set -uo pipefail
 
 GITHUB_OUTPUT="${GITHUB_OUTPUT:-/dev/null}"

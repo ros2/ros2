@@ -35,6 +35,19 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: .github/scripts/pixi-lock-changed-files.sh
 
+  lint:
+    name: Shellcheck
+    needs: changes
+    if: needs.changes.outputs.pixi == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v7
+
+      # Preinstalled on the GitHub-hosted Ubuntu runners.
+      - name: Lint the check scripts
+        run: shellcheck .github/scripts/*.sh
+
   lock:
     name: Solve
     needs: changes
@@ -100,6 +113,7 @@ jobs:
     name: Pixi lock is valid
     needs:
       - changes
+      - lint
       - lock
       - install
     if: always()
@@ -109,6 +123,7 @@ jobs:
         env:
           PIXI_CHANGED: ${{ needs.changes.outputs.pixi }}
           CHANGES_RESULT: ${{ needs.changes.result }}
+          LINT_RESULT: ${{ needs.lint.result }}
           LOCK_RESULT: ${{ needs.lock.result }}
           INSTALL_RESULT: ${{ needs.install.result }}
         run: |
@@ -122,6 +137,10 @@ jobs:
             exit 0
           fi
           status=0
+          if [ "${LINT_RESULT}" != 'success' ]; then
+            echo "::error::The check scripts did not pass shellcheck (${LINT_RESULT})."
+            status=1
+          fi
           if [ "${LOCK_RESULT}" != 'success' ]; then
             echo "::error::The solve and lock file check did not pass (${LOCK_RESULT})."
             status=1

@@ -59,6 +59,7 @@ colcon-test-result = ">=0.3.8,<0.4"
 
 # The rest of the dependencies here are used by one or more ROS packages.  We aggressively
 # pin them to particular versions that are as close as possible to their counterparts in Ubuntu.
+<<<<<<< HEAD
 argcomplete = "==3.1.4"
 asio = "==1.28.1"
 assimp = "==5.3.1"
@@ -68,6 +69,18 @@ catkin_pkg = "==1.0.0"
 cli11 = "==2.4.1"
 clang-format = "==18.1.8"
 cmake = "==3.28.3"
+=======
+argcomplete = "==3.6.3"
+asio = "==1.36.0"  # TODO: Ubuntu has 1.30.2, but conda-forge jumps from 1.29.0 to 1.36.0
+assimp = "==6.0.4"
+benchmark = "==1.9.1"
+bullet = "==3.25"  # TODO: Ubuntu has 3.24, but the conda-forge build of it requires numpy < 2
+catkin_pkg = "==1.1.0"
+cli11 = "==2.6.2"  # TODO: Ubuntu has 2.6.1, which conda-forge does not have
+clang-tools = "==21.1.6"
+cmake = "==4.2.3"
+colorama = "==0.4.6"
+>>>>>>> d8bbb0e (use clang-tools instead of clang-format (rolling) (#1865))
 console_bridge = "==1.0.1"
 coverage = "==7.4.4"
 cppcheck = "==2.15.0"  # TODO: This version doesn't actually work, so we should just remove ament_cppcheck

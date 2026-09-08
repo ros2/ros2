@@ -73,7 +73,7 @@ benchmark = "==1.9.1"
 bullet = "==3.25"  # TODO: Ubuntu has 3.24, but the conda-forge build of it requires numpy < 2
 catkin_pkg = "==1.1.0"
 cli11 = "==2.6.2"  # TODO: Ubuntu has 2.6.1, which conda-forge does not have
-clang-format = "==21.1.6"
+clang-tools = "==21.1.6"
 cmake = "==4.2.3"
 colorama = "==0.4.6"
 console_bridge = "==1.0.1"

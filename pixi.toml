@@ -37,6 +37,15 @@ pkgconfig = "==1.5.5"
 xorg-libxaw = "==1.0.14"
 zziplib = "==0.13.69"
 
+# Build tooling for the ROS 2 buildfarm; not needed to build ROS 2, so kept out
+# of the default environment.  Use with: pixi install/run -e buildfarm
+[feature.buildfarm.dependencies]
+ninja = ">=1.13.2,<2"
+sccache = ">=0.17,<0.18"
+
+[environments]
+buildfarm = ["buildfarm"]
+
 [dependencies]
 # The following are "tooling" dependencies, used to install or initiate builds.
 # We pin them less aggressively since they will presumably continue to their job,

@@ -1,7 +1,7 @@
 # ROS Lyrical repos file
-# Generated on 2026-08-06 23:22:45
+# Generated on 2026-09-18 21:53:59
 # --pin eclipse-iceoryx/iceoryx=35311bfe5338392d65b18f148de70b803f6fc48e
-# --pin ros2/system_tests=37210e8b7e47be6280a9a7927877d32354036ddf
+# --pin ros2/system_tests=15603eeb876a8010488803d0ed33023b2406e0e0
 repositories:
   ament/ament_cmake:
     type: git
@@ -58,7 +58,7 @@ repositories:
   gazebo-release/gz_math_vendor:
     type: git
     url: https://github.com/gazebo-release/gz_math_vendor.git
-    version: 0.4.4
+    version: 0.4.5
   gazebo-release/gz_utils_vendor:
     type: git
     url: https://github.com/gazebo-release/gz_utils_vendor.git
@@ -174,7 +174,7 @@ repositories:
   ros/pluginlib:
     type: git
     url: https://github.com/ros/pluginlib.git
-    version: 5.8.4
+    version: 5.8.5
   ros/resource_retriever:
     type: git
     url: https://github.com/ros/resource_retriever.git
@@ -182,7 +182,7 @@ repositories:
   ros/robot_state_publisher:
     type: git
     url: https://github.com/ros/robot_state_publisher.git
-    version: 3.5.5
+    version: 3.5.6
   ros/ros_environment:
     type: git
     url: https://github.com/ros/ros_environment.git
@@ -202,7 +202,7 @@ repositories:
   ros2-rust/rosidl_rust:
     type: git
     url: https://github.com/ros2-rust/rosidl_rust.git
-    version: 0.4.12
+    version: 0.5.0
   ros2/ament_cmake_ros:
     type: git
     url: https://github.com/ros2/ament_cmake_ros.git
@@ -234,7 +234,7 @@ repositories:
   ros2/geometry2:
     type: git
     url: https://github.com/ros2/geometry2.git
-    version: 0.45.9
+    version: 0.45.10
   ros2/launch:
     type: git
     url: https://github.com/ros2/launch.git
@@ -262,7 +262,7 @@ repositories:
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
-    version: 10.4.4
+    version: 10.4.5
   ros2/rcl_interfaces:
     type: git
     url: https://github.com/ros2/rcl_interfaces.git
@@ -274,11 +274,11 @@ repositories:
   ros2/rclcpp:
     type: git
     url: https://github.com/ros2/rclcpp.git
-    version: 32.0.2
+    version: 32.0.3
   ros2/rclpy:
     type: git
     url: https://github.com/ros2/rclpy.git
-    version: 10.0.10
+    version: 10.0.11
   ros2/rcpputils:
     type: git
     url: https://github.com/ros2/rcpputils.git
@@ -286,7 +286,7 @@ repositories:
   ros2/rcutils:
     type: git
     url: https://github.com/ros2/rcutils.git
-    version: 7.1.2
+    version: 7.1.3
   ros2/realtime_support:
     type: git
     url: https://github.com/ros2/realtime_support.git
@@ -298,15 +298,15 @@ repositories:
   ros2/rmw:
     type: git
     url: https://github.com/ros2/rmw.git
-    version: 7.10.1
+    version: 7.10.2
   ros2/rmw_connextdds:
     type: git
     url: https://github.com/ros2/rmw_connextdds.git
-    version: 1.2.7
+    version: 1.2.8
   ros2/rmw_cyclonedds:
     type: git
     url: https://github.com/ros2/rmw_cyclonedds.git
-    version: 4.1.4
+    version: 4.1.5
   ros2/rmw_dds_common:
     type: git
     url: https://github.com/ros2/rmw_dds_common.git
@@ -314,7 +314,7 @@ repositories:
   ros2/rmw_fastrtps:
     type: git
     url: https://github.com/ros2/rmw_fastrtps.git
-    version: 9.4.9
+    version: 9.4.10
   ros2/rmw_implementation:
     type: git
     url: https://github.com/ros2/rmw_implementation.git
@@ -322,7 +322,7 @@ repositories:
   ros2/rmw_zenoh:
     type: git
     url: https://github.com/ros2/rmw_zenoh.git
-    version: 0.10.5
+    version: 0.10.6
   ros2/ros2_tracing:
     type: git
     url: https://github.com/ros2/ros2_tracing.git
@@ -330,7 +330,7 @@ repositories:
   ros2/ros2cli:
     type: git
     url: https://github.com/ros2/ros2cli.git
-    version: 0.40.8
+    version: 0.40.9
   ros2/ros2cli_common_extensions:
     type: git
     url: https://github.com/ros2/ros2cli_common_extensions.git
@@ -342,7 +342,7 @@ repositories:
   ros2/rosbag2:
     type: git
     url: https://github.com/ros2/rosbag2.git
-    version: 0.33.3
+    version: 0.33.4
   ros2/rosidl:
     type: git
     url: https://github.com/ros2/rosidl.git
@@ -382,7 +382,7 @@ repositories:
   ros2/rosidl_typesupport_fastrtps:
     type: git
     url: https://github.com/ros2/rosidl_typesupport_fastrtps.git
-    version: 3.9.5
+    version: 3.9.7
   ros2/rpyutils:
     type: git
     url: https://github.com/ros2/rpyutils.git
@@ -390,7 +390,7 @@ repositories:
   ros2/rviz:
     type: git
     url: https://github.com/ros2/rviz.git
-    version: 15.2.5
+    version: 15.2.6
   ros2/spdlog_vendor:
     type: git
     url: https://github.com/ros2/spdlog_vendor.git
@@ -402,7 +402,7 @@ repositories:
   ros2/system_tests:
     type: git
     url: https://github.com/ros2/system_tests.git
-    version: 37210e8b7e47be6280a9a7927877d32354036ddf
+    version: 15603eeb876a8010488803d0ed33023b2406e0e0
   ros2/test_interface_files:
     type: git
     url: https://github.com/ros2/test_interface_files.git

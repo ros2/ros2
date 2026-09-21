@@ -11,6 +11,7 @@ platforms = ["win-64", "linux-64"]
 osrf_pycommon = "==0.2.1"
 pyqt6 = ">=6.7,<7"
 pyqt6-sip = ">=13.0,<14"
+clang-tools = "==19.1.7"
 
 [target.win-64.activation.env]
 QT_QPA_PLATFORM_PLUGIN_PATH="%cd%\\.pixi\\envs\\default\\Library\\lib\\qt6\\plugins\\platforms"
@@ -34,6 +35,7 @@ mesalib = ">=24.0,<26"
 pkgconfig = "==1.5.5"
 xorg-libxaw = "==1.0.14"
 zziplib = "==0.13.69"
+clang-tools = "==18.1.8"
 
 [dependencies]
 # The following are "tooling" dependencies, used to install or initiate builds.
@@ -66,7 +68,6 @@ benchmark = "==1.8.3"
 bullet = "==3.25"  # TODO: Conda has 3.24, but it is not installable with Python 3.12
 catkin_pkg = "==1.0.0"
 cli11 = "==2.4.1"
-clang-tools = "==18.1.8"
 cmake = "==3.28.3"
 console_bridge = "==1.0.1"
 coverage = "==7.4.4"

@@ -11,6 +11,7 @@ platforms = ["win-64", "linux-64"]
 osrf_pycommon = "==0.2.1"
 pyqt6 = ">=6.7,<7"
 pyqt6-sip = ">=13.0,<14"
+clang-tools = "==19.1.7"
 
 [target.win-64.activation.env]
 QT_QPA_PLATFORM_PLUGIN_PATH="%cd%\\.pixi\\envs\\default\\Library\\lib\\qt6\\plugins\\platforms"

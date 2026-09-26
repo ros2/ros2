@@ -108,6 +108,7 @@ lz4-c = "==1.10.0"
 mccabe = "==0.7.0"
 mypy = "==1.19.1"
 mypy_extensions = "==1.1.0"
+nanobind = "==2.12.0"
 nlohmann_json = "==3.12.0"
 numpy = "==2.3.5"
 opencv = "==4.13.0"  # TODO: Ubuntu has 4.10.0, but conda-forge has no Python 3.14 build before 4.13.0

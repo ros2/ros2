@@ -12,7 +12,10 @@ requires-pixi = ">=0.78"
 osrf_pycommon = "==0.2.1"
 
 [target.win-64.activation.env]
-QT_QPA_PLATFORM_PLUGIN_PATH="%cd%\\.pixi\\envs\\default\\Library\\lib\\qt6\\plugins\\platforms"
+# %CONDA_PREFIX% is the environment actually in use.  Spelling this out as
+# .pixi/envs/default pointed every environment at the default one, which is
+# wrong as soon as there is more than one of them.
+QT_QPA_PLATFORM_PLUGIN_PATH="%CONDA_PREFIX%\\Library\\lib\\qt6\\plugins\\platforms"
 
 [target.linux-64.dependencies]
 binutils_linux-64 = "==2.46.1"  # Ubuntu has 2.46
@@ -33,6 +36,15 @@ mesalib = ">=24.0,<26"
 pkgconfig = "==1.5.5"
 xorg-libxaw = "==1.0.14"
 zziplib = "==0.13.69"
+
+# Build tooling for the ROS 2 buildfarm; not needed to build ROS 2, so kept out
+# of the default environment.  Use with: pixi install/run -e buildfarm
+[feature.buildfarm.dependencies]
+ninja = ">=1.13.2,<2"
+sccache = ">=0.17,<0.18"
+
+[environments]
+buildfarm = ["buildfarm"]
 
 [dependencies]
 # The following are "tooling" dependencies, used to install or initiate builds.

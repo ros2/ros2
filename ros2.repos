@@ -83,10 +83,6 @@ repositories:
     type: git
     url: https://github.com/ros-tooling/keyboard_handler.git
     version: rolling
-  ros-tooling/libstatistics_collector:
-    type: git
-    url: https://github.com/ros-tooling/libstatistics_collector.git
-    version: rolling
   ros-visualization/interactive_markers:
     type: git
     url: https://github.com/ros-visualization/interactive_markers.git

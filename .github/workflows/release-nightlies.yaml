@@ -70,9 +70,15 @@ jobs:
           touch artifacts_urls.txt
           THRESHOLD=$(($(date +%s) - 86400))000;
 
+          # Every one of these jobs has to pass for the release to be updated.
+          EXPECTED_JOBS=(packaging_linux packaging_linux-aarch64 packaging_linux-rhel packaging_windows)
+          FOUND_JOBS=""
+          NAME_FILTER=$(printf 'name="%s"+or+' "${EXPECTED_JOBS[@]}")
+          NAME_FILTER=${NAME_FILTER%+or+}
+
           # curl needs --globoff to avoid having to escape all brackets in the url
-          
-          JOBS_STATUS=$(curl  -u ":$JENKINS_AUTH" --silent --globoff 'https://ci.ros2.org/api/xml?tree=jobs[name,lastBuild[number,timestamp,result,artifacts[relativePath],actions[parameters[name,value]]]]&xpath=/hudson/job[(name="packaging_linux"+or+name="packaging_windows"+or+name="packaging_linux-rhel"+or+name="packaging_linux-aarch64")+and+lastBuild/action/parameter[name="CI_ROS_DISTRO"+and+value="rolling"]]&wrapper=nightlies')
+
+          JOBS_STATUS=$(curl  -u ":$JENKINS_AUTH" --silent --globoff "https://ci.ros2.org/api/xml?tree=jobs[name,lastBuild[number,timestamp,result,artifacts[relativePath],actions[parameters[name,value]]]]&xpath=/hudson/job[($NAME_FILTER)+and+lastBuild/action/parameter[name=\"CI_ROS_DISTRO\"+and+value=\"rolling\"]]&wrapper=nightlies")
           # the XML returned have a <nightlies /> tag that needs to be cleaned to be able to split each job into a new line
 
           JOBS=$(echo "$JOBS_STATUS" |sed 's|<nightlies[^>]*>||g; s|</nightlies>||g' | sed 's|</job>|</job>\n|g' | sed '/^$/d')
@@ -94,8 +100,17 @@ jobs:
             fi
 
             : # If the a job failed then the update should not happen to keep synchrony between os.
-            if [ "$RESULT" = "FAILURE" ]; then
-              echo "🌧️ Job $NAME failed with result: $RESULT"
+            : # UNSTABLE (test failures) still produces usable archives; ABORTED and NOT_BUILT do not.
+            case "$RESULT" in
+              SUCCESS|UNSTABLE) ;;
+              *)
+                echo "🌧️ Job $NAME failed with result: $RESULT"
+                exit 1
+                ;;
+            esac
+
+            if [ -z "$REL_PATH" ]; then
+              echo "🌧️ Job $NAME build $BUILD has no archived artifact."
               exit 1
             fi
 
@@ -106,10 +121,20 @@ jobs:
             fi
 
             echo "☀️ $NAME passed all checks."
-            
+
             echo "https://ci.ros2.org/job/$NAME/$BUILD/artifact/$REL_PATH" >> artifacts_urls.txt
+            FOUND_JOBS+=" $NAME "
 
           done <<< "$JOBS"
+
+          : # A job whose last build was not for Rolling is filtered out by the query above,
+          : # so a missing job would otherwise leave its platform's archive out of date.
+          for EXPECTED in "${EXPECTED_JOBS[@]}"; do
+            if [[ "$FOUND_JOBS" != *" $EXPECTED "* ]]; then
+              echo "☁️ Job $EXPECTED was not found, or its last build was not a Rolling build."
+              exit 1
+            fi
+          done
           # Pass urls to the GITHUB_OUTPUT 
           if [ -s artifacts_urls.txt ]; then
             URLS_ARRAY=$(cat artifacts_urls.txt | jq -R -s -c 'split("\n") | map(select(length > 0))')

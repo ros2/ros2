@@ -1,0 +1,63 @@
+name: PR template check
+
+on:
+  pull_request_target:
+    types: [opened, edited, reopened, ready_for_review]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  check:
+    if: >
+      github.event.pull_request.draft == false &&
+      !contains(fromJSON('["MEMBER","OWNER","COLLABORATOR"]'), github.event.pull_request.author_association) &&
+      !endsWith(github.event.pull_request.user.login, '[bot]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        env:
+          # Set the repository variable PR_TEMPLATE_CHECK_CLOSE=true to close
+          # failing PRs. Otherwise only label and comment.
+          CLOSE: ${{ vars.PR_TEMPLATE_CHECK_CLOSE }}
+        with:
+          script: |
+            const marker = '<!-- pr-template-check -->';
+            const label = 'template-check-failed';
+            const pr = context.payload.pull_request;
+            const body = pr.body || '';
+            const required = [
+              '## Description',
+              'Fixes #',
+              '### Is this user-facing behavior change?',
+              '### Did you use Generative AI?',
+              '### Additional Information',
+            ];
+            const banned = [/no colcon/i, /no ros ?2 environment/i, /no tests? (were )?run/i];
+            const problems = [
+              ...required.filter(h => !body.includes(h)).map(h => `missing \`${h}\``),
+              ...banned.filter(r => r.test(body)).map(r => `contains text matching \`${r}\``),
+            ];
+            const close = process.env.CLOSE === 'true';
+            const issue = { ...context.repo, issue_number: pr.number };
+
+            if (problems.length === 0) {
+              try { await github.rest.issues.removeLabel({ ...issue, name: label }); } catch (e) {}
+              return;
+            }
+
+            const comments = await github.paginate(github.rest.issues.listComments, issue);
+            if (!comments.some(c => c.body.includes(marker))) {
+              await github.rest.issues.createComment({
+                ...issue,
+                body: `${marker}\nThis PR description does not follow the PR template (${problems.join('; ')}).\n\n` +
+                  `Please fill in the full template, make sure you built and ran the tests locally, ` +
+                  `and read the AI-assisted contribution guidelines in CONTRIBUTING.md.` +
+                  (close ? ` Closing for now. Edit the description and reopen when ready.` : ``),
+              });
+            }
+            await github.rest.issues.addLabels({ ...issue, labels: [label] });
+            if (close) {
+              await github.rest.pulls.update({ ...context.repo, pull_number: pr.number, state: 'closed' });
+            }
